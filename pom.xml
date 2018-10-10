@@ -21,6 +21,11 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+        	<groupId>org.gitlab</groupId>
+        	<artifactId>java-gitlab-api</artifactId>
+        	<version>4.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
