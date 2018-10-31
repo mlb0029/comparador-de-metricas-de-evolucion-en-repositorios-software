@@ -5,4 +5,4 @@
  * @author migue
  *
  */
-package es.ubu.lsi.conexion.comun.tipos;
+package app;
