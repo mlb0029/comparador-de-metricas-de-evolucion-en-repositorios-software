@@ -1,3 +1,16 @@
 \capitulo{1}{Introducción}
 
-Descripción del contenido del trabajo y del estrucutra de la memoria y del resto de materiales entregados.
+%Descripción del contenido del trabajo y del estrucutra de la memoria y del resto de materiales entregados.
+El trabajo se centra en crear una aplicación web que permita, a partir de URLs de repositorios GitLab, comparar dos o varios repositorios mediante métricas de evolución.
+Las métricas que se van a trabajar, en principio, son:
+\begin{itemize}
+	\item Número total de issues (I1)
+	\item Commits por issue (I2)
+	\item Porcentaje de issues cerradas (I3)
+	\item Media de días en cerrar una issue (TI1)
+	\item Media de días entre commits (TC1)
+	\item Días que han pasado entre el primer y último commit (TC2)
+	\item Ratio de actividad de commits por mes (TC3)
+	\item Número de commits en el mes pico (C1)
+\end{itemize}
+Se pretende que el proyecto pueda ser ampliado a más gestores de repositorios como GitHub o Bitbucket y que pueda calcular más métricas de las que originalmente se han trabajado, por tanto deberá presentar un diseño que facilite el mantenimiento de la misma y añadir nuevas funcionalidades.
