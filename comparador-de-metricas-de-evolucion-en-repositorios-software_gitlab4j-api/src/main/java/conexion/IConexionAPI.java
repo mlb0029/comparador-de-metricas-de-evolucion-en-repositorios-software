@@ -14,13 +14,6 @@ import org.gitlab4j.api.GitLabApiException;
 public interface IConexionAPI {
 	
 	/**
-	 * Comprueba que se ha establecido la conexión con el API correctamente.
-	 * 
-	 * @return True si hay conexión, False en caso contrario.
-	 */
-	public Boolean comprobarConexion();
-	
-	/**
 	 * Obtiene los nombres de los proyectos de un usuario.
 	 * 
 	 * @param nombreUsuario

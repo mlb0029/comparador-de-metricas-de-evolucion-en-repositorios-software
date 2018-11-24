@@ -3,7 +3,7 @@ package ap;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import conexion.ConexionAPI_gitlab4j;
+import conexion.ConexionGitLab;
 import conexion.IConexionAPI;
 
 /**
@@ -27,7 +27,7 @@ public class Ap {
 			System.out.println("________________");
 			System.out.print("Introduzca un token de acceso o pulse Enter para entrar sin autenticación: ");
 			String privateToken = stdIn.readLine();
-			IConexionAPI conexionAPI = (privateToken != "")? ConexionAPI_gitlab4j.establecerConexion(privateToken): ConexionAPI_gitlab4j.establecerConexion(privateToken);
+			IConexionAPI conexionAPI = (privateToken != "")? ConexionGitLab.establecerConexion() : ConexionGitLab.establecerConexion(privateToken);
 			System.out.println();
 			System.out.println("PARTE 1. Obtener URLs de proyectos de un usuario");
 			System.out.println("________________");

@@ -6,7 +6,7 @@ package conexion;
  * @author MALB
  * @since 01/11/2018
  */
-public enum TipoConexion {
+public enum EnumTipoConexion {
 	/**
 	 * Conexión con el API, autenticando un usuario mediante algún método de autenticación.
 	 */
