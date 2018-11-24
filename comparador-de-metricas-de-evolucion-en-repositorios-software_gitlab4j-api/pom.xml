@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>es.ubu.lsi</groupId>
-  <artifactId>comparador-de-metricas-de-evolucion-en-repositorios-software_gitlab4j-api</artifactId>
+  <artifactId>comparador-de-metricas-de-evolucion-en-repositorios-software</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>comparador-de-metricas-de-evolucion-en-repositorios-software_gitlab4j-api</name>
+  <name>comparador-de-metricas-de-evolucion-en-repositorios-software</name>
   <description>Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula medidas de la evolución que permiten comparar los repositorios.</description>
   <build>
     <plugins>
