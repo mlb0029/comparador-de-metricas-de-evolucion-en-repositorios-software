@@ -25,9 +25,9 @@ Estas APIs de envoltura nos ahorran trabajo adaptando [GitLab REST API](https://
 - [gitlab4j-api](https://github.com/gmessner/gitlab4j-api)
 
 ## Herramientas utilizadas
-- [Eclipse IDE for Java EE Developers](https://www.eclipse.org/)
-- [Apache Maven 3.5.4](https://maven.apache.org/)
-- [Apache Tomcat 9.0.12](http://tomcat.apache.org/)
+- [Eclipse IDE for Java EE Developers. Version: 2018-09 (4.9.0)](https://www.eclipse.org/)
+- [Apache Maven v3.6.0](https://maven.apache.org/)
+- [Apache Tomcat v9.0.13](http://tomcat.apache.org/)
 - [Java SE 11 (JDK)](https://www.oracle.com/technetwork/java/javase/overview/index.html)
-- [java-gitlab-api](https://github.com/timols/java-gitlab-api)
-- [gitlab4j-api](https://github.com/gmessner/gitlab4j-api)
+- [gitlab4j-api v4.8.56](https://github.com/gmessner/gitlab4j-api)
+- [https://junit.org/junit5/](JUnit 5 v5.3.1)
