@@ -30,4 +30,4 @@ Estas APIs de envoltura nos ahorran trabajo adaptando [GitLab REST API](https://
 - [Apache Tomcat v9.0.13](http://tomcat.apache.org/)
 - [Java SE 11 (JDK)](https://www.oracle.com/technetwork/java/javase/overview/index.html)
 - [gitlab4j-api v4.8.56](https://github.com/gmessner/gitlab4j-api)
-- [https://junit.org/junit5/](JUnit 5 v5.3.1)
+- [JUnit5 v5.3.1](https://junit.org/junit5/)
