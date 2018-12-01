@@ -1,5 +1,5 @@
 /**
- * Herramientas necesarias en todo el proyecto.
+ * Package util.
  * 
  * @author MALB
  * @since 01/11/2018
