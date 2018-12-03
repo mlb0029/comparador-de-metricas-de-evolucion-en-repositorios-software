@@ -1,7 +1,7 @@
 /**
- * Define la lógica de control de las métricas.
+ * Logic of the metric engine.
  * 
  * @author MALB
- * @since 01/11/2018
+ * @since 03/12/2018
  */
 package metricsengine;
