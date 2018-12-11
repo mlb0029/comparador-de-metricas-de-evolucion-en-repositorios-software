@@ -2,7 +2,7 @@
 Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula  medidas de la evolución que permiten comparar los repositorios.
 
 ## Metricas de evolución
- - I1 total number of issues. ()
+ - I1 total number of issues. (6-44)
  - I2  commits  per  issue.  I1  divided  by  total  number  of
 commits. (0.5-1)
 - I3 percentage of issues closed( number of closed issues ∗ 100/I1). (87-100)
