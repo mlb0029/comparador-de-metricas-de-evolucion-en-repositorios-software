@@ -1,42 +1,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>es.ubu.lsi</groupId>
 	<artifactId>comparador-de-metricas-de-evolucion-en-repositorios-software</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	
 	<name>comparador-de-metricas-de-evolucion-en-repositorios-software</name>
 	<description>Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula medidas de la evolución que permiten comparar los repositorios.</description>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
-				<configuration>
-					<release>11</release>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.2</version>
-				<configuration>
-					<warSourceDirectory>WebContent</warSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M1</version>
-			</plugin>
-		</plugins>
-	</build>
+	<url>https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software</url>
+	<inceptionYear>2018</inceptionYear>
+	
+	<organization>
+		<name>Universidad de Burgos</name>
+		<url>https://www.ubu.es/</url>
+	</organization>
+	
+<!-- 	
+	<licenses>
+ 		<license>
+ 			<name></name>
+ 			<url></url>
+			<distribution></distribution>
+ 			<comments></comments>
+		</license>
+	</licenses> 
+-->
+	
+	<developers>
+		<developer>
+		<name>Miguel Ángel León Bardavío</name>
+		<email>miguelelleon@gmail.com</email>
+		<organization>Universidad de Burgos</organization>
+		<organizationUrl>https://www.ubu.es/</organizationUrl>
+		</developer>
+	</developers>
+	
+	<contributors>
+		<contributor>
+			<name>Carlos López Nozal</name>
+			<email>clopezno@ubu.es</email>
+			<organization>Universidad de Burgos</organization>
+			<organizationUrl>https://www.ubu.es/</organizationUrl>
+		</contributor>
+		<contributor>
+			<name>Miguel Ángel León Bardavío</name>
+			<email>miguelelleon@gmail.com</email>
+			<organization>Universidad de Burgos</organization>
+			<organizationUrl>https://www.ubu.es/</organizationUrl>
+		</contributor>
+	</contributors>
+	
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.gitlab4j/gitlab4j-api -->
 		<dependency>
 			<groupId>org.gitlab4j</groupId>
 			<artifactId>gitlab4j-api</artifactId>
 			<version>4.8.56</version>
+			<scope>compile</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
@@ -74,4 +98,29 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<release>11</release>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.2</version>
+				<configuration>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M1</version>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>
