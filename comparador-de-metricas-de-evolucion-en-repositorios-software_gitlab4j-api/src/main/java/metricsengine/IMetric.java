@@ -1,5 +1,7 @@
 package metricsengine;
 
+import repositorydatasource.model.Repository;
+
 /**
  * Defines the interface of a metric.
  * 
@@ -7,10 +9,5 @@ package metricsengine;
  *
  */
 public interface IMetric {
-	/**
-	 * Compute the metric.
-	 * 
-	 * @return The result of computing the metric.
-	 */
-	IValue calculate();
+	Measure calculate(Repository repository);
 }

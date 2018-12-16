@@ -64,7 +64,7 @@ class GitLabRepositoryDataSourceTest {
 	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	void testConnectSUsernamePassword() {
+	void testConnectUsernamePassword() {
 		fail("Not yet implemented");
 	}
 

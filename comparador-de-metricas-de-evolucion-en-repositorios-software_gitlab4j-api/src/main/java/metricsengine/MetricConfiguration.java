@@ -1,6 +1,7 @@
 package metricsengine;
 
 import metricsengine.IMetric;
+import repositorydatasource.model.Repository;
 
 /**
  * Wrapper for a metric that allows you to use other minimum and maximum values, 
@@ -32,9 +33,11 @@ public class MetricConfiguration implements IMetric {
 	 */
 	private Boolean active;
 
+	
 	/**
 	 * Constructor.
 	 * 
+	 * @param metric Metric to configure.
 	 * @param valueMin Minimum value.
 	 * @param valueMax Maximum value.
 	 */
@@ -88,11 +91,8 @@ public class MetricConfiguration implements IMetric {
 		this.active = active;
 	}
 
-	/* (non-Javadoc)
-	 * @see metricsengine.IMetric#calculate()
-	 */
 	@Override
-	public IValue calculate() {
-		return this.metric.calculate();
-	}	
+	public Measure calculate(Repository repository) {
+		return this.metric.calculate(repository);
+	}
 }
