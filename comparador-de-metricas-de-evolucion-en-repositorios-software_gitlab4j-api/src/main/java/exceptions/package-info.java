@@ -1,8 +1,6 @@
 /**
  * Exceptions of the application.
  * 
- * @author MLB
- * @since 01/12/2018
- *
+ * @author MALB
  */
 package exceptions;

@@ -1,14 +1,18 @@
 package metricsengine.metrics;
 
-import metricsengine.AMetric;
-import metricsengine.EnumTypeOfScale;
-import metricsengine.IValue;
-import metricsengine.Measure;
-import metricsengine.MetricDescription;
+import metricsengine.metrics.MetricDescription.*;
+import metricsengine.values.IValue;
+import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
 public class MetricTotalNumberOfIssues extends AMetric {
 
+	/**
+	 * Constructor that sets the default values passed by parameter.
+	 * 
+	 * @param valueMinDefault
+	 * @param valueMaxDefault
+	 */
 	public MetricTotalNumberOfIssues(IValue valueMinDefault, IValue valueMaxDefault) {
 		super(new MetricDescription(
 				"TNI",//name
@@ -27,12 +31,20 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	}
 
 	/* (non-Javadoc)
-	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository)
+	 * @see metricsengine.AMetric#check(repositorydatasource.model.Repository)
 	 */
 	@Override
-	public Measure calculate(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Boolean check(Repository repository) {
+		if (repository != null && repository.getTotalNumberOfIssues() >= 0) return true;
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see metricsengine.AMetric#run(repositorydatasource.model.Repository)
+	 */
+	@Override
+	protected IValue run(Repository repository) {
+		return new ValueInteger(repository.getTotalNumberOfIssues());
 	}
 
 }

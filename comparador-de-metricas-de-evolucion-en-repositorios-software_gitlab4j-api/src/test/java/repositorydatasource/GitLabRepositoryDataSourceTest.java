@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 
 /**
@@ -65,7 +66,7 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	void testConnectUsernamePassword() {
-		fail("Not yet implemented");
+		fail("Not implemented due to security issues");
 	}
 
 	/**
@@ -73,7 +74,7 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	void testConnectToken() {
-		fail("Not yet implemented");
+		fail("Not implemented due to security issues");
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package repositorydatasource;
 
+import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 
 /**

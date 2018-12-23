@@ -18,6 +18,7 @@ import org.gitlab4j.api.models.Issue;
 import org.gitlab4j.api.models.IssueFilter;
 import org.gitlab4j.api.models.Project;
 
+import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 import util.Constants;
 

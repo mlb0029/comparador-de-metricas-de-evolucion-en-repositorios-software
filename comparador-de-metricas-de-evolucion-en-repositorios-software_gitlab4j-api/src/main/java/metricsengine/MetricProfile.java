@@ -3,11 +3,14 @@ package metricsengine;
 import java.util.Collection;
 import java.util.HashMap;
 
+import metricsengine.metrics.AMetric;
+import metricsengine.metrics.MetricConfiguration;
+import metricsengine.values.IValue;
+
 /**
  * It allows to use several configurations for the metrics.
  * 
  * @author MALB
- * @since 03/12/2018
  *
  */
 public class MetricProfile {

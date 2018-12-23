@@ -2,11 +2,13 @@ package metricsengine;
 
 import java.util.Date;
 
+import metricsengine.metrics.MetricConfiguration;
+import metricsengine.values.IValue;
+
 /**
  * Measure computed of a metric.
  * 
  * @author MALB
- * @since 03/12/2018
  *
  */
 public class Measure {
@@ -39,21 +41,21 @@ public class Measure {
 	}
 	
 	/**
-	 * Gets the value of the measurement.
-	 * 
-	 * @return The value of the measurement.
-	 */
-	public IValue getValue() {
-		return value;
-	}
-	
-	/**
 	 * The metric that has been measured.
 	 * 
 	 * @return The metric that has been measured.
 	 */
 	public MetricConfiguration getMetric() {
 		return metric;
+	}
+
+	/**
+	 * Gets the value of the measurement.
+	 * 
+	 * @return The value of the measurement.
+	 */
+	public IValue getValue() {
+		return value;
 	}
 	
 	/**
