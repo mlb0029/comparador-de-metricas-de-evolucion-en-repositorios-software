@@ -12,7 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import metricsengine.metrics.MetricConfiguration;
-import metricsengine.metrics.MetricTotalNumberOfIssues;
+import metricsengine.metrics.MetricDescription;
+import metricsengine.metrics.MetricDescription.EnumTypeOfScale;
+import metricsengine.metrics.concreteMetrics.MetricTotalNumberOfIssues;
 import metricsengine.values.ValueInteger;
 import repositorydatasource.GitLabRepositoryDataSource;
 import repositorydatasource.model.Repository;
@@ -60,7 +62,7 @@ class MetricTotalNumberOfIssuesTest {
 
 	@Test
 	void test() {
-		MetricTotalNumberOfIssues metric = new MetricTotalNumberOfIssues(new ValueInteger(6), new ValueInteger(44));
+		MetricTotalNumberOfIssues metric = new MetricTotalNumberOfIssues(new MetricDescription("", "", "", "", "", "", "", "", "", EnumTypeOfScale.ABSOLUTE, ""),new ValueInteger(6), new ValueInteger(44));
 		assertEquals("6", metric.getValueMinDefault().getString());
 		assertEquals("44", metric.getValueMaxDefault().getString());
 		MetricConfiguration metricConfig = new MetricConfiguration(metric);

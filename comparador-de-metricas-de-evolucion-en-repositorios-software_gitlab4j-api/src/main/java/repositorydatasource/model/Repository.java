@@ -24,22 +24,22 @@ public class Repository {
 	/**
 	 * ID.
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * Total number of issues.
 	 */
-	private int totalNumberOfIssues;
+	private Integer totalNumberOfIssues;
 	
 	/**
 	 * Total number of commits.
 	 */
-	private int totalNumberOfCommits;
+	private Integer totalNumberOfCommits;
 	
 	/**
 	 * Number of closed issues.
 	 */
-	private int numberOfClosedIssues;
+	private Integer numberOfClosedIssues;
 	
 	/**
 	 * Days to close each issue.
@@ -55,7 +55,7 @@ public class Repository {
 	 * Number of months that have passed since the creation of the repository
 	 * until the date of last activity.
 	 */
-	private int lifeSpanMonths;
+	private Integer lifeSpanMonths;
 	
 	/**
 	 * @param url URL.
@@ -69,8 +69,8 @@ public class Repository {
 	 * @param lifeSpanMonths Number of months that have passed since the creation of the repository
 	 * until the date of last activity.
 	 */
-	public Repository(String url, String name, int id, int totalNumberOfIssues, int totalNumberOfCommits,
-			int numberOfClosedIssues, List<Integer> daysToCloseEachIssue, Set<Date> commitDates, int lifeSpanMonths) {
+	public Repository(String url, String name, Integer id, Integer totalNumberOfIssues, Integer totalNumberOfCommits,
+			Integer numberOfClosedIssues, List<Integer> daysToCloseEachIssue, Set<Date> commitDates, Integer lifeSpanMonths) {
 		this.url = url;
 		this.name = name;
 		this.id = id;
@@ -99,28 +99,28 @@ public class Repository {
 	/**
 	 * @return ID.
 	 */
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
 	/**
 	 * @return Total number of issues.
 	 */
-	public int getTotalNumberOfIssues() {
+	public Integer getTotalNumberOfIssues() {
 		return totalNumberOfIssues;
 	}
 	
 	/**
 	 * @return Total number of commits.
 	 */
-	public int getTotalNumberOfCommits() {
+	public Integer getTotalNumberOfCommits() {
 		return totalNumberOfCommits;
 	}
 	
 	/**
 	 * @return Number of closed issues.
 	 */
-	public int getNumberOfClosedIssues() {
+	public Integer getNumberOfClosedIssues() {
 		return numberOfClosedIssues;
 	}
 	
@@ -142,7 +142,7 @@ public class Repository {
 	 * @return Number of months that have passed since the creation of the repository
 	 * until the date of last activity.
 	 */
-	public int getLifeSpanMonths() {
+	public Integer getLifeSpanMonths() {
 		return lifeSpanMonths;
 	}
 }

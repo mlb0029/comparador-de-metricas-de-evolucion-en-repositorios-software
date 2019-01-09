@@ -34,7 +34,7 @@ public class MetricProfile {
 		this.name = name;
 		this.metricConfigurations = new HashMap<AMetric, MetricConfiguration>();
 	}
-
+	
 	/**
 	 * Gets the name of the profile.
 	 * 
