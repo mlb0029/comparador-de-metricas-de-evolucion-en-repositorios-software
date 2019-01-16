@@ -18,6 +18,7 @@ import org.gitlab4j.api.models.Issue;
 import org.gitlab4j.api.models.IssueFilter;
 import org.gitlab4j.api.models.Project;
 
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 import util.Constants;
@@ -65,23 +66,26 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#connect()
 	 */
 	@Override
-	public Integer connect() {
-		gitLabApi = new GitLabApi(Constants.HOST_URL, "");
-		connectionType = EnumConnectionType.CONNECTED;
-		return 1;
+	public void connect() throws RepositoryDataSourceException {
+		try {
+			gitLabApi = new GitLabApi(Constants.HOST_URL, "");
+			connectionType = EnumConnectionType.CONNECTED;
+		} catch (Exception e) {
+			throw new RepositoryDataSourceException("Error when connecting");
+		}
 	}
 	
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#connect(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Integer connect(String username, String password) {
+	public void connect(String username, String password) throws RepositoryDataSourceException {
+		if(username == null || username == "" || password == null || password == "") throw new RepositoryDataSourceException("The user or password has not been specified");
 		try {
 			gitLabApi = GitLabApi.oauth2Login(Constants.HOST_URL, username, password.toCharArray());
 			connectionType = EnumConnectionType.LOGGED;
-			return 1;
 		} catch (GitLabApiException e) {
-			return -1;
+			throw new RepositoryDataSourceException("Error when connecting");
 		}
 	}
 	
@@ -89,17 +93,22 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#connect(java.lang.String)
 	 */
 	@Override
-	public Integer connect(String token) {
-		gitLabApi = new GitLabApi(Constants.HOST_URL, token);
-		connectionType = EnumConnectionType.LOGGED;
-		return 1;
+	public void connect(String token) throws RepositoryDataSourceException {
+		if(token == null || token == "") throw new RepositoryDataSourceException("No token specified");
+		try {
+			gitLabApi = new GitLabApi(Constants.HOST_URL, token);
+			connectionType = EnumConnectionType.LOGGED;		
+		} catch (Exception e) {
+			throw new RepositoryDataSourceException("Error when connecting");
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#disconnect()
 	 */
 	@Override
-	public void disconnect() {
+	public void disconnect() throws RepositoryDataSourceException {
+		if(gitLabApi == null || connectionType == EnumConnectionType.NOT_CONNECTED) throw new RepositoryDataSourceException("There is no connection.");
 		gitLabApi = null;
 		connectionType = EnumConnectionType.NOT_CONNECTED;
 	}

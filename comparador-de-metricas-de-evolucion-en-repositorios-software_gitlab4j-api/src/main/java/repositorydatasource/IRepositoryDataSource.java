@@ -1,5 +1,6 @@
 package repositorydatasource;
 
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 
@@ -13,31 +14,33 @@ public interface IRepositoryDataSource {
 	/**
 	 * Public connection.
 	 * 
-	 * @return 1 if connected, -1 if error
+	 * @throws RepositoryDataSourceException When problems occur when connecting.
 	 */
-	Integer connect();
+	void connect() throws RepositoryDataSourceException;
 	
 	/**
 	 * Logged connection with username and password.
 	 * 
 	 * @param username Username.
 	 * @param password Password.
-	 * @return 1 if connected, -1 if error
+	 * @throws RepositoryDataSourceException When problems occur when connecting.
 	 */
-	Integer connect(String username, String password);
+	void connect(String username, String password) throws RepositoryDataSourceException;
 	
 	/**
 	 * Logged connection with token.
 	 * 
 	 * @param token Token.
-	 * @return 1 if connected, -1 if error
+	 * @throws RepositoryDataSourceException When problems occur when connecting. 
 	 */
-	Integer connect(String token);
+	void connect(String token) throws RepositoryDataSourceException;
 	
 	/**
 	 * Disconnect.
+	 * 
+	 * @throws RepositoryDataSourceException If there was no connection.
 	 */
-	void disconnect();
+	void disconnect() throws RepositoryDataSourceException;
 	
 	/**
 	 * Gets type of connection.
@@ -51,6 +54,7 @@ public interface IRepositoryDataSource {
 	 * 
 	 * @param repositoryURL URL of a repository.
 	 * @return Repository.
+	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
 	 */
-	Repository getRepository(String repositoryURL);
+	Repository getRepository(String repositoryURL) throws RepositoryDataSourceException;
 }
