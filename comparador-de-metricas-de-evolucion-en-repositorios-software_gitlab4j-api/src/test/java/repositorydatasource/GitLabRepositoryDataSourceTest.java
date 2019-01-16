@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import exceptions.RepositoryDataSourceException;
+import repositorydatasource.factories.GitLabRepositoyDataSourceFactory;
+import repositorydatasource.factories.IRepositoryDaraSourceFactory;
 import repositorydatasource.model.EnumConnectionType;
-import repositorydatasource.model.Repository;
 
 /**
  * @author migue
@@ -17,14 +19,18 @@ import repositorydatasource.model.Repository;
  */
 class GitLabRepositoryDataSourceTest {
 
-	static GitLabRepositoryDataSource gitLabRepositoryDataSource;
+	private static IRepositoryDataSource repositoryDataSource;
+	private static IRepositoryDaraSourceFactory repositoryDataSourceFactory;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		gitLabRepositoryDataSource = GitLabRepositoryDataSource.getGitLabRepositoryDataSource();
+		repositoryDataSourceFactory = new GitLabRepositoyDataSourceFactory();
+		//rds = GitLabRepositoryDataSource.getGitLabRepositoryDataSource();
+		repositoryDataSource = repositoryDataSourceFactory.createRepositoryDataSource();
+				
 	}
 
 	/**
@@ -32,8 +38,6 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
-		gitLabRepositoryDataSource.disconnect();
-		gitLabRepositoryDataSource = null;
 	}
 
 	/**
@@ -41,6 +45,7 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		if (repositoryDataSource.getConnectionType() != EnumConnectionType.NOT_CONNECTED) repositoryDataSource.disconnect();
 	}
 
 	/**
@@ -48,7 +53,14 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
-		gitLabRepositoryDataSource.disconnect();
+	}
+
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getGitLabRepositoryDataSource()}.
+	 */
+	@Test
+	void testGetGitLabRepositoryDataSource() {
+		assertTrue(repositoryDataSource == GitLabRepositoryDataSource.getGitLabRepositoryDataSource());
 	}
 
 	/**
@@ -56,48 +68,179 @@ class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	void testConnect() {
-		assertTrue(gitLabRepositoryDataSource.getConnectionType() == EnumConnectionType.NOT_CONNECTED);
-		int result = gitLabRepositoryDataSource.connect();
-		assertTrue((result > 0 && gitLabRepositoryDataSource.getConnectionType() == EnumConnectionType.CONNECTED) || (result < 0 && gitLabRepositoryDataSource.getConnectionType() == EnumConnectionType.NOT_CONNECTED));
+		try {
+			repositoryDataSource.connect();
+			assertEquals(EnumConnectionType.CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: testConnect when OK");
+			//assertTrue(false);
+		} catch (RepositoryDataSourceException e) {
+			assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+		}
 	}
 
 	/**
 	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 */
 	@Test
-	void testConnectUsernamePassword() {
-		fail("Not implemented due to security issues");
+	void testConnectUserPasswordNull() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect(null, null);
+		}, "Failed test: Connection with null user and null password.");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	void testConnectUserPasswordVoid() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect("", "");
+		}, "Failed test: connect with username and password without specifying username and password.");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	void testConnectUserPasswordWrong() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect("a", "b");
+		}, "Failed test: connection with wrong user and/or password");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	void testConnectUserPasswordOk() {
+		fail("Not implemented for security reasons");
 	}
 
 	/**
 	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
 	 */
 	@Test
-	void testConnectToken() {
-		fail("Not implemented due to security issues");
+	void testConnectPivateTokenNull() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect(null);
+		}, "Failed test: Connection with null private token.");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 */
+	@Test
+	void testConnectPivateTokenVoid() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect("");
+		}, "Failed test: connect with private token without specifying the token.");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 */
+	@Test
+	void testConnectPivateTokenWrong() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.connect("¡WrongToken!");
+		}, "Failed test: connection with wrong token");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when there is connection error.");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 */
+	@Test
+	void testConnectPivateTokenOK() {
+		fail("Not implemented for security reasons");
+	}
+
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
+	 */
+	@Test
+	void testDisconnectFailed() {
+		assertThrows(RepositoryDataSourceException.class, () -> {
+			repositoryDataSource.disconnect();
+		}, "Failed test: Disconnect without being connected.");
+	}
+
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
+	 */
+	@Test
+	void testDisconnectOK() {
+		assertDoesNotThrow(() -> {
+			repositoryDataSource.disconnect();
+		}, "Failed test: Disconnect without being connected.");
+		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Failed test: Indicates connection when it has been disconnected.");
+	}
+	
+//	/**
+//	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getConnectionType()}.
+//	 */
+//	@Test
+//	void testGetConnectionType() {
+//		fail("Not yet implemented");
+//	}
+
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testGetRepositoryWhenDisconnected() {
+		fail("Not yet implemented");
 	}
 
 	/**
 	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 */
 	@Test
-	void testGetRepositoryWithPublicConnection() {
-		Repository repository;
-		repository = gitLabRepositoryDataSource.getRepository("https://gitlab.com/mlb0029/ListaCompra");
-		assertNull(repository);
-		if(gitLabRepositoryDataSource.connect() > 0) {
-			repository = gitLabRepositoryDataSource.getRepository("https://gitlab.com/mlb0029/ListaCompra");
-			assertNotNull(repository);
-			assertEquals(6, repository.getTotalNumberOfIssues());
-			assertEquals(35, repository.getTotalNumberOfCommits());
-			assertEquals(6, repository.getNumberOfClosedIssues());
-			assertEquals(6, repository.getDaysToCloseEachIssue().size());
-			assertEquals(35, repository.getCommitDates().size());
-			assertEquals(0, repository.getLifeSpanMonths());
-		}else {
-			repository = gitLabRepositoryDataSource.getRepository("https://gitlab.com/mlb0029/ListaCompra");
-			assertNull(repository);
-		}
+	void testGetPrivateRepositoryWhenConnected() {
+		fail("Not yet implemented");
 	}
-
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testGetPublicRepositoryWhenConnected() {
+		fail("Not yet implemented");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testPrivateGetRepositoryWhenLogged() {
+		fail("Not yet implemented");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testGetPublicRepositoryWhenLogged() {
+		fail("Not yet implemented");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testGetNonExistentRepositoryConnected() {
+		fail("Not yet implemented");
+	}
+	
+	/**
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 */
+	@Test
+	void testGetRepository() {
+		fail("Not yet implemented");
+	}
 }
