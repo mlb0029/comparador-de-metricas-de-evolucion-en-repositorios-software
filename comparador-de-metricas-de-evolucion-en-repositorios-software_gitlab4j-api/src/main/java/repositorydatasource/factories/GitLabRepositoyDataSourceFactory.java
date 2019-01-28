@@ -9,7 +9,7 @@ import repositorydatasource.IRepositoryDataSource;
  * @author MALB
  *
  */
-public class GitLabRepositoyDataSourceFactory implements IRepositoryDaraSourceFactory {
+public class GitLabRepositoyDataSourceFactory implements IRepositoryDataSourceFactory {
 
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDaraSourceFactory#createRepositoryDataSource()

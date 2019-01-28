@@ -1,5 +1,7 @@
 package repositorydatasource.factories;
 
+import org.gitlab4j.api.GitLabApiException;
+
 import repositorydatasource.IRepositoryDataSource;
 
 /**
@@ -8,6 +10,6 @@ import repositorydatasource.IRepositoryDataSource;
  * @author MALB
  *
  */
-public interface IRepositoryDaraSourceFactory {
-	IRepositoryDataSource createRepositoryDataSource();
+public interface IRepositoryDataSourceFactory {
+	IRepositoryDataSource createRepositoryDataSource() throws GitLabApiException;
 }
