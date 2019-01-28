@@ -2,6 +2,7 @@ package repositorydatasource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.gitlab4j.api.GitLabApiException;
 import org.junit.jupiter.api.Test;
 
 import repositorydatasource.factories.*;
@@ -22,8 +23,12 @@ class GitLabRepositoyDataSourceFactoryTest {
 	 */
 	@Test
 	void testCreateRepositoryDataSource() {
-		IRepositoryDaraSourceFactory rdsf = new GitLabRepositoyDataSourceFactory();
-		IRepositoryDataSource rds = rdsf.createRepositoryDataSource();
-		assertTrue(rds != null && rds.getConnectionType() == EnumConnectionType.NOT_CONNECTED);
+		try {
+			IRepositoryDataSourceFactory rdsf = new GitLabRepositoyDataSourceFactory();
+			IRepositoryDataSource rds = rdsf.createRepositoryDataSource();
+			assertTrue(rds != null && rds.getConnectionType() == EnumConnectionType.NOT_CONNECTED);
+		} catch (GitLabApiException e) {
+			fail("Exception when creating a GitLabRepositoyDataSourceFactory. ");
+		}
 	}
 }
