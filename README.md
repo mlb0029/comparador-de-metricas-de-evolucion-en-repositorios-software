@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/971129db859d4c9bb19d5b28b041fc48)](https://www.codacy.com/app/clopezno/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/&amp;utm_campaign=Badge_Grade)
 # Evaluación de la actividad de un proyecto software
 Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula  medidas de la evolución que permiten comparar los repositorios.
 
