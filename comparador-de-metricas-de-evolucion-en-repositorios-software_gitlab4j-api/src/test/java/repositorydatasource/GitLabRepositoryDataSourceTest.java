@@ -110,6 +110,10 @@ class GitLabRepositoryDataSourceTest {
 	@Test
 	void testConnectPivateTokenOK() {
 		fail(Constants.TestErrorMessages.NOT_IMPLEMENTED_SECURITY_REASONS);
+//		assertDoesNotThrow(() -> {
+//			repositoryDataSource.connect("");
+//		}, getErrorMsg("testConnectPivateTokenOK", "Must not throw an exception"));
+//		assertEquals(EnumConnectionType.LOGGED, repositoryDataSource.getConnectionType(), "I would be: '" + EnumConnectionType.LOGGED + "'");
 	}
 
 	/**

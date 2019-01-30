@@ -87,10 +87,10 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			gitLabApi = GitLabApi.oauth2Login(Constants.HOST_URL, username, password.toCharArray());
 			connectionType = EnumConnectionType.LOGGED;
 		} catch (GitLabApiException e) {
-			LOGGER.log(Level.SEVERE, "Error when connecting", e);
-			throw new RepositoryDataSourceException("Error when connecting");
+			LOGGER.log(Level.SEVERE, "Wrong username and / or password", e);
+			throw new RepositoryDataSourceException("Wrong username and / or password or another error when connecting");
 		} catch (RepositoryDataSourceException e) {
-			LOGGER.log(Level.SEVERE, "Error when connecting", e);
+			LOGGER.log(Level.SEVERE, "The user or password has not been specified", e);
 			throw e;
 		}
 	}
@@ -105,10 +105,16 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 				throw new RepositoryDataSourceException("No token specified");
 			}
 			gitLabApi = new GitLabApi(Constants.HOST_URL, token);
+			gitLabApi.getUserApi().getCurrentUser();
 			connectionType = EnumConnectionType.LOGGED;		
 		} catch (RepositoryDataSourceException e) {
-			LOGGER.log(Level.SEVERE, "Error when connecting", e);
-			throw new RepositoryDataSourceException("Error when connecting");
+			LOGGER.log(Level.SEVERE, "Attempting to login without specifying a token", e);
+			throw new RepositoryDataSourceException("Attempting to login without specifying a token");
+		} catch (GitLabApiException e) {
+			gitLabApi = null;
+			connectionType = EnumConnectionType.NOT_CONNECTED;
+			LOGGER.log(Level.SEVERE, "Attempting to login with a wrong token", e);
+			throw new RepositoryDataSourceException("Attempting to login with a wrong token");
 		}
 	}
 
