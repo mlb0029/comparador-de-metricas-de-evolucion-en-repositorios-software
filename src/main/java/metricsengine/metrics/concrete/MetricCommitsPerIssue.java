@@ -1,23 +1,19 @@
-/**
- * 
- */
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;
 
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;
 import metricsengine.values.IValue;
+import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
 
 /**
  * @author migue
  *
  */
-public class MetricChangeActivityRangePerMonth extends AMetric {
-
-	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault,
-			IValue valueMaxDefault) {
+public class MetricCommitsPerIssue extends AMetric {
+	
+	public MetricCommitsPerIssue(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -25,8 +21,8 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+		if (repository != null && repository.getTotalNumberOfIssues() != null && repository.getTotalNumberOfCommits() != null) return true;
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -34,8 +30,8 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+		double result = repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits();
+		return new ValueDecimal(result);
 	}
 
 }

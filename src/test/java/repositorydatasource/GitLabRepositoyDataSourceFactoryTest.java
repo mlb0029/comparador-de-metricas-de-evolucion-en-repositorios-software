@@ -11,18 +11,18 @@ import repositorydatasource.model.EnumConnectionType;
 /**
  * Test for GitLabRepositoyDataSourceFactory.
  * 
- * @author Miguel Ángel León Bardavío - mlb0029
+ * @author Miguel ï¿½ngel Leï¿½n Bardavï¿½o - mlb0029
  *
  */
-class GitLabRepositoyDataSourceFactoryTest {
+public class GitLabRepositoyDataSourceFactoryTest {
 	
 	/**
 	 * Test method for {@link repositorydatasource.factories.GitLabRepositoyDataSourceFactory#createRepositoryDataSource()}.
 	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @author Miguel ï¿½ngel Leï¿½n Bardavï¿½o - mlb0029
 	 */
 	@Test
-	void testCreateRepositoryDataSource() {
+	public void testCreateRepositoryDataSource() {
 		try {
 			IRepositoryDataSourceFactory rdsf = new GitLabRepositoyDataSourceFactory();
 			IRepositoryDataSource rds = rdsf.createRepositoryDataSource();

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;
 
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;
@@ -12,9 +12,9 @@ import repositorydatasource.model.Repository;
  * @author migue
  *
  */
-public class MetricAverageDaysToCloseAnIssue extends AMetric {
+public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 
-	public MetricAverageDaysToCloseAnIssue(MetricDescription description, IValue valueMinDefault,
+	public MetricDaysBetweenFirstAndLastCommit(MetricDescription description, IValue valueMinDefault,
 			IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
 		// TODO Auto-generated constructor stub

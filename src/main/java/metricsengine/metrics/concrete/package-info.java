@@ -4,4 +4,4 @@
  * @author MALB
  *
  */
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;

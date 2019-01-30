@@ -1,7 +1,7 @@
 /**
  * 
  */
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;
 
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;
@@ -12,9 +12,10 @@ import repositorydatasource.model.Repository;
  * @author migue
  *
  */
-public class MetricPeakChange extends AMetric {
+public class MetricChangeActivityRangePerMonth extends AMetric {
 
-	public MetricPeakChange(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
+	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault,
+			IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
 		// TODO Auto-generated constructor stub
 	}

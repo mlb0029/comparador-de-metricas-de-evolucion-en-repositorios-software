@@ -1,7 +1,4 @@
-/**
- * 
- */
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;
 
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;
@@ -12,12 +9,10 @@ import repositorydatasource.model.Repository;
  * @author migue
  *
  */
-public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
+public class MetricPercentageClosedIssues extends AMetric {
 
-	public MetricDaysBetweenFirstAndLastCommit(MetricDescription description, IValue valueMinDefault,
-			IValue valueMaxDefault) {
+	public MetricPercentageClosedIssues(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -25,8 +20,7 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository != null && repository.getTotalNumberOfIssues() != null && repository.getNumberOfClosedIssues() != null;
 	}
 
 	/* (non-Javadoc)

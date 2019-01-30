@@ -1,4 +1,4 @@
-package metricsengine.metrics.concreteMetrics;
+package metricsengine.metrics.concrete;
 
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;

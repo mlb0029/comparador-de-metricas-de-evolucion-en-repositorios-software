@@ -81,7 +81,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	@Override
 	public void connect(String username, String password) throws RepositoryDataSourceException {
 		try {
-			if(username == null || username == "" || password == null || password == "") {
+			if(username == null || username.equals("") || password == null || password.equals("")) {
 				throw new RepositoryDataSourceException("The user or password has not been specified");
 			}
 			gitLabApi = GitLabApi.oauth2Login(Constants.HOST_URL, username, password.toCharArray());
@@ -101,7 +101,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	@Override
 	public void connect(String token) throws RepositoryDataSourceException {
 		try {
-			if(token == null || token == "") {
+			if(token == null || token.equals("")) {
 				throw new RepositoryDataSourceException("No token specified");
 			}
 			gitLabApi = new GitLabApi(Constants.HOST_URL, token);
