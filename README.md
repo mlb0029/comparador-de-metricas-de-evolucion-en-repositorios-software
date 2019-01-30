@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/daae9a7164164f33904868c5545a94a6)](https://www.codacy.com/app/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gl/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/branch/master/graph/badge.svg)](https://codecov.io/gl/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software)
 # Evaluación de la actividad de un proyecto software
 Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula  medidas de la evolución que permiten comparar los repositorios.
 
