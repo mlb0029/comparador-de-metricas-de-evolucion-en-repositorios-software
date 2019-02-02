@@ -147,10 +147,19 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#getRepository(java.lang.String)
 	 */
 	@Override
-	public Repository getRepository(String repositoryURL) {
-		if (connectionType == EnumConnectionType.NOT_CONNECTED) return null;
+	public Repository getRepository(String repositoryURL) throws RepositoryDataSourceException{
+		if (connectionType == EnumConnectionType.NOT_CONNECTED) {
+			RepositoryDataSourceException e = new RepositoryDataSourceException("Trying to get a repository without connection.");
+			LOGGER.log(Level.SEVERE, "Trying to get a repository without connection", e);
+			throw e;
+		}
 		Repository repo;
 		int projectId = obtenerIDProyecto(repositoryURL);
+		if (projectId == -1) {
+			RepositoryDataSourceException e = new RepositoryDataSourceException("Project not found");
+			LOGGER.log(Level.SEVERE, "Project not found", e);
+			throw e;
+		}
 		String name = getRepositoryName(projectId);
 		int totalNumberOfIssues = getTotalNumberOfIssues(projectId);
 		int totalNumberOfCommits = getTotalNumberOfCommits(projectId);
@@ -170,10 +179,6 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 				lifeSpanMonths);
 		return repo;
 	}
-	
-//	private Boolean testConnection() {
-//		return ;
-//	}
 	
 	/**
 	 * Gets the ID of a project using the Project URL.
