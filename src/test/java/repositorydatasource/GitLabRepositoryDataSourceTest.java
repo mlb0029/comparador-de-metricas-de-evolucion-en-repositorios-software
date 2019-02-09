@@ -176,7 +176,7 @@ public class GitLabRepositoryDataSourceTest {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	@ParameterizedTest(name = "Run with User = \"{0}\" and Password = \"{1}\" must throw an exception.")
-	@CsvFileSource(resources = "testConnectUserPasswordWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
+	@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
 	public void testConnectUserPasswordWrong(String user, String password) {
 		assertThrows(RepositoryDataSourceException.class, () -> {
 			repositoryDataSource.connect(user, password);
@@ -208,7 +208,7 @@ public class GitLabRepositoryDataSourceTest {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	@ParameterizedTest(name = "Run with Token = \"{0}\" must throw an exception.")
-	@CsvFileSource(resources = "testConnectTokenWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
+	@CsvFileSource(resources = "/testConnectTokenWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
 	public void testConnectPivateTokenWrong(String token) {
 		assertThrows(RepositoryDataSourceException.class, () -> {
 			repositoryDataSource.connect(token);
@@ -448,13 +448,7 @@ public class GitLabRepositoryDataSourceTest {
 		//fail( getErrorMsg("testGetNonExistentRepositoryWhenLogged", Constants.TestErrorMessages.NOT_IMPLEMENTED_SECURITY_REASONS));
 	}
 	
-	/**
-	 * MethodName.
-	 * <p>
-	 * 
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
+	
 	@Test
 	public void testGetRepository() {//TODO Parametrized test
 		try {
