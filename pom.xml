@@ -126,6 +126,25 @@
 			    <artifactId>maven-failsafe-plugin</artifactId>
 			    <version>2.22.1</version>
 			</plugin>
+			<!-- Cobertura -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.3</version>
+				<configuration>
+					<output>file</output>
+					<append>true</append>
+					<title>Coverage of project: ${project.name}</title>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.gavinmogan</groupId>
+  				<artifactId>codacy-maven-plugin</artifactId>
+  				<version>1.1.0</version>
+			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<outputDirectory>${project.build.directory}/reports</outputDirectory>
+	</reporting>
 </project>
