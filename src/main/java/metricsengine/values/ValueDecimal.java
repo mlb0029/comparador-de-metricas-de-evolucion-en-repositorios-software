@@ -44,7 +44,7 @@ public class ValueDecimal implements IValue {
 	 * @see metricsengine.IValue#getString()
 	 */
 	@Override
-	public String getString() {
+	public String valueToString() {
 		return value.toString();
 	}
 

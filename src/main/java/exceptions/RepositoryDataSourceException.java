@@ -5,7 +5,6 @@ package exceptions;
  *
  */
 public class RepositoryDataSourceException extends Exception {
-
 	/**
 	 * 
 	 */
@@ -25,6 +24,4 @@ public class RepositoryDataSourceException extends Exception {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-
-	
 }

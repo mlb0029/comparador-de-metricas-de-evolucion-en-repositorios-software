@@ -16,28 +16,28 @@ public class Measure {
 	/**
 	 * Metric that has been measured.
 	 */
-	private MetricConfiguration metric;
+	private MetricConfiguration metricConfiguration;
 	
 	/**
 	 * Value of the measurement.
 	 */
-	private IValue value;
+	private IValue measuredValue;
 	
 	/**
 	 * Date of measurement.
 	 */
-	private Date date;
+	private Date dateOfMeasurement;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param metric Metric that has been measured.
+	 * @param metricConfiguration Metric that has been measured.
 	 * @param value Value of the measurement.
 	 */
-	public Measure(MetricConfiguration metric, IValue value) {
-		this.metric = metric;
-		this.value = value;
-		this.date = new Date();
+	public Measure(MetricConfiguration metricConfiguration, IValue value) {
+		this.metricConfiguration = metricConfiguration;
+		this.measuredValue = value;
+		this.dateOfMeasurement = new Date();
 	}
 	
 	/**
@@ -45,8 +45,8 @@ public class Measure {
 	 * 
 	 * @return The metric that has been measured.
 	 */
-	public MetricConfiguration getMetric() {
-		return metric;
+	public MetricConfiguration getMetricConfiguration() {
+		return metricConfiguration;
 	}
 
 	/**
@@ -54,8 +54,8 @@ public class Measure {
 	 * 
 	 * @return The value of the measurement.
 	 */
-	public IValue getValue() {
-		return value;
+	public IValue getMeasuredValue() {
+		return measuredValue;
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class Measure {
 	 * 
 	 * @return The date of measurement.
 	 */
-	public Date getDate() {
-		return date;
+	public Date getDateOfMeasurement() {
+		return dateOfMeasurement;
 	}
 }

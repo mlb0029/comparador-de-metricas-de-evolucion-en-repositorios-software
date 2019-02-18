@@ -60,7 +60,6 @@ public class MetricProfile {
 	 */
 	public Collection<MetricConfiguration> getMetricConfigurationCollection(){
 		return this.metricConfigurations.values();
-		
 	}
 
 	/**

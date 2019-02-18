@@ -11,14 +11,14 @@ public class ValueInteger implements IValue {
 	/**
 	 * Integer value.
 	 */
-	private Integer value;
+	private int value;
 	
 	/**
 	 * Initialize the value.
 	 * 
 	 * @param value The value to set.
 	 */
-	public ValueInteger(Integer value) {
+	public ValueInteger(int value) {
 		this.value = value;
 	}
 
@@ -27,7 +27,7 @@ public class ValueInteger implements IValue {
 	 * 
 	 * @return The value.
 	 */
-	public Integer getValue() {
+	public int getValue() {
 		return value;
 	}
 
@@ -36,7 +36,7 @@ public class ValueInteger implements IValue {
 	 * 
 	 * @param value The value to set.
 	 */
-	public void setValue(Integer value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 
@@ -44,8 +44,7 @@ public class ValueInteger implements IValue {
 	 * @see metricsengine.IValue#getString()
 	 */
 	@Override
-	public String getString() {
-		return value.toString();
+	public String valueToString() {
+		return String.valueOf(value);
 	}
-
 }

@@ -13,5 +13,5 @@ public interface IValue {
 	 * 
 	 * @return A value parsed to string.
 	 */
-	String getString();	
+	String valueToString();	
 }

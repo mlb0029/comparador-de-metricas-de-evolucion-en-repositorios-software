@@ -32,6 +32,7 @@ public abstract class AMetric implements IMetric {
 	/**
 	 * Constructor of a metric that establishes the description and the default values.
 	 * 
+	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
