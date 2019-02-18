@@ -6,6 +6,12 @@ import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
+/**
+ * Compute the total number of issues of a repository.
+ * 
+ * @author Miguel Ángel León Bardavío - mlb0029
+ *
+ */
 public class MetricTotalNumberOfIssues extends AMetric {
 
 	/**
