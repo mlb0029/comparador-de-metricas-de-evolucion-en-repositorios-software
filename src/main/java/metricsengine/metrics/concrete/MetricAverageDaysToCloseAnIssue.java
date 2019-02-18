@@ -38,8 +38,8 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 			Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
 			return  daysToCloseEachIssue != null && 
 					numberOfClosedIssues != null && 
-					daysToCloseEachIssue.size() == numberOfClosedIssues.intValue() &&
-					numberOfClosedIssues > 0;
+					numberOfClosedIssues.intValue() > 0 &&
+					daysToCloseEachIssue.size() == numberOfClosedIssues.intValue();
 		}
 		return false;
 

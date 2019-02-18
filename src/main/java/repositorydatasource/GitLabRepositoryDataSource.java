@@ -154,8 +154,8 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			throw e;
 		}
 		Repository repo;
-		int projectId = obtenerIDProyecto(repositoryURL);
-		if (projectId == -1) {
+		Integer projectId = obtenerIDProyecto(repositoryURL);
+		if (projectId == null) {
 			RepositoryDataSourceException e = new RepositoryDataSourceException("Project not found");
 			LOGGER.log(Level.SEVERE, "Project not found", e);
 			throw e;
@@ -186,7 +186,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @param repositoryURL Project URL.
 	 * @return ID of a project.
 	 */
-	private int obtenerIDProyecto(String repositoryURL) {
+	private Integer obtenerIDProyecto(String repositoryURL) {
 		try {
 			Integer retorno = -1;
 			String sProyecto = repositoryURL.replaceAll(Constants.HOST_URL + "/", "");
@@ -196,7 +196,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			retorno = pProyecto.getId();
 			return retorno;
 		} catch (GitLabApiException e) {
-			return -1;
+			return null;
 		}
 	}
 	
@@ -220,7 +220,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @param projectId ID of the project.
 	 * @return Total number of issues or -1 if fail.
 	 */
-	private int getTotalNumberOfIssues(Integer projectId) {	
+	private Integer getTotalNumberOfIssues(Integer projectId) {	
 		try {
 			Integer totalNumberOfIssues = 0;
 			Pager<Issue> pager = this.gitLabApi.getIssuesApi().getIssues(projectId, 100);
@@ -229,7 +229,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			}
 			return totalNumberOfIssues;
 		} catch (GitLabApiException e) {
-			return -1;
+			return null;
 		}
 	}
 
@@ -239,7 +239,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @param projectId ID of the project.
 	 * @return Total number of commits of a project or -1 if fail.
 	 */
-	private int getTotalNumberOfCommits(Integer projectId) {
+	private Integer getTotalNumberOfCommits(Integer projectId) {
 		try {
 			Integer totalNumberOfCommits = 0;
 			Pager<Commit> pager = this.gitLabApi.getCommitsApi().getCommits(projectId, 100);
@@ -248,7 +248,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			}
 			return totalNumberOfCommits;
 		} catch (GitLabApiException e) {
-			return -1;
+			return null;
 		}
 	}
 
@@ -258,7 +258,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @param projectId ID of the project.
 	 * @return Number of closed issues of a project or -1 if fail.
 	 */
-	private int getNumberOfClosedIssues(Integer projectId) {
+	private Integer getNumberOfClosedIssues(Integer projectId) {
 		try {
 			Integer numberOfClosedIssues = 0;
 			IssueFilter issueFilter = new IssueFilter();
@@ -269,7 +269,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			}
 			return numberOfClosedIssues;
 		} catch (GitLabApiException e) {
-			return -1;
+			return null;
 		}
 	}
 
@@ -328,7 +328,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @return  Number of months that have passed since the creation of the repository
 	 * until the date of last activity or -1 if fail.
 	 */
-	private int getRepositoryLifeInMonths(Integer projectId) {
+	private Integer getRepositoryLifeInMonths(Integer projectId) {
 		try {
 			Date createdAtDate = gitLabApi.getProjectApi().getProject(projectId).getCreatedAt();
 			Date lastActivityDate = gitLabApi.getProjectApi().getProject(projectId).getLastActivityAt();
@@ -342,7 +342,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			 
 			return diffMonth;
 		} catch (GitLabApiException e) {
-			return -1;
+			return null;
 		}
 	}
 }
