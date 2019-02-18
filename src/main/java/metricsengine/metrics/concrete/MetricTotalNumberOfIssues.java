@@ -9,11 +9,11 @@ import repositorydatasource.model.Repository;
 public class MetricTotalNumberOfIssues extends AMetric {
 
 	/**
-	 * Constructor that sets the default values passed by parameter.
+	 * Constructor of a metric that establishes the description and the default values.
 	 * 
-	 * @param
-	 * @param valueMinDefault
-	 * @param valueMaxDefault
+	 * @param description Description of the metric.
+	 * @param valueMinDefault Minimum value by default.
+	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public MetricTotalNumberOfIssues(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
@@ -24,8 +24,7 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		if (repository != null && repository.getTotalNumberOfIssues() != null) return true;
-		return false;
+		return repository != null && repository.getTotalNumberOfIssues() != null;
 	}
 
 	/* (non-Javadoc)
