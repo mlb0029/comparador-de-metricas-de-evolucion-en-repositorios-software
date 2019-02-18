@@ -6,18 +6,26 @@ package metricsengine.metrics.concrete;
 import metricsengine.metrics.AMetric;
 import metricsengine.metrics.MetricDescription;
 import metricsengine.values.IValue;
+import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
 
 /**
- * @author migue
- *
+ * Computes the metric: Change Activity Range Per Month.
+ * 
+ * @author Miguel Ángel León Bardavío - mlb0029
  */
 public class MetricChangeActivityRangePerMonth extends AMetric {
 
-	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault,
-			IValue valueMaxDefault) {
+	/**
+	 * Constructor of a metric that establishes the description and the default values.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param description Description of the metric.
+	 * @param valueMinDefault Minimum value by default.
+	 * @param valueMaxDefault Maximum value by default.
+	 */
+	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -25,8 +33,9 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+		return  repository != null &&
+				repository.getTotalNumberOfCommits() != null &&
+				repository.getLifeSpanMonths() != null;
 	}
 
 	/* (non-Javadoc)
@@ -34,8 +43,9 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer lifeSpanMonths = (repository.getLifeSpanMonths() == 0?repository.getLifeSpanMonths():1);
+		double result = repository.getTotalNumberOfCommits() / lifeSpanMonths;
+		return new ValueDecimal(result);
 	}
 
 }
