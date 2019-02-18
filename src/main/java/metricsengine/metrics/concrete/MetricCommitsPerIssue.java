@@ -7,7 +7,11 @@ import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
 
 /**
- * @author migue
+ * Computes the commits per issue.
+ * <p>
+ * Total number of issues / Total number of commits.
+ * 
+ * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
 public class MetricCommitsPerIssue extends AMetric {
@@ -21,8 +25,7 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		if (repository != null && repository.getTotalNumberOfIssues() != null && repository.getTotalNumberOfCommits() != null) return true;
-		return false;
+		return (repository != null && repository.getTotalNumberOfIssues() != null && repository.getTotalNumberOfCommits() != null);
 	}
 
 	/* (non-Javadoc)
