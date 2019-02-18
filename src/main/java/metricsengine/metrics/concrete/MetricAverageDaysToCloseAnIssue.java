@@ -33,13 +33,16 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		List<Integer> daysToCloseEachIssue = repository.getDaysToCloseEachIssue();
-		Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
-		return repository != null && 
-				daysToCloseEachIssue != null && 
-				numberOfClosedIssues != null && 
-				daysToCloseEachIssue.size() == numberOfClosedIssues.intValue() &&
-				numberOfClosedIssues > 0;
+		if (repository != null) {
+			List<Integer> daysToCloseEachIssue = repository.getDaysToCloseEachIssue();
+			Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
+			return  daysToCloseEachIssue != null && 
+					numberOfClosedIssues != null && 
+					daysToCloseEachIssue.size() == numberOfClosedIssues.intValue() &&
+					numberOfClosedIssues > 0;
+		}
+		return false;
+
 	}
 
 	/* (non-Javadoc)
