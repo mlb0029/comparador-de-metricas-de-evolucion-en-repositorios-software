@@ -11,7 +11,7 @@ public class ValueDecimal implements IValue {
 	/**
 	 * Double value.
 	 */
-	private Double value;
+	private double value;
 	
 	/**
 	 * Initialize the value.
@@ -27,17 +27,8 @@ public class ValueDecimal implements IValue {
 	 * 
 	 * @return The value.
 	 */
-	public Double getValue() {
+	public double getValue() {
 		return value;
-	}
-
-	/**
-	 * Sets the value.
-	 * 
-	 * @param value The value to set.
-	 */
-	public void setValue(Double value) {
-		this.value = value;
 	}
 
 	/* (non-Javadoc)
@@ -45,7 +36,7 @@ public class ValueDecimal implements IValue {
 	 */
 	@Override
 	public String valueToString() {
-		return value.toString();
+		return String.valueOf(value);
 	}
 
 }

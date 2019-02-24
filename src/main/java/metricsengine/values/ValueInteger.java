@@ -31,15 +31,6 @@ public class ValueInteger implements IValue {
 		return value;
 	}
 
-	/**
-	 * Sets the value.
-	 * 
-	 * @param value The value to set.
-	 */
-	public void setValue(int value) {
-		this.value = value;
-	}
-
 	/* (non-Javadoc)
 	 * @see metricsengine.IValue#getString()
 	 */
