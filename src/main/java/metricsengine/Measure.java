@@ -2,7 +2,6 @@ package metricsengine;
 
 import java.util.Date;
 
-import metricsengine.metrics.MetricConfiguration;
 import metricsengine.values.IValue;
 
 /**

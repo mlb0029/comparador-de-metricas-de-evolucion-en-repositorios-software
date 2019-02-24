@@ -1,17 +1,11 @@
-/**
- * 
- */
-package metricsengine.metrics.concrete;
+package metricsengine.metrics;
 
-import metricsengine.metrics.AMetric;
-import metricsengine.metrics.MetricDescription;
+import metricsengine.AMetric;
+import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
 
-/**
- * @author migue
- *
- */
+
 public class MetricAverageDaysBetweenCommits extends AMetric {
 
 	public MetricAverageDaysBetweenCommits(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {

@@ -1,20 +1,21 @@
-/**
- * 
- */
-package metricsengine.metrics.concrete;
+package metricsengine.metrics;
 
-import metricsengine.metrics.AMetric;
-import metricsengine.metrics.MetricDescription;
+import java.util.Date;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import metricsengine.AMetric;
+import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
-import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
 
 /**
- * Computes the metric: Change Activity Range Per Month.
+ * Computes the metric Peak Change.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
+ *
  */
-public class MetricChangeActivityRangePerMonth extends AMetric {
+public class MetricPeakChange extends AMetric {
 
 	/**
 	 * Constructor of a metric that establishes the description and the default values.
@@ -24,7 +25,7 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
+	public MetricPeakChange(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
 	}
 
@@ -35,7 +36,8 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	protected Boolean check(Repository repository) {
 		return  repository != null &&
 				repository.getTotalNumberOfCommits() != null &&
-				repository.getLifeSpanMonths() != null;
+				repository.getCommitDates() != null &&
+				repository.getCommitDates().size() == repository.getTotalNumberOfCommits().intValue();
 	}
 
 	/* (non-Javadoc)
@@ -43,9 +45,10 @@ public class MetricChangeActivityRangePerMonth extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		Integer lifeSpanMonths = (repository.getLifeSpanMonths() == 0?repository.getLifeSpanMonths():1);
-		double result = repository.getTotalNumberOfCommits() / lifeSpanMonths;
-		return new ValueDecimal(result);
+		Set<Date> commitDates = repository.getCommitDates();
+		Stream<Date> commitDatesStream = commitDates.stream();
+		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		//TODO
+		return null;
 	}
-
 }

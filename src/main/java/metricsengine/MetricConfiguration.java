@@ -1,7 +1,6 @@
-package metricsengine.metrics;
+package metricsengine;
 
-import metricsengine.MetricsResults;
-import metricsengine.metrics.IMetric;
+import metricsengine.IMetric;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
 

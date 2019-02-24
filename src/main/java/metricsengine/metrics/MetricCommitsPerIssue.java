@@ -1,7 +1,7 @@
-package metricsengine.metrics.concrete;
+package metricsengine.metrics;
 
-import metricsengine.metrics.AMetric;
-import metricsengine.metrics.MetricDescription;
+import metricsengine.AMetric;
+import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;

@@ -1,14 +1,14 @@
 /**
  * 
  */
-package metricsengine.metrics.concrete;
+package metricsengine.metrics;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import metricsengine.metrics.AMetric;
-import metricsengine.metrics.MetricDescription;
+import metricsengine.AMetric;
+import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;

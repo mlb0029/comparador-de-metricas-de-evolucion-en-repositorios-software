@@ -1,8 +1,6 @@
-package metricsengine.metrics;
+package metricsengine;
 
-import metricsengine.Measure;
-import metricsengine.MetricsResults;
-import metricsengine.metrics.IMetric;
+import metricsengine.IMetric;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
 
@@ -86,8 +84,7 @@ public abstract class AMetric implements IMetric {
 	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
 		if (check(repository)) {
 			IValue value = run(repository);
-			Measure measure = new Measure(metricConfig, value);
-			metricsResults.addMeasure(measure);
+			metricsResults.addMeasure(new Measure(metricConfig, value));
 			return value;
 		}else {
 			throw new RuntimeException();// TODO

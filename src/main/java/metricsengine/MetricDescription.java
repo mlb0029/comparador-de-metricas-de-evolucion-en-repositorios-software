@@ -1,4 +1,4 @@
-package metricsengine.metrics;
+package metricsengine;
 
 /**
  * Description of a metric.

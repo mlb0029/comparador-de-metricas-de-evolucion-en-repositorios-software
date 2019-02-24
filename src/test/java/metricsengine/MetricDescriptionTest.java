@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import metricsengine.metrics.MetricDescription;
-
 /**
- * Test class for {@link metricsengine.metrics.MetricDescription}
+ * Test class for {@link metricsengine.MetricDescription}
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -15,7 +13,7 @@ import metricsengine.metrics.MetricDescription;
 class MetricDescriptionTest {
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDescription#MetricDescription(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, metricsengine.metrics.MetricDescription.EnumTypeOfScale, java.lang.String)}.
+	 * Test method for {@link metricsengine.MetricDescription#MetricDescription(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, metricsengine.MetricDescription.EnumTypeOfScale, java.lang.String)}.
 	 */
 	@Test
 	void testMetricDescription() {
