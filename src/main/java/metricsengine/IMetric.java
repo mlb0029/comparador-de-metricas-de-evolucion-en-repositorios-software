@@ -1,5 +1,6 @@
 package metricsengine;
 
+import exceptions.UncalculableMetricException;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
 
@@ -16,8 +17,9 @@ public interface IMetric {
 	 * 
 	 * @param repository Entity to be measured
 	 * @param metricConfig Configuration to apply in the metric. 
-	 * @param metricsResults Collector where to store the result
+	 * @param metricsResults Collector where to store the result.
 	 * @return The calculated value.
+	 * @throws UncalculableMetricException when the metric can not be calculated because it does not have enough information.
 	 */
-	IValue calculate(Repository repository,MetricConfiguration metricConfig, MetricsResults metricsResults);
+	IValue calculate(Repository repository,MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException;
 }

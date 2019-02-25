@@ -1,5 +1,6 @@
 package metricsengine;
 
+import exceptions.UncalculableMetricException;
 import metricsengine.IMetric;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
@@ -36,9 +37,9 @@ public abstract class AMetric implements IMetric {
 	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public AMetric(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		this.description = description;
-		this.valueMinDefault = valueMinDefault;
-		this.valueMaxDefault = valueMaxDefault;
+		setDescription(description);
+		setValueMinDefault(valueMinDefault);
+		setValueMaxDefault(valueMaxDefault);
 	}
 
 	/**
@@ -77,17 +78,57 @@ public abstract class AMetric implements IMetric {
 		return valueMaxDefault;
 	}
 	
+	/**
+	 * Sets the description of the metric.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param description the description to set
+	 */
+	private void setDescription(MetricDescription description) {
+		if(description == null)
+			throw new IllegalArgumentException("'description' can't be null");
+		this.description = description;
+	}
+
+	/**
+	 * Sets the minimum value by default.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param valueMinDefault the valueMinDefault to set
+	 */
+	private void setValueMinDefault(IValue valueMinDefault) {
+		if(valueMinDefault == null)
+			throw new IllegalArgumentException("'valueMinDefault' can't be null");
+		this.valueMinDefault = valueMinDefault;
+	}
+
+	/**
+	 * Sets the maximum value by default.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param valueMaxDefault the valueMaxDefault to set
+	 */
+	private void setValueMaxDefault(IValue valueMaxDefault) {
+		if(valueMaxDefault == null)
+			throw new IllegalArgumentException("'valueMaxDefault' can't be null");
+		this.valueMaxDefault = valueMaxDefault;
+	}
+
 	/* (non-Javadoc)
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricsResults)
 	 */
 	@Override
-	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
+		if (repository == null || metricConfig == null ||  metricsResults == null)
+			throw new IllegalArgumentException();
 		if (check(repository)) {
 			IValue value = run(repository);
 			metricsResults.addMeasure(new Measure(metricConfig, value));
 			return value;
 		}else {
-			throw new RuntimeException();// TODO
+			throw new UncalculableMetricException(
+					"Can not calculate the metric '" + getName() + 
+					"' for the repository '" + repository.getName() + "'.");
 		}
 	}
 	
