@@ -1,5 +1,6 @@
 package repositorydatasource.model;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -127,14 +128,14 @@ public class Repository {
 	/**
 	 * @return Days to close each issue.
 	 */
-	public List<Integer> getDaysToCloseEachIssue() {
+	public Collection<Integer> getDaysToCloseEachIssue() {
 		return daysToCloseEachIssue;
 	}
 	
 	/**
 	 * @return Dates of commits.
 	 */
-	public Set<Date> getCommitDates() {
+	public Collection<Date> getCommitDates() {
 		return commitDates;
 	}
 	
