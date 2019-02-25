@@ -38,5 +38,7 @@ build:
 test:
     stage: test
     script:
+        - mvn clean jacoco:prepare-agent install jacoco:report
         - mvn test
-        - mvn jacoco:report
+        - mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
+        - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r $CI_PROJECT_DIR/target/reports/jacoco/jacoco.xml
