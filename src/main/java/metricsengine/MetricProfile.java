@@ -3,9 +3,7 @@ package metricsengine;
 import java.util.Collection;
 import java.util.HashMap;
 
-import metricsengine.metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
-import metricsengine.values.ValueInteger;
 
 /**
  * It allows to use several configurations for the metrics.

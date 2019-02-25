@@ -1,5 +1,6 @@
 package metricsengine;
 
+import exceptions.UncalculableMetricException;
 import metricsengine.IMetric;
 import metricsengine.values.IValue;
 import repositorydatasource.model.Repository;
@@ -83,7 +84,7 @@ public class MetricConfiguration implements IMetric {
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)
 	 */
 	@Override
-	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
 		return this.metric.calculate(repository, metricConfig, metricsResults);
 	}
 }

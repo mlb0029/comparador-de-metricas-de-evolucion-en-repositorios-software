@@ -1,7 +1,7 @@
 package metricsengine.metrics;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import metricsengine.AMetric;
@@ -45,7 +45,7 @@ public class MetricPeakChange extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		Set<Date> commitDates = repository.getCommitDates();
+		Collection<Date> commitDates = repository.getCommitDates();
 		Stream<Date> commitDatesStream = commitDates.stream();
 		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
 		//TODO

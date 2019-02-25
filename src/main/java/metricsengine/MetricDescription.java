@@ -55,6 +55,8 @@ public class MetricDescription {
 	/**
 	 * @param name Name.
 	 * @param description Short description.
+	 * @param author Author of the metric.
+	 * @param year Year of metric definition.
 	 * @param category Category in which it is classified.
 	 * @param intention Intention.
 	 * @param formula How to calculate the metric.

@@ -3,8 +3,8 @@
  */
 package metricsengine.metrics;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import metricsengine.AMetric;
@@ -38,7 +38,7 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository != null) {
-			Set<Date> commitDates = repository.getCommitDates();
+			Collection<Date> commitDates = repository.getCommitDates();
 			Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
 			return  commitDates != null &&
 					totalNumberOfCommits != null &&

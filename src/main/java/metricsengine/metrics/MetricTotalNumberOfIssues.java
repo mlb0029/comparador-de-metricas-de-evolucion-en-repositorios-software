@@ -23,9 +23,9 @@ public class MetricTotalNumberOfIssues extends AMetric {
 		super(new MetricDescription(
 					"I1",
 					"Total number of issues",
-					"",
-					"",
-					"Orientation process",
+					"Jacek Ratzinger",
+					"2007",
+					"Process Orientation",
 					"How many issues have been created in the repository?",
 					"TNI = Total number of issues",
 					"Repository",

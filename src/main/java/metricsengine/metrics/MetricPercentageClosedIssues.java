@@ -15,7 +15,29 @@ import repositorydatasource.model.Repository;
 public class MetricPercentageClosedIssues extends AMetric {
 
 	/**
-	 * Constructor of a metric that establishes the description and the default values.
+	 * Constructor that initializes the metric with default values defined by the programmer.
+	 *
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricPercentageClosedIssues() {
+		super(new MetricDescription(
+					"I3",
+					"Percentage of issues closed",
+					"",
+					"",
+					"Process Orientation",
+					"What percentage of issues have been closed?",
+					"PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues",
+					"TNI, NCI:Repository",
+					"PIC >= 0 and PIC <= 100. Better large values",
+					MetricDescription.EnumTypeOfScale.RATIO,
+					"TNI,NCI:Count"), 
+				new ValueDecimal(87.0), 
+				new ValueDecimal(100.0));
+	}
+	
+	/**
+	 * Constructor that initializes the metric with default values passed by parameter.
 	 * 
 	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
@@ -30,7 +52,7 @@ public class MetricPercentageClosedIssues extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		return repository != null && repository.getTotalNumberOfIssues() != null && repository.getNumberOfClosedIssues() != null;
+		return repository.getTotalNumberOfIssues() != null && repository.getNumberOfClosedIssues() != null;
 	}
 
 	/* (non-Javadoc)

@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import java.util.List;
+import java.util.Collection;
 
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
@@ -18,7 +18,29 @@ import repositorydatasource.model.Repository;
 public class MetricAverageDaysToCloseAnIssue extends AMetric {
 
 	/**
-	 * Constructor of a metric that establishes the description and the default values.
+	 * Constructor that initializes the metric with default values defined by the programmer.
+	 *
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricAverageDaysToCloseAnIssue() {
+		super(new MetricDescription(
+					"TI1",
+					"Average of days to close an issue",
+					"",
+					"",
+					"Process Orientation",
+					"How long does it take to close an issue?",
+					"ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue.",
+					"DCI, NCI:Repository",
+					"ADCI >= 0. Better small values",
+					MetricDescription.EnumTypeOfScale.RATIO,
+					"NCI:Count, DCI: Set of times"), 
+				new ValueDecimal(2.2), 
+				new ValueDecimal(19.41));
+	}
+	
+	/**
+	 * Constructor that initializes the metric with default values passed by parameter.
 	 * 
 	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
@@ -33,15 +55,11 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		if (repository != null) {
-			List<Integer> daysToCloseEachIssue = repository.getDaysToCloseEachIssue();
-			Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
-			return  daysToCloseEachIssue != null && 
-					numberOfClosedIssues != null && 
-					numberOfClosedIssues.intValue() > 0 &&
-					daysToCloseEachIssue.size() == numberOfClosedIssues.intValue();
-		}
-		return false;
+		Collection<Integer> daysToCloseEachIssue = repository.getDaysToCloseEachIssue();
+		Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
+		return  daysToCloseEachIssue != null && 
+				numberOfClosedIssues != null && 
+				daysToCloseEachIssue.size() == numberOfClosedIssues.intValue();
 
 	}
 
