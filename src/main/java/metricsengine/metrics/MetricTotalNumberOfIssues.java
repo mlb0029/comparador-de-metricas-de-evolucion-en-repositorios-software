@@ -15,7 +15,29 @@ import repositorydatasource.model.Repository;
 public class MetricTotalNumberOfIssues extends AMetric {
 
 	/**
-	 * Constructor of a metric that establishes the description and the default values.
+	 * Constructor that initializes the metric with default values defined by the programmer.
+	 *
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricTotalNumberOfIssues() {
+		super(new MetricDescription(
+					"I1",
+					"Total number of issues",
+					"",
+					"",
+					"Orientation process",
+					"How many issues have been created in the repository?",
+					"TNI = Total number of issues",
+					"Repository",
+					"TNI >= 0. Better small values",
+					MetricDescription.EnumTypeOfScale.ABSOLUTE,
+					"TNI : Count"), 
+				new ValueInteger(6), 
+				new ValueInteger(44));
+	}
+	
+	/**
+	 * Constructor that initializes the metric with default values passed by parameter.
 	 * 
 	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
@@ -30,7 +52,7 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		return repository != null && repository.getTotalNumberOfIssues() != null;
+		return repository.getTotalNumberOfIssues() != null;
 	}
 
 	/* (non-Javadoc)
