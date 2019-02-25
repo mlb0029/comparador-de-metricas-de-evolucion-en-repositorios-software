@@ -1,6 +1,3 @@
-/**
- * 
- */
 package metricsengine.metrics;
 
 import java.util.Collection;
@@ -10,6 +7,7 @@ import java.util.stream.Stream;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
+import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
@@ -22,7 +20,29 @@ import repositorydatasource.model.Repository;
 public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 
 	/**
-	 * Constructor of a metric that establishes the description and the default values.
+	 * Constructor that initializes the metric with default values defined by the programmer.
+	 *
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricDaysBetweenFirstAndLastCommit() {
+		super(new MetricDescription(
+					"TC2",
+					"Days between the first and the last commit",
+					"",
+					"",
+					"Process Orientation",
+					"How many days have passed between the first and last commit?",
+					"DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates",
+					"CD: Repository",
+					"ADBC >= 0, better large values.",
+					MetricDescription.EnumTypeOfScale.ABSOLUTE,
+					"CD: Set of times"), 
+				new ValueInteger(81), 
+				new ValueInteger(198));
+	}
+	
+	/**
+	 * Constructor that initializes the metric with default values passed by parameter.
 	 * 
 	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
@@ -37,15 +57,12 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		if (repository != null) {
-			Collection<Date> commitDates = repository.getCommitDates();
-			Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
-			return  commitDates != null &&
-					totalNumberOfCommits != null &&
-					totalNumberOfCommits.intValue() >= 2 &&
-					commitDates.size() == totalNumberOfCommits.intValue();
-		}
-		return false;
+		Collection<Date> commitDates = repository.getCommitDates();
+		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		return  commitDates != null &&
+				totalNumberOfCommits != null &&
+				totalNumberOfCommits.intValue() >= 2 &&
+				commitDates.size() == totalNumberOfCommits.intValue();
 	}
 
 	/* (non-Javadoc)
