@@ -14,17 +14,37 @@ import repositorydatasource.model.Repository;
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  */
-public class MetricChangeActivityRangePerMonth extends AMetric {
-
+public class MetricChangeActivityRange extends AMetric {
 	/**
-	 * Constructor of a metric that establishes the description and the default values.
-	 * 
+	 * Constructor that initializes the metric with default values defined by the programmer.
+	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricChangeActivityRange() {
+		super(new MetricDescription(
+					"TC3 - Change Activity Range",
+					"Number of changes relative to the number of months in the period",
+					"Jacek Ratzinger",
+					"2007",
+					"Time constraints",
+					"How many changes per month?",
+					"CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months",
+					"TNC, NM: Repository",
+					"CAR > 0, better medium values",
+					MetricDescription.EnumTypeOfScale.RATIO,
+					"TNC:Count, NM: Count"), 
+				new ValueDecimal(6.0), 
+				new ValueDecimal(26.4));
+	}
+	
+	/**
+	 * Constructor that initializes the metric with default values passed by parameter.
+	 * 
 	 * @param description Description of the metric.
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricChangeActivityRangePerMonth(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
+	public MetricChangeActivityRange(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
 		super(description, valueMinDefault, valueMaxDefault);
 	}
 

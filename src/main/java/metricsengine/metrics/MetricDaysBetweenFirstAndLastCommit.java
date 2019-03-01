@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
-import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
