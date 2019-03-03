@@ -37,6 +37,10 @@ public class MetricConfiguration implements IMetric {
 	 * @param valueMax Maximum value.
 	 */
 	public MetricConfiguration(AMetric metric, IValue valueMin, IValue valueMax) {
+		if (metric == null)
+			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
+		if (valueMin == null || valueMax == null)
+			throw new IllegalArgumentException("There can be no metric configuration without configuration values");
 		this.metric = metric;
 		this.valueMin = valueMin;
 		this.valueMax = valueMax;
@@ -48,6 +52,8 @@ public class MetricConfiguration implements IMetric {
 	 * @param metric Metric to configure.
 	 */
 	public MetricConfiguration(AMetric metric) {
+		if (metric == null)
+			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		this.metric = metric;
 		this.valueMin = metric.getValueMinDefault();
 		this.valueMax = metric.getValueMaxDefault();
