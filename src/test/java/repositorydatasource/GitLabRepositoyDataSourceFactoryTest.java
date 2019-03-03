@@ -28,7 +28,7 @@ public class GitLabRepositoyDataSourceFactoryTest {
 			IRepositoryDataSource rds = rdsf.createRepositoryDataSource();
 			assertTrue(rds != null && rds.getConnectionType() == EnumConnectionType.NOT_CONNECTED);
 		} catch (GitLabApiException e) {
-			fail("Exception when creating a GitLabRepositoyDataSourceFactory. ");
+			fail("Exception when creating a GitLabRepositoyDataSourceFactory");
 		}
 	}
 }

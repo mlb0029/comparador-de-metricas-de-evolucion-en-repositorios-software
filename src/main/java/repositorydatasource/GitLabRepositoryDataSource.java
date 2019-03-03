@@ -124,7 +124,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	@Override
 	public void disconnect() throws RepositoryDataSourceException {
 		try {
-			if(gitLabApi == null || connectionType == EnumConnectionType.NOT_CONNECTED) {
+			if(gitLabApi == null) {
 				throw new RepositoryDataSourceException("There is no connection.");
 			}
 			gitLabApi = null;
