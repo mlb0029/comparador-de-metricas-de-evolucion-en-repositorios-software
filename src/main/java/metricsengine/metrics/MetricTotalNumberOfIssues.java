@@ -15,25 +15,38 @@ import repositorydatasource.model.Repository;
 public class MetricTotalNumberOfIssues extends AMetric {
 
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
+	 * Default metric description.
+	 */
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
+			"I1",
+			"Total number of issues",
+			"Jacek Ratzinger",
+			"2007",
+			"Process Orientation",
+			"How many issues have been created in the repository?",
+			"TNI = Total number of issues",
+			"Repository",
+			"TNI >= 0. Better small values",
+			MetricDescription.EnumTypeOfScale.ABSOLUTE,
+			"TNI : Count");
+	
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueInteger(6);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueInteger(44);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricTotalNumberOfIssues() {
-		super(new MetricDescription(
-					"I1",
-					"Total number of issues",
-					"Jacek Ratzinger",
-					"2007",
-					"Process Orientation",
-					"How many issues have been created in the repository?",
-					"TNI = Total number of issues",
-					"Repository",
-					"TNI >= 0. Better small values",
-					MetricDescription.EnumTypeOfScale.ABSOLUTE,
-					"TNI : Count"), 
-				new ValueInteger(6), 
-				new ValueInteger(44));
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -52,7 +65,10 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		return repository.getTotalNumberOfIssues() != null;
+		if (repository == null) return false;
+		Integer tni = repository.getTotalNumberOfIssues();
+		return tni != null &&
+				tni >= 0;
 	}
 
 	/* (non-Javadoc)
