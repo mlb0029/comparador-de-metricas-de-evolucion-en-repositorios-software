@@ -17,25 +17,38 @@ import repositorydatasource.model.Repository;
 public class MetricCommitsPerIssue extends AMetric {
 	
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
+	 * Default metric description.
+	 */
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
+			"I2",
+			"Commits per issue",
+			"",
+			"",
+			"Process Orientation",
+			"How many commits per issues?",
+			"CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits",
+			"TNI, TNC:Repository",
+			"CI >= 0. Better small values",
+			MetricDescription.EnumTypeOfScale.RATIO,
+			"TNI,TNC:Count");
+	
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(0.5);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(1.0);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricCommitsPerIssue() {
-		super(new MetricDescription(
-					"I2",
-					"Commits per issue",
-					"",
-					"",
-					"Process Orientation",
-					"How many commits per issues?",
-					"CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits",
-					"TNI, TNC:Repository",
-					"CI >= 0. Better small values",
-					MetricDescription.EnumTypeOfScale.RATIO,
-					"TNI,TNC:Count"), 
-				new ValueDecimal(0.5), 
-				new ValueDecimal(1.0));
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -54,7 +67,13 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		return repository.getTotalNumberOfIssues() != null && repository.getTotalNumberOfCommits() != null;
+		if (repository == null) return false;
+		Integer tni = repository.getTotalNumberOfIssues();
+		Integer tnc = repository.getTotalNumberOfCommits();
+		return tni != null && 
+				tni >= 0 &&
+				tnc != null &&
+				tnc > 0;
 	}
 
 	/* (non-Javadoc)
@@ -62,7 +81,7 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits();
+		double result = (double) (repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits());
 		return new ValueDecimal(result);
 	}
 }
