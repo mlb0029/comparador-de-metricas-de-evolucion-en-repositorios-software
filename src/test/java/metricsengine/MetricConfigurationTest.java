@@ -2,10 +2,6 @@ package metricsengine;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -17,53 +13,13 @@ import metricsengine.values.ValueInteger;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class MetricConfigurationTest {
-
-	/**
-	 * MethodName.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @throws java.lang.Exception
-	 */
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * MethodName.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @throws java.lang.Exception
-	 */
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * MethodName.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @throws java.lang.Exception
-	 */
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	/**
-	 * MethodName.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+public class MetricConfigurationTest {
 
 	/**
 	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
-	void testMetricConfigurationAMetricIValueIValue() {
+	public void testMetricConfigurationAMetricIValueIValue() {
 		AMetric metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = new ValueInteger(0);
 		IValue valueMax = new ValueInteger(10);
@@ -79,7 +35,7 @@ class MetricConfigurationTest {
 	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
-	void testMetricConfigurationAMetricIValueIValueNullArguments() {		
+	public void testMetricConfigurationAMetricIValueIValueNullArguments() {		
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricConfiguration(null, new ValueInteger(0), new ValueInteger(10));
 		}, "The exception 'IllegalArgumentException' was expected. You should not create a metric configuration without metrics.");
@@ -97,7 +53,7 @@ class MetricConfigurationTest {
 	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric)}.
 	 */
 	@Test
-	void testMetricConfigurationAMetric() {
+	public void testMetricConfigurationAMetric() {
 		AMetric metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = metric.getValueMinDefault();
 		IValue valueMax = metric.getValueMaxDefault();
@@ -112,9 +68,8 @@ class MetricConfigurationTest {
 	/**
 	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric)}.
 	 */
-	@SuppressWarnings("unused")
 	@Test
-	void testMetricConfigurationAMetricNullArguments() {
+	public void testMetricConfigurationAMetricNullArguments() {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricConfiguration(null);
 		}, "The exception 'IllegalArgumentException' was expected. You should not create a metric configuration without metrics.");
@@ -125,7 +80,7 @@ class MetricConfigurationTest {
 	 */
 	@Disabled("Not yet implemented")
 	@Test
-	void testCalculate() {
+	public void testCalculate() {
 //		AMetric metric = new MetricTotalNumberOfIssues();
 //		IValue valueMin = metric.getValueMinDefault();
 //		IValue valueMax = metric.getValueMaxDefault();

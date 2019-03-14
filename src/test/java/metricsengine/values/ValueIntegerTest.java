@@ -11,14 +11,14 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class ValueIntegerTest {
+public class ValueIntegerTest {
 
 	/**
 	 * Test method for {@link metricsengine.values.ValueInteger#ValueInteger(int)}.
 	 */
 	@ParameterizedTest
 	@ValueSource(ints = { Integer.MAX_VALUE, Integer.MIN_VALUE, -10, 0, 10 })
-	void testValueInteger(int i) {
+	public void testValueInteger(int i) {
 		ValueInteger value = new ValueInteger(i);
 		assertNotNull(value);
 		assertEquals(i, value.getValue());

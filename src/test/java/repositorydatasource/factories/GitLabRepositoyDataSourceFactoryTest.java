@@ -1,11 +1,11 @@
-package repositorydatasource;
+package repositorydatasource.factories;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.gitlab4j.api.GitLabApiException;
 import org.junit.jupiter.api.Test;
 
-import repositorydatasource.factories.*;
+import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.model.EnumConnectionType;
 
 /**

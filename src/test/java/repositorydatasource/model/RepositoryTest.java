@@ -1,4 +1,4 @@
-package repositorydatasource;
+package repositorydatasource.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,14 +16,14 @@ import repositorydatasource.model.Repository;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class RepositoryTest {
+public class RepositoryTest {
 
 	/**
 	 * Test method for {@link repositorydatasource.model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
 	 * with nullv values.
 	 */
 	@Test
-	void testRepositoryNull() {
+	public void testRepositoryNull() {
 		Repository repo = new Repository(null, null, null, null, null, null, null, null, null);
 		assertNull(repo.getUrl(), "Fail in null url");
 		assertNull(repo.getName(), "Fail in null name");
@@ -41,7 +41,7 @@ class RepositoryTest {
 	 * with values.
 	 */
 	@Test
-	void testRepositoryEmptyStrings() {
+	public void testRepositoryEmptyStrings() {
 		Repository repo = new Repository("", "", 0, 0, 0, 0, new ArrayList<Integer>(), new HashSet<Date>(), 0);
 		assertEquals("", repo.getUrl(), "Fail in url");
 		assertEquals("", repo.getName(), "Fail in name");

@@ -16,7 +16,7 @@ import metricsengine.values.ValueInteger;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class MeasureTest {
+public class MeasureTest {
 
 	/**
 	 * Test method for {@link metricsengine.Measure#Measure(metricsengine.MetricConfiguration, metricsengine.values.IValue)}.
@@ -24,7 +24,7 @@ class MeasureTest {
 	 * Null arguments.
 	 */
 	@Test
-	void testMeasureNull() {
+	public void testMeasureNull() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
 		Date date = new Date();
 		
@@ -42,7 +42,7 @@ class MeasureTest {
 	 * Not null arguments.
 	 */
 	@Test
-	void testMeasureNotNull() {
+	public void testMeasureNotNull() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
 		Date date = new Date();
 		

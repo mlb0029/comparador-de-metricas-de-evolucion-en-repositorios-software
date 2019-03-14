@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class MetricDescriptionTest {
+public class MetricDescriptionTest {
 
 	/**
 	 * Test method for {@link metricsengine.MetricDescription#MetricDescription(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, metricsengine.MetricDescription.EnumTypeOfScale, java.lang.String)}.
 	 */
 	@Test
-	void testMetricDescription() {
+	public void testMetricDescription() {
 		MetricDescription metricTotalNumberOfIssuesDescription = new MetricDescription(
 				"I1", 
 				"Total number of Issues", 

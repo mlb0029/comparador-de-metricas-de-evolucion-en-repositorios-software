@@ -16,10 +16,12 @@ import metricsengine.values.*;
 import repositorydatasource.model.Repository;
 
 /**
+ * Unit test for {@link metricsengine.metrics.MetricTotalNumberOfIssues}
+ * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class MetricTotalNumberOfIssuesTest {
+public class MetricTotalNumberOfIssuesTest {
 
 	/**
 	 * Metric under test.
@@ -33,80 +35,79 @@ class MetricTotalNumberOfIssuesTest {
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() throws Exception {
 		metricTotalNumberOfIssues = new MetricTotalNumberOfIssues();
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#MetricTotalNumberOfIssues()}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues()}.
 	 */
 	@Test
-	void testMetricTotalNumberOfIssues() {
-		assertEquals(MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION, metricTotalNumberOfIssues.getDescription());
-		assertEquals(MetricTotalNumberOfIssues.DEFAULT_MIN_VALUE , metricTotalNumberOfIssues.getValueMinDefault());
-		assertEquals(MetricTotalNumberOfIssues.DEFAULT_MAX_VALUE, metricTotalNumberOfIssues.getValueMaxDefault());
-		assertEquals(MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName(), metricTotalNumberOfIssues.getName());
+	public void testMetricTotalNumberOfIssues() {
+		assertEquals(MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION, metricTotalNumberOfIssues.getDescription(), "Expected default static description");
+		assertEquals(MetricTotalNumberOfIssues.DEFAULT_MIN_VALUE , metricTotalNumberOfIssues.getValueMinDefault(), "Expected default static min value");
+		assertEquals(MetricTotalNumberOfIssues.DEFAULT_MAX_VALUE, metricTotalNumberOfIssues.getValueMaxDefault(), "Expected default static max value");
+		assertEquals(MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName(), metricTotalNumberOfIssues.getName(), "Expected default static name");
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest
 	@MethodSource
-	void testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
-		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription());
-		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault());
-		assertTrue(max == metricTotalNumberOfIssues.getValueMaxDefault());
-		assertEquals(metricDescription.getName(), metricTotalNumberOfIssues.getName());
+		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
+		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault(), "Expected another min value");
+		assertTrue(max == metricTotalNumberOfIssues.getValueMaxDefault(), "Expected another max value");
+		assertEquals(metricDescription.getName(), metricTotalNumberOfIssues.getName(), "Expected another name");
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * <p>
+	 * With Null arguments.
 	 */
 	@ParameterizedTest
 	@MethodSource("testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax")
-	void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricTotalNumberOfIssues(null, min, max);
-		});
+		}, "Expected exception when null metric description");
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricTotalNumberOfIssues(metricDescription, null, max);
-		});
+		}, "Expected exception when null value min");
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricTotalNumberOfIssues(metricDescription, min, null);
-		});
+		}, "Expected exception when null value max");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#check(repositorydatasource.model.Repository)}.
-	 * With repositories of which the metric can not be calculated.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#check(repositorydatasource.model.Repository)}.
+	 * <p>
+	 * Check "check" method for values in this formula: CI = TNI/TNC
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name= "[{index}]: TNI: {0}, TNC: {1}, Calculable: {2}")
 	@MethodSource
-	void testCheckWrong(Repository repository) {
-		assertFalse(metricTotalNumberOfIssues.check(repository));
-		
-	}
-	
-	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#check(repositorydatasource.model.Repository)}.
-	 * With repositories of which the metric can be calculated.
-	 */
-	@ParameterizedTest
-	@MethodSource
-	void testCheckOK(Repository repository) {
-		assertTrue(metricTotalNumberOfIssues.check(repository));
+	public void testCheck(Integer totalNumberOfIssues, Boolean expectedValue) {
+		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
+		assertEquals(expectedValue, metricTotalNumberOfIssues.check(repository), 
+				"Should return false when totalNumberOfIssues=" + totalNumberOfIssues);
 		
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssuesTest#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(repositorydatasource.model.Repository)}.
+	 * <p>
+	 * Check that the formula: {TNI = Total number of issues} is computed correctly.
 	 */
-	@ParameterizedTest
-	@MethodSource("testCheckOK")
-	void testRun(Repository repository, Integer expectedVal) {
-		assertEquals(expectedVal.toString(), metricTotalNumberOfIssues.run(repository).valueToString());
+	@ParameterizedTest(name = "[{index}]: TNI: {0}")
+	@MethodSource
+	public void testRun(Integer totalNumberOfIssues) {
+		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
+		IValue expected = new ValueInteger((int)totalNumberOfIssues);
+		IValue actual = metricTotalNumberOfIssues.run(repository);
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
 	}
 
 	/**
@@ -127,36 +128,38 @@ class MetricTotalNumberOfIssuesTest {
 	}
 	
 	/**
-	 * Arguments for tests that expect check = false.
-	 * <p>
-	 * Returns a repository.
+	 * Arguments for check tests.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return
+	 * @return TNI, isCalculable
 	 */
 	@SuppressWarnings("unused")
-	private static Stream<Repository> testCheckWrong(){
+	private static Stream<Arguments> testCheck() {
 		return Stream.of(
-				null,
-				new Repository("", "", 0, null, 0, 0, null, null, 0),
-				new Repository("", "", 0, -5, 0, 0, null, null, 0)
+				Arguments.of(Integer.MAX_VALUE, true),
+				Arguments.of(1, true),
+				Arguments.of(0, true),
+				Arguments.of(10,true),
+				Arguments.of(Integer.MIN_VALUE, false),
+				Arguments.of(-1, false),
+				Arguments.of(-10, false),
+				Arguments.of(null, false)
 		);
 	}
 	
 	/**
-	 * Arguments for tests that expect check = true.
-	 * <p>
-	 * Returns a repository and the expected value of the run method for this repository.
+	 * Arguments for run tests.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return
+	 * @return TNI
 	 */
 	@SuppressWarnings("unused")
-	private static Stream<Arguments> testCheckOK(){
+	private static Stream<Integer> testRun() {
 		return Stream.of(
-				Arguments.of(new Repository("", "", 0, 0, 0, 0, null, null, 0), 0),
-				Arguments.of(new Repository("", "", 0, 10, 0, 0, null, null, 0), 10),
-				Arguments.of(new Repository("", "", 0, Integer.MAX_VALUE, 0, 0, null, null, 0), Integer.MAX_VALUE)	
+				Integer.MAX_VALUE,
+				1,
+				0,
+				10
 		);
 	}
 }

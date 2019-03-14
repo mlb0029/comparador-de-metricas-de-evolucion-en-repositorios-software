@@ -11,14 +11,14 @@ import org.junit.jupiter.params.provider.ValueSource;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class ValueDecimalTest {
+public class ValueDecimalTest {
 
 	/**
 	 * Test method for {@link metricsengine.values.ValueDecimal#ValueDecimal(java.lang.Double)}.
 	 */
 	@ParameterizedTest
 	@ValueSource(doubles = { Double.MAX_VALUE, Double.MIN_VALUE, -10.00, 0, 10.00, 1})
-	void testValueDecimal(double d) {
+	public void testValueDecimal(double d) {
 		ValueDecimal value = new ValueDecimal(d);
 		assertNotNull(value);
 		assertEquals(d, value.getValue());
