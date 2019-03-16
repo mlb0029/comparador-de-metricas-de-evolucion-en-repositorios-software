@@ -12,10 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
-import metricsengine.MetricDescription.EnumTypeOfScale;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
 /**
@@ -58,7 +56,7 @@ public class MetricPercentageClosedIssuesTest {
 	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest
-	@MethodSource
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricPercentageClosedIssues.getDescription(), "Expected another description");
@@ -73,17 +71,11 @@ public class MetricPercentageClosedIssuesTest {
 	 * Using null arguments.
 	 */
 	@ParameterizedTest
-	@MethodSource("testMetricPercentageClosedIssuesDescriptionValueMinValueMax")
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricPercentageClosedIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricPercentageClosedIssues(null, min, max);
-		}, "Expected exception when null metric description");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricPercentageClosedIssues(metricDescription, null, max);
-		}, "Expected exception when null value min");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricPercentageClosedIssues(metricDescription, min, null);
-		}, "Expected exception when null value max");
+			new MetricPercentageClosedIssues(metricDescription, min, max);
+		}, "Expected exception when null arguments");
 	}
 	
 	/**
@@ -98,8 +90,10 @@ public class MetricPercentageClosedIssuesTest {
 	public void testCheck(Integer totalNumberOfIssues, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", -1, totalNumberOfIssues, -1, numberOfClosedIssues, null, null, -1);
 		assertEquals(expectedValue, metricPercentageClosedIssues.check(repository), 
-				"Should return " + expectedValue + " when totalNumberOfIssues=" + totalNumberOfIssues +
-				" numberOfClosedIssues=" + numberOfClosedIssues + "(" + testCase + ")");
+				"Should return " + expectedValue +
+				" when totalNumberOfIssues=" + totalNumberOfIssues +
+				", numberOfClosedIssues=" + numberOfClosedIssues +
+				". Test Case: (" + testCase + ")");
 	}
 
 	/**
@@ -118,57 +112,45 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Arguments for {@link #testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription, IValue, IValue)}
-	 * <p>
-	 * Returns: description, Ivalue min, Ivalue max.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return description, Ivalue min, Ivalue max.
-	 */
-	@SuppressWarnings("unused")
-	private static Stream<Arguments> testMetricPercentageClosedIssuesDescriptionValueMinValueMax(){
-		MetricDescription metricDescription = new MetricDescription("Prueba", "", "","","","","","","",EnumTypeOfScale.ABSOLUTE, "");
-		return Stream.of(
-				Arguments.of(metricDescription, new ValueInteger(1), new ValueInteger(10)),
-				Arguments.of(metricDescription, new ValueDecimal(1.0), new ValueDecimal(10.9523))
-		);
-	}
-	
-	/**
 	 * Arguments for {@link #testCheck(Integer, Integer, Boolean, String)}
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfIssues, numberOfClosedIssues, expectedValue
+	 * @return totalNumberOfIssues, numberOfClosedIssues, expectedValue, testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, true, "Good arguments"),
-				Arguments.of(Integer.MAX_VALUE, 1, true, "Good arguments"),
-				Arguments.of(1, Integer.MAX_VALUE, true, "Good arguments"),
-				Arguments.of(Integer.MAX_VALUE, 0, true, "Good arguments"),
-				Arguments.of(5, 10, true, "Good arguments"),
-				Arguments.of(1, 0, true, "Good arguments"),
-				Arguments.of(Integer.MIN_VALUE, 1, false, "Negative arguments"),
-				Arguments.of(1, Integer.MIN_VALUE, false, "Negative arguments"),
-				Arguments.of(-5, -10, false, "Negative arguments"),
-				Arguments.of(-1, -1, false, "Negative arguments"),
-				Arguments.of(0, Integer.MAX_VALUE, false, "Division between zero"),
-				Arguments.of(0, 0, false, "Division between zero"),
-				Arguments.of(0, 10, false, "Division between zero"),
-				Arguments.of(null, 5, false, "Null values"),
-				Arguments.of(1, null, false, "Null values"),
-				Arguments.of(null, 0, false, "Null values"),
-				Arguments.of(0, null, false, "Null values"),
-				Arguments.of(null, null, false, "Null values")
+				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, true, "TNI, NCI = Integer.MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 1, true, "TNI = Integer.MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, true, "NCI"),
+				Arguments.of(Integer.MIN_VALUE, Integer.MIN_VALUE, false, "TNI, NCI = Integer.MIN_VALUE"),
+				Arguments.of(Integer.MIN_VALUE, 1, false, "TNI = Integer.MIN_VALUE"),
+				Arguments.of(1, Integer.MIN_VALUE, false, "NCI = Integer.MIN_VALUE"),
+				Arguments.of(0, 0, false, "TNI, NCI = 0"),
+				Arguments.of(0, 1, false, "TNI = 0"),
+				Arguments.of(1, 0, true, "NCI = 0"),
+				Arguments.of(1, 1, true, "TNI = NCI.TNI, NCI > 0"),
+				Arguments.of(10, 5, true, "TNI > NCI.TNI, NCI > 0"),
+				Arguments.of(12, 432, true, "TNI < NCI.TNI, NCI > 0"),
+				Arguments.of(-1, -1, false, "TNI = NCI.TNI, NCI < 0"),
+				Arguments.of(-10, -5, false, "TNI < NCI.TNI, NCI < 0"),
+				Arguments.of(-12, -432, false, "TNI > NCI.TNI, NCI < 0"),
+				Arguments.of(-10, 1, false, "TNI < 0"),
+				Arguments.of(10, -23, false, "NCI < 0"),
+				Arguments.of(null, null, false, "TNI, NCI = null"),
+				Arguments.of(null, 5, false, "TNI = null"),
+				Arguments.of(1, null, false, "NCI = null")
 		);
 	}
 	
 	/**
 	 * Arguments for {@link #testRun(Integer, Integer)}
+	 * <p>
+	 * Test cases for the formula: <br/>
+	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return totalNumberOfIssues, numberOfClosedIssues
@@ -176,12 +158,14 @@ public class MetricPercentageClosedIssuesTest {
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE),
-				Arguments.of(Integer.MAX_VALUE, 1),
-				Arguments.of(1, Integer.MAX_VALUE),
-				Arguments.of(5, 10),
-				Arguments.of(1, 0),
-				Arguments.of(1,1)
+				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, "TNI, NCI = MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 1, "TNI = MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, "NCI = MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 0, "TNI = MAX_VALUE, NCI = 0"),
+				Arguments.of(1, 0, "TNI = 1, NCI = 0"),
+				Arguments.of(5, 10, "Any values NCI > TNI"),
+				Arguments.of(1, 1, "TNI = NCI"),
+				Arguments.of(15, 10, "Any values NCI < TNI")
 		);
 	}
 }

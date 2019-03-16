@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import metricsengine.*;
-import metricsengine.MetricDescription.EnumTypeOfScale;
 import metricsengine.values.*;
 import repositorydatasource.model.Repository;
 
@@ -54,7 +53,7 @@ public class MetricTotalNumberOfIssuesTest {
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest
-	@MethodSource
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
@@ -66,44 +65,41 @@ public class MetricTotalNumberOfIssuesTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
-	 * With Null arguments.
+	 * Using null arguments.
 	 */
 	@ParameterizedTest
-	@MethodSource("testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax")
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricTotalNumberOfIssues(null, min, max);
-		}, "Expected exception when null metric description");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricTotalNumberOfIssues(metricDescription, null, max);
-		}, "Expected exception when null value min");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricTotalNumberOfIssues(metricDescription, min, null);
-		}, "Expected exception when null value max");
+			new MetricTotalNumberOfIssues(metricDescription, min, max);
+		}, "Expected exception when null arguments");
 	}
 	
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#check(repositorydatasource.model.Repository)}.
 	 * <p>
-	 * Check "check" method for values in this formula: CI = TNI/TNC
+	 * Check "check" method for values in this formula: <br/>
+	 * "TNI = Total number of issues"
 	 */
-	@ParameterizedTest(name= "[{index}]: TNI: {0}, TNC: {1}, Calculable: {2}")
+	@ParameterizedTest(name= "[{index}]: TNI: {0}, Calculable: {1}, Test Case: {2}")
 	@MethodSource
-	public void testCheck(Integer totalNumberOfIssues, Boolean expectedValue) {
+	public void testCheck(Integer totalNumberOfIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
 		assertEquals(expectedValue, metricTotalNumberOfIssues.check(repository), 
-				"Should return false when totalNumberOfIssues=" + totalNumberOfIssues);
+				"Should return " + expectedValue + 
+				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) + 
+				". Test Case: (" + testCase + ")");
 		
 	}
 
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(repositorydatasource.model.Repository)}.
-	 * <p>
-	 * Check that the formula: {TNI = Total number of issues} is computed correctly.
+	 * Check "run" method for values in this formula: <br/>
+	 *"TNI = Total number of issues"
 	 */
-	@ParameterizedTest(name = "[{index}]: TNI: {0}")
+	@ParameterizedTest(name = "[{index}]: TNI: {0}, Test Case: {1}")
 	@MethodSource
-	public void testRun(Integer totalNumberOfIssues) {
+	public void testRun(Integer totalNumberOfIssues, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
 		IValue expected = new ValueInteger((int)totalNumberOfIssues);
 		IValue actual = metricTotalNumberOfIssues.run(repository);
@@ -111,55 +107,44 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Arguments for {@link #testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(MetricDescription, IValue, IValue)}
+	 * Arguments for {@link #testCheck(Integer, Boolean, String)}.
 	 * <p>
-	 * Returns: description, Ivalue min, Ivalue max.
+	 * Test cases for the formula: <br/>
+	 * "TNI = Total number of issues"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private static Stream<Arguments> testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(){
-		MetricDescription metricDescription = new MetricDescription("Prueba", "", "","","","","","","",EnumTypeOfScale.ABSOLUTE, "");
-		return Stream.of(
-				Arguments.of(metricDescription, new ValueInteger(1), new ValueInteger(10)),
-				Arguments.of(metricDescription, new ValueDecimal(1.0), new ValueDecimal(10.9523))
-		);
-	}
-	
-	/**
-	 * Arguments for check tests.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return TNI, isCalculable
+	 * @return totalNumberOfIssues, expectedValue, testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, true),
-				Arguments.of(1, true),
-				Arguments.of(0, true),
-				Arguments.of(10,true),
-				Arguments.of(Integer.MIN_VALUE, false),
-				Arguments.of(-1, false),
-				Arguments.of(-10, false),
-				Arguments.of(null, false)
+				Arguments.of(Integer.MAX_VALUE, true, "TNI = Integer.MAX_VALUE"),
+				Arguments.of(10,true, "TNI = 10"),
+				Arguments.of(1, true, "TNI = 1"),
+				Arguments.of(Integer.MIN_VALUE, false, "TNI = Integer.MIN_VALUE"),
+				Arguments.of(-10, false, "TNI = -10"),
+				Arguments.of(-1, false, "TNI = -1"),
+				Arguments.of(0, true, "TNI = 0"),
+				Arguments.of(null, false, "TNI = null")
 		);
 	}
 	
 	/**
-	 * Arguments for run tests.
+	 * Arguments for {@link #testRun(Integer, String)}.
+	 * <p>
+	 * Test cases for the formula: <br/>
+	 * "TNI = Total number of issues"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return TNI
+	 * @return totalNumberOfIssues, testCase
 	 */
 	@SuppressWarnings("unused")
-	private static Stream<Integer> testRun() {
+	private static Stream<Arguments> testRun() {
 		return Stream.of(
-				Integer.MAX_VALUE,
-				1,
-				0,
-				10
+				Arguments.of(Integer.MAX_VALUE, "TNI = Integer.MAX_VALUE"),
+				Arguments.of(10, "TNI = 10"),
+				Arguments.of(1, "TNI = 1"),
+				Arguments.of(0, "TNI = 0")
 		);
 	}
 }

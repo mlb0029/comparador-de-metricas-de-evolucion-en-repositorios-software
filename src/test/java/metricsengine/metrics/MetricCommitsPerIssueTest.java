@@ -12,14 +12,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
-import metricsengine.MetricDescription.EnumTypeOfScale;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import metricsengine.values.ValueInteger;
 import repositorydatasource.model.Repository;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricCommitsPerIssue}
+ * Unit test for {@link metricsengine.metrics.MetricCommitsPerIssue}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -57,54 +55,54 @@ public class MetricCommitsPerIssueTest {
 	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest
-	@MethodSource
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricCommitsPerIssueDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		AMetric metricTotalNumberOfIssues = new MetricCommitsPerIssue(metricDescription, min, max);
-		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
-		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricTotalNumberOfIssues.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricTotalNumberOfIssues.getName(), "Expected another name");
+		AMetric metricCommitsPerIssue = new MetricCommitsPerIssue(metricDescription, min, max);
+		assertTrue(metricDescription == metricCommitsPerIssue.getDescription(), "Expected another description");
+		assertTrue(min == metricCommitsPerIssue.getValueMinDefault(), "Expected another min value");
+		assertTrue(max == metricCommitsPerIssue.getValueMaxDefault(), "Expected another max value");
+		assertEquals(metricDescription.getName(), metricCommitsPerIssue.getName(), "Expected another name");
 	}
 
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * <p>
+	 * Using null arguments.
 	 */
 	@ParameterizedTest
-	@MethodSource("testMetricCommitsPerIssueDescriptionValueMinValueMax")
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricCommitsPerIssueNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricCommitsPerIssue(null, min, max);
-		}, "Expected exception when null metric description");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricCommitsPerIssue(metricDescription, null, max);
-		}, "Expected exception when null value min");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricCommitsPerIssue(metricDescription, min, null);
-		}, "Expected exception when null value max");
+			new MetricCommitsPerIssue(metricDescription, min, max);
+		}, "Expected exception when null arguments");
 	}
 	
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#check(repositorydatasource.model.Repository)}.
 	 * <p>
-	 * Check "check" method for values in this formula: CI = TNI/TNC
+	 * Check "check" method for values in this formula: <br/>
+	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"
 	 */
-	@ParameterizedTest(name= "[{index}]: TNI: {0}, TNC: {1}, Calculable: {2}")
+	@ParameterizedTest(name= "[{index}]: TNI: {0}, TNC: {1}, Calculable: {2}, Test Case: {3}")
 	@MethodSource
-	public void testCheck(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Boolean expectedValue) {
+	public void testCheck(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, totalNumberOfCommits, 0, null, null, 0);
 		assertEquals(expectedValue, metricCommitsPerIssue.check(repository), 
-				"Should return false when totalNumberOfIssues=" + totalNumberOfIssues +
-				" totalNumberOfCommits=" + totalNumberOfCommits);
+				"Should return " + expectedValue + 
+				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
+				", totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
+				". Test Case: (" + testCase + ")");
 	}
 	
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#run(repositorydatasource.model.Repository)}.
 	 * <p>
-	 * Check that the formula: {CI = TNI/TNC} is computed correctly.
+	 * Check "run" method for values in this formula: <br/>
+	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"
 	 */
-	@ParameterizedTest(name = "[{index}]: TNI: {0}, TNC: {1}")
+	@ParameterizedTest(name = "[{index}]: TNI: {0}, TNC: {1}, Test Case: {2}")
 	@MethodSource
-	public void testRun(Integer totalNumberOfIssues, Integer totalNumberOfCommits) {
+	public void testRun(Integer totalNumberOfIssues, Integer totalNumberOfCommits, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, totalNumberOfCommits, 0, null, null, 0);
 		IValue expected = new ValueDecimal((double) (totalNumberOfIssues / totalNumberOfCommits));
 		IValue actual = metricCommitsPerIssue.run(repository);
@@ -112,48 +110,45 @@ public class MetricCommitsPerIssueTest {
 	}
 	
 	/**
-	 * Arguments for {@link #testMetricCommitsPerIssueDescriptionValueMinValueMax(MetricDescription, IValue, IValue)}
+	 * Arguments for {@link #testCheck(Integer, Integer, Boolean, String)}.
 	 * <p>
-	 * Returns: description, Ivalue min, Ivalue max.
+	 * Test cases for the formula: <br/>
+	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private static Stream<Arguments> testMetricCommitsPerIssueDescriptionValueMinValueMax(){
-		MetricDescription metricDescription = new MetricDescription("Prueba", "", "","","","","","","",EnumTypeOfScale.ABSOLUTE, "");
-		return Stream.of(
-				Arguments.of(metricDescription, new ValueInteger(1), new ValueInteger(10)),
-				Arguments.of(metricDescription, new ValueDecimal(1.0), new ValueDecimal(10.9523))
-		);
-	}
-	
-	/**
-	 * Arguments for check tests.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return TNI, TNC, isCalculable
+	 * @return totalNumberOfIssues, totalNumberOfCommits, expectedValue
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, true),
-				Arguments.of(Integer.MAX_VALUE, 1, true),
-				Arguments.of(1, Integer.MAX_VALUE, true),
-				Arguments.of(10, 5, true),
-				Arguments.of(0, 1, true),
-				Arguments.of(0, 0, false),
-				Arguments.of(10, 0, false),
-				Arguments.of(null, 5, false),
-				Arguments.of(1, null, false),
-				Arguments.of(null, 0, false),
-				Arguments.of(0, null, false),
-				Arguments.of(null, null, false)
+				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, true, "TNI, TNC = Integer.MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 1, true, "TNI = Integer.MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, true, "TNC = Integer.MAX_VALUE"),
+				Arguments.of(Integer.MIN_VALUE, Integer.MIN_VALUE, false, "TNI, TNC = Integer.MIN_VALUE"),
+				Arguments.of(Integer.MIN_VALUE, 1, false, "TNI = Integer.MIN_VALUE"),
+				Arguments.of(1, Integer.MIN_VALUE, false, "TNC = Integer.MIN_VALUE"),
+				Arguments.of(0, 0, false, "TNI, TNC = 0"),
+				Arguments.of(0, 1, true, "TNI = 0"),
+				Arguments.of(10, 0, false, "TNC = 0"),
+				Arguments.of(1, 1, true, "TNI = TNC.TNI, TNC > 0"),
+				Arguments.of(10, 5, true, "TNI > TNC.TNI, TNC > 0"),
+				Arguments.of(12, 432, true, "TNI < TNC.TNI, TNC > 0"),
+				Arguments.of(-1, -1, false, "TNI = TNC.TNI, TNC < 0"),
+				Arguments.of(-10, -5, false, "TNI < TNC.TNI, TNC < 0"),
+				Arguments.of(-12, -432, false, "TNI > TNC.TNI, TNC < 0"),
+				Arguments.of(-10, 1, false, "TNI < 0"),
+				Arguments.of(10, -23, false, "TNC < 0"),
+				Arguments.of(null, null, false, "TNI, TNC = null"),
+				Arguments.of(null, 5, false, "TNI = null"),
+				Arguments.of(1, null, false, "TNC = null")
 		);
 	}
 	
 	/**
-	 * Arguments for run tests.
+	 * Arguments for {@link #testRun(Integer, Integer, String)}.
+	 * <p>
+	 * Test cases for the formula: <br/>
+	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return TNI, TNC
@@ -161,11 +156,13 @@ public class MetricCommitsPerIssueTest {
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, true),
-				Arguments.of(Integer.MAX_VALUE, 1, true),
-				Arguments.of(1, Integer.MAX_VALUE, true),
-				Arguments.of(10, 5, true),
-				Arguments.of(0, 1, true)
+				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, "TNI, TNC = Integer.MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 1, "TNI = Integer.MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, "TNC = Integer.MAX_VALUE"),
+				Arguments.of(0, 1, "TNI = 0"),
+				Arguments.of(1, 1, "TNI = TNC.TNI, TNC > 0"),
+				Arguments.of(10, 5, "TNI > TNC.TNI, TNC > 0"),
+				Arguments.of(12, 432, "TNI < TNC.TNI, TNC > 0")
 		);
 	}
 }

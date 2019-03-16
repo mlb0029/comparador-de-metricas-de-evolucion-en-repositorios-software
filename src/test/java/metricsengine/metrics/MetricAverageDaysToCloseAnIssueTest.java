@@ -75,14 +75,8 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricAverageDaysToCloseAnIssueNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricAverageDaysToCloseAnIssue(null, min, max);
-		}, "Expected exception when null metric description");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricAverageDaysToCloseAnIssue(metricDescription, null, max);
-		}, "Expected exception when null value min");
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricAverageDaysToCloseAnIssue(metricDescription, min, null);
-		}, "Expected exception when null value max");
+			new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
+		}, "Expected exception when null arguments");
 	}
 	
 	/**
@@ -96,8 +90,10 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	public void testCheck(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, 0, numberOfClosedIssues, daysToCloseEachIssue, null, 0);
 		assertEquals(expectedValue, metricAverageDaysToCloseAnIssue.check(repository), 
-				"Should return " + expectedValue + " when daysToCloseEachIssue=" + String.valueOf(daysToCloseEachIssue) +
-				" numberOfClosedIssues=" + numberOfClosedIssues + "(" + testCase + ")");
+				"Should return " + expectedValue +
+				" when daysToCloseEachIssue=" + String.valueOf(daysToCloseEachIssue) +
+				", numberOfClosedIssues=" + numberOfClosedIssues +
+				". Test Case: (" + testCase + ")");
 	}
 
 	/**
@@ -119,7 +115,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Arguments for {@link #testCheck(List, Integer, Boolean, String)}
+	 * Arguments for {@link #testCheck(List, Integer, Boolean, String)}.
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
@@ -148,7 +144,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 	
 	/**
-	 * Arguments for {@link #testRun(List, Integer, String)}
+	 * Arguments for {@link #testRun(List, Integer, String)}.
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
