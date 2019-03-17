@@ -1,6 +1,7 @@
 package metricsengine.metrics;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,28 +12,47 @@ import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
 
-
+/**
+ * Computes the average of days between commits.
+ * 
+ * @author Miguel Ángel León Bardavío - mlb0029
+ *
+ */
 public class MetricAverageDaysBetweenCommits extends AMetric {
+	
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
+	 * Default metric description.
+	 */
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
+			"TC1",
+			"Average of days between commits",
+			"",
+			"",
+			"Process Orientation",
+			"How much time is there between one commit and the next?",
+			"ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits.",
+			"CD, TNC: Repository",
+			"ADBC >= 0, better small values.",
+			MetricDescription.EnumTypeOfScale.RATIO,
+			"TNC:Count, CD: Set of times");
+		
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(1.0);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(4.3);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricAverageDaysBetweenCommits() {
-		super(new MetricDescription(
-					"TC1",
-					"Average of days between commits",
-					"",
-					"",
-					"Process Orientation",
-					"How much time is there between one commit and the next?",
-					"ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits.",
-					"CD, TNC: Repository",
-					"ADBC >= 0, better small values.",
-					MetricDescription.EnumTypeOfScale.RATIO,
-					"TNC:Count, CD: Set of times"), 
-				new ValueDecimal(1.0), 
-				new ValueDecimal(4.3));
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -51,12 +71,20 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		ArrayList<Date> commitDates = new ArrayList<Date>(repository.getCommitDates());
+		Collection<Date> commitDates = repository.getCommitDates();
 		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
-		return 	totalNumberOfCommits != null &&
+		
+		if(totalNumberOfCommits != null &&
 				commitDates != null &&
-				totalNumberOfCommits.intValue() >= 2 &&
-				commitDates.size() == totalNumberOfCommits.intValue();
+				commitDates.size() == totalNumberOfCommits && 
+				totalNumberOfCommits > 1) {
+			for (Date date : commitDates) {
+				if (date == null) return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -64,14 +92,17 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
+		long date1;
+		long date2;
+		int daysBetweenCommits;
 		List<Date> commitDates = repository.getCommitDates().stream().sorted().collect(Collectors.toList());
-		List<Integer> daysBetweenCommits = new ArrayList<Integer>();
+		List<Integer> lstDaysBetweenCommits = new ArrayList<Integer>();
 		for (int i = 1; i < commitDates.size(); i++) {
-			long fecha1 = commitDates.get(i-1).getTime();
-			long fecha2 = commitDates.get(i).getTime();
-			daysBetweenCommits.add((int) ((fecha2 - fecha1) / (1000 * 60 * 60 * 24)));
+			date1 = commitDates.get(i-1).getTime();
+			date2 = commitDates.get(i).getTime();
+			daysBetweenCommits = (int) ((date2 - date1) / (1000 * 60 * 60 * 24));
+			lstDaysBetweenCommits.add(daysBetweenCommits);
 		}
-		return new ValueDecimal(daysBetweenCommits.stream().mapToInt(i -> i.intValue()).average().orElseThrow());
+		return new ValueDecimal(lstDaysBetweenCommits.stream().mapToInt(i -> i.intValue()).average().orElseThrow());
 	}
-
 }
