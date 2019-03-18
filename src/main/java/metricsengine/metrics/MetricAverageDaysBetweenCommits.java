@@ -71,6 +71,7 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
+		if (repository == null) return false;
 		Collection<Date> commitDates = repository.getCommitDates();
 		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
 		

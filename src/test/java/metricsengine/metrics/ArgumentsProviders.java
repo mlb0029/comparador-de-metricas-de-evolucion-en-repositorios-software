@@ -6,7 +6,6 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import metricsengine.MetricDescription;
 import metricsengine.MetricDescription.EnumTypeOfScale;
-import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 

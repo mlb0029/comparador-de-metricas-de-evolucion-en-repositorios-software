@@ -54,7 +54,7 @@ public class MetricTotalNumberOfIssuesTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricTotalNumberOfIssuesMetricDescriptionValorMinValorMax(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricTotalNumberOfIssuesMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
 		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault(), "Expected another min value");
@@ -89,7 +89,7 @@ public class MetricTotalNumberOfIssuesTest {
 				"Should return " + expectedValue + 
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) + 
 				". Test Case: (" + testCase + ")");
-		
+		assertFalse(metricTotalNumberOfIssues.check(null));
 	}
 
 	/**

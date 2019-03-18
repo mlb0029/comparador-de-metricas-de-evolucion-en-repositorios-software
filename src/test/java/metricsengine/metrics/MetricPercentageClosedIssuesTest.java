@@ -94,6 +94,7 @@ public class MetricPercentageClosedIssuesTest {
 				" when totalNumberOfIssues=" + totalNumberOfIssues +
 				", numberOfClosedIssues=" + numberOfClosedIssues +
 				". Test Case: (" + testCase + ")");
+		assertFalse(metricPercentageClosedIssues.check(null));
 	}
 
 	/**

@@ -94,6 +94,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 				" when daysToCloseEachIssue=" + String.valueOf(daysToCloseEachIssue) +
 				", numberOfClosedIssues=" + numberOfClosedIssues +
 				". Test Case: (" + testCase + ")");
+		assertFalse(metricAverageDaysToCloseAnIssue.check(null));
 	}
 
 	/**

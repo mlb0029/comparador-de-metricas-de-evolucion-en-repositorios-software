@@ -62,7 +62,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricAverageDaysBetweenCommitsMetricDescriptionIValueIValue(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricAverageDaysBetweenCommitsMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricAverageDaysBetweenCommits = new MetricAverageDaysBetweenCommits(metricDescription, min, max);
 		assertTrue(metricDescription == metricAverageDaysBetweenCommits.getDescription(), "Expected another description");
 		assertTrue(min == metricAverageDaysBetweenCommits.getValueMinDefault(), "Expected another min value");
@@ -98,6 +98,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
+		assertFalse(metricAverageDaysBetweenCommits.check(null));
 	}
 	
 	/**
@@ -110,26 +111,11 @@ public class MetricAverageDaysBetweenCommitsTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
-//		List<Date> lstCommitDates = commitDates.stream().sorted().collect(Collectors.toList());
-		
-//		long date1;
-//		long date2;
-//		int daysBetweenTwoDays;
-//		int sumDates = 0;
-//		double resultExpected;
-//		
-//		for (int i = 1; i < totalNumberOfCommits; i++) {
-//			date1 = lstCommitDates.get(i-1).getTime();
-//			date2 = lstCommitDates.get(i).getTime();
-//			daysBetweenTwoDays = (int) ((date2 - date1) / (1000 * 60 * 60 * 24));
-//			sumDates += daysBetweenTwoDays;
-//		}
-//		resultExpected = (double) (sumDates / (totalNumberOfCommits - 1));
 		
 		IValue actual = metricAverageDaysBetweenCommits.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
 	}
-	
+
 	/**
 	 * Arguments for {@link #testCheck(Integer, Set, Boolean, String)}.
 	 * <p>
@@ -150,7 +136,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 		setWithNulls.add(dateFormat.parse("02/01/2019 10:00"));
 		setWithNulls.add(null);
 		setWithNulls.add(dateFormat.parse("20/02/2019 15:41"));
-
+	
 		Set<Date> setOneElement = new HashSet<Date>();
 		setOneElement.add(dateFormat.parse("02/01/2019 10:00"));
 		
@@ -179,7 +165,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 				Arguments.of(setAnyDates.size(), setAnyDates, true, "Any CD")
 		);
 	}
-	
+
 	/**
 	 * Arguments for {@link #testRun(Integer, Set, String)}.
 	 * <p>

@@ -68,7 +68,7 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		
+		if (repository == null) return false;
 		Collection<Integer> daysToCloseEachIssue = repository.getDaysToCloseEachIssue();
 		Integer numberOfClosedIssues = repository.getNumberOfClosedIssues();
 		

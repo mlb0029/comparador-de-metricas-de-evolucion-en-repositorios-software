@@ -92,6 +92,7 @@ public class MetricCommitsPerIssueTest {
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
 				", totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				". Test Case: (" + testCase + ")");
+		assertFalse(metricCommitsPerIssue.check(null));
 	}
 	
 	/**
