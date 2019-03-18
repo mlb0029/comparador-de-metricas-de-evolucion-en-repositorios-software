@@ -90,7 +90,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
 	 */
 	@ParameterizedTest
-	@MethodSource
+	@MethodSource("metricsengine.metrics.ArgumentsProviders#argsForCheckMethodInCommitDates")
 	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
 		assertEquals(expectedValue, metricAverageDaysBetweenCommits.check(repository), 
@@ -117,64 +117,14 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 
 	/**
-	 * Arguments for {@link #testCheck(Integer, Set, Boolean, String)}.
+	 * Arguments for {@link #testRun(Integer, Set, IValue, String)}.
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return totalNumberOfCommits, commitDates, expectedValue, testCase
-	 * @throws ParseException When parsing Dates
-	 */
-	@SuppressWarnings("unused")
-	private static Stream<Arguments> testCheck() throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		
-		Set<Date> setEmpty = new HashSet<Date>();
-		
-		Set<Date> setWithNulls = new HashSet<Date>();
-		setWithNulls.add(dateFormat.parse("02/01/2019 10:00"));
-		setWithNulls.add(null);
-		setWithNulls.add(dateFormat.parse("20/02/2019 15:41"));
-	
-		Set<Date> setOneElement = new HashSet<Date>();
-		setOneElement.add(dateFormat.parse("02/01/2019 10:00"));
-		
-		Set<Date> setSameDay = new HashSet<Date>();
-		setSameDay.add(dateFormat.parse("02/01/2019 10:00"));
-		setSameDay.add(dateFormat.parse("02/01/2019 21:00"));
-		setSameDay.add(dateFormat.parse("02/01/2019 13:42"));
-		
-		Set<Date> setAnyDates = new HashSet<Date>();
-		setAnyDates.add(dateFormat.parse("01/01/2018 00:00"));
-		setAnyDates.add(dateFormat.parse("04/11/2016 14:09"));
-		setAnyDates.add(dateFormat.parse("12/10/1492 23:55"));
-		setAnyDates.add(dateFormat.parse("13/12/2010 11:55"));
-		setAnyDates.add(dateFormat.parse("18/08/2018 18:22"));
-		setAnyDates.add(dateFormat.parse("11/11/2014 23:59"));
-		
-		return Stream.of(
-				Arguments.of(null, setAnyDates, false, "TNC = NULL"),
-				Arguments.of(1, null, false, "CD = NULL"),
-				Arguments.of(null, null, false, "TNC, CD = NULL"),
-				Arguments.of(5, setAnyDates, false, "CD.size != TNC"),
-				Arguments.of(setEmpty.size(), setEmpty, false, "CD.size == TNC == 0"),
-				Arguments.of(setOneElement.size(), setOneElement, false, "CD.size == TNC == 1"),
-				Arguments.of(setWithNulls.size(), setWithNulls, false, "CD.element = null"),
-				Arguments.of(setSameDay.size(), setSameDay, true, "CD with same day"),
-				Arguments.of(setAnyDates.size(), setAnyDates, true, "Any CD")
-		);
-	}
-
-	/**
-	 * Arguments for {@link #testRun(Integer, Set, String)}.
-	 * <p>
-	 * Test cases for the formula: <br/>
-	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfCommits, commitDates, testCase
-	 * @throws ParseException When parsing Dates
+	 * @throws ParseException When parsing Dates fail
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() throws ParseException {
@@ -187,11 +137,12 @@ public class MetricAverageDaysBetweenCommitsTest {
 		
 		Set<Date> setAnyDates = new HashSet<Date>();
 		setAnyDates.add(dateFormat.parse("01/01/2018 00:00"));
-		setAnyDates.add(dateFormat.parse("04/11/2016 14:09"));
+		setAnyDates.add(dateFormat.parse("04/02/2018 14:09"));
+		setAnyDates.add(dateFormat.parse("05/02/2018 14:09"));
 		
 		return Stream.of(
-				Arguments.of(setSameDay.size(), setSameDay, new ValueDecimal((double) 0), "CD with same date"),
-				Arguments.of(setAnyDates.size(), setAnyDates, new ValueDecimal((double) 422), "Any CD")
+				Arguments.of(setSameDay.size(), setSameDay, new ValueDecimal(0.0), "CD with same date"),
+				Arguments.of(setAnyDates.size(), setAnyDates, new ValueDecimal(17.5), "Any CD")
 		);
 	}
 }

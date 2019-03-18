@@ -2,7 +2,8 @@ package metricsengine.metrics;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
@@ -19,25 +20,38 @@ import repositorydatasource.model.Repository;
 public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
+	 * Default metric description.
+	 */
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
+			"TC2",
+			"Days between the first and the last commit",
+			"",
+			"",
+			"Process Orientation",
+			"How many days have passed between the first and last commit?",
+			"DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates",
+			"CD: Repository",
+			"DBFLC >= 0, better large values.",
+			MetricDescription.EnumTypeOfScale.ABSOLUTE,
+			"CD: Set of times");
+	
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueInteger(81);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueInteger(198);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricDaysBetweenFirstAndLastCommit() {
-		super(new MetricDescription(
-					"TC2",
-					"Days between the first and the last commit",
-					"",
-					"",
-					"Process Orientation",
-					"How many days have passed between the first and last commit?",
-					"DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates",
-					"CD: Repository",
-					"ADBC >= 0, better large values.",
-					MetricDescription.EnumTypeOfScale.ABSOLUTE,
-					"CD: Set of times"), 
-				new ValueInteger(81), 
-				new ValueInteger(198));
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -56,12 +70,21 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
+		if (repository == null) return false;
 		Collection<Date> commitDates = repository.getCommitDates();
 		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
-		return  commitDates != null &&
-				totalNumberOfCommits != null &&
-				totalNumberOfCommits.intValue() >= 2 &&
-				commitDates.size() == totalNumberOfCommits.intValue();
+		
+		if(totalNumberOfCommits != null &&
+				commitDates != null &&
+				commitDates.size() == totalNumberOfCommits && 
+				totalNumberOfCommits > 1) {
+			for (Date date : commitDates) {
+				if (date == null) return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -69,9 +92,9 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		Stream<Date> commitDates = repository.getCommitDates().stream();
-		long firstDate = commitDates.min(Date::compareTo).get().getTime();
-		long lastDate = commitDates.max(Date::compareTo).get().getTime();
+		List<Date> commitDates = repository.getCommitDates().stream().sorted(Date::compareTo).collect(Collectors.toList());
+		long firstDate = commitDates.get(0).getTime();
+		long lastDate = commitDates.get(commitDates.size() - 1).getTime();
 		int result = (int) ((lastDate - firstDate) / (1000 * 60 * 60 * 24));
 		return new ValueInteger(result);
 	}
