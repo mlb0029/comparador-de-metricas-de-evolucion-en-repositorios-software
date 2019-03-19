@@ -326,7 +326,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * 
 	 * @param projectId ID of the project.
 	 * @return  Number of months that have passed since the creation of the repository
-	 * until the date of last activity or -1 if fail.
+	 * until the date of last activity.
 	 */
 	private Integer getRepositoryLifeInMonths(Integer projectId) {
 		try {
@@ -340,7 +340,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			int diffYear = lastActivityCalendar.get(Calendar.YEAR) - createdAtCalendar.get(Calendar.YEAR);
 			int diffMonth = diffYear * 12 + lastActivityCalendar.get(Calendar.MONTH) - createdAtCalendar.get(Calendar.MONTH);
 			 
-			return diffMonth;
+			return (diffMonth == 0)?1:diffMonth;
 		} catch (GitLabApiException e) {
 			return null;
 		}
