@@ -28,7 +28,7 @@ import repositorydatasource.model.Repository;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-class MetricDaysBetweenFirstAndLastCommitTest {
+public class MetricDaysBetweenFirstAndLastCommitTest {
 
 	/**
 	 * Metric under test.
@@ -50,7 +50,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit()}.
 	 */
 	@Test
-	void testMetricDaysBetweenFirstAndLastCommit() {
+	public void testMetricDaysBetweenFirstAndLastCommit() {
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION, metricDaysBetweenFirstAndLastCommit.getDescription(), "Expected default static description");
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_MIN_VALUE , metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected default static min value");
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_MAX_VALUE, metricDaysBetweenFirstAndLastCommit.getValueMaxDefault(), "Expected default static max value");
@@ -62,7 +62,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
 		assertTrue(metricDescription == metricDaysBetweenFirstAndLastCommit.getDescription(), "Expected another description");
 		assertTrue(min == metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected another min value");
@@ -91,7 +91,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 */
 	@ParameterizedTest
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argsForCheckMethodInCommitDates")
-	void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expectedValue, String testCase) {
+	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
 		assertEquals(expectedValue, metricDaysBetweenFirstAndLastCommit.check(repository), 
 				"Should return " + expectedValue +
@@ -109,7 +109,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 */
 	@ParameterizedTest
 	@MethodSource
-	void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
+	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
 		IValue actual = metricDaysBetweenFirstAndLastCommit.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
