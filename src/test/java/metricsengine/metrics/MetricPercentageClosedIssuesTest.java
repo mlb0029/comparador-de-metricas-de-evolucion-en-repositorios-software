@@ -55,7 +55,7 @@ public class MetricPercentageClosedIssuesTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
@@ -70,7 +70,7 @@ public class MetricPercentageClosedIssuesTest {
 	 * <p>
 	 * Using null arguments.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricPercentageClosedIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -94,22 +94,21 @@ public class MetricPercentageClosedIssuesTest {
 				" when totalNumberOfIssues=" + totalNumberOfIssues +
 				", numberOfClosedIssues=" + numberOfClosedIssues +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricPercentageClosedIssues.check(null));
+		assertFalse(metricPercentageClosedIssues.check(null), "Should return false when repository = null");
 	}
 
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#run(repositorydatasource.model.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
-	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
+	 * "PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues"
 	 */
-	@ParameterizedTest(name = "[{index}]: TNI: {0}, NCI: {1}")
+	@ParameterizedTest(name = "[{index}] TNI = {0}, NCI = {1}, Test Case: {2}")
 	@MethodSource
-	public void testRun(Integer totalNumberOfIssues, Integer numberOfClosedIssues) {
-		Repository repository = new Repository("", "", -1, totalNumberOfIssues, -1, numberOfClosedIssues, null, null, -1);
-		IValue expected = new ValueDecimal((double) ((numberOfClosedIssues / totalNumberOfIssues)) * 100);
+	public void testRun(Integer totalNumberOfIssues, Integer numberOfClosedIssues, IValue expected, String testCase) {
+		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, numberOfClosedIssues, null, null, 0);
 		IValue actual = metricPercentageClosedIssues.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**
@@ -119,7 +118,7 @@ public class MetricPercentageClosedIssuesTest {
 	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfIssues, numberOfClosedIssues, expectedValue, testCase
+	 * @return Stream of: Integer totalNumberOfIssues, Integer numberOfClosedIssues, Boolean expectedValue, String testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
@@ -148,25 +147,24 @@ public class MetricPercentageClosedIssuesTest {
 	}
 	
 	/**
-	 * Arguments for {@link #testRun(Integer, Integer)}
+	 * Arguments for {@link #testRun(Integer, Integer, IValue, String)}.
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfIssues, numberOfClosedIssues
+	 * @return Stream of: Integer totalNumberOfIssues, Integer numberOfClosedIssues, IValue expected, String testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, "TNI, NCI = MAX_VALUE"),
-				Arguments.of(Integer.MAX_VALUE, 1, "TNI = MAX_VALUE"),
-				Arguments.of(1, Integer.MAX_VALUE, "NCI = MAX_VALUE"),
-				Arguments.of(Integer.MAX_VALUE, 0, "TNI = MAX_VALUE, NCI = 0"),
-				Arguments.of(1, 0, "TNI = 1, NCI = 0"),
-				Arguments.of(5, 10, "Any values NCI > TNI"),
-				Arguments.of(1, 1, "TNI = NCI"),
-				Arguments.of(15, 10, "Any values NCI < TNI")
+				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, new ValueDecimal(100.0), "TNI, NCI = Integer.MAX_VALUE"),
+				Arguments.of(Integer.MAX_VALUE, 1, new ValueDecimal((double) 100 / Integer.MAX_VALUE), "TNI = Integer.MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, new ValueDecimal((double) Integer.MAX_VALUE * 100), "NCI = Integer.MAX_VALUE"),
+				Arguments.of(1, 0, new ValueDecimal(0.0), "NCI = 0"),
+				Arguments.of(5, 10, new ValueDecimal(200.0), "NCI > TNI. TNI, NCI > 0"),
+				Arguments.of(1, 1, new ValueDecimal(100.0), "TNI = NCI"),
+				Arguments.of(15, 10, new ValueDecimal((double) 1000 / 15), "NCI < TNI. TNI, NCI > 0")
 		);
 	}
 }

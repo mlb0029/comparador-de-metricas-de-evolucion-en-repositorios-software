@@ -60,7 +60,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
@@ -75,7 +75,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 * <p>
 	 * Using null arguments.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricDaysBetweenFirstAndLastCommitNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -98,7 +98,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricDaysBetweenFirstAndLastCommit.check(null));
+		assertFalse(metricDaysBetweenFirstAndLastCommit.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -111,7 +111,6 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	@MethodSource
 	void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
-		
 		IValue actual = metricDaysBetweenFirstAndLastCommit.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
 	}
@@ -123,7 +122,7 @@ class MetricDaysBetweenFirstAndLastCommitTest {
 	 * "DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfCommits, commitDates, expectedValue, testCase
+	 * @return Stream of: Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase
 	 * @throws ParseException When parsing Dates fail
 	 */
 	@SuppressWarnings("unused")

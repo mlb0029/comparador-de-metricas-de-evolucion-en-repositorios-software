@@ -79,7 +79,7 @@ public class MetricPercentageClosedIssues extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = (double) (repository.getNumberOfClosedIssues() / repository.getTotalNumberOfIssues()) * 100;
+		double result = (double) repository.getNumberOfClosedIssues() * 100 / repository.getTotalNumberOfIssues() ;
 		return new ValueDecimal(result);
 	}
 

@@ -81,7 +81,7 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = (double) (repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits());
+		double result = (double) repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits();
 		return new ValueDecimal(result);
 	}
 }

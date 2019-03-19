@@ -60,7 +60,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#MetricAverageDaysBetweenCommits(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricAverageDaysBetweenCommitsMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricAverageDaysBetweenCommits = new MetricAverageDaysBetweenCommits(metricDescription, min, max);
@@ -75,7 +75,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 * <p>
 	 * Using null arguments.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricAverageDaysBetweenCommitsNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -98,7 +98,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricAverageDaysBetweenCommits.check(null));
+		assertFalse(metricAverageDaysBetweenCommits.check(null), "Should return false when repository = null");
 	}
 	
 	/**
@@ -110,10 +110,9 @@ public class MetricAverageDaysBetweenCommitsTest {
 	@ParameterizedTest
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
-		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
-		
+		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);	
 		IValue actual = metricAverageDaysBetweenCommits.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**
@@ -123,7 +122,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfCommits, commitDates, expectedValue, testCase
+	 * @return Stream of: Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase
 	 * @throws ParseException When parsing Dates fail
 	 */
 	@SuppressWarnings("unused")

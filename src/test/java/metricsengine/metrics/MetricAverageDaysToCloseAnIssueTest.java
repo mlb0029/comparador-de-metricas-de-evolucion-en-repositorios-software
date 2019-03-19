@@ -56,7 +56,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricAverageDaysToCloseAnIssueDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricAverageDaysToCloseAnIssue = new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
@@ -71,7 +71,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	 * <p>
 	 * Using null arguments.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricAverageDaysToCloseAnIssueNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -85,7 +85,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
 	 */
-	@ParameterizedTest(name= "[{index}]: DCI: {0}, NCI: {1}, Calculable: {2}, Test Case: {3}")
+	@ParameterizedTest(name= "[{index}]: DCI: {0}, NCI: {1}, Test Case: {3}")
 	@MethodSource
 	public void testCheck(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, 0, numberOfClosedIssues, daysToCloseEachIssue, null, 0);
@@ -94,7 +94,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 				" when daysToCloseEachIssue=" + String.valueOf(daysToCloseEachIssue) +
 				", numberOfClosedIssues=" + numberOfClosedIssues +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricAverageDaysToCloseAnIssue.check(null));
+		assertFalse(metricAverageDaysToCloseAnIssue.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -105,14 +105,10 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	 */
 	@ParameterizedTest(name= "[{index}]: DCI: {0}, NCI: {1}, Test Case: {3}")
 	@MethodSource
-	public void testRun(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, String testCase) {
+	public void testRun(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, 0, numberOfClosedIssues, daysToCloseEachIssue, null, 0);
-		Integer sumDays = 0;
-		for (Integer numDays : daysToCloseEachIssue) {sumDays += numDays;}
-		
-		IValue expected = new ValueDecimal((double) sumDays / numberOfClosedIssues);
 		IValue actual = metricAverageDaysToCloseAnIssue.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**
@@ -122,7 +118,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return daysToCloseEachIssue, numberOfClosedIssues, expectedValue, testCase
+	 * @return Stream of: List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, Boolean expectedValue, String testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
@@ -145,21 +141,21 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 	
 	/**
-	 * Arguments for {@link #testRun(List, Integer, String)}.
+	 * Arguments for {@link #testRun(List, Integer, IValue, String)
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return daysToCloseEachIssue, numberOfClosedIssues, testCase
+	 * @return Stream of: List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, IValue expected, String testCase
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() {
 		Integer[] lOK = {3,65,21,75,0,12,436,1552,0};
 		Integer[] lOK0 = {0,0,0,0,0};
 		return Stream.of(
-				Arguments.of(Arrays.asList(lOK), lOK.length, "DCI , NCI, All DCI.elements != null; All DCI.elements >= 0, NCI = DCI.size > 0"),
-				Arguments.of(Arrays.asList(lOK0), lOK0.length, "DCI , NCI, All DCI.elements != null; All DCI.elements = 0, NCI = DCI.size > 0")
+				Arguments.of(Arrays.asList(lOK), lOK.length, new ValueDecimal((double) (3+65+21+75+12+436+1552) / 9), "DCI , NCI, All DCI.elements != null; All DCI.elements >= 0, NCI = DCI.size > 0"),
+				Arguments.of(Arrays.asList(lOK0), lOK0.length, new ValueDecimal(0.0), "DCI , NCI, All DCI.elements != null; All DCI.elements = 0, NCI = DCI.size > 0")
 		);
 	}
 }

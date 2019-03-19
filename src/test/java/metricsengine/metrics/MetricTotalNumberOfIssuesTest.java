@@ -52,7 +52,7 @@ public class MetricTotalNumberOfIssuesTest {
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricTotalNumberOfIssuesMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
 		AMetric metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
@@ -67,7 +67,7 @@ public class MetricTotalNumberOfIssuesTest {
 	 * <p>
 	 * Using null arguments.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
 	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
@@ -83,27 +83,27 @@ public class MetricTotalNumberOfIssuesTest {
 	 */
 	@ParameterizedTest(name= "[{index}]: TNI: {0}, Calculable: {1}, Test Case: {2}")
 	@MethodSource
-	public void testCheck(Integer totalNumberOfIssues, Boolean expectedValue, String testCase) {
+	public void testCheck(Integer totalNumberOfIssues, Boolean expected, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
-		assertEquals(expectedValue, metricTotalNumberOfIssues.check(repository), 
-				"Should return " + expectedValue + 
-				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) + 
+		assertEquals(expected, metricTotalNumberOfIssues.check(repository), 
+				"Should return " + expected +
+				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricTotalNumberOfIssues.check(null));
+		assertFalse(metricTotalNumberOfIssues.check(null), "Should return false when repository = null");
 	}
 
 	/**
 	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(repositorydatasource.model.Repository)}.
+	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 *"TNI = Total number of issues"
 	 */
-	@ParameterizedTest(name = "[{index}]: TNI: {0}, Test Case: {1}")
+	@ParameterizedTest(name = "[{index}]: TNI = {0}, Test Case: {2}")
 	@MethodSource
-	public void testRun(Integer totalNumberOfIssues, String testCase) {
+	public void testRun(Integer totalNumberOfIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, 0, null, null, 0);
-		IValue expected = new ValueInteger((int)totalNumberOfIssues);
 		IValue actual = metricTotalNumberOfIssues.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**
@@ -113,38 +113,38 @@ public class MetricTotalNumberOfIssuesTest {
 	 * "TNI = Total number of issues"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfIssues, expectedValue, testCase
+	 * @return Stream of: Integer totalNumberOfIssues, Boolean expected, String testCase.
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCheck() {
 		return Stream.of(
 				Arguments.of(Integer.MAX_VALUE, true, "TNI = Integer.MAX_VALUE"),
-				Arguments.of(10,true, "TNI = 10"),
+				Arguments.of(10,true, "TNI > 10"),
 				Arguments.of(1, true, "TNI = 1"),
-				Arguments.of(Integer.MIN_VALUE, false, "TNI = Integer.MIN_VALUE"),
-				Arguments.of(-10, false, "TNI = -10"),
-				Arguments.of(-1, false, "TNI = -1"),
 				Arguments.of(0, true, "TNI = 0"),
+				Arguments.of(Integer.MIN_VALUE, false, "TNI = Integer.MIN_VALUE"),
+				Arguments.of(-10, false, "TNI < 0"),
+				Arguments.of(-1, false, "TNI = -1"),
 				Arguments.of(null, false, "TNI = null")
 		);
 	}
 	
 	/**
-	 * Arguments for {@link #testRun(Integer, String)}.
+	 * Arguments for {@link #testRun(Integer, IValue, String)}.
 	 * <p>
 	 * Test cases for the formula: <br/>
 	 * "TNI = Total number of issues"
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return totalNumberOfIssues, testCase
+	 * @return Stream of: Integer totalNumberOfIssues, IValue expected, String testCase.
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testRun() {
 		return Stream.of(
-				Arguments.of(Integer.MAX_VALUE, "TNI = Integer.MAX_VALUE"),
-				Arguments.of(10, "TNI = 10"),
-				Arguments.of(1, "TNI = 1"),
-				Arguments.of(0, "TNI = 0")
+				Arguments.of(Integer.MAX_VALUE, new ValueInteger(Integer.MAX_VALUE), "TNI = Integer.MAX_VALUE"),
+				Arguments.of(10, new ValueInteger(10), "TNI > 0"),
+				Arguments.of(1, new ValueInteger(1), "TNI = 1"),
+				Arguments.of(0, new ValueInteger(0), "TNI = 0")
 		);
 	}
 }
