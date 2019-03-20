@@ -467,7 +467,7 @@ public class GitLabRepositoryDataSourceTest {
 			assertEquals(6, repository.getNumberOfClosedIssues().intValue(), "It does not return the correct number of closed issues");
 			assertEquals(0, repository.getDaysToCloseEachIssue().size(), "It does not return the correct number of days of closed issues");//Fail
 			assertEquals(35, repository.getCommitDates().size(), "It does not return the correct number commits dates");
-			assertEquals(0, repository.getLifeSpanMonths().intValue(), "It does not return the correct lifespan of months");
+			assertEquals(1, repository.getLifeSpanMonths().intValue(), "It does not return the correct lifespan of months");
 		}catch (RepositoryDataSourceException e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenConnected", "Exception when obtaining a public repository with public connection"));
 		}
