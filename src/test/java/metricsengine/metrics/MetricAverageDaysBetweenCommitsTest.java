@@ -89,12 +89,12 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] TNC = {0}, CD = {1}, Test Case: {3}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argsForCheckMethodInCommitDates")
-	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expectedValue, String testCase) {
+	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
-		assertEquals(expectedValue, metricAverageDaysBetweenCommits.check(repository), 
-				"Should return " + expectedValue +
+		assertEquals(expected, metricAverageDaysBetweenCommits.check(repository), 
+				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
@@ -107,7 +107,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	 * Check "run" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
 	 */
-	@ParameterizedTest
+	@ParameterizedTest(name = "[{index}] TNC = {0}, CD = {1}, Test Case: {3}")
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);	
