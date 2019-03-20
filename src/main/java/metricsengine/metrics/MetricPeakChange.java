@@ -1,6 +1,7 @@
 package metricsengine.metrics;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,25 +21,38 @@ import repositorydatasource.model.Repository;
 public class MetricPeakChange extends AMetric {
 
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
+	 * Default metric description.
+	 */
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
+			"C1 - Peak Change Count",
+			"Number of changes in the peak monthnormalized on the overall number of changes",
+			"Jacek Ratzinger",
+			"2007",
+			"Time constraints",
+			"What is the proportion of work done in the month with the greatest number of changes?",
+			"PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits",
+			"NCPM, TNC: Repository",
+			"0 <= PCC <= 1, better medium values",
+			MetricDescription.EnumTypeOfScale.RATIO,
+			"NCPM:Count, TNC:Count");
+		
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(30.0);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(40.0);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricPeakChange() {
-		super(new MetricDescription(
-					"C1 - Peak Change Count",
-					"Number of changes in the peak monthnormalized on the overall number of changes",
-					"Jacek Ratzinger",
-					"2007",
-					"Time constraints",
-					"What is the proportion of work done in the month with the greatest number of changes?",
-					"PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits",
-					"NCPM, TNC: Repository",
-					"0 <= PCC <= 1, better medium values",
-					MetricDescription.EnumTypeOfScale.RATIO,
-					"NCPM:Count, TNC:Count"), 
-				new ValueDecimal(30.0), 
-				new ValueDecimal(40.0));
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -57,10 +71,21 @@ public class MetricPeakChange extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		return  repository != null &&
-				repository.getTotalNumberOfCommits() != null &&
-				repository.getCommitDates() != null &&
-				repository.getCommitDates().size() == repository.getTotalNumberOfCommits().intValue();
+		if (repository == null) return false;
+		Collection<Date> commitDates = repository.getCommitDates();
+		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		
+		if(totalNumberOfCommits != null &&
+				commitDates != null &&
+				commitDates.size() == totalNumberOfCommits && 
+				totalNumberOfCommits > 0) {
+			for (Date date : commitDates) {
+				if (date == null) return false;
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -91,7 +116,7 @@ public class MetricPeakChange extends AMetric {
 		
 		commitsInPeakMonth = commitsPerMonth.entrySet().stream().max(Map.Entry.comparingByValue()).get().getValue();
 		
-		peakChange = (double) (commitsInPeakMonth / totalNumberOfCommits); 
+		peakChange = (double) commitsInPeakMonth / totalNumberOfCommits; 
 		return new ValueDecimal(peakChange);
 	}
 }
