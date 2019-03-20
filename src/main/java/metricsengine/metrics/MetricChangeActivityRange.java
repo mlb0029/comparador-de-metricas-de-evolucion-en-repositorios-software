@@ -1,6 +1,3 @@
-/**
- * 
- */
 package metricsengine.metrics;
 
 import metricsengine.AMetric;
@@ -15,13 +12,11 @@ import repositorydatasource.model.Repository;
  * @author Miguel Ángel León Bardavío - mlb0029
  */
 public class MetricChangeActivityRange extends AMetric {
+	
 	/**
-	 * Constructor that initializes the metric with default values defined by the programmer.
-	 *
-	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * Default metric description.
 	 */
-	public MetricChangeActivityRange() {
-		super(new MetricDescription(
+	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
 					"TC3 - Change Activity Range",
 					"Number of changes relative to the number of months in the period",
 					"Jacek Ratzinger",
@@ -32,9 +27,25 @@ public class MetricChangeActivityRange extends AMetric {
 					"TNC, NM: Repository",
 					"CAR > 0, better medium values",
 					MetricDescription.EnumTypeOfScale.RATIO,
-					"TNC:Count, NM: Count"), 
-				new ValueDecimal(6.0), 
-				new ValueDecimal(26.4));
+					"TNC:Count, NM: Count");
+		
+	/**
+	 * Minimum acceptable value.
+	 */
+	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(6.0);
+	
+	/**
+	 * Maximum acceptable value.
+	 */
+	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(26.4);
+	
+	/**
+	 * Constructor that initializes the metric with default values.
+	 *
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public MetricChangeActivityRange() {
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
 	}
 	
 	/**
@@ -53,9 +64,12 @@ public class MetricChangeActivityRange extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
+		if (repository == null) return false;
 		return  repository != null &&
 				repository.getTotalNumberOfCommits() != null &&
-				repository.getLifeSpanMonths() != null;
+				repository.getTotalNumberOfCommits() >= 0 &&
+				repository.getLifeSpanMonths() != null &&
+				repository.getLifeSpanMonths() > 0;
 	}
 
 	/* (non-Javadoc)
@@ -63,9 +77,7 @@ public class MetricChangeActivityRange extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		Integer lifeSpanMonths = (repository.getLifeSpanMonths() == 0?repository.getLifeSpanMonths():1);
-		double result = repository.getTotalNumberOfCommits() / lifeSpanMonths;
+		double result = (double) repository.getTotalNumberOfCommits() / repository.getLifeSpanMonths();
 		return new ValueDecimal(result);
 	}
-
 }
