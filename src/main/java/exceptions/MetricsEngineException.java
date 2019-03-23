@@ -18,6 +18,5 @@ public class MetricsEngineException extends Exception {
 	 */
 	public MetricsEngineException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 }

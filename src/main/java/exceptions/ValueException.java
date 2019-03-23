@@ -25,6 +25,5 @@ public class ValueException extends Exception {
 	 */
 	public ValueException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 }

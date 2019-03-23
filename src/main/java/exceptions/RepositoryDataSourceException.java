@@ -22,6 +22,5 @@ public class RepositoryDataSourceException extends Exception {
 	 */
 	public RepositoryDataSourceException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 }
