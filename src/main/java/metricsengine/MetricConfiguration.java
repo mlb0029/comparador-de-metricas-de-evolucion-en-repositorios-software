@@ -93,4 +93,20 @@ public class MetricConfiguration implements IMetric {
 	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
 		return this.metric.calculate(repository, metricConfig, metricsResults);
 	}
+	
+	/**
+	 * 
+	 * Execute the calculate method of IMetric taking the same instance 
+	 * as an argument to the MetricConfiguration parameter.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository  Entity to be measured
+	 * @param metricsResults Collector where to store the result
+	 * @return The calculated value.
+	 * @throws UncalculableMetricException When the metric can not be calculated for the repository. 
+	 * @see {@link IMetric#calculate(Repository, MetricConfiguration, MetricsResults)}
+	 */
+	public IValue calculate(Repository repository, MetricsResults metricsResults) throws UncalculableMetricException {
+		return this.metric.calculate(repository, this, metricsResults);
+	}
 }
