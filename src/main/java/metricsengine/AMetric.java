@@ -120,7 +120,7 @@ public abstract class AMetric implements IMetric {
 	@Override
 	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
 		if (repository == null || metricConfig == null ||  metricsResults == null)
-			throw new IllegalArgumentException();
+			throw new UncalculableMetricException("Impossible to calculate with any of the null arguments");
 		if (check(repository)) {
 			IValue value = run(repository);
 			metricsResults.addMeasure(new Measure(metricConfig, value));
@@ -128,7 +128,7 @@ public abstract class AMetric implements IMetric {
 		}else {
 			throw new UncalculableMetricException(
 					"Can not calculate the metric '" + getName() + 
-					"' for the repository '" + repository.getName() + "'.");
+					"' for the repository '" + repository.getName() + "'");
 		}
 	}
 	
