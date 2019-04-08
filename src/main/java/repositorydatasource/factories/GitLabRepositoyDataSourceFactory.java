@@ -1,7 +1,7 @@
 package repositorydatasource.factories;
 
-import repositorydatasource.GitLabRepositoryDataSource;
-import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.rds.GitLabRepositoryDataSource;
+import repositorydatasource.rds.IRepositoryDataSource;
 
 /**
  * Factory of GitLab Reposistory Data Source.

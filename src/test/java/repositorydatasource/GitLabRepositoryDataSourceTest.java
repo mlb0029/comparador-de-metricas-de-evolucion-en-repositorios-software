@@ -17,6 +17,8 @@ import repositorydatasource.factories.GitLabRepositoyDataSourceFactory;
 import repositorydatasource.factories.IRepositoryDataSourceFactory;
 import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
+import repositorydatasource.rds.GitLabRepositoryDataSource;
+import repositorydatasource.rds.IRepositoryDataSource;
 
 /**
  * Test for GitLabRepositoryDataSource.
@@ -111,7 +113,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getGitLabRepositoryDataSource()}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getGitLabRepositoryDataSource()}.
 	 * <p>
 	 * It ensures that there can only be one instance of RepositoryDataSource.
 	 * 
@@ -123,7 +125,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect()}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect()}.
 	 * <p>
 	 * It ensures that a correct connection does not throw an exception and that the connection type is 'CONNECTED'.
 	 * 
@@ -137,7 +139,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect()}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect()}.
 	 * <p>
 	 * It ensures that a failed connection connection throws an exception and that the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -152,7 +154,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 * <p>
 	 * 
 	 * If user and password are specified, it ensures that no exception is thrown and that the connection type is 'LOGGED'.
@@ -169,7 +171,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 * <p>
 	 * Test the method using a set of wrong user-password pairs that should raise an exception and the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -185,7 +187,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 		
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String)}.
 	 * <p>
 	 * If a correct token is specified, it ensures that no exception is thrown and that the connection type is 'LOGGED'.
 	 * 
@@ -201,7 +203,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String)}.
 	 * <p>
 	 * Test the method using a set of tokens that should raise an exception and the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -217,7 +219,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#disconnect()}.
 	 * <p>
 	 * It is ensured that it disconnects correctly after being connected.
 	 * 
@@ -238,7 +240,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#disconnect()}.
 	 * <p>
 	 * It makes sure that an exception is thrown while trying to disconnect without being connected.
 	 * 
@@ -253,7 +255,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a public repository when disconnected.
 	 * 
@@ -267,7 +269,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a private repository when disconnected.
 	 * 
@@ -281,7 +283,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a non-existent repository when disconnected.
 	 * 
@@ -295,7 +297,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -318,7 +320,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -337,7 +339,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -356,7 +358,7 @@ public class GitLabRepositoryDataSourceTest {
 	}	
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -383,7 +385,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -410,7 +412,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -428,7 +430,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 

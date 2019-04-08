@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.gitlab4j.api.GitLabApiException;
 import org.junit.jupiter.api.Test;
 
-import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.model.EnumConnectionType;
+import repositorydatasource.rds.IRepositoryDataSource;
 
 /**
  * Test for GitLabRepositoyDataSourceFactory.

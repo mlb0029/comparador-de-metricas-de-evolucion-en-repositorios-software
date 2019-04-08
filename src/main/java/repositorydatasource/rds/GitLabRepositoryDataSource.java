@@ -1,4 +1,4 @@
-package repositorydatasource;
+package repositorydatasource.rds;
 
 import java.util.ArrayList;
 import java.util.Calendar;

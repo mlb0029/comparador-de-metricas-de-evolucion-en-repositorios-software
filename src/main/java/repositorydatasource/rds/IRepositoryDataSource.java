@@ -1,4 +1,4 @@
-package repositorydatasource;
+package repositorydatasource.rds;
 
 import exceptions.RepositoryDataSourceException;
 import repositorydatasource.model.EnumConnectionType;

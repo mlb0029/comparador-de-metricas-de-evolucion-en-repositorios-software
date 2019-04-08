@@ -2,7 +2,7 @@ package repositorydatasource.factories;
 
 import org.gitlab4j.api.GitLabApiException;
 
-import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.rds.IRepositoryDataSource;
 
 /**
  * Factory interface of repository data sources.
