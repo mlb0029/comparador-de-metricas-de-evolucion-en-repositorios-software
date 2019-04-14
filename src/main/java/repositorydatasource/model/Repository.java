@@ -12,6 +12,7 @@ import java.util.Set;
  *
  */
 public class Repository {
+	
 	/**
 	 * URL.
 	 */
@@ -45,12 +46,12 @@ public class Repository {
 	/**
 	 * Days to close each issue.
 	 */
-	private List<Integer> daysToCloseEachIssue;
+	private Collection<Integer> daysToCloseEachIssue;
 	
 	/**
 	 * Dates of commits.
 	 */
-	private Set<Date> commitDates;
+	private Collection<Date> commitDates;
 	
 	/**
 	 * Number of months that have passed since the creation of the repository
@@ -83,67 +84,185 @@ public class Repository {
 		this.lifeSpanMonths = lifeSpanMonths;
 	}
 	
+	public Repository() {}
+
 	/**
-	 * @return URL.
+	 * Gets the url.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the url
 	 */
 	public String getUrl() {
 		return url;
 	}
-	
+
 	/**
-	 * @return Name.
+	 * Gets the name.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
-	 * @return ID.
+	 * Gets the id.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the id
 	 */
 	public Integer getId() {
 		return id;
 	}
-	
+
 	/**
-	 * @return Total number of issues.
+	 * Gets the totalNumberOfIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the totalNumberOfIssues
 	 */
 	public Integer getTotalNumberOfIssues() {
 		return totalNumberOfIssues;
 	}
-	
+
 	/**
-	 * @return Total number of commits.
+	 * Gets the totalNumberOfCommits.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the totalNumberOfCommits
 	 */
 	public Integer getTotalNumberOfCommits() {
 		return totalNumberOfCommits;
 	}
-	
+
 	/**
-	 * @return Number of closed issues.
+	 * Gets the numberOfClosedIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the numberOfClosedIssues
 	 */
 	public Integer getNumberOfClosedIssues() {
 		return numberOfClosedIssues;
 	}
-	
+
 	/**
-	 * @return Days to close each issue.
+	 * Gets the daysToCloseEachIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the daysToCloseEachIssue
 	 */
 	public Collection<Integer> getDaysToCloseEachIssue() {
 		return daysToCloseEachIssue;
 	}
-	
+
 	/**
-	 * @return Dates of commits.
+	 * Gets the commitDates.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the commitDates
 	 */
 	public Collection<Date> getCommitDates() {
 		return commitDates;
 	}
-	
+
 	/**
-	 * @return Number of months that have passed since the creation of the repository
-	 * until the date of last activity.
+	 * Gets the lifeSpanMonths.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the lifeSpanMonths
 	 */
 	public Integer getLifeSpanMonths() {
 		return lifeSpanMonths;
 	}
+
+	/**
+	 * Sets the url.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * Sets the name.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Sets the id.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * Sets the totalNumberOfIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param totalNumberOfIssues the totalNumberOfIssues to set
+	 */
+	public void setTotalNumberOfIssues(Integer totalNumberOfIssues) {
+		this.totalNumberOfIssues = totalNumberOfIssues;
+	}
+
+	/**
+	 * Sets the totalNumberOfCommits.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param totalNumberOfCommits the totalNumberOfCommits to set
+	 */
+	public void setTotalNumberOfCommits(Integer totalNumberOfCommits) {
+		this.totalNumberOfCommits = totalNumberOfCommits;
+	}
+
+	/**
+	 * Sets the numberOfClosedIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param numberOfClosedIssues the numberOfClosedIssues to set
+	 */
+	public void setNumberOfClosedIssues(Integer numberOfClosedIssues) {
+		this.numberOfClosedIssues = numberOfClosedIssues;
+	}
+
+	/**
+	 * Sets the setDaysToCloseEachIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param daysToCloseEachIssue the daysToCloseEachIssue to set
+	 */
+	public void setDaysToCloseEachIssue(List<Integer> daysToCloseEachIssue) {
+		this.daysToCloseEachIssue = daysToCloseEachIssue;
+	}
+
+	/**
+	 * Sets the commitDates.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param commitDates the commitDates to set
+	 */
+	public void setCommitDates(Set<Date> commitDates) {
+		this.commitDates = commitDates;
+	}
+
+	/**
+	 * Sets the lifeSpanMonths.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param lifeSpanMonths the lifeSpanMonths to set
+	 */
+	public void setLifeSpanMonths(Integer lifeSpanMonths) {
+		this.lifeSpanMonths = lifeSpanMonths;
+	};
 }
