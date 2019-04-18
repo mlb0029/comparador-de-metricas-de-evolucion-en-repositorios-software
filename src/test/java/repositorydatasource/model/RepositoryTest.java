@@ -20,11 +20,17 @@ public class RepositoryTest {
 
 	/**
 	 * Test method for {@link repositorydatasource.model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
-	 * with nullv values.
+	 * with null values.
 	 */
 	@Test
 	public void testRepositoryNull() {
-		Repository repo = new Repository(null, null, null, null, null, null, null, null, null);
+		Repository repo = new Repository(null, null, null);
+		repo.setTotalNumberOfIssues(null);
+		repo.setTotalNumberOfCommits(null);
+		repo.setNumberOfClosedIssues(null);
+		repo.setDaysToCloseEachIssue(null);
+		repo.setCommitDates(null);
+		repo.setLifeSpanMonths(null);
 		assertNull(repo.getUrl(), "Fail in null url");
 		assertNull(repo.getName(), "Fail in null name");
 		assertNull(repo.getId(), "Fail in id");
@@ -42,7 +48,13 @@ public class RepositoryTest {
 	 */
 	@Test
 	public void testRepositoryEmptyStrings() {
-		Repository repo = new Repository("", "", 0, 0, 0, 0, new ArrayList<Integer>(), new HashSet<Date>(), 0);
+		Repository repo = new Repository("", "", 0);
+		repo.setTotalNumberOfIssues(0);
+		repo.setTotalNumberOfCommits(0);
+		repo.setNumberOfClosedIssues(0);
+		repo.setDaysToCloseEachIssue(new ArrayList<Integer>());
+		repo.setCommitDates(new HashSet<Date>());
+		repo.setLifeSpanMonths(0);
 		assertEquals("", repo.getUrl(), "Fail in url");
 		assertEquals("", repo.getName(), "Fail in name");
 		assertEquals(0, repo.getId().intValue(), "Fail in id");

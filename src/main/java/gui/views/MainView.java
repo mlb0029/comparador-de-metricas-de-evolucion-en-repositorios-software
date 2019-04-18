@@ -62,11 +62,11 @@ public class MainView extends VerticalLayout {
      */
     private static Collection<Repository> getTestSource(){
     	Collection<Repository> repositories = new ArrayList<Repository>();
-    	Repository repository1 = new Repository("urlA", "Abcd", 1, 2, 3, 4, null, null, 5);
-    	Repository repository2 = new Repository("urlB", "bcdA", 2, 2, 3, 4, null, null, 5);
-    	Repository repository3 = new Repository("urlC", "cde", 3, 2, 3, 4, null, null, 5);
-    	Repository repository4 = new Repository("urlCD", "Efg", 4, 2, 3, 4, null, null, 5);
-    	Repository repository5 = new Repository("urlAD", "HIJ", 5, 2, 3, 4, null, null, 5);
+    	Repository repository1 = new Repository("urlA", "Abcd", 1);
+    	Repository repository2 = new Repository("urlB", "bcdA", 2);
+    	Repository repository3 = new Repository("urlC", "cde", 3);
+    	Repository repository4 = new Repository("urlCD", "Efg", 4);
+    	Repository repository5 = new Repository("urlAD", "HIJ", 5);
     	repositories.add(repository1);
     	repositories.add(repository2);
     	repositories.add(repository3);

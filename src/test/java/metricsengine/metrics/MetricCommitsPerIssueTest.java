@@ -86,7 +86,9 @@ public class MetricCommitsPerIssueTest {
 	@ParameterizedTest(name= "[{index}]: TNI: {0}, TNC: {1}, Test Case: {3}")
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Boolean expected, String testCase) {
-		Repository repository = new Repository("", "", 0, totalNumberOfIssues, totalNumberOfCommits, 0, null, null, 0);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
 		assertEquals(expected, metricCommitsPerIssue.check(repository), 
 				"Should return " + expected + 
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
@@ -104,7 +106,9 @@ public class MetricCommitsPerIssueTest {
 	@ParameterizedTest(name = "[{index}]: TNI: {0}, TNC: {1}, Test Case: {3}")
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer totalNumberOfCommits, IValue expected, String testCase) {
-		Repository repository = new Repository("", "", 0, totalNumberOfIssues, totalNumberOfCommits, 0, null, null, 0);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
 		IValue actual = metricCommitsPerIssue.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

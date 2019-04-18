@@ -92,7 +92,9 @@ public class MetricPeakChangeTest {
 	@ParameterizedTest(name = "[{index}] TNC = {0}, CD = {1}, Test Case: {3}")
 	@MethodSource
 	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expected, String testCase) {
-		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setCommitDates(commitDates);
 		assertEquals(expected, metricPeakChange.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
@@ -110,7 +112,9 @@ public class MetricPeakChangeTest {
 	@ParameterizedTest(name = "[{index}] TNC = {0}, CD = {1}, Test Case: {3}")
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
-		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, commitDates, 0);	
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setCommitDates(commitDates);	
 		IValue actual = metricPeakChange.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

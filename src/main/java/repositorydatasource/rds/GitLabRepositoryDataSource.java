@@ -25,15 +25,27 @@ import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 
 /**
+ * Implements IRepositoryDataSource that obtains the data from GitLab
+ * 
  * @author migue
  *
  */
 public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(GitLabRepositoryDataSource.class.getName());
+
+	/**
+	 * Default Host URL.
+	 */
+	public static final String HOST_URL = "https://gitlab.com";
+
+	/**
 	 * Single instance of the class.
 	 */
-	private static GitLabRepositoryDataSource gitLabRepositoryDataSource;
+	private static GitLabRepositoryDataSource instance;
 
 	/**
 	 * Connection type.
@@ -41,13 +53,11 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	private EnumConnectionType connectionType;
 
 	/**
-	 * GitLab API for connection to gitlab.
+	 * API that helps to connect to GitLab.
+	 * 
+	 * @see GitLabApi
 	 */
 	private GitLabApi gitLabApi;
-
-	public static final String HOST_URL = "https://gitlab.com";
-	
-	private static final Logger LOGGER = Logger.getLogger(GitLabRepositoryDataSource.class.getName());
 
 	/**
 	 * Constructor that returns a not connected gitlabrepositorydatasource.
@@ -63,8 +73,8 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @return A gitlab repository data source.
 	 */
 	public static GitLabRepositoryDataSource getGitLabRepositoryDataSource() {
-		if (GitLabRepositoryDataSource.gitLabRepositoryDataSource == null) GitLabRepositoryDataSource.gitLabRepositoryDataSource = new GitLabRepositoryDataSource();
-		return gitLabRepositoryDataSource;
+		if (GitLabRepositoryDataSource.instance == null) GitLabRepositoryDataSource.instance = new GitLabRepositoryDataSource();
+		return instance;
 	}
 
 	/* (non-Javadoc)
@@ -168,16 +178,13 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		List<Integer> daysToCloseEachIssue = getDaysToCloseEachIssue(projectId);
 		Set<Date> commitDates = getCommitsDates(projectId);
 		int lifeSpanMonths = getRepositoryLifeInMonths(projectId);
-		repo = new Repository(
-				repositoryURL, 
-				name, 
-				projectId, 
-				totalNumberOfIssues, 
-				totalNumberOfCommits,
-				numberOfClosedIssues,
-				daysToCloseEachIssue,
-				commitDates, 
-				lifeSpanMonths);
+		repo = new Repository(repositoryURL, name, projectId);
+		repo.setTotalNumberOfIssues(totalNumberOfIssues);
+		repo.setTotalNumberOfCommits(totalNumberOfCommits);
+		repo.setNumberOfClosedIssues(numberOfClosedIssues);
+		repo.setDaysToCloseEachIssue(daysToCloseEachIssue);
+		repo.setCommitDates(commitDates);
+		repo.setLifeSpanMonths(lifeSpanMonths);
 		return repo;
 	}
 	
@@ -189,7 +196,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 */
 	private Integer obtenerIDProyecto(String repositoryURL) {
 		try {
-			Integer retorno = -1;
+			Integer retorno = null;
 			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];
 			String propietarioYGrupo = sProyecto.replaceAll("/" + nombreProyecto, "");

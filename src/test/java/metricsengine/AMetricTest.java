@@ -140,12 +140,12 @@ public class AMetricTest {
 	@Test
 	@Disabled("Not Implemented")
 	public void testCalculate() {
-		Repository repository = new Repository("", "", 10, 0, 0, 0, null, null, 0);
+		Repository repository = new Repository("URL", "Test", 1);
 		MetricConfiguration metricConfig = new MetricConfiguration(testMetric);
 		MetricsResults metricsResults = new MetricsResults();
 		try {
 			IValue resultActual = testMetric.calculate(repository, metricConfig, metricsResults);
-			assertEquals(10, Integer.parseInt(resultActual.valueToString()));
+			assertEquals(1, Integer.parseInt(resultActual.valueToString()));
 			assertEquals(1, metricsResults.getMeasures().size());
 			List<Measure> measures = new ArrayList<Measure>(metricsResults.getMeasures());
 			assertEquals(new Measure(metricConfig, resultActual), measures.get(0));
@@ -178,7 +178,7 @@ public class AMetricTest {
 	 */
 	@SuppressWarnings("unused")
 	private static Stream<Arguments> testCalculateNullArgs(){
-		Repository repository = new Repository("", "", 0, 0, 0, 0, null, null, 0);
+		Repository repository = new Repository("URL", "Test", 1);
 		MetricConfiguration mConfiguration = new MetricConfiguration(testMetric);
 		MetricsResults mResults = new MetricsResults();
 		return Stream.of(

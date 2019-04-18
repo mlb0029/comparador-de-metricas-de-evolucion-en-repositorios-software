@@ -86,7 +86,9 @@ public class MetricChangeActivityRangeTest {
 	@ParameterizedTest(name = "[{index}] TNC = {0}, NM = {1}, Test Case: {3}")
 	@MethodSource
 	public void testCheck(Integer totalNumberOfCommits, Integer lifeSpanMonths, Boolean expected, String testCase) {
-		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, null, lifeSpanMonths);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setLifeSpanMonths(lifeSpanMonths);
 		assertEquals(expected, metricChangeActivityRange.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
@@ -104,7 +106,9 @@ public class MetricChangeActivityRangeTest {
 	@ParameterizedTest(name = "[{index}] TNC = {0}, NM = {1}, Test Case: {3}")
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Integer lifeSpanMonths, IValue expected, String testCase) {
-		Repository repository = new Repository("", "", 0, 0, totalNumberOfCommits, 0, null, null, lifeSpanMonths);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setLifeSpanMonths(lifeSpanMonths);
 		IValue actual = metricChangeActivityRange.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

@@ -88,7 +88,9 @@ public class MetricPercentageClosedIssuesTest {
 	@ParameterizedTest(name= "[{index}]: TNI: {0}, NCI: {1}, Calculable: {2}, Test Case: {3}")
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
-		Repository repository = new Repository("", "", -1, totalNumberOfIssues, -1, numberOfClosedIssues, null, null, -1);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setNumberOfClosedIssues(numberOfClosedIssues);
 		assertEquals(expectedValue, metricPercentageClosedIssues.check(repository), 
 				"Should return " + expectedValue +
 				" when totalNumberOfIssues=" + totalNumberOfIssues +
@@ -106,7 +108,9 @@ public class MetricPercentageClosedIssuesTest {
 	@ParameterizedTest(name = "[{index}] TNI = {0}, NCI = {1}, Test Case: {2}")
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer numberOfClosedIssues, IValue expected, String testCase) {
-		Repository repository = new Repository("", "", 0, totalNumberOfIssues, 0, numberOfClosedIssues, null, null, 0);
+		Repository repository = new Repository("URL", "Test", 1);
+		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setNumberOfClosedIssues(numberOfClosedIssues);
 		IValue actual = metricPercentageClosedIssues.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
