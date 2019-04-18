@@ -1,10 +1,10 @@
-package exceptions;
+package repositorydatasource;
 
 /**
  * @author MALB
  *
  */
-public class RepositoryDataSourceException extends Exception {
+public class ExceptionRepositoryDataSource extends Exception {
 	/**
 	 * 
 	 */
@@ -13,14 +13,14 @@ public class RepositoryDataSourceException extends Exception {
 	/**
 	 * 
 	 */
-	public RepositoryDataSourceException() {
+	public ExceptionRepositoryDataSource() {
 		super();
 	}
 
 	/**
 	 * @param message
 	 */
-	public RepositoryDataSourceException(String message) {
+	public ExceptionRepositoryDataSource(String message) {
 		super(message);
 	}
 }

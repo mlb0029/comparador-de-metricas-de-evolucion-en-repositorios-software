@@ -1,4 +1,4 @@
-package repositorydatasource.rds;
+package repositorydatasource;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,8 +20,6 @@ import org.gitlab4j.api.models.Issue;
 import org.gitlab4j.api.models.IssueFilter;
 import org.gitlab4j.api.models.Project;
 
-import exceptions.RepositoryDataSourceException;
-import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
 
 /**
@@ -81,7 +79,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#connect()
 	 */
 	@Override
-	public void connect() throws RepositoryDataSourceException {
+	public void connect() throws ExceptionRepositoryDataSource {
 			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, "");
 			connectionType = EnumConnectionType.CONNECTED;
 	}
@@ -90,17 +88,17 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#connect(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void connect(String username, String password) throws RepositoryDataSourceException {
+	public void connect(String username, String password) throws ExceptionRepositoryDataSource {
 		try {
 			if(username == null || username.equals("") || password == null || password.equals("")) {
-				throw new RepositoryDataSourceException("The user or password has not been specified");
+				throw new ExceptionRepositoryDataSource("The user or password has not been specified");
 			}
 			gitLabApi = GitLabApi.oauth2Login(GitLabRepositoryDataSource.HOST_URL, username, password.toCharArray());
 			connectionType = EnumConnectionType.LOGGED;
 		} catch (GitLabApiException e) {
 			LOGGER.log(Level.SEVERE, "Wrong username and / or password", e);
-			throw new RepositoryDataSourceException("Wrong username and / or password or another error when connecting");
-		} catch (RepositoryDataSourceException e) {
+			throw new ExceptionRepositoryDataSource("Wrong username and / or password or another error when connecting");
+		} catch (ExceptionRepositoryDataSource e) {
 			LOGGER.log(Level.SEVERE, "The user or password has not been specified", e);
 			throw e;
 		}
@@ -110,22 +108,22 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#connect(java.lang.String)
 	 */
 	@Override
-	public void connect(String token) throws RepositoryDataSourceException {
+	public void connect(String token) throws ExceptionRepositoryDataSource {
 		try {
 			if(token == null || token.equals("")) {
-				throw new RepositoryDataSourceException("No token specified");
+				throw new ExceptionRepositoryDataSource("No token specified");
 			}
 			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
 			gitLabApi.getUserApi().getCurrentUser();
 			connectionType = EnumConnectionType.LOGGED;		
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			LOGGER.log(Level.SEVERE, "Attempting to login without specifying a token", e);
-			throw new RepositoryDataSourceException("Attempting to login without specifying a token");
+			throw new ExceptionRepositoryDataSource("Attempting to login without specifying a token");
 		} catch (GitLabApiException e) {
 			gitLabApi = null;
 			connectionType = EnumConnectionType.NOT_CONNECTED;
 			LOGGER.log(Level.SEVERE, "Attempting to login with a wrong token", e);
-			throw new RepositoryDataSourceException("Attempting to login with a wrong token");
+			throw new ExceptionRepositoryDataSource("Attempting to login with a wrong token");
 		}
 	}
 
@@ -133,16 +131,16 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#disconnect()
 	 */
 	@Override
-	public void disconnect() throws RepositoryDataSourceException {
+	public void disconnect() throws ExceptionRepositoryDataSource {
 		try {
 			if(gitLabApi == null) {
-				throw new RepositoryDataSourceException("There is no connection.");
+				throw new ExceptionRepositoryDataSource("There is no connection.");
 			}
 			gitLabApi = null;
 			connectionType = EnumConnectionType.NOT_CONNECTED;
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			LOGGER.log(Level.SEVERE, "Error when connecting", e);
-			throw new RepositoryDataSourceException("Error when connecting");
+			throw new ExceptionRepositoryDataSource("Error when connecting");
 		}
 	}
 
@@ -158,16 +156,16 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @see repositorydatasource.IRepositoryDataSource#getRepository(java.lang.String)
 	 */
 	@Override
-	public Repository getRepository(String repositoryURL) throws RepositoryDataSourceException{
+	public Repository getRepository(String repositoryURL) throws ExceptionRepositoryDataSource{
 		if (connectionType == EnumConnectionType.NOT_CONNECTED) {
-			RepositoryDataSourceException e = new RepositoryDataSourceException("Trying to get a repository without connection.");
+			ExceptionRepositoryDataSource e = new ExceptionRepositoryDataSource("Trying to get a repository without connection.");
 			LOGGER.log(Level.SEVERE, "Trying to get a repository without connection", e);
 			throw e;
 		}
 		Repository repo;
 		Integer projectId = obtenerIDProyecto(repositoryURL);
 		if (projectId == null) {
-			RepositoryDataSourceException e = new RepositoryDataSourceException("Project not found");
+			ExceptionRepositoryDataSource e = new ExceptionRepositoryDataSource("Project not found");
 			LOGGER.log(Level.SEVERE, "Project not found", e);
 			throw e;
 		}

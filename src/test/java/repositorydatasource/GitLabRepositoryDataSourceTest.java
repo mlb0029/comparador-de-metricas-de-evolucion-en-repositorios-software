@@ -12,13 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import exceptions.RepositoryDataSourceException;
-import repositorydatasource.factories.GitLabRepositoyDataSourceFactory;
-import repositorydatasource.factories.IRepositoryDataSourceFactory;
-import repositorydatasource.model.EnumConnectionType;
+import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+
 import repositorydatasource.model.Repository;
-import repositorydatasource.rds.GitLabRepositoryDataSource;
-import repositorydatasource.rds.IRepositoryDataSource;
 
 /**
  * Test for GitLabRepositoryDataSource.
@@ -113,7 +109,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getGitLabRepositoryDataSource()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getGitLabRepositoryDataSource()}.
 	 * <p>
 	 * It ensures that there can only be one instance of RepositoryDataSource.
 	 * 
@@ -125,7 +121,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect()}.
 	 * <p>
 	 * It ensures that a correct connection does not throw an exception and that the connection type is 'CONNECTED'.
 	 * 
@@ -139,7 +135,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect()}.
 	 * <p>
 	 * It ensures that a failed connection connection throws an exception and that the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -149,12 +145,12 @@ public class GitLabRepositoryDataSourceTest {
 	@Test
 	public void testConnectFAILED() {
 		// TODO Quitar Disabled y sustituir pos asumir que no hay conexión a internet.
-		assertThrows(RepositoryDataSourceException.class, () -> {}, getErrorMsg("testConnectFAILED", "Exception must be thrown if connection error occurs"));
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {}, getErrorMsg("testConnectFAILED", "Exception must be thrown if connection error occurs"));
 		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), getErrorMsg("testConnectFAILED", "Connection type must be 'NOT_CONNECTED'"));
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 * <p>
 	 * 
 	 * If user and password are specified, it ensures that no exception is thrown and that the connection type is 'LOGGED'.
@@ -171,7 +167,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String, java.lang.String)}.
 	 * <p>
 	 * Test the method using a set of wrong user-password pairs that should raise an exception and the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -180,14 +176,14 @@ public class GitLabRepositoryDataSourceTest {
 	@ParameterizedTest(name = "Run with User = \"{0}\" and Password = \"{1}\" must throw an exception.")
 	@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
 	public void testConnectUserPasswordWrong(String user, String password) {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.connect(user, password);
 		}, getErrorMsg("testConnectUserPasswordWrong", "Wrong user-password should throw an exception"));
 		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), getErrorMsg("testConnectUserPasswordWrong", "Connection type must be 'NOT_CONNECTED'"));
 	}
 		
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
 	 * <p>
 	 * If a correct token is specified, it ensures that no exception is thrown and that the connection type is 'LOGGED'.
 	 * 
@@ -203,7 +199,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#connect(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#connect(java.lang.String)}.
 	 * <p>
 	 * Test the method using a set of tokens that should raise an exception and the connection type is 'NOT_CONNECTED'.
 	 * 
@@ -212,14 +208,14 @@ public class GitLabRepositoryDataSourceTest {
 	@ParameterizedTest(name = "Run with Token = \"{0}\" must throw an exception.")
 	@CsvFileSource(resources = "/testConnectTokenWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
 	public void testConnectPivateTokenWrong(String token) {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.connect(token);
 		}, getErrorMsg("testConnectPivateTokenWrong", "Wrong token should throw an exception"));
 		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), getErrorMsg("testConnectPivateTokenWrong", "Connection type must be 'NOT_CONNECTED'"));
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#disconnect()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
 	 * <p>
 	 * It is ensured that it disconnects correctly after being connected.
 	 * 
@@ -230,7 +226,7 @@ public class GitLabRepositoryDataSourceTest {
 		// TODO Assumption?
 		try {
 			repositoryDataSource.connect();
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testDisconnectOK", "Connection error"));
 		}
 		assertDoesNotThrow(() -> {
@@ -240,7 +236,7 @@ public class GitLabRepositoryDataSourceTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#disconnect()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#disconnect()}.
 	 * <p>
 	 * It makes sure that an exception is thrown while trying to disconnect without being connected.
 	 * 
@@ -248,14 +244,14 @@ public class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	public void testDisconnectFailed() {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.disconnect();
 		}, getErrorMsg("testDisconnectFailed", "No exception was thrown when trying to disconnect when it was disconnected"));
 		assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), "Connection type must be 'NOT_CONNECTED'");
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a public repository when disconnected.
 	 * 
@@ -263,13 +259,13 @@ public class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	public void testGetPublicRepositoryWhenDisconnected() {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/ListaCompra");
 		}, getErrorMsg("testGetPublicRepositoryWhenDisconnected", "An exception must be thrown when trying to obtain a public repository without connection"));
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a private repository when disconnected.
 	 * 
@@ -277,13 +273,13 @@ public class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	public void testGetPrivateRepositoryWhenDisconnected() {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/KnowResult");
 		}, getErrorMsg("testGetPrivateRepositoryWhenDisconnected", "An exception must be thrown when trying to obtain a private repository without connection"));
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * It ensures that an exception is thrown while trying to obtain a non-existent repository when disconnected.
 	 * 
@@ -291,13 +287,13 @@ public class GitLabRepositoryDataSourceTest {
 	 */
 	@Test
 	public void testGetNonExistentRepositoryWhenDisconnected() {
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/KnowRlt");
 		}, getErrorMsg("testGetNonExistentRepositoryWhenDisconnected", "An exception must be thrown when trying to obtain a non-existent repository without connection."));
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -307,20 +303,20 @@ public class GitLabRepositoryDataSourceTest {
 	public void testGetPublicRepositoryWhenConnected() {
 		try {
 			repositoryDataSource.connect();
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenConnected", "Connection error"));
 		}
 		try {
 			Repository repository = repositoryDataSource.getRepository("https://gitlab.com/mlb0029/ListaCompra");
 			assertNotNull(repository, "Returns null when obtaining a public repository with public connection");
 			assertEquals(8760234, repository.getId().intValue(), "It does not return the correct ID.");
-		}catch (RepositoryDataSourceException e) {
+		}catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenConnected", "Exception when obtaining a public repository with public connection"));
 		}
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -330,16 +326,16 @@ public class GitLabRepositoryDataSourceTest {
 	public void testGetPrivateRepositoryWhenConnected() {
 		try {
 			repositoryDataSource.connect();
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testDisconnectOK", "Connection error"));
 		}
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/KnowResult");
 		}, getErrorMsg("testGetRepositoryWhenDisconnected", "An exception must be thrown when trying to obtain a private repository with public connection."));
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -349,16 +345,16 @@ public class GitLabRepositoryDataSourceTest {
 	public void testGetNonExistentRepositoryWhenConnected() {
 		try {
 			repositoryDataSource.connect();
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetNonExistentRepositoryWhenConnected", "Connection error"));
 		}
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/KnowRlt");
 		}, getErrorMsg("testGetRepositoryWhenDisconnected", "An exception must be thrown when trying to obtain a non-existent repository with public connection."));
 	}	
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -369,7 +365,7 @@ public class GitLabRepositoryDataSourceTest {
 		assumeTrue(token != null && !token.equals(""));
 		try {			
 			repositoryDataSource.connect(token);
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenLogged", "Connection error"));
 		}
 		try {
@@ -378,14 +374,14 @@ public class GitLabRepositoryDataSourceTest {
 			assertEquals(8760234, repository.getId().intValue(), "It does not return the correct ID.");
 			assertEquals("https://gitlab.com/mlb0029/ListaCompra", repository.getUrl(), "It does not return the correct URL");
 			assertEquals("ListaCompra", repository.getName(),"It does not return the correct Name");
-		}catch (RepositoryDataSourceException e) {
+		}catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenLogged", "Exception when obtaining a public repository with public connection"));
 		}
 		//fail( getErrorMsg("testGetPublicRepositoryWhenLogged", Constants.TestErrorMessages.NOT_IMPLEMENTED_SECURITY_REASONS));
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -396,7 +392,7 @@ public class GitLabRepositoryDataSourceTest {
 		assumeTrue(token != null && !token.equals(""));
 		try {			
 			repositoryDataSource.connect(token);
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testOwnPrivateGetRepositoryWhenLogged", "Connection error"));
 		}
 		try {
@@ -405,14 +401,14 @@ public class GitLabRepositoryDataSourceTest {
 			assertEquals(8760239, repository.getId().intValue(), "It does not return the correct ID.");
 			assertEquals("https://gitlab.com/mlb0029/KnowResult", repository.getUrl(), "It does not return the correct URL");
 			assertEquals("KnowResult", repository.getName(),"It does not return the correct Name");
-		}catch (RepositoryDataSourceException e) {
+		}catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testOwnPrivateGetRepositoryWhenLogged", "Exception when obtaining a public repository with public connection"));
 		}
 		//fail( getErrorMsg("testOwnPrivateGetRepositoryWhenLogged", Constants.TestErrorMessages.NOT_IMPLEMENTED_SECURITY_REASONS));
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -424,13 +420,13 @@ public class GitLabRepositoryDataSourceTest {
 		assumeTrue(token != null && !token.equals(""), getErrorMsg("testAnotherPrivateGetRepositoryWhenLogged", "Username and password not entered"));
 		try {
 			repositoryDataSource.connect(token);
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenLogged", "Connection error"));
 		}
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.rds.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoryDataSource#getRepository(java.lang.String)}.
 	 * <p>
 	 * 
 	 * 
@@ -441,10 +437,10 @@ public class GitLabRepositoryDataSourceTest {
 		assumeTrue(token != null && !token.equals(""));
 		try {			
 			repositoryDataSource.connect(token);
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetNonExistentRepositoryWhenLogged", "Connection error"));
 		}
-		assertThrows(RepositoryDataSourceException.class, () -> {
+		assertThrows(ExceptionRepositoryDataSource.class, () -> {
 			repositoryDataSource.getRepository("https://gitlab.com/mlb0029/Knosult");
 		}, "Must throw an exception if the repository doesn't exists");
 		//fail( getErrorMsg("testGetNonExistentRepositoryWhenLogged", Constants.TestErrorMessages.NOT_IMPLEMENTED_SECURITY_REASONS));
@@ -455,7 +451,7 @@ public class GitLabRepositoryDataSourceTest {
 	public void testGetRepository() {//TODO Parametrized test
 		try {
 			repositoryDataSource.connect();
-		} catch (RepositoryDataSourceException e) {
+		} catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenConnected", "Connection error"));
 		}
 		try {//assertAll, assertLinesMatch
@@ -470,7 +466,7 @@ public class GitLabRepositoryDataSourceTest {
 			assertEquals(0, repository.getDaysToCloseEachIssue().size(), "It does not return the correct number of days of closed issues");//Fail
 			assertEquals(35, repository.getCommitDates().size(), "It does not return the correct number commits dates");
 			assertEquals(1, repository.getLifeSpanMonths().intValue(), "It does not return the correct lifespan of months");
-		}catch (RepositoryDataSourceException e) {
+		}catch (ExceptionRepositoryDataSource e) {
 			fail(getErrorMsg("testGetPublicRepositoryWhenConnected", "Exception when obtaining a public repository with public connection"));
 		}
 	}

@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.gitlab4j.api.GitLabApiException;
 import org.junit.jupiter.api.Test;
 
-import repositorydatasource.model.EnumConnectionType;
-import repositorydatasource.rds.IRepositoryDataSource;
+import repositorydatasource.GitLabRepositoyDataSourceFactory;
+import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+import repositorydatasource.IRepositoryDataSourceFactory;
 
 /**
  * Test for GitLabRepositoyDataSourceFactory.
@@ -17,7 +19,7 @@ import repositorydatasource.rds.IRepositoryDataSource;
 public class GitLabRepositoyDataSourceFactoryTest {
 	
 	/**
-	 * Test method for {@link repositorydatasource.factories.GitLabRepositoyDataSourceFactory#createRepositoryDataSource()}.
+	 * Test method for {@link repositorydatasource.GitLabRepositoyDataSourceFactory#createRepositoryDataSource()}.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
