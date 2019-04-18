@@ -23,7 +23,6 @@ import org.gitlab4j.api.models.Project;
 import exceptions.RepositoryDataSourceException;
 import repositorydatasource.model.EnumConnectionType;
 import repositorydatasource.model.Repository;
-import util.Constants;
 
 /**
  * @author migue
@@ -45,6 +44,8 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * GitLab API for connection to gitlab.
 	 */
 	private GitLabApi gitLabApi;
+
+	public static final String HOST_URL = "https://gitlab.com";
 	
 	private static final Logger LOGGER = Logger.getLogger(GitLabRepositoryDataSource.class.getName());
 
@@ -71,7 +72,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 */
 	@Override
 	public void connect() throws RepositoryDataSourceException {
-			gitLabApi = new GitLabApi(Constants.HOST_URL, "");
+			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, "");
 			connectionType = EnumConnectionType.CONNECTED;
 	}
 	
@@ -84,7 +85,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			if(username == null || username.equals("") || password == null || password.equals("")) {
 				throw new RepositoryDataSourceException("The user or password has not been specified");
 			}
-			gitLabApi = GitLabApi.oauth2Login(Constants.HOST_URL, username, password.toCharArray());
+			gitLabApi = GitLabApi.oauth2Login(GitLabRepositoryDataSource.HOST_URL, username, password.toCharArray());
 			connectionType = EnumConnectionType.LOGGED;
 		} catch (GitLabApiException e) {
 			LOGGER.log(Level.SEVERE, "Wrong username and / or password", e);
@@ -104,7 +105,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			if(token == null || token.equals("")) {
 				throw new RepositoryDataSourceException("No token specified");
 			}
-			gitLabApi = new GitLabApi(Constants.HOST_URL, token);
+			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
 			gitLabApi.getUserApi().getCurrentUser();
 			connectionType = EnumConnectionType.LOGGED;		
 		} catch (RepositoryDataSourceException e) {
@@ -189,7 +190,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	private Integer obtenerIDProyecto(String repositoryURL) {
 		try {
 			Integer retorno = -1;
-			String sProyecto = repositoryURL.replaceAll(Constants.HOST_URL + "/", "");
+			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];
 			String propietarioYGrupo = sProyecto.replaceAll("/" + nombreProyecto, "");
 			Project pProyecto = gitLabApi.getProjectApi().getProject(propietarioYGrupo, nombreProyecto);
