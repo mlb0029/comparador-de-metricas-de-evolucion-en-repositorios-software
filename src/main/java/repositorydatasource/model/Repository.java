@@ -1,8 +1,5 @@
 package repositorydatasource.model;
 
-import java.util.Collection;
-import java.util.Date;
-
 /**
  * A repository data class.
  * 
@@ -10,9 +7,7 @@ import java.util.Date;
  *
  */
 public class Repository {
-	
-	/*Data that identify the repository.*/
-	
+		
 	/**
 	 * HTTPS URL from the repository.
 	 */
@@ -27,41 +22,13 @@ public class Repository {
 	 * ID of the repository.
 	 */
 	private Integer id = null;
-	
-	/*Metrics that are obtained directly from the repository.*/
-	
+
 	/**
-	 * Total number of issues.
+	 * Repository internal metrics.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private Integer totalNumberOfIssues = null;
-	
-	/**
-	 * Total number of commits.
-	 */
-	private Integer totalNumberOfCommits = null;
-	
-	/**
-	 * Number of closed issues.
-	 */
-	private Integer numberOfClosedIssues = null;
-	
-	/**
-	 * Days to close each issue.
-	 */
-	private Collection<Integer> daysToCloseEachIssue = null;
-	
-	/**
-	 * Dates of commits.
-	 */
-	private Collection<Date> commitDates = null;
-	
-	/**
-	 * Number of months that have passed since the creation of the repository
-	 * until the date of last activity.
-	 */
-	private Integer lifeSpanMonths = null;
-	
-	/*CONSTRUCTORS*/
+	private RepositoryInternalMetrics internalMetrics = null;
 	
 	/**
 	 * Constructor that defines the repository, without specifying the metrics that are obtained from it.
@@ -71,12 +38,10 @@ public class Repository {
 	 * @param id  ID of the repository
 	 */
 	public Repository(String url, String name, Integer id) {
-		this.url = url;
-		this.name = name;
-		this.id = id;
+		setUrl(url);
+		setName(name);
+		setId(id);
 	}
-
-	/*GETTERS AND SETTERS*/
 	
 	/**
 	 * Gets the HTTPS URL from the repository.
@@ -94,7 +59,7 @@ public class Repository {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param url the url to set
 	 */
-	public void setUrl(String url) {
+	private void setUrl(String url) {
 		this.url = url;
 	}
 
@@ -114,7 +79,7 @@ public class Repository {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param name the name to set
 	 */
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 
@@ -134,129 +99,27 @@ public class Repository {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	private void setId(Integer id) {
 		this.id = id;
 	}
 
 	/**
-	 * Gets the Total number of issues.
+	 * Gets the repository internal metrics.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the totalNumberOfIssues
+	 * @return the repository internal metrics
 	 */
-	public Integer getTotalNumberOfIssues() {
-		return totalNumberOfIssues;
+	public RepositoryInternalMetrics getInternalMetrics() {
+		return internalMetrics;
 	}
 
 	/**
-	 * Sets the Total number of issues.
+	 * Sets the repository internal metrics.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param totalNumberOfIssues the totalNumberOfIssues to set
+	 * @param internalMetrics the repository internal metrics to set
 	 */
-	public void setTotalNumberOfIssues(Integer totalNumberOfIssues) {
-		this.totalNumberOfIssues = totalNumberOfIssues;
-	}
-
-	/**
-	 * Gets the Total number of commits.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the totalNumberOfCommits
-	 */
-	public Integer getTotalNumberOfCommits() {
-		return totalNumberOfCommits;
-	}
-
-	/**
-	 * Sets the Total number of commits.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param totalNumberOfCommits the totalNumberOfCommits to set
-	 */
-	public void setTotalNumberOfCommits(Integer totalNumberOfCommits) {
-		this.totalNumberOfCommits = totalNumberOfCommits;
-	}
-
-	/**
-	 * Gets the Number of closed issues.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the numberOfClosedIssues
-	 */
-	public Integer getNumberOfClosedIssues() {
-		return numberOfClosedIssues;
-	}
-
-	/**
-	 * Sets the Number of closed issues.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param numberOfClosedIssues the numberOfClosedIssues to set
-	 */
-	public void setNumberOfClosedIssues(Integer numberOfClosedIssues) {
-		this.numberOfClosedIssues = numberOfClosedIssues;
-	}
-
-	/**
-	 * Gets the Days to close each issue.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the daysToCloseEachIssue
-	 */
-	public Collection<Integer> getDaysToCloseEachIssue() {
-		return daysToCloseEachIssue;
-	}
-
-	/**
-	 * Sets the Days to close each issue.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param daysToCloseEachIssue the daysToCloseEachIssue to set
-	 */
-	public void setDaysToCloseEachIssue(Collection<Integer> daysToCloseEachIssue) {
-		this.daysToCloseEachIssue = daysToCloseEachIssue;
-	}
-
-	/**
-	 * Gets the Dates of commits.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the commitDates
-	 */
-	public Collection<Date> getCommitDates() {
-		return commitDates;
-	}
-
-	/**
-	 * Sets the Dates of commits.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param commitDates the commitDates to set
-	 */
-	public void setCommitDates(Collection<Date> commitDates) {
-		this.commitDates = commitDates;
-	}
-
-	/**
-	 * Gets the Number of months that have passed since the creation of the repository
-	 * until the date of last activity.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the lifeSpanMonths
-	 */
-	public Integer getLifeSpanMonths() {
-		return lifeSpanMonths;
-	}
-
-	/**
-	 * Sets the Number of months that have passed since the creation of the repository
-	 * until the date of last activity.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param lifeSpanMonths the lifeSpanMonths to set
-	 */
-	public void setLifeSpanMonths(Integer lifeSpanMonths) {
-		this.lifeSpanMonths = lifeSpanMonths;
+	public void setInternalMetrics(RepositoryInternalMetrics internalMetrics) {
+		this.internalMetrics = internalMetrics;
 	}
 }

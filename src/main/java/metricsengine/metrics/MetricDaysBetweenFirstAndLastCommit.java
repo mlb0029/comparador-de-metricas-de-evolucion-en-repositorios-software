@@ -71,8 +71,8 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Collection<Date> commitDates = repository.getCommitDates();
-		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		Collection<Date> commitDates = repository.getInternalMetrics().getCommitDates();
+		Integer totalNumberOfCommits = repository.getInternalMetrics().getTotalNumberOfCommits();
 		
 		if(totalNumberOfCommits != null &&
 				commitDates != null &&
@@ -92,7 +92,7 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		List<Date> commitDates = repository.getCommitDates().stream().sorted(Date::compareTo).collect(Collectors.toList());
+		List<Date> commitDates = repository.getInternalMetrics().getCommitDates().stream().sorted(Date::compareTo).collect(Collectors.toList());
 		long firstDate = commitDates.get(0).getTime();
 		long lastDate = commitDates.get(commitDates.size() - 1).getTime();
 		int result = (int) ((lastDate - firstDate) / (1000 * 60 * 60 * 24));

@@ -21,6 +21,7 @@ import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits}.
@@ -93,8 +94,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argsForCheckMethodInCommitDates")
 	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
-		repository.setCommitDates(commitDates);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		assertEquals(expected, metricAverageDaysBetweenCommits.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
@@ -113,8 +113,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
-		repository.setCommitDates(commitDates);	
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		IValue actual = metricAverageDaysBetweenCommits.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

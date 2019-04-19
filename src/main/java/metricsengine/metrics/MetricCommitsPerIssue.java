@@ -68,8 +68,8 @@ public class MetricCommitsPerIssue extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Integer tni = repository.getTotalNumberOfIssues();
-		Integer tnc = repository.getTotalNumberOfCommits();
+		Integer tni = repository.getInternalMetrics().getTotalNumberOfIssues();
+		Integer tnc = repository.getInternalMetrics().getTotalNumberOfCommits();
 		return tni != null && 
 				tni >= 0 &&
 				tnc != null &&
@@ -81,7 +81,7 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = (double) repository.getTotalNumberOfIssues() / repository.getTotalNumberOfCommits();
+		double result = (double) repository.getInternalMetrics().getTotalNumberOfIssues() / repository.getInternalMetrics().getTotalNumberOfCommits();
 		return new ValueDecimal(result);
 	}
 }

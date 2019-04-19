@@ -108,32 +108,54 @@
 	</dependencyManagement>
 	
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.gitlab4j/gitlab4j-api -->
 		<!-- GitLab API -->
+		<!-- https://mvnrepository.com/artifact/org.gitlab4j/gitlab4j-api -->
 		<dependency>
 			<groupId>org.gitlab4j</groupId>
 			<artifactId>gitlab4j-api</artifactId>
 			<version>4.9.14</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<!-- LOGGER -->
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-slf4j-impl</artifactId>
+		    <version>2.11.2</version>
+		</dependency>
+	    <dependency>
+	        <groupId>org.apache.logging.log4j</groupId>
+	        <artifactId>log4j-api</artifactId>
+	        <version>2.11.2</version>
+	     </dependency>
+	    <dependency>
+	        <groupId>org.apache.logging.log4j</groupId>
+	        <artifactId>log4j-core</artifactId>
+	        <version>2.11.2</version>
+	    </dependency>
 		<!-- JUnit 5 API -->
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.3.2</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
 		<!-- JUnit 5 Engine -->
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.3.2</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
 		<!-- JUnit 5 Parameterized Tests -->
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-params</artifactId>

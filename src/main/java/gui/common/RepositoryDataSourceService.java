@@ -5,7 +5,7 @@ import org.gitlab4j.api.GitLabApiException;
 import repositorydatasource.GitLabRepositoyDataSourceFactory;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.IRepositoryDataSourceFactory;
-import repositorydatasource.ExceptionRepositoryDataSource;
+import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
@@ -16,9 +16,9 @@ public class RepositoryDataSourceService {
 	
 	private IRepositoryDataSource repositoryDataSource;
 	
-	private RepositoryDataSourceService() throws GitLabApiException, ExceptionRepositoryDataSource {
+	private RepositoryDataSourceService() throws GitLabApiException, RepositoryDataSourceException {
 		IRepositoryDataSourceFactory repositoryDataSourceFactory = new GitLabRepositoyDataSourceFactory();
-		repositoryDataSource = repositoryDataSourceFactory.createRepositoryDataSource();
+		repositoryDataSource = repositoryDataSourceFactory.getRepositoryDataSource();
 		repositoryDataSource.connect();
 	}
 
@@ -27,10 +27,10 @@ public class RepositoryDataSourceService {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return the instance
-	 * @throws ExceptionRepositoryDataSource 
+	 * @throws RepositoryDataSourceException 
 	 * @throws GitLabApiException 
 	 */
-	public static RepositoryDataSourceService getInstance() throws GitLabApiException, ExceptionRepositoryDataSource {
+	public static RepositoryDataSourceService getInstance() throws GitLabApiException, RepositoryDataSourceException {
 		if (instance == null) instance = new RepositoryDataSourceService();
 		return instance;
 	}

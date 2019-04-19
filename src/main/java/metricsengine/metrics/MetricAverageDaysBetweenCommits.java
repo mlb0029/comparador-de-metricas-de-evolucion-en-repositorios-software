@@ -72,8 +72,8 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Collection<Date> commitDates = repository.getCommitDates();
-		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		Collection<Date> commitDates = repository.getInternalMetrics().getCommitDates();
+		Integer totalNumberOfCommits = repository.getInternalMetrics().getTotalNumberOfCommits();
 		
 		if(totalNumberOfCommits != null &&
 				commitDates != null &&
@@ -96,7 +96,7 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 		long date1;
 		long date2;
 		int daysBetweenCommits;
-		List<Date> commitDates = repository.getCommitDates().stream().sorted().collect(Collectors.toList());
+		List<Date> commitDates = repository.getInternalMetrics().getCommitDates().stream().sorted().collect(Collectors.toList());
 		List<Integer> lstDaysBetweenCommits = new ArrayList<Integer>();
 		for (int i = 1; i < commitDates.size(); i++) {
 			date1 = commitDates.get(i-1).getTime();

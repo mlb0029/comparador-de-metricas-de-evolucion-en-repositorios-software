@@ -66,8 +66,8 @@ public class MetricPercentageClosedIssues extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Integer tni = repository.getTotalNumberOfIssues();
-		Integer nci = repository.getNumberOfClosedIssues();
+		Integer tni = repository.getInternalMetrics().getTotalNumberOfIssues();
+		Integer nci = repository.getInternalMetrics().getNumberOfClosedIssues();
 		return tni != null && 
 				tni > 0 &&
 				nci != null &&
@@ -79,7 +79,7 @@ public class MetricPercentageClosedIssues extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = (double) repository.getNumberOfClosedIssues() * 100 / repository.getTotalNumberOfIssues() ;
+		double result = (double) repository.getInternalMetrics().getNumberOfClosedIssues() * 100 / repository.getInternalMetrics().getTotalNumberOfIssues() ;
 		return new ValueDecimal(result);
 	}
 

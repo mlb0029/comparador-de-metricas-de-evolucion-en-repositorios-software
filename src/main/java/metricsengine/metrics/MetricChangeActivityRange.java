@@ -66,10 +66,10 @@ public class MetricChangeActivityRange extends AMetric {
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
 		return  repository != null &&
-				repository.getTotalNumberOfCommits() != null &&
-				repository.getTotalNumberOfCommits() >= 0 &&
-				repository.getLifeSpanMonths() != null &&
-				repository.getLifeSpanMonths() > 0;
+				repository.getInternalMetrics().getTotalNumberOfCommits() != null &&
+				repository.getInternalMetrics().getTotalNumberOfCommits() >= 0 &&
+				repository.getInternalMetrics().getLifeSpanMonths() != null &&
+				repository.getInternalMetrics().getLifeSpanMonths() > 0;
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +77,7 @@ public class MetricChangeActivityRange extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = (double) repository.getTotalNumberOfCommits() / repository.getLifeSpanMonths();
+		double result = (double) repository.getInternalMetrics().getTotalNumberOfCommits() / repository.getInternalMetrics().getLifeSpanMonths();
 		return new ValueDecimal(result);
 	}
 }

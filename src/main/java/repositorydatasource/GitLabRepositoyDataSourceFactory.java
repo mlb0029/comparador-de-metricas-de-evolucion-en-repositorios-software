@@ -9,10 +9,10 @@ package repositorydatasource;
 public class GitLabRepositoyDataSourceFactory implements IRepositoryDataSourceFactory {
 
 	/* (non-Javadoc)
-	 * @see repositorydatasource.IRepositoryDaraSourceFactory#createRepositoryDataSource()
+	 * @see repositorydatasource.IRepositoryDataSourceFactory#getRepositoryDataSource()
 	 */
 	@Override
-	public IRepositoryDataSource createRepositoryDataSource() {
+	public IRepositoryDataSource getRepositoryDataSource() {
 		return GitLabRepositoryDataSource.getGitLabRepositoryDataSource();
 	}
 

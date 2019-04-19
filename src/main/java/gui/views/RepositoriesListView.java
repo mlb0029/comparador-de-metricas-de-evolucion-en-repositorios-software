@@ -2,7 +2,6 @@ package gui.views;
 
 import java.util.stream.Collectors;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.details.Details;
@@ -12,7 +11,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -79,6 +77,12 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private class AddNewRepositoryForm extends VerticalLayout {
 		
+		/**
+		 * Description.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		private static final long serialVersionUID = -9068571389303968081L;
 		private Button linkConnectButton;
 		private ComboBox<Repository> repositorySelectorCB;
 		private Label msgStatusLabel;

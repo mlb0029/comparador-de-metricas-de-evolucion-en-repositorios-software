@@ -1,14 +1,9 @@
 package repositorydatasource.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
-
-import repositorydatasource.model.Repository;
 
 /**
  * Test class forn {@link repositorydatasource.model.Repository}
@@ -25,21 +20,9 @@ public class RepositoryTest {
 	@Test
 	public void testRepositoryNull() {
 		Repository repo = new Repository(null, null, null);
-		repo.setTotalNumberOfIssues(null);
-		repo.setTotalNumberOfCommits(null);
-		repo.setNumberOfClosedIssues(null);
-		repo.setDaysToCloseEachIssue(null);
-		repo.setCommitDates(null);
-		repo.setLifeSpanMonths(null);
 		assertNull(repo.getUrl(), "Fail in null url");
 		assertNull(repo.getName(), "Fail in null name");
 		assertNull(repo.getId(), "Fail in id");
-		assertNull(repo.getTotalNumberOfIssues(), "Fail in null total number of issues");
-		assertNull(repo.getTotalNumberOfCommits(), "Fail in null total number of commits");
-		assertNull(repo.getNumberOfClosedIssues(), "Fail in null number of closed issues");
-		assertNull(repo.getDaysToCloseEachIssue(), "Fail in null days to close each issue");
-		assertNull(repo.getCommitDates(), "Fail in null commit dates");
-		assertNull(repo.getLifeSpanMonths(), "Fail in null lifespan months");
 	}
 	
 	/**
@@ -49,21 +32,20 @@ public class RepositoryTest {
 	@Test
 	public void testRepositoryEmptyStrings() {
 		Repository repo = new Repository("", "", 0);
-		repo.setTotalNumberOfIssues(0);
-		repo.setTotalNumberOfCommits(0);
-		repo.setNumberOfClosedIssues(0);
-		repo.setDaysToCloseEachIssue(new ArrayList<Integer>());
-		repo.setCommitDates(new HashSet<Date>());
-		repo.setLifeSpanMonths(0);
 		assertEquals("", repo.getUrl(), "Fail in url");
 		assertEquals("", repo.getName(), "Fail in name");
-		assertEquals(0, repo.getId().intValue(), "Fail in id");
-		assertEquals(0, repo.getTotalNumberOfIssues().intValue(), "Fail in total number of issues");
-		assertEquals(0, repo.getTotalNumberOfCommits().intValue(), "Fail in total number of commits");
-		assertEquals(0, repo.getNumberOfClosedIssues().intValue(), "Fail in number of closed issues");
-		assertEquals(new ArrayList<Integer>(), repo.getDaysToCloseEachIssue(), "Fail in days to close each issue");
-		assertEquals(new HashSet<Date>(), repo.getCommitDates(), "Fail in commit dates");
-		assertEquals(0, repo.getLifeSpanMonths().intValue(), "Fail in lifespan months");
 	}
-
+	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	@Test
+	public void testSetInternalMetrics() {
+		Repository repo = new Repository("", "", 0);
+		RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics(0, 0, 0, null, null, 0);
+		repo.setInternalMetrics(repositoryInternalMetrics);
+		assertEquals(repositoryInternalMetrics, repo.getInternalMetrics());
+	}
 }

@@ -1,13 +1,17 @@
 package repositorydatasource;
 
-import org.gitlab4j.api.GitLabApiException;
-
 /**
  * Factory interface of repository data sources.
  * 
- * @author MALB
+ * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
 public interface IRepositoryDataSourceFactory {
-	IRepositoryDataSource createRepositoryDataSource() throws GitLabApiException;
+	/**
+	 * Returns a repository data source.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return A repository data source.
+	 */
+	IRepositoryDataSource getRepositoryDataSource();
 }

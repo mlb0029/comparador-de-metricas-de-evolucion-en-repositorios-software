@@ -15,6 +15,7 @@ import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricCommitsPerIssue}.
@@ -87,8 +88,7 @@ public class MetricCommitsPerIssueTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
 		assertEquals(expected, metricCommitsPerIssue.check(repository), 
 				"Should return " + expected + 
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
@@ -107,8 +107,7 @@ public class MetricCommitsPerIssueTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer totalNumberOfCommits, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
 		IValue actual = metricCommitsPerIssue.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

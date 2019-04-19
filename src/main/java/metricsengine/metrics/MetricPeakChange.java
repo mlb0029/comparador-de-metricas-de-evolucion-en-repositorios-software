@@ -72,8 +72,8 @@ public class MetricPeakChange extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Collection<Date> commitDates = repository.getCommitDates();
-		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		Collection<Date> commitDates = repository.getInternalMetrics().getCommitDates();
+		Integer totalNumberOfCommits = repository.getInternalMetrics().getTotalNumberOfCommits();
 		
 		if(totalNumberOfCommits != null &&
 				commitDates != null &&
@@ -99,12 +99,12 @@ public class MetricPeakChange extends AMetric {
 		String yearMonth;
 		Integer commitsInMonth;
 		
-		Integer totalNumberOfCommits = repository.getTotalNumberOfCommits();
+		Integer totalNumberOfCommits = repository.getInternalMetrics().getTotalNumberOfCommits();
 		Integer commitsInPeakMonth;
 		
 		Double peakChange;
 		
-		for (Date date : repository.getCommitDates()) {
+		for (Date date : repository.getInternalMetrics().getCommitDates()) {
 			calendar.setTime(date);
 			yearMonth = calendar.get(Calendar.YEAR) + "/" + calendar.get(Calendar.MONTH);
 			commitsInMonth=commitsPerMonth.get(yearMonth);

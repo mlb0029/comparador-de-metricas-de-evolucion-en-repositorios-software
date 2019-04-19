@@ -17,6 +17,7 @@ import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue}.
@@ -89,8 +90,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	@MethodSource
 	public void testCheck(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setDaysToCloseEachIssue(daysToCloseEachIssue);
-		repository.setNumberOfClosedIssues(numberOfClosedIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, null, numberOfClosedIssues, daysToCloseEachIssue, null, null));
 		assertEquals(expectedValue, metricAverageDaysToCloseAnIssue.check(repository), 
 				"Should return " + expectedValue +
 				" when daysToCloseEachIssue=" + String.valueOf(daysToCloseEachIssue) +
@@ -109,8 +109,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	@MethodSource
 	public void testRun(List<Integer> daysToCloseEachIssue, Integer numberOfClosedIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setDaysToCloseEachIssue(daysToCloseEachIssue);
-		repository.setNumberOfClosedIssues(numberOfClosedIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, null, numberOfClosedIssues, daysToCloseEachIssue, null, null));
 		IValue actual = metricAverageDaysToCloseAnIssue.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import metricsengine.*;
 import metricsengine.values.*;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricTotalNumberOfIssues}
@@ -85,7 +86,7 @@ public class MetricTotalNumberOfIssuesTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
 		assertEquals(expected, metricTotalNumberOfIssues.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
@@ -103,7 +104,7 @@ public class MetricTotalNumberOfIssuesTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
 		IValue actual = metricTotalNumberOfIssues.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

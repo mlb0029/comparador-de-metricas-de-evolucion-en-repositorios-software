@@ -1,11 +1,16 @@
 package repositorydatasource;
 
+import java.util.Collection;
+
+import repositorydatasource.exceptions.RepositoryDataSourceException;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.User;
 
 /**
- * Repository data source interface.
+ * It defines the functions that will allow 
+ * obtaining the necessary information from a repository.
  * 
- * @author MALB
+ * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
 public interface IRepositoryDataSource {
@@ -13,43 +18,65 @@ public interface IRepositoryDataSource {
 	/**
 	 * Type of connection.
 	 * 
-	 * @author MALB
+	 * @author Miguel Ángel León Bardavío - mlb0029
 	 *
 	 */
 	public enum EnumConnectionType{
-		NOT_CONNECTED, CONNECTED, LOGGED
+		/**
+		 * A connection to the data source has not been established.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		NOT_CONNECTED, 
+		/**
+		 * A connection to the data source without login has been established.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		CONNECTED, 
+		/**
+		 * A connection to the data source with login has been established.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		LOGGED
 	}
 	
 	/**
-	 * Public connection.
+	 * Try a connection to the data source without login and sets the connection type to CONNECTED
+	 * or throws an exception.
 	 * 
-	 * @throws ExceptionRepositoryDataSource When problems occur when connecting.
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @throws RepositoryDataSourceException  When problems occur when connecting.
 	 */
-	void connect() throws ExceptionRepositoryDataSource;
+	void connect() throws RepositoryDataSourceException;
 	
 	/**
-	 * Logged connection with username and password.
+	 * Try a login connection using user and password and sets the connection type to LOGGED
+	 * or throw an exception.
 	 * 
 	 * @param username Username.
 	 * @param password Password.
-	 * @throws ExceptionRepositoryDataSource When problems occur when connecting.
+	 * @throws RepositoryDataSourceException When problems occur when connecting.
 	 */
-	void connect(String username, String password) throws ExceptionRepositoryDataSource;
+	void connect(String username, String password) throws RepositoryDataSourceException;
 	
 	/**
-	 * Logged connection with token.
+	 * Try a login connection using personal access token and sets the connection type to LOGGED
+	 * or throw an exception.
 	 * 
 	 * @param token Token.
-	 * @throws ExceptionRepositoryDataSource When problems occur when connecting. 
+	 * @throws RepositoryDataSourceException When problems occur when connecting. 
 	 */
-	void connect(String token) throws ExceptionRepositoryDataSource;
+	void connect(String token) throws RepositoryDataSourceException;
 	
 	/**
-	 * Disconnect.
+	 * Close any established connection. Throw an exception if there was no connection.
 	 * 
-	 * @throws ExceptionRepositoryDataSource If there was no connection.
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @throws RepositoryDataSourceException if there was no connection.
 	 */
-	void disconnect() throws ExceptionRepositoryDataSource;
+	void disconnect() throws RepositoryDataSourceException;
 	
 	/**
 	 * Gets type of connection.
@@ -59,11 +86,43 @@ public interface IRepositoryDataSource {
 	EnumConnectionType getConnectionType();
 	
 	/**
-	 * Get a repository using his URL.
+	 * Gets the user that has logged in or null if no user is connected.
+	 * Throw an exception if there is a problem to obtain the user's information.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return The user that has logged in or null if no user is connected.
+	 * @throws RepositoryDataSourceException if there is a problem to obtain the user's information.
+	 */
+	User getCurrentUser() throws RepositoryDataSourceException;
+	
+	/**
+	 * Get a collection of public and private repositories 
+	 * of the user who is logged in. 
+	 * Throws an exception if a problem occurs when obtaining the user's repositories or not user logged in.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return Get a collection of public and private repositories of the user who is logged in 
+	 * or null if no user has logged in. 
+	 * @throws RepositoryDataSourceException if a problem occurs when obtaining the user's repositories.
+	 */
+	Collection<Repository> getAllUserRepositories() throws RepositoryDataSourceException;
+	
+	/**
+	 * Obtain a repository accessible by the logged in user 
+	 * or throw an exception if the repository is not accessible
 	 * 
 	 * @param repositoryURL URL of a repository.
-	 * @return Repository.
-	 * @throws ExceptionRepositoryDataSource When it has not been possible to obtain the repository.
+	 * @return The repository pointed to by the url.
+	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
 	 */
-	Repository getRepository(String repositoryURL) throws ExceptionRepositoryDataSource;
+	Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException;
+	
+	/**
+	 * Add the metrics that are obtained directly from the repository to the repository, 
+	 * if any can not be calculated, its value will be null.
+	 * 
+	 * @param repositoryURL URL of a repository.
+	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
+	 */
+	void setRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException;
 }

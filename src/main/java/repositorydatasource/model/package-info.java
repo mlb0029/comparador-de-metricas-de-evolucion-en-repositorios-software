@@ -1,7 +1,7 @@
 /**
  * Data model.
  * 
- * @author MALB
+ * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
 package repositorydatasource.model;

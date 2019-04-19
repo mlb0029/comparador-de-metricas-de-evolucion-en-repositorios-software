@@ -15,6 +15,7 @@ import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricPercentageClosedIssues}.
@@ -89,8 +90,7 @@ public class MetricPercentageClosedIssuesTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
-		repository.setNumberOfClosedIssues(numberOfClosedIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
 		assertEquals(expectedValue, metricPercentageClosedIssues.check(repository), 
 				"Should return " + expectedValue +
 				" when totalNumberOfIssues=" + totalNumberOfIssues +
@@ -109,8 +109,7 @@ public class MetricPercentageClosedIssuesTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer numberOfClosedIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfIssues(totalNumberOfIssues);
-		repository.setNumberOfClosedIssues(numberOfClosedIssues);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
 		IValue actual = metricPercentageClosedIssues.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

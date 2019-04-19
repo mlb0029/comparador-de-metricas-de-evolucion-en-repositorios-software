@@ -15,6 +15,7 @@ import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import repositorydatasource.model.Repository;
+import repositorydatasource.model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricChangeActivityRange}.
@@ -87,8 +88,7 @@ public class MetricChangeActivityRangeTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfCommits, Integer lifeSpanMonths, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
-		repository.setLifeSpanMonths(lifeSpanMonths);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, null, lifeSpanMonths));
 		assertEquals(expected, metricChangeActivityRange.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
@@ -107,8 +107,7 @@ public class MetricChangeActivityRangeTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Integer lifeSpanMonths, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setTotalNumberOfCommits(totalNumberOfCommits);
-		repository.setLifeSpanMonths(lifeSpanMonths);
+		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, null, lifeSpanMonths));
 		IValue actual = metricChangeActivityRange.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

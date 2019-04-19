@@ -66,7 +66,7 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	@Override
 	protected Boolean check(Repository repository) {
 		if (repository == null) return false;
-		Integer tni = repository.getTotalNumberOfIssues();
+		Integer tni = repository.getInternalMetrics().getTotalNumberOfIssues();
 		return tni != null &&
 				tni >= 0;
 	}
@@ -76,6 +76,6 @@ public class MetricTotalNumberOfIssues extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		return new ValueInteger(repository.getTotalNumberOfIssues());
+		return new ValueInteger(repository.getInternalMetrics().getTotalNumberOfIssues());
 	}
 }
