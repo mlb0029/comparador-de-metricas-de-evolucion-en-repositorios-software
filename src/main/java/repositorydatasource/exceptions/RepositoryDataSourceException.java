@@ -110,6 +110,7 @@ public class RepositoryDataSourceException extends Exception {
 			break;
 		case ALREADY_CONNECTED:
 			message = "Connection failure: A connection already exists";
+			break;
 		case ALREADY_DISCONNECTED:
 			message = "Disconnection failure: Already disconnected";
 			break;

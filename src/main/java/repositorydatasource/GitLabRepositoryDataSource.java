@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -134,7 +135,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		try {
 			if(connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
 				gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
-				gitLabApi.getUserApi().getCurrentUser();
+				gitLabApiUser = gitLabApi.getUserApi().getCurrentUser();
 				connectionType = EnumConnectionType.LOGGED;
 				logger.info("Login to GitLab");
 			} else {
@@ -186,6 +187,18 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	}
 
 	/* (non-Javadoc)
+	 * @see repositorydatasource.IRepositoryDataSource#getOptionalCurrentUser()
+	 */
+	@Override
+	public Optional<User> getOptionalCurrentUser() {
+		try {
+			return Optional.of(getCurrentUser());
+		} catch (Exception ex) {
+			return Optional.empty();
+		}
+	}
+
+	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#getAllUserRepositories()
 	 */
 	@Override
@@ -222,6 +235,18 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 			}
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see repositorydatasource.IRepositoryDataSource#getOptionalRepository(java.lang.String)
+	 */
+	@Override
+	public Optional<Repository> getOptionalRepository(String repositoryHTTPSURL) {
+		try {
+			return Optional.of(getRepository(repositoryHTTPSURL));
+		} catch (Exception ex){
+			return Optional.empty();
 		}
 	}
 
@@ -265,6 +290,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 */
 	private Integer obtenerIDProyecto(String repositoryURL) {
 		try {
+			if(repositoryURL == null) return null;
 			Integer retorno = null;
 			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];

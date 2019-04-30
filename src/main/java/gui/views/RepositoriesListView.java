@@ -2,17 +2,13 @@ package gui.views;
 
 import java.util.stream.Collectors;
 
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.details.DetailsVariant;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
@@ -29,9 +25,10 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
-	private Details addNewRepositoryButton;
+	private AddNewRepositoryFormDialog addNewRepositoryFormDialog;
+	private Button addNewRepositoryButton;
 	private TextField searchTextField;
-	private Grid<Repository> grid;
+	private Grid<Repository> repositoriesGrid;
 
 	/**
 	 * Initializes all components of the view.
@@ -39,8 +36,10 @@ public class RepositoriesListView extends VerticalLayout {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public RepositoriesListView() {
-		addNewRepositoryButton = new Details("Add new!", new AddNewRepositoryForm());
-		addNewRepositoryButton.addThemeVariants(DetailsVariant.REVERSE, DetailsVariant.FILLED);
+		addNewRepositoryFormDialog = new AddNewRepositoryFormDialog();
+		addNewRepositoryFormDialog.addAddButtonClickListener(this::addAddButtonClickListener);
+		addNewRepositoryButton = new Button("Repository", new Icon(VaadinIcon.PLUS));
+		addNewRepositoryButton.addClickListener(e -> addNewRepositoryFormDialog.open());
 		
 		searchTextField = new TextField();
 		searchTextField.setPlaceholder("Search");
@@ -49,14 +48,21 @@ public class RepositoriesListView extends VerticalLayout {
 		searchTextField.addValueChangeListener(e -> filter());
 		searchTextField.setWidthFull();
 		
-		grid = new Grid<Repository>(Repository.class);
-		grid.setColumns("url", "name", "id", "lifeSpanMonths");
-		grid.setItems(RepositoriesListService.getInstance().getRepositories());
+		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton);
+		searchBarLayout.setWidthFull();
 		
-		add(addNewRepositoryButton, searchTextField, grid);
+		repositoriesGrid = new Grid<Repository>(Repository.class);
+		repositoriesGrid.setColumns("url", "name", "id");
+		updateGrid();
+		
+		add(searchBarLayout, repositoriesGrid);
 		setSizeFull();
 	}
 
+	private void addAddButtonClickListener(ClickEvent<Button> event) {
+		updateGrid();
+	}
+	
 	/**
 	 * Filter event.
 	 * 
@@ -64,56 +70,18 @@ public class RepositoriesListView extends VerticalLayout {
 	 */
 	private void filter() {
 		if (searchTextField.getValue() != "") {
-			grid.setItems(RepositoriesListService.getInstance().getRepositories().stream().filter(r -> 
+			repositoriesGrid.setItems(RepositoriesListService.getInstance().getRepositories().stream().filter(r -> 
 						r.getName().contains(searchTextField.getValue()) ||
 						r.getUrl().contains(searchTextField.getValue()) ||
 						r.getId().toString().contains(searchTextField.getValue())
 					).collect(Collectors.toList())
 			);
 		} else {
-			grid.setItems(RepositoriesListService.getInstance().getRepositories());
+			repositoriesGrid.setItems(RepositoriesListService.getInstance().getRepositories());
 		}
 	}
 	
-	private class AddNewRepositoryForm extends VerticalLayout {
-		
-		/**
-		 * Description.
-		 * 
-		 * @author Miguel Ángel León Bardavío - mlb0029
-		 */
-		private static final long serialVersionUID = -9068571389303968081L;
-		private Button linkConnectButton;
-		private ComboBox<Repository> repositorySelectorCB;
-		private Label msgStatusLabel;
-		private Button addButton;
-		
-		public AddNewRepositoryForm() {
-			linkConnectButton = new Button();
-			repositorySelectorCB = new ComboBox<Repository>();
-			repositorySelectorCB.setPlaceholder("Repository URL");
-			msgStatusLabel = new Label();
-			addButton = new Button("Add", new Icon(VaadinIcon.PLUS));
-			
-			add(linkConnectButton, repositorySelectorCB, msgStatusLabel, addButton);
-		}
-		
-	}
-	
-	private class ConnectForm extends FormLayout{
-		
-		private Label paTokenLabel;
-		private PasswordField paTokenTextField;
-		private Label msgStatusLabel;
-		private Button connectButton;
-		
-		public ConnectForm() {
-			paTokenLabel = new Label("Personal Access Token");
-			paTokenTextField = new PasswordField();
-			msgStatusLabel = new Label();
-			connectButton = new Button("CONNECT");
-			addFormItem(paTokenTextField, paTokenLabel);
-			add(msgStatusLabel, connectButton);
-		}
+	private void updateGrid() {
+		repositoriesGrid.setItems(RepositoriesListService.getInstance().getRepositories());
 	}
 }
