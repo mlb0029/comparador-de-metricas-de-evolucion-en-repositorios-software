@@ -29,6 +29,7 @@ image: maven:latest
 stages:
     - build
     - test
+    - deploy
   
 build:
     stage: build
@@ -42,3 +43,12 @@ test:
         - mvn test
         - mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
         - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r $CI_PROJECT_DIR/target/reports/jacoco/jacoco.xml
+deploy_staging:
+  stage: deploy
+  script:
+    - 
+  environment:
+    name: staging
+    url: https://staging.comparador-de-metricas-de-evolucion-en-repositorios-software.com
+  only:
+    - master
