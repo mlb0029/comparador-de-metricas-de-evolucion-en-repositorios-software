@@ -1,13 +1,22 @@
 package repositorydatasource.model;
 
+import java.io.Serializable;
+
 /**
  * A repository data class.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class Repository {
+public class Repository implements Serializable{
 		
+	/**
+	 * Serial.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 5094587490166499680L;
+
 	/**
 	 * HTTPS URL from the repository.
 	 */

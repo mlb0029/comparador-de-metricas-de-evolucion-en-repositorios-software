@@ -1,5 +1,6 @@
 package repositorydatasource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -34,7 +35,14 @@ import repositorydatasource.model.User;
  * @author migue
  *
  */
-public class GitLabRepositoryDataSource implements IRepositoryDataSource {
+public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serializable {
+
+	/**
+	 * Serial.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 2565951561088053095L;
 
 	/**
 	 * Default Host URL.
