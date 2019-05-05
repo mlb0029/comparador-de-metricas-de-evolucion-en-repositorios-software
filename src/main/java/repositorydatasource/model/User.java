@@ -7,6 +7,9 @@ package repositorydatasource.model;
  *
  */
 public class User {
+	
+	private Integer id;
+	
 	/**
 	 * URL of the avatar.
 	 * 
@@ -39,16 +42,38 @@ public class User {
 	 * Sets all attributes.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param id 
 	 * @param avatarUrl URL of the avatar.
 	 * @param email E-mail.
 	 * @param name Name.
 	 * @param username Username.
 	 */
-	public User(String avatarUrl, String email, String name, String username) {
+	public User(Integer id, String avatarUrl, String email, String name, String username) {
+		setId(id);
 		setAvatarUrl(avatarUrl);
 		setEmail(email);
 		setName(name);
 		setUsername(username);
+	}
+
+	/**
+	 * Gets the id.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * Sets the id.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param id the id to set
+	 */
+	private void setId(Integer id) {
+		this.id = id;
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package gui.common;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -18,7 +17,6 @@ public class RepositoriesListService {
 	
 	private RepositoriesListService() {
 		repositories = new HashSet<Repository>();
-		setRepositories(getTestSource());
 	}
 
 	/**
@@ -50,26 +48,5 @@ public class RepositoriesListService {
 	 */
 	public void setRepositories(Collection<Repository> repositories) {
 		this.repositories = repositories;
-	}
-
-	/**
-	 * DELETE. Test repositories for grid.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return
-	 */
-	private static Collection<Repository> getTestSource(){
-		Collection<Repository> repositories = new ArrayList<Repository>();
-		Repository repository1 = new Repository("urlA", "Abcd", 1);
-		Repository repository2 = new Repository("urlB", "bcdA", 2);
-		Repository repository3 = new Repository("urlC", "cde", 3);
-		Repository repository4 = new Repository("urlCD", "Efg", 4);
-		Repository repository5 = new Repository("urlAD", "HIJ", 5);
-		repositories.add(repository1);
-		repositories.add(repository2);
-		repositories.add(repository3);
-		repositories.add(repository4);
-		repositories.add(repository5);
-		return repositories;
 	}
 }

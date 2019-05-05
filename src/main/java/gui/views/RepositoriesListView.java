@@ -63,9 +63,9 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
 		repositoriesGrid.setColumns();
 		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
-		/*Grid.Column<Repository> deleteColumn = */repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
+		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
 				.setWidth("5%");
-		/*Grid.Column<Repository> nameLinkColumn = */repositoriesGrid.addColumn(TemplateRenderer.<Repository> of(
+		repositoriesGrid.addColumn(TemplateRenderer.<Repository> of(
 				"<a href=\"[[item.url]]\">[[item.name]]</a>")
 				.withProperty("url", Repository::getUrl)
 				.withProperty("name", Repository::getName)

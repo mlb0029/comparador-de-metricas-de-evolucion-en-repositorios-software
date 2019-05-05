@@ -1,23 +1,17 @@
 package repositorydatasource;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.gitlab4j.api.Constants.IssueState;
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
-import org.gitlab4j.api.Pager;
-import org.gitlab4j.api.models.Commit;
-import org.gitlab4j.api.models.Issue;
 import org.gitlab4j.api.models.IssueFilter;
 import org.gitlab4j.api.models.Project;
 import org.gitlab4j.api.models.ProjectFilter;
@@ -72,11 +66,11 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	private GitLabApi gitLabApi;
 	
 	/**
-	 * GitLabApi Current user.
+	 * Current user.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private org.gitlab4j.api.models.User gitLabApiUser;
+	private User currentUser;
 
 	/**
 	 * Constructor that returns a not connected gitlabrepositorydatasource.
@@ -84,7 +78,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	private GitLabRepositoryDataSource() {
 		connectionType = EnumConnectionType.NOT_CONNECTED;
 		gitLabApi = null;
-		gitLabApiUser = null;
+		currentUser = null;
 	}
 	
 	/**
@@ -104,7 +98,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	public void connect() throws RepositoryDataSourceException {
 		if( connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
 			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, "");
-			gitLabApiUser = null;
+			currentUser = null;
 			connectionType = EnumConnectionType.CONNECTED;
 			logger.info("Established connection with GitLab");
 		} else {
@@ -118,19 +112,19 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	@Override
 	public void connect(String username, String password) throws RepositoryDataSourceException {
 		try {
-			if(username == null || password == null) throw new IllegalArgumentException();
+			if(username == null || password == null || username.isBlank() || password.isBlank()) throw new RepositoryDataSourceException(RepositoryDataSourceException.LOGIN_ERROR);
 			if(connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
 				gitLabApi = GitLabApi.oauth2Login(GitLabRepositoryDataSource.HOST_URL, username, password.toCharArray());
-				gitLabApiUser = gitLabApi.getUserApi().getCurrentUser();
+				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
 				logger.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
 			}
-		} catch (GitLabApiException | IllegalArgumentException e) {
+		} catch (GitLabApiException e) {
 			reset();
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.LOGIN_ERROR);
-		} catch (RepositoryDataSourceException e) {
+		} catch (Exception  e) {
 			throw e;
 		}
 	}
@@ -143,7 +137,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 		try {
 			if(connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
 				gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
-				gitLabApiUser = gitLabApi.getUserApi().getCurrentUser();
+				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
 				logger.info("Login to GitLab");
 			} else {
@@ -181,50 +175,70 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 * @see repositorydatasource.IRepositoryDataSource#getCurrentUser()
 	 */
 	@Override
-	public User getCurrentUser() throws RepositoryDataSourceException {
-		if(connectionType.equals(EnumConnectionType.LOGGED)) {
-			return new User(
-					gitLabApiUser.getAvatarUrl(),
-					gitLabApiUser.getEmail(),
-					gitLabApiUser.getName(),
-					gitLabApiUser.getUsername()
-			);
-		} else {
-			return null;
-		}
+	public User getCurrentUser() {
+		return currentUser;
 	}
 
-	/* (non-Javadoc)
-	 * @see repositorydatasource.IRepositoryDataSource#getOptionalCurrentUser()
+	/**
+	 * Obtains a user from the gitlab user.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param gitlabUser
+	 * @return
 	 */
-	@Override
-	public Optional<User> getOptionalCurrentUser() {
-		try {
-			return Optional.of(getCurrentUser());
-		} catch (Exception ex) {
-			return Optional.empty();
-		}
+	private User getCurrentUser(org.gitlab4j.api.models.User gitlabUser) {
+		return new User(
+				gitlabUser.getId(),
+				gitlabUser.getAvatarUrl(),
+				gitlabUser.getEmail(),
+				gitlabUser.getName(),
+				gitlabUser.getUsername()
+		);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#getAllUserRepositories()
 	 */
 	@Override
-	public Collection<Repository> getAllUserRepositories() throws RepositoryDataSourceException {
+	public Collection<Repository> getCurrentUserRepositories() throws RepositoryDataSourceException {
 		try {
-			ProjectFilter projectFilter;
 			if (connectionType != EnumConnectionType.NOT_CONNECTED) {
-				projectFilter = new ProjectFilter();
 				return gitLabApi.getProjectApi().getUserProjectsStream(
-						gitLabApiUser.getId(),
-						projectFilter).map(p -> 
-						new Repository(p.getWebUrl(), p.getName(), p.getId())
-						).collect(Collectors.toList());
+							currentUser.getId(),
+							new ProjectFilter())
+						.map(p -> 
+							new Repository(p.getWebUrl(), p.getName(), p.getId()))
+						.collect(Collectors.toList());
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
 			}
 		} catch (GitLabApiException e) {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.REPOSITORY_NOT_FOUND);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see repositorydatasource.IRepositoryDataSource#getAllUserRepositories(java.lang.String)
+	 */
+	@Override
+	public Collection<Repository> getAllUserRepositories(String username) throws RepositoryDataSourceException {
+		Collection<Repository> repositories;
+		try {
+			if (currentUser != null && currentUser.getUsername().equals(username)) {
+				repositories = getCurrentUserRepositories();
+			} else if(! connectionType.equals(EnumConnectionType.NOT_CONNECTED)){
+				repositories = gitLabApi.getProjectApi()
+						.getUserProjectsStream(username, new ProjectFilter())
+							.map(p -> new Repository(p.getWebUrl(), p.getName(), p.getId()))
+							.collect(Collectors.toList());
+			} else {
+				throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
+			}
+			return repositories;
+		} catch (RepositoryDataSourceException e) {
+			throw e;
+		} catch (GitLabApiException e) {
+			throw new RepositoryDataSourceException();
 		}
 	}
 
@@ -243,18 +257,6 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 			}
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see repositorydatasource.IRepositoryDataSource#getOptionalRepository(java.lang.String)
-	 */
-	@Override
-	public Optional<Repository> getOptionalRepository(String repositoryHTTPSURL) {
-		try {
-			return Optional.of(getRepository(repositoryHTTPSURL));
-		} catch (Exception ex){
-			return Optional.empty();
 		}
 	}
 
@@ -287,7 +289,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	private void reset() {
 		connectionType = EnumConnectionType.NOT_CONNECTED;
 		gitLabApi = null;
-		gitLabApiUser = null;
+		currentUser = null;
 	}
 
 	/**
@@ -299,13 +301,11 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	private Integer obtenerIDProyecto(String repositoryURL) {
 		try {
 			if(repositoryURL == null) return null;
-			Integer retorno = null;
 			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];
 			String propietarioYGrupo = sProyecto.replaceAll("/" + nombreProyecto, "");
 			Project pProyecto = gitLabApi.getProjectApi().getProject(propietarioYGrupo, nombreProyecto);
-			retorno = pProyecto.getId();
-			return retorno;
+			return pProyecto.getId();
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -333,12 +333,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 */
 	private Integer getTotalNumberOfIssues(Integer projectId) {	
 		try {
-			Integer totalNumberOfIssues = 0;
-			Pager<Issue> pager = this.gitLabApi.getIssuesApi().getIssues(projectId, 100);
-			while( pager.hasNext()) {
-				totalNumberOfIssues += pager.next().size();
-			}
-			return totalNumberOfIssues;
+			return (int) gitLabApi.getIssuesApi().getIssuesStream(projectId, new IssueFilter()).count();
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -352,12 +347,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 */
 	private Integer getTotalNumberOfCommits(Integer projectId) {
 		try {
-			Integer totalNumberOfCommits = 0;
-			Pager<Commit> pager = this.gitLabApi.getCommitsApi().getCommits(projectId, 100);
-			while( pager.hasNext()) {
-				totalNumberOfCommits += pager.next().size();
-			}
-			return totalNumberOfCommits;
+			return (int) gitLabApi.getCommitsApi().getCommitStream(projectId).count();
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -371,14 +361,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 */
 	private Integer getNumberOfClosedIssues(Integer projectId) {
 		try {
-			Integer numberOfClosedIssues = 0;
-			IssueFilter issueFilter = new IssueFilter();
-			issueFilter.withState(IssueState.CLOSED);
-			Pager<Issue> pager = this.gitLabApi.getIssuesApi().getIssues(projectId, issueFilter, 100);
-			while( pager.hasNext()) {
-				numberOfClosedIssues += pager.next().size();
-			}
-			return numberOfClosedIssues;
+			return (int) gitLabApi.getIssuesApi().getIssuesStream(projectId, new IssueFilter().withState(IssueState.CLOSED)).count();
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -392,21 +375,10 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 */
 	private List<Integer> getDaysToCloseEachIssue(Integer projectId) {
 		try {
-			List<Integer> daysToCloseEachIssue = new ArrayList<Integer>();
-			IssueFilter issueFilter = new IssueFilter();
-			issueFilter.withState(IssueState.CLOSED);
-			Pager<Issue> pager = this.gitLabApi.getIssuesApi().getIssues(projectId, issueFilter, 100);
-			while( pager.hasNext()) {
-				for (Issue issue : pager.next()) {
-					if (issue.getCreatedAt() != null && issue.getClosedAt() != null) {
-						long openDate = issue.getCreatedAt().getTime();
-						long closeDate = issue.getClosedAt().getTime();
-						int daysToCloseThissIssue = (int) ((closeDate - openDate) / (1000 * 60 * 60 * 24));
-						daysToCloseEachIssue.add(daysToCloseThissIssue);
-					}
-				}
-			}
-			return daysToCloseEachIssue;
+			return gitLabApi.getIssuesApi().getIssuesStream(projectId, new IssueFilter().withState(IssueState.CLOSED))
+					.filter(issue -> issue.getCreatedAt() != null && issue.getClosedAt() != null)
+					.map(issue -> (int) ((issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) / (1000 * 60 * 60 * 24 )))
+					.collect(Collectors.toList());
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -420,12 +392,9 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 */
 	private Set<Date> getCommitsDates(Integer projectId) {
 		try {
-			Set<Date> commitsDates = new HashSet<Date>();
-			Pager<Commit> pager = this.gitLabApi.getCommitsApi().getCommits(projectId, 100);
-			while( pager.hasNext()) {
-				commitsDates.addAll(pager.next().stream().map(commit -> commit.getCommittedDate()).collect(Collectors.toList()));
-			}
-			return commitsDates;
+			return gitLabApi.getCommitsApi().getCommitStream(projectId)
+					.map(commit -> commit.getCommittedDate())
+					.collect(Collectors.toSet());
 		} catch (GitLabApiException e) {
 			return null;
 		}
@@ -443,6 +412,9 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 		try {
 			Date createdAtDate = gitLabApi.getProjectApi().getProject(projectId).getCreatedAt();
 			Date lastActivityDate = gitLabApi.getProjectApi().getProject(projectId).getLastActivityAt();
+			
+			if (createdAtDate == null || lastActivityDate == null) return null;
+			
 			Calendar createdAtCalendar = new GregorianCalendar();
 			createdAtCalendar.setTime(createdAtDate);
 			Calendar lastActivityCalendar = new GregorianCalendar();
