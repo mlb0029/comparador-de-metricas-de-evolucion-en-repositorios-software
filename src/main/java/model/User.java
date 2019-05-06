@@ -1,4 +1,4 @@
-package repositorydatasource.model;
+package model;
 
 /**
  * Information of the connected user.

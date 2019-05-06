@@ -2,9 +2,9 @@ package repositorydatasource;
 
 import java.util.Collection;
 
+import model.Repository;
+import model.User;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.User;
 
 /**
  * It defines the functions that will allow 

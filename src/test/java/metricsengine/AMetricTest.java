@@ -2,8 +2,6 @@ package metricsengine;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -13,12 +11,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import exceptions.UncalculableMetricException;
 import metricsengine.MetricDescription.EnumTypeOfScale;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * Test class for {@link AMetric}.
@@ -133,30 +130,18 @@ public class AMetricTest {
 	}
 	 
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * 
 	 * TODO Measure Equal, ToString Method
 	 */
 	@Test
 	@Disabled("Not Implemented")
 	public void testCalculate() {
-		Repository repository = new Repository("URL", "Test", 1);
-		MetricConfiguration metricConfig = new MetricConfiguration(testMetric);
-		MetricsResults metricsResults = new MetricsResults();
-		try {
-			IValue resultActual = testMetric.calculate(repository, metricConfig, metricsResults);
-			assertEquals(1, Integer.parseInt(resultActual.valueToString()));
-			assertEquals(1, metricsResults.getMeasures().size());
-			List<Measure> measures = new ArrayList<Measure>(metricsResults.getMeasures());
-			assertEquals(new Measure(metricConfig, resultActual), measures.get(0));
-		} catch (UncalculableMetricException e) {
-			fail("No exceptions were expected");
-		}
-		
+		//TODO testCalculate method
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * <p>
 	 * Using null arguments.
 	 */
@@ -164,7 +149,7 @@ public class AMetricTest {
 	@MethodSource
 	public void testCalculateNullArgs(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {	
 		TestMetric testMetric = new TestMetric();
-		assertThrows(UncalculableMetricException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 			testMetric.calculate(repository, metricConfig, metricsResults);
 		}, "Expected exception when null arguments");
 	}

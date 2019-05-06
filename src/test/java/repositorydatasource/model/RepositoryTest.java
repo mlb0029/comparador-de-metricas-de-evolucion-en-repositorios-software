@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+import model.Repository;
+import model.RepositoryInternalMetrics;
+
 /**
- * Test class forn {@link repositorydatasource.model.Repository}
+ * Test class forn {@link model.Repository}
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -14,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class RepositoryTest {
 
 	/**
-	 * Test method for {@link repositorydatasource.model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
+	 * Test method for {@link model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
 	 * with null values.
 	 */
 	@Test
@@ -26,7 +29,7 @@ public class RepositoryTest {
 	}
 	
 	/**
-	 * Test method for {@link repositorydatasource.model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
+	 * Test method for {@link model.Repository#Repository(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.List, java.util.Set, java.lang.Integer)}
 	 * with values.
 	 */
 	@Test

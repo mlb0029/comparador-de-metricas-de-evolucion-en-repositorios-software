@@ -10,7 +10,7 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * Computes the metric Peak Change.

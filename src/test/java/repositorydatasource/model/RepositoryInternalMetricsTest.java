@@ -9,8 +9,10 @@ import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 
+import model.RepositoryInternalMetrics;
+
 /**
- * Test class forn {@link repositorydatasource.model.RepositoryInternalMetrics}
+ * Test class forn {@link model.RepositoryInternalMetrics}
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -18,7 +20,7 @@ import org.junit.jupiter.api.Test;
 class RepositoryInternalMetricsTest {
 
 	/**
-	 * Test method for {@link repositorydatasource.model.RepositoryInternalMetrics#RepositoryInternalMetrics(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.Collection, java.util.Collection, java.lang.Integer)}
+	 * Test method for {@link model.RepositoryInternalMetrics#RepositoryInternalMetrics(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.Collection, java.util.Collection, java.lang.Integer)}
 	 * with null values.
 	 */
 	@Test
@@ -33,7 +35,7 @@ class RepositoryInternalMetricsTest {
 	}
 
 	/**
-	 * Test method for {@link repositorydatasource.model.RepositoryInternalMetrics#RepositoryInternalMetrics(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.Collection, java.util.Collection, java.lang.Integer)}
+	 * Test method for {@link model.RepositoryInternalMetrics#RepositoryInternalMetrics(java.lang.Integer, java.lang.Integer, java.lang.Integer, java.util.Collection, java.util.Collection, java.lang.Integer)}
 	 * with values.
 	 */
 	@Test

@@ -14,8 +14,8 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
+import model.Repository;
+import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricChangeActivityRange}.
@@ -79,7 +79,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#check(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#check(model.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"
@@ -98,7 +98,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#run(model.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"

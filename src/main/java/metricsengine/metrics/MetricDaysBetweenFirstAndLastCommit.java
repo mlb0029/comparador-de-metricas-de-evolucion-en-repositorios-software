@@ -9,7 +9,7 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * Computes the days between the first and the last commit.

@@ -1,9 +1,8 @@
 package metricsengine;
 
-import exceptions.UncalculableMetricException;
-import metricsengine.IMetric;
 import metricsengine.values.IValue;
-import repositorydatasource.model.Repository;
+import metricsengine.values.ValueUncalculated;
+import model.Repository;
 
 /**
  * Partially implements the IMetric interface.
@@ -118,18 +117,12 @@ public abstract class AMetric implements IMetric {
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricsResults)
 	 */
 	@Override
-	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
-		if (repository == null || metricConfig == null ||  metricsResults == null)
-			throw new UncalculableMetricException("Impossible to calculate with any of the null arguments");
-		if (check(repository)) {
-			IValue value = run(repository);
-			metricsResults.addMeasure(new Measure(metricConfig, value));
-			return value;
-		}else {
-			throw new UncalculableMetricException(
-					"Can not calculate the metric '" + getName() + 
-					"' for the repository '" + repository.getName() + "'");
-		}
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
+		IValue value;
+		if (repository == null || metricConfig == null ||  metricsResults == null) throw new IllegalArgumentException("All parameters must be not null");
+		value = (check(repository))?run(repository):new ValueUncalculated();
+		metricsResults.addMeasure(new Measure(metricConfig, value));
+		return value;
 	}
 	
 	/**

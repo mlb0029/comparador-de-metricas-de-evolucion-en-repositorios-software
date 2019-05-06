@@ -16,7 +16,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Element;
 
 import gui.common.RepositoriesListService;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * View that allows you to work with a list of repositories.

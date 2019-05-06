@@ -4,7 +4,7 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * Compute the total number of issues of a repository.

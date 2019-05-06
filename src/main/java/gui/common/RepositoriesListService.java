@@ -3,7 +3,7 @@ package gui.common;
 import java.util.Collection;
 import java.util.HashSet;
 
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

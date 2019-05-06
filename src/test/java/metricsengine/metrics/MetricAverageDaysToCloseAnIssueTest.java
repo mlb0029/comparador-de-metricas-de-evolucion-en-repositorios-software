@@ -16,8 +16,8 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
+import model.Repository;
+import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue}.
@@ -81,7 +81,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#check(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#check(model.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
@@ -100,7 +100,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#run(model.Repository)}.
 	 * <p>
 	 *  Check "run" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."

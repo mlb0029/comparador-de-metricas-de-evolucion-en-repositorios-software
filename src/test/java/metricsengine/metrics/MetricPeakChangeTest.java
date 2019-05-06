@@ -20,8 +20,8 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
+import model.Repository;
+import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricPeakChange}.
@@ -85,7 +85,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#check(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPeakChange#check(model.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"
@@ -104,7 +104,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPeakChange#run(model.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"

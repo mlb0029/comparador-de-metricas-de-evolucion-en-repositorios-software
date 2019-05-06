@@ -19,22 +19,4 @@ public class MainView extends VerticalLayout {
     		e.printStackTrace();
     	}
 	}
-    
-//    /**
-//     * Initializes the default metric profile.
-//     * 
-//     * @author Miguel Ángel León Bardavío - mlb0029
-//     */
-//    private static void initializeDefaultMetricProfile() {
-//    	defaultMetricProfile = new MetricProfile("DEFAULT");
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssues()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysToCloseAnIssue()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysBetweenCommits()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricDaysBetweenFirstAndLastCommit()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricChangeActivityRange()));
-//    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPeakChange()));
-//    }
-
 }

@@ -19,11 +19,11 @@ import com.vaadin.flow.component.textfield.TextField;
 
 import gui.common.RepositoriesListService;
 import gui.common.RepositoryDataSourceService;
+import model.Repository;
+import model.User;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.User;
 
 public class AddNewRepositoryFormDialog extends Dialog {
 

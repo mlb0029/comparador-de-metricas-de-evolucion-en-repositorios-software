@@ -14,8 +14,8 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
+import model.Repository;
+import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricPercentageClosedIssues}.
@@ -80,7 +80,7 @@ public class MetricPercentageClosedIssuesTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#check(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#check(model.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
@@ -100,7 +100,7 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#run(model.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues"

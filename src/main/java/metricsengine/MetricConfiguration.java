@@ -1,9 +1,7 @@
 package metricsengine;
 
-import exceptions.UncalculableMetricException;
-import metricsengine.IMetric;
 import metricsengine.values.IValue;
-import repositorydatasource.model.Repository;
+import model.Repository;
 
 /**
  * Wrapper for a metric that allows you to use other minimum and maximum values, 
@@ -90,7 +88,7 @@ public class MetricConfiguration implements IMetric {
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)
 	 */
 	@Override
-	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) throws UncalculableMetricException {
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
 		return this.metric.calculate(repository, metricConfig, metricsResults);
 	}
 	
@@ -103,10 +101,9 @@ public class MetricConfiguration implements IMetric {
 	 * @param repository  Entity to be measured
 	 * @param metricsResults Collector where to store the result
 	 * @return The calculated value.
-	 * @throws UncalculableMetricException When the metric can not be calculated for the repository. 
 	 * @see {@link IMetric#calculate(Repository, MetricConfiguration, MetricsResults)}
 	 */
-	public IValue calculate(Repository repository, MetricsResults metricsResults) throws UncalculableMetricException {
+	public IValue calculate(Repository repository, MetricsResults metricsResults) {
 		return this.metric.calculate(repository, this, metricsResults);
 	}
 }

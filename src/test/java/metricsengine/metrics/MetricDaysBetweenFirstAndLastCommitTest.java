@@ -20,8 +20,8 @@ import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
+import model.Repository;
+import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit}.
@@ -85,7 +85,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#check(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#check(model.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates"
@@ -104,7 +104,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#run(repositorydatasource.model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#run(model.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates"

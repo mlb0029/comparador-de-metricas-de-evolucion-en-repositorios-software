@@ -1,6 +1,8 @@
-package repositorydatasource.model;
+package model;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * A repository data class.
@@ -40,6 +42,13 @@ public class Repository implements Serializable{
 	private RepositoryInternalMetrics internalMetrics = null;
 	
 	/**
+	 * Repository calculated metrics.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection = null;
+	
+	/**
 	 * Constructor that defines the repository, without specifying the metrics that are obtained from it.
 	 * 
 	 * @param url HTTPS URL from the repository
@@ -50,8 +59,9 @@ public class Repository implements Serializable{
 		setUrl(url);
 		setName(name);
 		setId(id);
+		calculatedMetricsCollection = new HashSet<RepositoryCalculatedMetrics>();
 	}
-	
+
 	/**
 	 * Gets the HTTPS URL from the repository.
 	 * 
@@ -130,5 +140,15 @@ public class Repository implements Serializable{
 	 */
 	public void setInternalMetrics(RepositoryInternalMetrics internalMetrics) {
 		this.internalMetrics = internalMetrics;
+	}
+
+	/**
+	 * Gets the calculatedMetricsCollection.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the calculatedMetricsCollection
+	 */
+	public Collection<RepositoryCalculatedMetrics> getCalculatedMetricsCollection() {
+		return calculatedMetricsCollection;
 	}
 }

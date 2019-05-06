@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
+import model.Repository;
 import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
-import repositorydatasource.model.Repository;
 
 /**
  * Test for GitLabRepositoryDataSource.

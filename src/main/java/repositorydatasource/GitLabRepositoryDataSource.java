@@ -18,10 +18,10 @@ import org.gitlab4j.api.models.ProjectFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import model.Repository;
+import model.RepositoryInternalMetrics;
+import model.User;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
-import repositorydatasource.model.Repository;
-import repositorydatasource.model.RepositoryInternalMetrics;
-import repositorydatasource.model.User;
 
 /**
  * Implements IRepositoryDataSource that obtains the data from GitLab
