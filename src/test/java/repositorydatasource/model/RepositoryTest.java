@@ -48,7 +48,7 @@ public class RepositoryTest {
 	public void testSetInternalMetrics() {
 		Repository repo = new Repository("", "", 0);
 		RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics(0, 0, 0, null, null, 0);
-		repo.setInternalMetrics(repositoryInternalMetrics);
-		assertEquals(repositoryInternalMetrics, repo.getInternalMetrics());
+		repo.setRepositoryInternalMetrics(repositoryInternalMetrics);
+		assertEquals(repositoryInternalMetrics, repo.getRepositoryInternalMetrics());
 	}
 }

@@ -19,16 +19,18 @@ import metricsengine.metrics.MetricTotalNumberOfIssues;
  *
  */
 public class RepositoryCalculatedMetrics {
-	MetricProfile profile = null;
-	Date date = null;
-	Measure metricTotalNumberOfIssues = null;
-	Measure metricCommitsPerIssue = null;
-	Measure metricPercentageOfClosedIssues = null;
-	Measure metricAverageDaysToCloseAnIssue = null;
-	Measure metricAverageDaysBetweenCommits = null;
-	Measure metricDaysBetweenFirstAndLastCommit = null;
-	Measure metricChangeActivityRange = null;
-	Measure metricPeakChange = null;
+	
+	private MetricProfile profile = null;
+	private Date date = null;
+	
+	private Measure metricTotalNumberOfIssues = null;
+	private Measure metricCommitsPerIssue = null;
+	private Measure metricPercentageOfClosedIssues = null;
+	private Measure metricAverageDaysToCloseAnIssue = null;
+	private Measure metricAverageDaysBetweenCommits = null;
+	private Measure metricDaysBetweenFirstAndLastCommit = null;
+	private Measure metricChangeActivityRange = null;
+	private Measure metricPeakChange = null;
 	
 	public RepositoryCalculatedMetrics(MetricProfile metricProfile, MetricsResults metricsResults) {
 		profile = metricProfile;
@@ -52,5 +54,105 @@ public class RepositoryCalculatedMetrics {
 				metricPeakChange = measure;
 			}
 		}
+	}
+
+	/**
+	 * Gets the profile.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the profile
+	 */
+	public MetricProfile getProfile() {
+		return profile;
+	}
+
+	/**
+	 * Gets the date.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * Gets the metricTotalNumberOfIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricTotalNumberOfIssues
+	 */
+	public Measure getMetricTotalNumberOfIssues() {
+		return metricTotalNumberOfIssues;
+	}
+
+	/**
+	 * Gets the metricCommitsPerIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricCommitsPerIssue
+	 */
+	public Measure getMetricCommitsPerIssue() {
+		return metricCommitsPerIssue;
+	}
+
+	/**
+	 * Gets the metricPercentageOfClosedIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricPercentageOfClosedIssues
+	 */
+	public Measure getMetricPercentageOfClosedIssues() {
+		return metricPercentageOfClosedIssues;
+	}
+
+	/**
+	 * Gets the metricAverageDaysToCloseAnIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricAverageDaysToCloseAnIssue
+	 */
+	public Measure getMetricAverageDaysToCloseAnIssue() {
+		return metricAverageDaysToCloseAnIssue;
+	}
+
+	/**
+	 * Gets the metricAverageDaysBetweenCommits.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricAverageDaysBetweenCommits
+	 */
+	public Measure getMetricAverageDaysBetweenCommits() {
+		return metricAverageDaysBetweenCommits;
+	}
+
+	/**
+	 * Gets the metricDaysBetweenFirstAndLastCommit.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricDaysBetweenFirstAndLastCommit
+	 */
+	public Measure getMetricDaysBetweenFirstAndLastCommit() {
+		return metricDaysBetweenFirstAndLastCommit;
+	}
+
+	/**
+	 * Gets the metricChangeActivityRange.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricChangeActivityRange
+	 */
+	public Measure getMetricChangeActivityRange() {
+		return metricChangeActivityRange;
+	}
+
+	/**
+	 * Gets the metricPeakChange.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the metricPeakChange
+	 */
+	public Measure getMetricPeakChange() {
+		return metricPeakChange;
 	}
 }

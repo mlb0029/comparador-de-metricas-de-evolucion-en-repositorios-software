@@ -11,8 +11,6 @@ import java.util.Date;
  */
 public class RepositoryInternalMetrics {
 	
-	
-	
 	/*Metrics that are obtained directly from the repository.*/
 	
 	/**
@@ -41,6 +39,8 @@ public class RepositoryInternalMetrics {
 	 */
 	private Integer lifeSpanMonths = null;
 
+	public RepositoryInternalMetrics() {}
+	
 	/**
 	 * Sets all the metrics.
 	 *

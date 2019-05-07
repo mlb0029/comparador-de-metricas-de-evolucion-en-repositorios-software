@@ -9,13 +9,13 @@ import model.Repository;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoriesListService {
+public class RepositoriesService {
 	
-	private static RepositoriesListService instance;
+	private static RepositoriesService instance;
 	
 	private Collection<Repository> repositories;
 	
-	private RepositoriesListService() {
+	private RepositoriesService() {
 		repositories = new HashSet<Repository>();
 	}
 
@@ -25,8 +25,8 @@ public class RepositoriesListService {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return the instance
 	 */
-	public static RepositoriesListService getInstance() {
-		if (instance == null) instance = new RepositoriesListService();
+	public static RepositoriesService getInstance() {
+		if (instance == null) instance = new RepositoriesService();
 		return instance;
 	}
 

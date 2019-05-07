@@ -101,6 +101,7 @@ public class MetricConfiguration implements IMetric {
 	 * @param repository  Entity to be measured
 	 * @param metricsResults Collector where to store the result
 	 * @return The calculated value.
+	 * @throws MetricsEngineException 
 	 * @see {@link IMetric#calculate(Repository, MetricConfiguration, MetricsResults)}
 	 */
 	public IValue calculate(Repository repository, MetricsResults metricsResults) {

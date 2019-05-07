@@ -88,13 +88,12 @@ public class MetricCommitsPerIssueTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
 		assertEquals(expected, metricCommitsPerIssue.check(repository), 
 				"Should return " + expected + 
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
 				", totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricCommitsPerIssue.check(null), "Should return false when repository = null");
 	}
 	
 	/**
@@ -107,7 +106,7 @@ public class MetricCommitsPerIssueTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer totalNumberOfCommits, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, totalNumberOfCommits, null, null, null, null));
 		IValue actual = metricCommitsPerIssue.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

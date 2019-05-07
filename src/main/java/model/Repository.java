@@ -34,19 +34,9 @@ public class Repository implements Serializable{
 	 */
 	private Integer id = null;
 
-	/**
-	 * Repository internal metrics.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
-	private RepositoryInternalMetrics internalMetrics = null;
+	private RepositoryInternalMetrics repositoryInternalMetrics = null;
 	
-	/**
-	 * Repository calculated metrics.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
-	private Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection = null;
+	private Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection;
 	
 	/**
 	 * Constructor that defines the repository, without specifying the metrics that are obtained from it.
@@ -59,6 +49,7 @@ public class Repository implements Serializable{
 		setUrl(url);
 		setName(name);
 		setId(id);
+		repositoryInternalMetrics = new RepositoryInternalMetrics();
 		calculatedMetricsCollection = new HashSet<RepositoryCalculatedMetrics>();
 	}
 
@@ -123,23 +114,23 @@ public class Repository implements Serializable{
 	}
 
 	/**
-	 * Gets the repository internal metrics.
+	 * Gets the repositoryInternalMetrics.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the repository internal metrics
+	 * @return the repositoryInternalMetrics
 	 */
-	public RepositoryInternalMetrics getInternalMetrics() {
-		return internalMetrics;
+	public RepositoryInternalMetrics getRepositoryInternalMetrics() {
+		return repositoryInternalMetrics;
 	}
 
 	/**
-	 * Sets the repository internal metrics.
+	 * Sets the repositoryInternalMetrics.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param internalMetrics the repository internal metrics to set
+	 * @param repositoryInternalMetrics the repositoryInternalMetrics to set
 	 */
-	public void setInternalMetrics(RepositoryInternalMetrics internalMetrics) {
-		this.internalMetrics = internalMetrics;
+	public void setRepositoryInternalMetrics(RepositoryInternalMetrics repositoryInternalMetrics) {
+		this.repositoryInternalMetrics = repositoryInternalMetrics;
 	}
 
 	/**
@@ -150,5 +141,15 @@ public class Repository implements Serializable{
 	 */
 	public Collection<RepositoryCalculatedMetrics> getCalculatedMetricsCollection() {
 		return calculatedMetricsCollection;
+	}
+
+	/**
+	 * Sets the calculatedMetricsCollection.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param calculatedMetricsCollection the calculatedMetricsCollection to set
+	 */
+	public void setCalculatedMetricsCollection(Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection) {
+		this.calculatedMetricsCollection = calculatedMetricsCollection;
 	}
 }

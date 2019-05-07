@@ -94,13 +94,12 @@ public class MetricPeakChangeTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		assertEquals(expected, metricPeakChange.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricPeakChange.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -113,7 +112,7 @@ public class MetricPeakChangeTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		IValue actual = metricPeakChange.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

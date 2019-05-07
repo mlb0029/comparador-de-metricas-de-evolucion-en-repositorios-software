@@ -3,6 +3,7 @@ package repositorydatasource;
 import java.util.Collection;
 
 import model.Repository;
+import model.RepositoryInternalMetrics;
 import model.User;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
@@ -133,11 +134,12 @@ public interface IRepositoryDataSource {
 	Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException;
 	
 	/**
-	 * Add the metrics that are obtained directly from the repository to the repository, 
+	 * Updates the internal metrics of the repository that is passed by parameter,
 	 * if any can not be calculated, its value will be null.
 	 * 
 	 * @param repositoryURL URL of a repository.
-	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
+	 * @return TODO
+	 * @throws RepositoryDataSourceException When it has not been possible to obtain information from the repository.
 	 */
-	void setRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException;
+	RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException;
 }

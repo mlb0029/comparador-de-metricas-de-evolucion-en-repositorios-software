@@ -94,13 +94,12 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argsForCheckMethodInCommitDates")
 	public void testCheck(Integer totalNumberOfCommits, Set<Date> commitDates, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		assertEquals(expectedValue, metricDaysBetweenFirstAndLastCommit.check(repository), 
 				"Should return " + expectedValue +
 				" when totalNumberOfCommits=" + String.valueOf(totalNumberOfCommits) +
 				", commitDates=" + commitDates +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricDaysBetweenFirstAndLastCommit.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -113,7 +112,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfCommits, Set<Date> commitDates, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		IValue actual = metricDaysBetweenFirstAndLastCommit.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
 	}

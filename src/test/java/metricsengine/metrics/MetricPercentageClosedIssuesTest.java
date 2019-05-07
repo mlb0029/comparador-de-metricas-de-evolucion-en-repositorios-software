@@ -90,13 +90,12 @@ public class MetricPercentageClosedIssuesTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Integer numberOfClosedIssues, Boolean expectedValue, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
 		assertEquals(expectedValue, metricPercentageClosedIssues.check(repository), 
 				"Should return " + expectedValue +
 				" when totalNumberOfIssues=" + totalNumberOfIssues +
 				", numberOfClosedIssues=" + numberOfClosedIssues +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricPercentageClosedIssues.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -109,7 +108,7 @@ public class MetricPercentageClosedIssuesTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, Integer numberOfClosedIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, numberOfClosedIssues, null, null, null));
 		IValue actual = metricPercentageClosedIssues.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

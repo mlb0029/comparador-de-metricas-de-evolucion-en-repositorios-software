@@ -86,12 +86,11 @@ public class MetricTotalNumberOfIssuesTest {
 	@MethodSource
 	public void testCheck(Integer totalNumberOfIssues, Boolean expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
 		assertEquals(expected, metricTotalNumberOfIssues.check(repository), 
 				"Should return " + expected +
 				" when totalNumberOfIssues=" + String.valueOf(totalNumberOfIssues) +
 				". Test Case: (" + testCase + ")");
-		assertFalse(metricTotalNumberOfIssues.check(null), "Should return false when repository = null");
 	}
 
 	/**
@@ -104,7 +103,7 @@ public class MetricTotalNumberOfIssuesTest {
 	@MethodSource
 	public void testRun(Integer totalNumberOfIssues, IValue expected, String testCase) {
 		Repository repository = new Repository("URL", "Test", 1);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
+		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
 		IValue actual = metricTotalNumberOfIssues.run(repository);
 		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}

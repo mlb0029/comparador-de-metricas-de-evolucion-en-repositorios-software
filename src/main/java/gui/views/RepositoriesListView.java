@@ -15,7 +15,7 @@ import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Element;
 
-import gui.common.RepositoriesListService;
+import gui.common.RepositoriesService;
 import model.Repository;
 
 /**
@@ -57,7 +57,7 @@ public class RepositoriesListView extends VerticalLayout {
 		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton);
 		searchBarLayout.setWidthFull();
 		
-		repositoriesDataProvider = new ListDataProvider<>(RepositoriesListService.getInstance().getRepositories());
+		repositoriesDataProvider = new ListDataProvider<>(RepositoriesService.getInstance().getRepositories());
 		repositoriesGrid = new Grid<Repository>(Repository.class);
 		repositoriesGrid.setWidthFull();
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);

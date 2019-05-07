@@ -261,10 +261,10 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	}
 
 	/* (non-Javadoc)
-	 * @see repositorydatasource.IRepositoryDataSource#getRepositoryMetrics(java.lang.String)
+	 * @see repositorydatasource.IRepositoryDataSource#updateRepositoryInternalMetrics(model.Repository)
 	 */
 	@Override
-	public void setRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException {
+	public RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException {
 		int projectId = repository.getId();
 		int totalNumberOfIssues = getTotalNumberOfIssues(projectId);
 		int totalNumberOfCommits = getTotalNumberOfCommits(projectId);
@@ -272,13 +272,15 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 		List<Integer> daysToCloseEachIssue = getDaysToCloseEachIssue(projectId);
 		Set<Date> commitDates = getCommitsDates(projectId);
 		int lifeSpanMonths = getRepositoryLifeInMonths(projectId);
-		repository.setInternalMetrics(new RepositoryInternalMetrics(
+		RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics(
 				totalNumberOfIssues,
 				totalNumberOfCommits,
 				numberOfClosedIssues,
 				daysToCloseEachIssue,
 				commitDates,
-				lifeSpanMonths));
+				lifeSpanMonths
+		);
+		return repositoryInternalMetrics;
 	}
 
 	/**

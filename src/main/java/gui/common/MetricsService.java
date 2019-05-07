@@ -16,6 +16,9 @@ import metricsengine.metrics.MetricPercentageClosedIssues;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
 import model.Repository;
 import model.RepositoryCalculatedMetrics;
+import model.RepositoryInternalMetrics;
+import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
@@ -29,7 +32,8 @@ public class MetricsService {
 	
 	private MetricsService() {
 		metricsProfileMap = new HashMap<String, MetricProfile>();
-		initializeDefaultMetricProfile();
+		MetricProfile metricProfile = getDefaultMetricProfile();
+		metricsProfileMap.put(metricProfile.getName(), metricProfile);
 	}
 
 	/**
@@ -43,40 +47,64 @@ public class MetricsService {
 		return metricsService;
 	}
 	
-	 /**
-     * Initializes the default metric profile.
-     * 
-     * @author Miguel Ángel León Bardavío - mlb0029
-     */
-    private void initializeDefaultMetricProfile() {
-    	MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssues()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysToCloseAnIssue()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysBetweenCommits()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricDaysBetweenFirstAndLastCommit()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricChangeActivityRange()));
-    	defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPeakChange()));
-    	metricsProfileMap.put(defaultMetricProfile.getName(), defaultMetricProfile);
-    }
-    
-    public MetricProfile getMetricProfileByName(String name) {
+	 public MetricProfile getMetricProfileByName(String name) {
     	return metricsProfileMap.get(name);
     }
     
+	 public void addMetricProfile(MetricProfile metricProfile) throws MetricsServiceException {
+		 if (metricProfile == null) throw new NullPointerException();
+		 if (metricsProfileMap.get(metricProfile.getName()) != null) {
+			 throw new MetricsServiceException(MetricsServiceException.METRICP_ROFILE_NAME_IN_USE);
+		 } else{
+			 metricsProfileMap.put(metricProfile.getName(), metricProfile);
+		 }
+	 }
+	 
     /**
-     * Calcu.
+     * Updates th.
      * 
      * @author Miguel Ángel León Bardavío - mlb0029
      * @param repository
      * @param metricProfile
+     * @throws RepositoryDataSourceException 
      */
-    public void calculateMetrics(Repository repository, MetricProfile metricProfile) {
+    public void calculateMetricsRepository(Repository repository, MetricProfile metricProfile) throws RepositoryDataSourceException {
+    	IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+    	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();
-		for (MetricConfiguration metricConfiguration : metricProfile.getMetricConfigurationCollection()) {
+    	RepositoryCalculatedMetrics repositoryCalculatedMetrics = null;
+    	
+    	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
+    	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
+    	
+    	for (MetricConfiguration metricConfiguration : metricProfile.getMetricConfigurationCollection()) {
 			metricConfiguration.calculate(repository, metricsResults);
 		}
-    	repository.getCalculatedMetricsCollection().add(new RepositoryCalculatedMetrics(metricProfile, metricsResults));
+    	repositoryCalculatedMetrics = new RepositoryCalculatedMetrics(metricProfile, metricsResults);
+    	repository.getCalculatedMetricsCollection().add(repositoryCalculatedMetrics);
     }
+    
+    public void calculateMetricsAllRepositories(MetricProfile metricProfile) throws RepositoryDataSourceException {
+    	for (Repository repository : RepositoriesService.getInstance().getRepositories()) {
+			calculateMetricsRepository(repository, metricProfile);
+		}
+    }
+
+	/**
+	 * Initializes the default metric profile.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private MetricProfile getDefaultMetricProfile() {
+		MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssues()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysToCloseAnIssue()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysBetweenCommits()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricDaysBetweenFirstAndLastCommit()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricChangeActivityRange()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPeakChange()));
+		return defaultMetricProfile;
+	}
 }

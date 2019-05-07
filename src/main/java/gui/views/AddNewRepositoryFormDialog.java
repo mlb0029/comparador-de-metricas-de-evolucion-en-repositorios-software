@@ -17,7 +17,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
-import gui.common.RepositoriesListService;
+import gui.common.RepositoriesService;
 import gui.common.RepositoryDataSourceService;
 import model.Repository;
 import model.User;
@@ -136,7 +136,7 @@ public class AddNewRepositoryFormDialog extends Dialog {
 
 	private void addButton_Click(ClickEvent<Button> event) {
 		if (repositoryComboBox.getOptionalValue().isPresent()) {
-			RepositoriesListService.getInstance().getRepositories().add(repositoryComboBox.getValue());
+			RepositoriesService.getInstance().getRepositories().add(repositoryComboBox.getValue());
 			msgStatusLabel.setText("");
 			repositoryComboBox.setInvalid(false);
 		} else {

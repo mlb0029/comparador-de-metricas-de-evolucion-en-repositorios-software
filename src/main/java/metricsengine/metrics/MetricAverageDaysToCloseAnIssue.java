@@ -67,9 +67,8 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 	 */
 	@Override
 	protected Boolean check(Repository repository) {
-		if (repository == null) return false;
-		Collection<Integer> daysToCloseEachIssue = repository.getInternalMetrics().getDaysToCloseEachIssue();
-		Integer numberOfClosedIssues = repository.getInternalMetrics().getNumberOfClosedIssues();
+		Collection<Integer> daysToCloseEachIssue = repository.getRepositoryInternalMetrics().getDaysToCloseEachIssue();
+		Integer numberOfClosedIssues = repository.getRepositoryInternalMetrics().getNumberOfClosedIssues();
 		
 		if (daysToCloseEachIssue == null ||
 				numberOfClosedIssues == null ||
@@ -90,7 +89,7 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 	 */
 	@Override
 	protected IValue run(Repository repository) {
-		double result = repository.getInternalMetrics().getDaysToCloseEachIssue().stream().mapToInt(i -> i).average().orElseThrow();
+		double result = repository.getRepositoryInternalMetrics().getDaysToCloseEachIssue().stream().mapToInt(i -> i).average().orElseThrow();
 		return new ValueDecimal(result);
 	}
 }
