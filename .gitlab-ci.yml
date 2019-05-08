@@ -29,7 +29,7 @@ image: maven:latest
 stages:
     - build
     - test
-    - release
+    - deployment
     
 compile:
     stage: build
@@ -48,9 +48,9 @@ report:
         - mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
         - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r $CI_PROJECT_DIR/target/reports/jacoco/jacoco.xml
         
-package:
-    stage: release
+deploy:
+    stage: deployment
     script:
-        - mvn package
+        - mvn clean heroku:deploy-war
     only:
         - master
