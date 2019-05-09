@@ -56,3 +56,9 @@ Estas APIs de envoltura nos ahorran trabajo adaptando [GitLab REST API](https://
 *   [gitlab4j-api v4.8.56](https://github.com/gmessner/gitlab4j-api)
 
 *   [JUnit5 v5.3.1](https://junit.org/junit5/)
+
+*   [Codacy](https://www.codacy.com/)
+
+*   [Heroku](https://www.heroku.com/)
+
+*   [Vaadin 13.0.0](https://vaadin.com/)
