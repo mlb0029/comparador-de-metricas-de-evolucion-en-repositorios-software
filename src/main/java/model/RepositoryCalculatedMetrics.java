@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import metricsengine.Measure;
@@ -18,8 +19,14 @@ import metricsengine.metrics.MetricTotalNumberOfIssues;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoryCalculatedMetrics {
+public class RepositoryCalculatedMetrics implements Serializable {
 	
+	/**
+	 * Serial.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -5140818567166881817L;
 	private MetricProfile profile = null;
 	private Date date = null;
 	

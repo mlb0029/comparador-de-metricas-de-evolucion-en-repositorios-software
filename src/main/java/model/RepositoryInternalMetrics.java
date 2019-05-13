@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -9,8 +10,14 @@ import java.util.Date;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoryInternalMetrics {
+public class RepositoryInternalMetrics implements Serializable{
 	
+	/**
+	 * Serial.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 6572932423075014481L;
 	/*Metrics that are obtained directly from the repository.*/
 	
 	/**
