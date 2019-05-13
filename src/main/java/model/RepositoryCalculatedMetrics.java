@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import metricsengine.Measure;
 import metricsengine.MetricProfile;
@@ -39,26 +40,49 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	private Measure metricChangeActivityRange = null;
 	private Measure metricPeakChange = null;
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(date);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof RepositoryCalculatedMetrics))
+			return false;
+		RepositoryCalculatedMetrics other = (RepositoryCalculatedMetrics) obj;
+		return Objects.equals(date, other.date);
+	}
+
 	public RepositoryCalculatedMetrics(MetricProfile metricProfile, MetricsResults metricsResults) {
-		profile = metricProfile;
-		date = metricsResults.getDate();
+		setProfile(metricProfile);
+		setDate(metricsResults.getDate());
 		for (Measure measure : metricsResults.getMeasures()) {
 			if (measure.getMetricConfiguration().getMetric() instanceof MetricTotalNumberOfIssues) {
-				metricTotalNumberOfIssues = measure;
+				setMetricTotalNumberOfIssues(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricCommitsPerIssue) {
-				metricCommitsPerIssue = measure;
+				setMetricCommitsPerIssue(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricPercentageClosedIssues) {
-				metricPercentageOfClosedIssues = measure;
+				setMetricPercentageOfClosedIssues(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricAverageDaysToCloseAnIssue) {
-				metricAverageDaysToCloseAnIssue = measure;
+				setMetricAverageDaysToCloseAnIssue(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricAverageDaysBetweenCommits) {
-				metricAverageDaysBetweenCommits = measure;
+				setMetricAverageDaysBetweenCommits(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricDaysBetweenFirstAndLastCommit) {
-				metricDaysBetweenFirstAndLastCommit = measure;
+				setMetricDaysBetweenFirstAndLastCommit(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricChangeActivityRange) {
-				metricChangeActivityRange = measure;
+				setMetricChangeActivityRange(measure);
 			} else if (measure.getMetricConfiguration().getMetric() instanceof MetricPeakChange) {
-				metricPeakChange = measure;
+				setMetricPeakChange(measure);
 			}
 		}
 	}
@@ -74,6 +98,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	}
 
 	/**
+	 * Sets the profile.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param profile the profile to set
+	 */
+	private void setProfile(MetricProfile profile) {
+		this.profile = profile;
+	}
+
+	/**
 	 * Gets the date.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -81,6 +115,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	 */
 	public Date getDate() {
 		return date;
+	}
+
+	/**
+	 * Sets the date.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param date the date to set
+	 */
+	private void setDate(Date date) {
+		this.date = date;
 	}
 
 	/**
@@ -94,6 +138,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	}
 
 	/**
+	 * Sets the metricTotalNumberOfIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricTotalNumberOfIssues the metricTotalNumberOfIssues to set
+	 */
+	private void setMetricTotalNumberOfIssues(Measure metricTotalNumberOfIssues) {
+		this.metricTotalNumberOfIssues = metricTotalNumberOfIssues;
+	}
+
+	/**
 	 * Gets the metricCommitsPerIssue.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -101,6 +155,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	 */
 	public Measure getMetricCommitsPerIssue() {
 		return metricCommitsPerIssue;
+	}
+
+	/**
+	 * Sets the metricCommitsPerIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricCommitsPerIssue the metricCommitsPerIssue to set
+	 */
+	private void setMetricCommitsPerIssue(Measure metricCommitsPerIssue) {
+		this.metricCommitsPerIssue = metricCommitsPerIssue;
 	}
 
 	/**
@@ -114,6 +178,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	}
 
 	/**
+	 * Sets the metricPercentageOfClosedIssues.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricPercentageOfClosedIssues the metricPercentageOfClosedIssues to set
+	 */
+	private void setMetricPercentageOfClosedIssues(Measure metricPercentageOfClosedIssues) {
+		this.metricPercentageOfClosedIssues = metricPercentageOfClosedIssues;
+	}
+
+	/**
 	 * Gets the metricAverageDaysToCloseAnIssue.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -121,6 +195,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	 */
 	public Measure getMetricAverageDaysToCloseAnIssue() {
 		return metricAverageDaysToCloseAnIssue;
+	}
+
+	/**
+	 * Sets the metricAverageDaysToCloseAnIssue.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricAverageDaysToCloseAnIssue the metricAverageDaysToCloseAnIssue to set
+	 */
+	private void setMetricAverageDaysToCloseAnIssue(Measure metricAverageDaysToCloseAnIssue) {
+		this.metricAverageDaysToCloseAnIssue = metricAverageDaysToCloseAnIssue;
 	}
 
 	/**
@@ -134,6 +218,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	}
 
 	/**
+	 * Sets the metricAverageDaysBetweenCommits.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricAverageDaysBetweenCommits the metricAverageDaysBetweenCommits to set
+	 */
+	private void setMetricAverageDaysBetweenCommits(Measure metricAverageDaysBetweenCommits) {
+		this.metricAverageDaysBetweenCommits = metricAverageDaysBetweenCommits;
+	}
+
+	/**
 	 * Gets the metricDaysBetweenFirstAndLastCommit.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -141,6 +235,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	 */
 	public Measure getMetricDaysBetweenFirstAndLastCommit() {
 		return metricDaysBetweenFirstAndLastCommit;
+	}
+
+	/**
+	 * Sets the metricDaysBetweenFirstAndLastCommit.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricDaysBetweenFirstAndLastCommit the metricDaysBetweenFirstAndLastCommit to set
+	 */
+	private void setMetricDaysBetweenFirstAndLastCommit(Measure metricDaysBetweenFirstAndLastCommit) {
+		this.metricDaysBetweenFirstAndLastCommit = metricDaysBetweenFirstAndLastCommit;
 	}
 
 	/**
@@ -154,6 +258,16 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	}
 
 	/**
+	 * Sets the metricChangeActivityRange.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricChangeActivityRange the metricChangeActivityRange to set
+	 */
+	private void setMetricChangeActivityRange(Measure metricChangeActivityRange) {
+		this.metricChangeActivityRange = metricChangeActivityRange;
+	}
+
+	/**
 	 * Gets the metricPeakChange.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -161,5 +275,15 @@ public class RepositoryCalculatedMetrics implements Serializable {
 	 */
 	public Measure getMetricPeakChange() {
 		return metricPeakChange;
+	}
+
+	/**
+	 * Sets the metricPeakChange.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricPeakChange the metricPeakChange to set
+	 */
+	private void setMetricPeakChange(Measure metricPeakChange) {
+		this.metricPeakChange = metricPeakChange;
 	}
 }

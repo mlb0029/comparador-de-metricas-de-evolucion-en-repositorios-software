@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Stores the metrics that can be obtained directly from the repository and used to calculate the rest of the metrics.
@@ -19,6 +20,8 @@ public class RepositoryInternalMetrics implements Serializable{
 	 */
 	private static final long serialVersionUID = 6572932423075014481L;
 	/*Metrics that are obtained directly from the repository.*/
+	
+	private Date date = null;
 	
 	/**
 	 * Total number of issues.
@@ -46,6 +49,29 @@ public class RepositoryInternalMetrics implements Serializable{
 	 */
 	private Integer lifeSpanMonths = null;
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(date);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof RepositoryInternalMetrics))
+			return false;
+		RepositoryInternalMetrics other = (RepositoryInternalMetrics) obj;
+		return Objects.equals(date, other.date);
+	}
+
 	public RepositoryInternalMetrics() {}
 	
 	/**
@@ -62,12 +88,33 @@ public class RepositoryInternalMetrics implements Serializable{
 	 */
 	public RepositoryInternalMetrics(Integer totalNumberOfIssues, Integer totalNumberOfCommits, Integer numberOfClosedIssues,
 			Collection<Integer> daysToCloseEachIssue, Collection<Date> commitDates, Integer lifeSpanMonths) {
+		setDate(new Date());
 		setTotalNumberOfIssues(totalNumberOfIssues);
 		setTotalNumberOfCommits(totalNumberOfCommits);
 		setNumberOfClosedIssues(numberOfClosedIssues);
 		setDaysToCloseEachIssue(daysToCloseEachIssue);
 		setCommitDates(commitDates);
 		setLifeSpanMonths(lifeSpanMonths);
+	}
+
+	/**
+	 * Gets the date.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * Sets the date.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param date the date to set
+	 */
+	private void setDate(Date date) {
+		this.date = date;
 	}
 
 	/**

@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * A repository data class.
@@ -10,7 +11,7 @@ import java.util.HashSet;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class Repository implements Serializable, Comparable<Repository>{
+public class Repository implements Serializable {
 		
 	/**
 	 * Serial.
@@ -38,6 +39,29 @@ public class Repository implements Serializable, Comparable<Repository>{
 	
 	private Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection;
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, url);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Repository))
+			return false;
+		Repository other = (Repository) obj;
+		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(url, other.url);
+	}
+
 	/**
 	 * Constructor that defines the repository, without specifying the metrics that are obtained from it.
 	 * 
@@ -51,20 +75,6 @@ public class Repository implements Serializable, Comparable<Repository>{
 		setId(id);
 		repositoryInternalMetrics = new RepositoryInternalMetrics();
 		calculatedMetricsCollection = new HashSet<RepositoryCalculatedMetrics>();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (obj instanceof Repository) return false;
-		Repository objRepository = (Repository) obj;
-		return getId().equals(objRepository.getId())
-				&& getUrl().equals(objRepository.getUrl())
-				&& getName().equals(objRepository.getName());
 	}
 
 	/**
@@ -165,10 +175,5 @@ public class Repository implements Serializable, Comparable<Repository>{
 	 */
 	public void setCalculatedMetricsCollection(Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection) {
 		this.calculatedMetricsCollection = calculatedMetricsCollection;
-	}
-
-	@Override
-	public int compareTo(Repository o) {
-		return this.getName().compareTo(o.getName());
 	}
 }
