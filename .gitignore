@@ -8,8 +8,6 @@
 
 bin/
 
-/testLog.txt
-
-log/
-
 \.vaadin-designer2
+
+/log/
