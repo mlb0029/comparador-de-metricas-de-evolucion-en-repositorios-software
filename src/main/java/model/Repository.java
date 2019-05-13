@@ -10,7 +10,7 @@ import java.util.HashSet;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class Repository implements Serializable{
+public class Repository implements Serializable, Comparable<Repository>{
 		
 	/**
 	 * Serial.
@@ -51,6 +51,20 @@ public class Repository implements Serializable{
 		setId(id);
 		repositoryInternalMetrics = new RepositoryInternalMetrics();
 		calculatedMetricsCollection = new HashSet<RepositoryCalculatedMetrics>();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (obj instanceof Repository) return false;
+		Repository objRepository = (Repository) obj;
+		return getId().equals(objRepository.getId())
+				&& getUrl().equals(objRepository.getUrl())
+				&& getName().equals(objRepository.getName());
 	}
 
 	/**
@@ -151,5 +165,10 @@ public class Repository implements Serializable{
 	 */
 	public void setCalculatedMetricsCollection(Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection) {
 		this.calculatedMetricsCollection = calculatedMetricsCollection;
+	}
+
+	@Override
+	public int compareTo(Repository o) {
+		return this.getName().compareTo(o.getName());
 	}
 }

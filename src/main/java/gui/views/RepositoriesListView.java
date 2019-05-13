@@ -1,6 +1,5 @@
 package gui.views;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
@@ -10,10 +9,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.dom.Element;
 
 import gui.common.RepositoriesService;
 import model.Repository;
@@ -28,7 +27,7 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
-	private AddNewRepositoryFormDialog addNewRepositoryFormDialog;
+	private AddNewRepositoryForm addNewRepositoryFormDialog;
 	private TextField searchTextField;
 	private Button addNewRepositoryButton;
 	private Grid<Repository> repositoriesGrid;
@@ -40,8 +39,10 @@ public class RepositoriesListView extends VerticalLayout {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public RepositoriesListView() {
-		addNewRepositoryFormDialog = new AddNewRepositoryFormDialog();
-		addNewRepositoryFormDialog.addRepositoryButtonClickListener(this::addRepositoryButtonClickListener);
+		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesService.getInstance().getRepositories());
+		
+		addNewRepositoryFormDialog = new AddNewRepositoryForm();
+		addNewRepositoryFormDialog.onAddRepositoryListener(e -> updateGrid());
 		
 		addNewRepositoryButton = new Button("Repository", new Icon(VaadinIcon.PLUS));
 		addNewRepositoryButton.setWidth("10%");
@@ -57,7 +58,6 @@ public class RepositoriesListView extends VerticalLayout {
 		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton);
 		searchBarLayout.setWidthFull();
 		
-		repositoriesDataProvider = new ListDataProvider<>(RepositoriesService.getInstance().getRepositories());
 		repositoriesGrid = new Grid<Repository>(Repository.class);
 		repositoriesGrid.setWidthFull();
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
@@ -80,12 +80,8 @@ public class RepositoriesListView extends VerticalLayout {
 		setSizeFull();
 	}
 
-	private void addRepositoryButtonClickListener(ClickEvent<Button> event) {
-		updateGrid();
-	}
-
 	private void updateGrid() {
-		repositoriesGrid.getDataProvider().refreshAll();
+		repositoriesDataProvider.refreshAll();
 	}
 
 	/**
@@ -95,21 +91,8 @@ public class RepositoriesListView extends VerticalLayout {
 	 */
 	private void filter() {
 		repositoriesDataProvider.addFilter(repository -> repository.getName().toLowerCase().contains(searchTextField.getValue().toLowerCase()));
-//		if (searchTextField.getValue() != "") {
-//			repositoriesGrid.setItems(RepositoriesListService.getInstance().getRepositories().stream().filter(r -> 
-//						r.getName().contains(searchTextField.getValue()) ||
-//						r.getUrl().contains(searchTextField.getValue()) ||
-//						r.getId().toString().contains(searchTextField.getValue())
-//					).collect(Collectors.toList())
-//			);
-//		} else {
-//			repositoriesGrid.setItems(RepositoriesListService.getInstance().getRepositories());
-//		}
-	}@Override
-	public Element getElement() {
-		// TODO Auto-generated method stub
-		return super.getElement();
 	}
+
 	private Button createRemoveButton(Repository repository) {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.TRASH));
