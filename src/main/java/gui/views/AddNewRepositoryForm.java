@@ -18,6 +18,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
+import gui.common.MetricsService;
 import gui.common.RepositoriesService;
 import gui.common.RepositoryDataSourceService;
 import model.Repository;
@@ -153,8 +154,14 @@ public class AddNewRepositoryForm extends Dialog {
 
 	private void addButton_Click(ClickEvent<Button> event) {
 		if (repositoryComboBox.getOptionalValue().isPresent()) {
-			if (RepositoriesService.getInstance().addRepository(repositoryComboBox.getValue())) {
-				msgLabel.setText("");
+			Repository repositoryToAdd = repositoryComboBox.getValue();
+			if (RepositoriesService.getInstance().addRepository(repositoryToAdd)) {
+				try {
+					MetricsService.getMetricsService().calculateMetricsRepository(repositoryToAdd);
+					msgLabel.setText("");
+				} catch (RepositoryDataSourceException e) {
+					msgLabel.setText(e.getMessage());
+				}
 			} else {
 				msgLabel.setText("The repository already exists.");
 			}

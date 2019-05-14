@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -167,6 +168,17 @@ public class Repository implements Serializable {
 		return calculatedMetricsCollection;
 	}
 
+	/**
+	 * Returns the last collection of metrics that have been calculated.
+	 * <p>
+	 * 
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the last collection of metrics that have been calculated, never null
+	 */
+	public RepositoryCalculatedMetrics getLastCalculatedMetrics() {
+		return calculatedMetricsCollection.stream().max(Comparator.naturalOrder()).orElse(new RepositoryCalculatedMetrics());
+	}
 	/**
 	 * Sets the calculatedMetricsCollection.
 	 * 

@@ -26,14 +26,16 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  */
 public class MetricsService {
 
+	private MetricProfile defaultMetricProfile;
+	
 	private Map<String, MetricProfile> metricsProfileMap;
 	
 	private static MetricsService metricsService;
 	
 	private MetricsService() {
 		metricsProfileMap = new HashMap<String, MetricProfile>();
-		MetricProfile metricProfile = getDefaultMetricProfile();
-		metricsProfileMap.put(metricProfile.getName(), metricProfile);
+		defaultMetricProfile = createDefaultMetricProfile();
+		metricsProfileMap.put(defaultMetricProfile.getName(), defaultMetricProfile);
 	}
 
 	/**
@@ -84,6 +86,10 @@ public class MetricsService {
     	repository.getCalculatedMetricsCollection().add(repositoryCalculatedMetrics);
     }
     
+    public void calculateMetricsRepository(Repository repository) throws RepositoryDataSourceException {
+    	calculateMetricsRepository(repository, defaultMetricProfile);
+    }
+    
     public void calculateMetricsAllRepositories(MetricProfile metricProfile) throws RepositoryDataSourceException {
     	for (Repository repository : RepositoriesService.getInstance().getRepositories()) {
 			calculateMetricsRepository(repository, metricProfile);
@@ -95,7 +101,7 @@ public class MetricsService {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private MetricProfile getDefaultMetricProfile() {
+	private MetricProfile createDefaultMetricProfile() {
 		MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));

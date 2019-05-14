@@ -1,5 +1,6 @@
 package metricsengine;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import metricsengine.values.IValue;
@@ -10,8 +11,15 @@ import metricsengine.values.IValue;
  * @author MALB
  *
  */
-public class Measure {
+public class Measure implements Serializable{
 	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -2456572983795577849L;
+
 	/**
 	 * Metric that has been measured.
 	 */

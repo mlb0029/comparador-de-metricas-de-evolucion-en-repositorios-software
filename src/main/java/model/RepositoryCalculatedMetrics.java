@@ -20,7 +20,7 @@ import metricsengine.metrics.MetricTotalNumberOfIssues;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoryCalculatedMetrics implements Serializable {
+public class RepositoryCalculatedMetrics implements Serializable, Comparable<RepositoryCalculatedMetrics> {
 	
 	/**
 	 * Serial.
@@ -63,6 +63,13 @@ public class RepositoryCalculatedMetrics implements Serializable {
 		return Objects.equals(date, other.date);
 	}
 
+	@Override
+	public int compareTo(RepositoryCalculatedMetrics o) {
+		return getDate().compareTo(o.getDate());
+	}
+
+	public RepositoryCalculatedMetrics() {	}
+	
 	public RepositoryCalculatedMetrics(MetricProfile metricProfile, MetricsResults metricsResults) {
 		setProfile(metricProfile);
 		setDate(metricsResults.getDate());
