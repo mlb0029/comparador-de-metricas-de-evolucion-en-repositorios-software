@@ -1,7 +1,10 @@
 package gui.views;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,6 +22,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 
 import gui.common.MetricsService;
 import gui.common.RepositoriesService;
+import metricsengine.Measure;
 import model.Repository;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
@@ -63,9 +67,6 @@ public class RepositoriesListView extends VerticalLayout {
 		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton);
 		searchBarLayout.setWidthFull();
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
-		NumberFormat numberFormat = NumberFormat.getNumberInstance();
-			numberFormat.setMaximumFractionDigits(2);
 		repositoriesGrid = new Grid<Repository>(Repository.class);
 		repositoriesGrid.setWidthFull();
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
@@ -81,24 +82,24 @@ public class RepositoriesListView extends VerticalLayout {
 				.setWidth("20%")
 				.setComparator(Repository::getName)
 				.setHeader("Repository");
-		repositoriesGrid.addColumn(r -> dateFormat.format(r.getLastCalculatedMetrics().getDate()))
+		repositoriesGrid.addColumn(r -> formatDateShortEs(r.getLastCalculatedMetrics().getDate()))
 			.setHeader("Date")
 			.setWidth("8%");
-		repositoriesGrid.addColumn(r -> numberFormat.format((Double.parseDouble(r.getLastCalculatedMetrics().getMetricTotalNumberOfIssues().getMeasuredValue().valueToString()))))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricTotalNumberOfIssues()))
 			.setHeader("I1");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricCommitsPerIssue().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricCommitsPerIssue()))
 			.setHeader("I2");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricPercentageOfClosedIssues().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricPercentageOfClosedIssues()))
 			.setHeader("I3");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricAverageDaysToCloseAnIssue().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricAverageDaysToCloseAnIssue()))
 			.setHeader("TI1");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricAverageDaysBetweenCommits().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricAverageDaysBetweenCommits()))
 			.setHeader("TC1");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricDaysBetweenFirstAndLastCommit().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricDaysBetweenFirstAndLastCommit()))
 			.setHeader("TC2");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricChangeActivityRange().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricChangeActivityRange()))
 			.setHeader("TC3");
-		repositoriesGrid.addColumn(r -> numberFormat.format(Double.parseDouble(r.getLastCalculatedMetrics().getMetricPeakChange().getMeasuredValue().valueToString())))
+		repositoriesGrid.addColumn(r -> formatMeasureNumberTwoDecimals(r.getLastCalculatedMetrics().getMetricPeakChange()))
 			.setHeader("C1");
 		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
 			.setWidth("5%");
@@ -145,5 +146,15 @@ public class RepositoriesListView extends VerticalLayout {
 			}
 		});
 		return button;
+	}
+
+	private String formatDateShortEs(Date date) {
+		return SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.forLanguageTag("es-ES")).format(date);
+	}
+
+	private String formatMeasureNumberTwoDecimals(Measure measure) {
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		numberFormat.setMaximumFractionDigits(2);
+		return numberFormat.format(Double.parseDouble(measure.getMeasuredValue().toString()));
 	}
 }
