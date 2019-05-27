@@ -1,4 +1,4 @@
-package gui.common;
+package app;
 
 import org.gitlab4j.api.GitLabApiException;
 

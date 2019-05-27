@@ -1,5 +1,9 @@
-package gui.common;
+package app;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,7 +11,7 @@ import java.util.Iterator;
 
 import javax.ws.rs.NotSupportedException;
 
-import model.Repository;
+import datamodel.Repository;
 
 /**
  * It contains a set of repositories.
@@ -87,8 +91,34 @@ public class RepositoriesService implements Serializable {
 		return repositoriesCollection.repositories.remove(repository);
 	}
 	
-	private class RepositoriesCollection implements Collection<Repository> {
+	public void save(String filePath) {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(filePath);
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeObject(instance);
+            objectOut.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void load(String filePath) {
+		
+	}
+	
+	private class RepositoriesCollection implements Collection<Repository>, Serializable{
 
+		/**
+		 * Description.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		private static final long serialVersionUID = -1632073948461817997L;
+		
 		HashSet<Repository> repositories;
 		
 		RepositoriesCollection() {

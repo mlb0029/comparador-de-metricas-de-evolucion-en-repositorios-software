@@ -11,11 +11,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
 import metricsengine.MetricDescription.EnumTypeOfScale;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
-import model.Repository;
 
 /**
  * Test class for {@link AMetric}.
@@ -130,7 +130,7 @@ public class AMetricTest {
 	}
 	 
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * 
 	 * TODO Measure Equal, ToString Method
 	 */
@@ -141,7 +141,7 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * <p>
 	 * Using null arguments.
 	 */

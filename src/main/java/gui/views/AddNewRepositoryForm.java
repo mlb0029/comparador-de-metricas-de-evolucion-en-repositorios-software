@@ -18,11 +18,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
-import gui.common.MetricsService;
-import gui.common.RepositoriesService;
-import gui.common.RepositoryDataSourceService;
-import model.Repository;
-import model.User;
+import app.MetricsService;
+import app.RepositoriesService;
+import app.RepositoryDataSourceService;
+import datamodel.Repository;
+import datamodel.User;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;

@@ -1,4 +1,4 @@
-package model;
+package datamodel;
 
 /**
  * Information of the connected user.

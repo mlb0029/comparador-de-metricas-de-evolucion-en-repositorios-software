@@ -2,9 +2,9 @@ package repositorydatasource;
 
 import java.util.Collection;
 
-import model.Repository;
-import model.RepositoryInternalMetrics;
-import model.User;
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
+import datamodel.User;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**

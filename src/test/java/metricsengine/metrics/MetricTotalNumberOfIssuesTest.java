@@ -10,10 +10,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.*;
 import metricsengine.values.*;
-import model.Repository;
-import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricTotalNumberOfIssues}
@@ -77,7 +77,7 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "TNI = Total number of issues"
@@ -94,7 +94,7 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 *"TNI = Total number of issues"

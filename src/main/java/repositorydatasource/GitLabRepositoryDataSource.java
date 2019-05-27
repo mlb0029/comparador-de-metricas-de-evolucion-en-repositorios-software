@@ -18,9 +18,9 @@ import org.gitlab4j.api.models.ProjectFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import model.Repository;
-import model.RepositoryInternalMetrics;
-import model.User;
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
+import datamodel.User;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**

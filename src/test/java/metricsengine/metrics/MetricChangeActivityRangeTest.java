@@ -10,12 +10,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import model.Repository;
-import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricChangeActivityRange}.
@@ -79,7 +79,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"
@@ -98,7 +98,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#run(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"

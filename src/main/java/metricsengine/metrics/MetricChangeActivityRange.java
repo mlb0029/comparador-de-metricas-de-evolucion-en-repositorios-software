@@ -1,10 +1,10 @@
 package metricsengine.metrics;
 
+import datamodel.Repository;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import model.Repository;
 
 /**
  * Computes the metric: Change Activity Range Per Month.

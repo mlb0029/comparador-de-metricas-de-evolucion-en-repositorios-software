@@ -16,12 +16,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import model.Repository;
-import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricPeakChange}.
@@ -85,7 +85,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPeakChange#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"
@@ -103,7 +103,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#run(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricPeakChange#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"

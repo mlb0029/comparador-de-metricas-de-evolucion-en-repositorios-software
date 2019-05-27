@@ -16,12 +16,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import model.Repository;
-import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits}.
@@ -72,7 +72,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
 	 * <p>
 	 * Using null arguments.
 	 */
@@ -85,7 +85,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
@@ -103,7 +103,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#run(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
