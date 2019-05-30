@@ -1,5 +1,7 @@
 package app;
 
+import java.io.Serializable;
+
 import org.gitlab4j.api.GitLabApiException;
 
 import repositorydatasource.GitLabRepositoyDataSourceFactory;
@@ -10,7 +12,10 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoryDataSourceService {
+public class RepositoryDataSourceService implements Serializable {
+	
+	private static final long serialVersionUID = -6197642368639361682L;
+
 	private static RepositoryDataSourceService instance;
 	
 	private IRepositoryDataSource repositoryDataSource;

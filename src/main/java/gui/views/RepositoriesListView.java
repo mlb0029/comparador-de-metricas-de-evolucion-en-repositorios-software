@@ -36,8 +36,6 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
-	private static RepositoriesListView me;
-	
 	private AddNewRepositoryForm addNewRepositoryFormDialog;
 	private TextField searchTextField;
 	private Button addNewRepositoryButton;
@@ -51,7 +49,7 @@ public class RepositoriesListView extends VerticalLayout {
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private RepositoriesListView() {
+	public RepositoriesListView() {
 		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesService.getInstance().getRepositories());
 		
 		searchTextField = new TextField();
@@ -113,11 +111,6 @@ public class RepositoriesListView extends VerticalLayout {
 		
 		add(searchBarLayout, repositoriesGrid);
 		setSizeFull();
-	}
-	
-	public static RepositoriesListView getRepositoryListView() {
-		if (me == null) me = new RepositoriesListView();
-		return me;
 	}
 	
 	private void updateGrid() {
