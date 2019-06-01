@@ -1,9 +1,11 @@
 package gui.views;
 
 import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -11,42 +13,72 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class MainAppView extends Composite<Div> {
 
-	/**
-	 * Description.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
 	private static final long serialVersionUID = -8176239269004450857L;
 
-	private final AppLayout root = new AppLayout();
+	private VerticalLayout root = new VerticalLayout();
 	
-	private final Div content = new Div();
+	private Div header = new Div();
 	
+	private Image brandingImage = new Image("images/logoUBU.jpg", "Logo UBU");
+	
+	private Label appNameLabel = new Label("Evolution metrics");
+	
+	private Button connectionButton = new Button();
+
+	private ConnectionInfoComponent connectionInfoComponent = new ConnectionInfoComponent();
+	
+	private CloseConnectionFormDialog closeConnectionFormDialog = new CloseConnectionFormDialog();
+
+	private Div content = new Div();
+	
+	private Div footer = new Div();
+
+	private Label authorNameLabel = new Label("By Miguel Ángel León Bardavío");
+
+	private ConnectionFormDialog connectionFormDialog = new ConnectionFormDialog();
+
 	public MainAppView() {
 		try {
-			setUpRoot();
+			setUpHeader();
+			setUpContent();
+			setUpFooter();
+			root.add(header, content, footer);
 			getContent().add(root);
-			content.getElement().appendChild(new RepositoriesListView().getElement());
-			ConnectionFormDialog connectionFormDialog = new ConnectionFormDialog();
 			connectionFormDialog.open();
-			//connectionFormDialog.addDialogCloseActionListener(listener) // TODO
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private void setUpRoot() {
-		content.setHeight("95%");
+	private void setUpHeader() {
+		header.setHeight("15%");
+		header.setWidthFull();
+		
+		brandingImage.setHeight("100px");
+		brandingImage.setWidth("200px");
+		connectionButton.setIcon(connectionInfoComponent);
+		connectionButton.setMinHeight("60px");
+		connectionButton.addClickListener(e -> closeConnectionFormDialog.open());
+		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButton);
+		header.getElement().appendChild(headerHLayout.getElement());
+		
+	}
+
+	private void setUpContent() {
+		content.setHeight("80%");
 		content.setWidthFull();
-		HorizontalLayout footer = new HorizontalLayout();
+		content.getElement().appendChild(new RepositoriesListView().getElement());
+	}
+
+	private void setUpFooter() {
 		footer.setHeight("5%");
 		footer.setWidthFull();
-		VerticalLayout vLayout = new VerticalLayout(content, footer);
-		Image image = new Image("images/logoUBU.jpg", "Logo UBU");
-		image.setHeight("100px");
-		image.setWidth("200px");
-		root.setBranding(image);
-		root.setContent(vLayout);
+		HorizontalLayout footerHLayout = new HorizontalLayout();
+		footerHLayout.add(authorNameLabel);
+		footerHLayout.setAlignItems(Alignment.CENTER);
+		footerHLayout.setWidthFull();
+		footer.getElement().appendChild(footerHLayout.getElement());
 	}
+	
 }

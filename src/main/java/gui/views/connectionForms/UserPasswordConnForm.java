@@ -1,11 +1,12 @@
 package gui.views.connectionForms;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+
+import app.RepositoryDataSourceService;
+import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
@@ -13,33 +14,77 @@ import com.vaadin.flow.component.textfield.TextField;
  */
 public class UserPasswordConnForm extends AConnForm {
 
-	private TextField usernameField = new TextField();
-	
-	private PasswordField passwordField = new PasswordField();
+	private static final long serialVersionUID = -4845217735632848653L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param tabName
-	 * @param description
-	 * @param buttonIcon
-	 * @param buttonText
-	 */
-	public UserPasswordConnForm(String tabName, String description, VaadinIcon buttonIcon, String buttonText) {
+	private static final String TAB_NAME = "Username and password";
+	
+	private static final String DESCRIPTION = "In this way you can access your public and private repositories and other public repositories.";
+	
+	private static final VaadinIcon BUTTON_ICON = VaadinIcon.CONNECT;
+	
+	private static final String BUTTON_TEXT = "Connect";
+
+	private Label usernameLabel;
+	private TextField usernameField;
+	
+	private Label passwordLabel;
+	private PasswordField passwordField;
+
+	public UserPasswordConnForm() {
 		super(
-				"Username and password", 
-				"In this way you can access your public and private repositories and other public repositories.", 
-				VaadinIcon.CONNECT, 
-				"Connect"
+				TAB_NAME, 
+				DESCRIPTION, 
+				BUTTON_ICON, 
+				BUTTON_TEXT
 		);
-		usernameField.setWidthFull();
-		passwordField.setWidthFull();
-		getFormElements().add(new FormElement("Username", usernameField));
-		getFormElements().add(new FormElement("Password", usernameField));
-		setForm(getFormElements());
 	}
-	
-	
-	
+
+	@Override
+	protected void addFormElements() {
+		this.usernameLabel = new Label("Username");
+		this.usernameField = new TextField();
+		this.passwordLabel = new Label("Password");
+		this.passwordField = new PasswordField();
+		usernameLabel.setWidthFull();
+		usernameField.setWidthFull();
+		passwordLabel.setWidthFull();
+		passwordField.setWidthFull();
+		getForm().addFormItem(usernameField, usernameLabel);
+		getForm().addFormItem(passwordField, passwordLabel);
+	}
+
+	@Override
+	public void clearFields() {
+		usernameField.clear();
+		passwordField.clear();
+		usernameField.setInvalid(false);
+		passwordField.setInvalid(false);
+		getResult().setText("");
+	}
+
+	@Override
+	public boolean isValid() {
+		boolean isValid = true;
+		if (usernameField.isEmpty()) {
+			usernameField.setErrorMessage("Field required");
+			usernameField.setInvalid(true);
+			isValid = false;
+		} else {
+			usernameField.setInvalid(false);
+		}
+		
+		if (passwordField.isEmpty()) {
+			passwordField.setErrorMessage("Field required");
+			passwordField.setInvalid(true);
+			isValid = false;
+		} else {
+			passwordField.setInvalid(false);
+		}
+		return isValid;
+	}
+
+	@Override
+	protected void connect() throws RepositoryDataSourceException {
+		RepositoryDataSourceService.getInstance().getRepositoryDataSource().connect(usernameField.getValue(), passwordField.getValue());
+	}
 }

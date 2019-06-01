@@ -1,31 +1,19 @@
 package gui.views;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep.LabelsPosition;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
 
-import app.RepositoryDataSourceService;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import gui.views.connectionForms.IConnForm;
+import gui.views.connectionForms.NoConnectionForm;
+import gui.views.connectionForms.PATokenForm;
+import gui.views.connectionForms.PublicConnectionForm;
+import gui.views.connectionForms.UserPasswordConnForm;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
@@ -35,173 +23,66 @@ public class ConnectionFormDialog extends Dialog {
 
 	private static final long serialVersionUID = -2348702400211722166L;
 
-	private static Logger logger = LoggerFactory.getLogger(ConnectionFormDialog.class);
-
-	private RepositoryDataSourceService rdss = RepositoryDataSourceService.getInstance();
-
-	private Map<Tab, Div> connectionForms = new LinkedHashMap<>();
-
+	private List<IConnForm> connectionForms = new ArrayList<>();
+	
 	public ConnectionFormDialog() {
-		createUserPasswdForm();
-		createTokenForm();
-		createPublicConnForm();
-		createNoConnForm();
+		createConnectionForms();
+
 		Tabs tabs = new Tabs();
 		tabs.setOrientation(Orientation.VERTICAL);
 		tabs.setWidth("30%");
+
 		Div forms = new Div();
 		forms.setWidth("70%");
-		for (Entry<Tab, Div> connForm : connectionForms.entrySet()) {
-			tabs.add(connForm.getKey());
-			forms.add(connForm.getValue());
-			if (connForm.getKey().isSelected()) {
-				connForm.getValue().setVisible(true);
-			} else {
-				connForm.getValue().setVisible(false);
-			}
+
+		for (IConnForm iConnForm : connectionForms) {
+			tabs.add(iConnForm.getTab());
+			forms.add(iConnForm.getPage());
+			iConnForm.addConnectionSuccessfulListener(c -> close());
 		}
+
 		tabs.addSelectedChangeListener(event -> {
-			for (Div form : connectionForms.values()) {
-				form.setVisible(false);
+			for (IConnForm iConnForm : connectionForms) {
+				if (iConnForm.getTab() == event.getSource().getSelectedTab())
+					iConnForm.getPage().setVisible(true);
+				else {
+					iConnForm.getPage().setVisible(false);
+					iConnForm.clearFields();
+				}
 			}
-			connectionForms.get(event.getSource().getSelectedTab()).setVisible(true);
 		});
-		HorizontalLayout vLayout = new HorizontalLayout(tabs, forms);
-		vLayout.setSizeFull();
-		add(vLayout);
+
+		HorizontalLayout connFormsHLayout = new HorizontalLayout(tabs, forms);
+		connFormsHLayout.setSizeFull();
+		add(connFormsHLayout);
+
 		setWidth("550px");
 		setHeight("400px");
+		setCloseOnEsc(false);
+		setCloseOnOutsideClick(false);
 	}
 
-	private void createUserPasswdForm() {
-		// TAB
-		Tab tab = new Tab("Username and password");
-		FormLayout form = new FormLayout();
-		form.setResponsiveSteps(new ResponsiveStep("0", 1, LabelsPosition.TOP),
-				new ResponsiveStep("200px", 1, LabelsPosition.TOP));
-		// Info
-		Label description = new Label(
-				"In this way you can access your public and private repositories and other public repositories.");
-		form.add(description);
+	private void createConnectionForms() {
 
-		TextField usernameTxt = new TextField();
-		usernameTxt.setWidthFull();
-		form.addFormItem(usernameTxt, "Username");
+		IConnForm userPasswordConnForm = new UserPasswordConnForm();
+		userPasswordConnForm.getTab().setSelected(true);
+		userPasswordConnForm.getPage().setVisible(true);
+		connectionForms.add(userPasswordConnForm);
 
-		PasswordField passwordField = new PasswordField();
-		passwordField.setWidthFull();
-		form.addFormItem(passwordField, "Password");
+		IConnForm paTokenConnForm = new PATokenForm();
+		paTokenConnForm.getTab().setSelected(false);
+		paTokenConnForm.getPage().setVisible(false);
+		connectionForms.add(paTokenConnForm);
 
-		Label resultInfo = new Label(" ");
+		IConnForm publicConnForm = new PublicConnectionForm();
+		publicConnForm.getTab().setSelected(false);
+		publicConnForm.getPage().setVisible(false);
+		connectionForms.add(publicConnForm);
 
-		Button button = new Button("Connect", new Icon(VaadinIcon.CONNECT), e -> {
-			try {
-				rdss.getRepositoryDataSource().connect(usernameTxt.getValue(), passwordField.getValue());
-				this.close();
-			} catch (RepositoryDataSourceException e1) {
-				resultInfo.setText(e1.getMessage());
-			}
-		});
-		form.add(button);
-
-		resultInfo.setWidthFull();
-		form.add(resultInfo);
-
-		Div page = new Div(form);
-		connectionForms.put(tab, page);
-	}
-
-	private void createTokenForm() {
-		// TAB
-		Tab tab = new Tab("Personal Access Token");
-
-		// Form
-		FormLayout form = new FormLayout();
-		form.setResponsiveSteps(new ResponsiveStep("0", 1, LabelsPosition.TOP),
-				new ResponsiveStep("200px", 1, LabelsPosition.TOP));
-		// Info
-		Label description = new Label(
-				"In this way you can access your public and private repositories and other public repositories.");
-		form.add(description);
-
-		PasswordField passwordField = new PasswordField();
-		passwordField.setWidthFull();
-		form.addFormItem(passwordField, "Personal Access Token");
-
-		Label resultInfo = new Label(" ");
-
-		Button button = new Button("Connect", new Icon(VaadinIcon.CONNECT), e -> {
-			try {
-				rdss.getRepositoryDataSource().connect(passwordField.getValue());
-				this.close();
-			} catch (RepositoryDataSourceException e1) {
-				resultInfo.setText(e1.getMessage());
-			}
-		});
-		form.add(button);
-
-		resultInfo.setWidthFull();
-		form.add(resultInfo);
-
-		Div page = new Div(form);
-		connectionForms.put(tab, page);
-	}
-
-	private void createPublicConnForm() {
-		// TAB
-		Tab tab = new Tab("Public connection");
-
-		// Form
-		FormLayout form = new FormLayout();
-		form.setResponsiveSteps(new ResponsiveStep("0", 1, LabelsPosition.TOP),
-				new ResponsiveStep("200px", 1, LabelsPosition.TOP));
-		// Info
-		Label description = new Label("In this way you can only access public repositories.");
-		form.add(description);
-
-		Label resultInfo = new Label(" ");
-
-		Button button = new Button("Connect", new Icon(VaadinIcon.CONNECT), e -> {
-			try {
-				rdss.getRepositoryDataSource().connect();
-				this.close();
-			} catch (RepositoryDataSourceException e1) {
-				resultInfo.setText(e1.getMessage());
-			}
-		});
-		form.add(button);
-
-		resultInfo.setWidthFull();
-		form.add(resultInfo);
-
-		Div page = new Div(form);
-		connectionForms.put(tab, page);
-	}
-
-	private void createNoConnForm() {
-		// TAB
-		Tab tab = new Tab("Don't connect");
-
-		// Form
-		FormLayout form = new FormLayout();
-		form.setResponsiveSteps(new ResponsiveStep("0", 1, LabelsPosition.TOP),
-				new ResponsiveStep("200px", 1, LabelsPosition.TOP));
-		// Info
-		Label description = new Label("In this way you can only review reports already created. You will not be able to add new repositories, nor calculate metrics.");
-		form.add(description);
-
-		Label resultInfo = new Label(" ");
-
-		Button button = new Button("Next", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT), e -> {
-			this.close();
-		});
-		form.add(button);
-
-		resultInfo.setWidthFull();
-		form.add(resultInfo);
-
-		Div page = new Div(form);
-		connectionForms.put(tab, page);
+		IConnForm noConnForm = new NoConnectionForm();
+		noConnForm.getTab().setSelected(false);
+		noConnForm.getPage().setVisible(false);
+		connectionForms.add(noConnForm);
 	}
 
 }

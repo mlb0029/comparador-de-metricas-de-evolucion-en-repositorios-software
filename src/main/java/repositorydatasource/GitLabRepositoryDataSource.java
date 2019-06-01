@@ -1,10 +1,10 @@
 package repositorydatasource;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author migue
  *
  */
-public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serializable {
+public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 
 	/**
 	 * Serial.
@@ -37,6 +37,8 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private static final long serialVersionUID = 2565951561088053095L;
+	
+	private Set<IRepositoryDataSourceListener> listeners = new HashSet<>();
 
 	/**
 	 * Default Host URL.
@@ -100,6 +102,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, "");
 			currentUser = null;
 			connectionType = EnumConnectionType.CONNECTED;
+			listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 			logger.info("Established connection with GitLab");
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -117,6 +120,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 				gitLabApi = GitLabApi.oauth2Login(GitLabRepositoryDataSource.HOST_URL, username, password.toCharArray());
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
+				listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 				logger.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -139,6 +143,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 				gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
+				listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 				logger.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -158,6 +163,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 	public void disconnect() throws RepositoryDataSourceException {
 		if (connectionType != EnumConnectionType.NOT_CONNECTED) {
 			reset();
+			listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_DISCONNECTED);
 		}
@@ -429,5 +435,15 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource, Serial
 		} catch (GitLabApiException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public void addConnectionChangeEventListener(IRepositoryDataSourceListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeConnectionChangeEventListener(IRepositoryDataSourceListener listener) {
+		listeners.remove(listener);
 	}
 }

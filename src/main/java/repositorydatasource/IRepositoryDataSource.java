@@ -1,5 +1,6 @@
 package repositorydatasource;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import datamodel.Repository;
@@ -14,7 +15,14 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public interface IRepositoryDataSource {
+public interface IRepositoryDataSource extends Serializable{
+	
+	public interface IRepositoryDataSourceListener {
+		void onConnectionChangeEvent(EnumConnectionType newConnectionType);
+	}
+	
+	void addConnectionChangeEventListener(IRepositoryDataSourceListener listener);
+	void removeConnectionChangeEventListener(IRepositoryDataSourceListener listener);
 	
 	/**
 	 * Type of connection.
