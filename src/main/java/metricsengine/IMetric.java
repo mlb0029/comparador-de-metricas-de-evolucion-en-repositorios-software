@@ -1,7 +1,7 @@
 package metricsengine;
 
+import datamodel.Repository;
 import metricsengine.values.IValue;
-import model.Repository;
 
 /**
  * Defines the interface of a metric.

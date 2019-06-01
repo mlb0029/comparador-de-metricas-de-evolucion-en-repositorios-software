@@ -1,4 +1,4 @@
-package exceptions;
+package metricsengine;
 
 public class MetricsEngineException extends Exception {
 	/**

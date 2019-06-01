@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -17,13 +18,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
-import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
-import gui.common.MetricsService;
-import gui.common.RepositoriesService;
+import app.MetricsService;
+import app.RepositoriesService;
+import datamodel.Repository;
 import metricsengine.Measure;
-import model.Repository;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -39,6 +39,8 @@ public class RepositoriesListView extends VerticalLayout {
 	private AddNewRepositoryForm addNewRepositoryFormDialog;
 	private TextField searchTextField;
 	private Button addNewRepositoryButton;
+	private Button saveButton;
+	private Button uploadButton;
 	private Grid<Repository> repositoriesGrid;
 	private ListDataProvider<Repository> repositoriesDataProvider;
 
@@ -50,6 +52,13 @@ public class RepositoriesListView extends VerticalLayout {
 	public RepositoriesListView() {
 		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesService.getInstance().getRepositories());
 		
+		searchTextField = new TextField();
+		searchTextField.setPlaceholder("Search");
+		searchTextField.setWidth("80%");
+		searchTextField.setClearButtonVisible(true);
+		searchTextField.setValueChangeMode(ValueChangeMode.EAGER);
+		searchTextField.addValueChangeListener(e -> filter());
+		
 		addNewRepositoryFormDialog = new AddNewRepositoryForm();
 		addNewRepositoryFormDialog.onAddRepositoryListener(e -> updateGrid());
 		
@@ -57,14 +66,12 @@ public class RepositoriesListView extends VerticalLayout {
 		addNewRepositoryButton.setWidth("10%");
 		addNewRepositoryButton.addClickListener(e -> addNewRepositoryFormDialog.open());
 		
-		searchTextField = new TextField();
-		searchTextField.setPlaceholder("Search");
-		searchTextField.setWidth("90%");
-		searchTextField.setClearButtonVisible(true);
-		searchTextField.setValueChangeMode(ValueChangeMode.EAGER);
-		searchTextField.addValueChangeListener(e -> filter());
+		saveButton = new Button(new Icon(VaadinIcon.CLOUD_DOWNLOAD_O));
+		saveButton.setWidth("5%");
+		uploadButton = new Button(new Icon(VaadinIcon.CLOUD_UPLOAD_O));
+		uploadButton.setWidth("5%");
 		
-		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton);
+		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton, saveButton, uploadButton);
 		searchBarLayout.setWidthFull();
 		
 		repositoriesGrid = new Grid<Repository>(Repository.class);
@@ -74,11 +81,7 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
 		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
 				.setWidth("5%");
-		repositoriesGrid.addColumn(TemplateRenderer.<Repository> of(
-				"<a href=\"[[item.url]]\">[[item.name]]</a>")
-				.withProperty("url", Repository::getUrl)
-				.withProperty("name", Repository::getName)
-				)
+		repositoriesGrid.addComponentColumn(r -> new Anchor(r.getUrl(), r.getName()))
 				.setWidth("20%")
 				.setComparator(Repository::getName)
 				.setHeader("Repository");
@@ -155,6 +158,6 @@ public class RepositoriesListView extends VerticalLayout {
 	private String formatMeasureNumberTwoDecimals(Measure measure) {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance();
 		numberFormat.setMaximumFractionDigits(2);
-		return numberFormat.format(Double.parseDouble(measure.getMeasuredValue().toString()));
+		return numberFormat.format(Double.parseDouble(measure.getMeasuredValue().valueToString()));
 	}
 }

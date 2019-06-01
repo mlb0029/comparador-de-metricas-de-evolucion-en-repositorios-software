@@ -1,28 +1,21 @@
 package gui.views;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
-import gui.common.MetricsService;
-import gui.common.RepositoriesService;
-import gui.common.RepositoryDataSourceService;
-import model.Repository;
-import model.User;
+import app.MetricsService;
+import app.RepositoriesService;
+import app.RepositoryDataSourceService;
+import datamodel.Repository;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
@@ -36,16 +29,6 @@ public class AddNewRepositoryForm extends Dialog {
 	 */
 	private static final long serialVersionUID = -9068571389303968081L;
 	
-	private static Logger logger = LoggerFactory.getLogger(AddNewRepositoryForm.class);
-	
-	private IRepositoryDataSource repositoryDataSource;
-
-	private Image userAvatar;
-	private Label connectionInfoLabel;
-	private PasswordField tokenField;
-	private Button connectButton;
-	private Button disconnectButton;
-
 	private TextField usernameTextField;
 	private ComboBox<Repository> repositoryComboBox;
 	
@@ -54,31 +37,7 @@ public class AddNewRepositoryForm extends Dialog {
 	private Button addButton;
 
 	public AddNewRepositoryForm() {
-		try {
-			/* Getting the repository data source */
-			repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
-			
-			/* Connection info */
-			userAvatar = new Image();
-			userAvatar.setWidth("50px");
-			userAvatar.setHeight("50px");
-			userAvatar.setAlt("User Avatar");
-			connectionInfoLabel = new Label();
-			HorizontalLayout connectionInfoLaoyut = new HorizontalLayout(userAvatar, connectionInfoLabel);
-			connectionInfoLaoyut.setWidthFull();
-			
-			/* Connection Form */
-			tokenField = new PasswordField();
-			tokenField.setClearButtonVisible(true);
-			tokenField.setWidthFull();
-			tokenField.setPlaceholder("Personal Access Token");
-			connectButton = new Button("Connect", new Icon(VaadinIcon.LINK), this::connectButton_Click);
-			connectButton.setWidthFull();
-			disconnectButton = new Button("Disconnect", new Icon(VaadinIcon.UNLINK), this::disconnectButton_Click);
-			disconnectButton.setWidthFull();
-			
-			FormLayout connectionForm = new FormLayout(connectionInfoLaoyut, tokenField, connectButton, disconnectButton);
-			
+		try {		
 			/* Repository Form */
 			usernameTextField = new TextField();
 			usernameTextField.setWidth("50%");
@@ -104,14 +63,10 @@ public class AddNewRepositoryForm extends Dialog {
 			addButton.setWidthFull();
 
 			/* This */
-			VerticalLayout vLayout = new VerticalLayout(connectionForm, repositorySelectorHLayout, msgLabel, addButton);
+			VerticalLayout vLayout = new VerticalLayout(repositorySelectorHLayout, msgLabel, addButton);
 			vLayout.setSizeFull();
 			add(vLayout);
-			
-			/* Init */
-			updateState();
 		} catch (Exception e) {
-			logger.error(e.getMessage());
 			e.printStackTrace(); //TODO Redirigir a página de error
 		}
 		
@@ -119,37 +74,6 @@ public class AddNewRepositoryForm extends Dialog {
 
 	public void onAddRepositoryListener(ComponentEventListener<ClickEvent<Button>> listener) {
 		addButton.addClickListener(listener);
-	}
-
-	private void connectButton_Click(ClickEvent<Button> event) {
-		try {
-			if (tokenField.isEmpty()) {
-				repositoryDataSource.connect();
-			} else {
-				repositoryDataSource.connect(tokenField.getValue());
-				tokenField.clear();
-			}
-			msgLabel.setText("");
-		} catch (RepositoryDataSourceException e) {
-			msgLabel.setText(e.getMessage());
-		} finally {
-			updateState();
-			resetUserNameTextField();
-		}
-	}
-
-	private void disconnectButton_Click(ClickEvent<Button> event) {
-		try {
-			if (! repositoryDataSource.getConnectionType().equals(EnumConnectionType.NOT_CONNECTED)) {
-				repositoryDataSource.disconnect();
-			}
-			msgLabel.setText("");
-		} catch (RepositoryDataSourceException e) {
-			msgLabel.setText(e.getMessage());
-		} finally {
-			updateState();
-			resetUserNameTextField();
-		}
 	}
 
 	private void addButton_Click(ClickEvent<Button> event) {
@@ -171,49 +95,9 @@ public class AddNewRepositoryForm extends Dialog {
 		}
 	}
 	
-	private void updateState() {
-		try {
-			switch (repositoryDataSource.getConnectionType()) {
-			case NOT_CONNECTED:
-				userAvatar.setVisible(false);
-				connectionInfoLabel.setText("No connection to GitLab");
-				tokenField.setEnabled(true);
-				connectButton.setVisible(true);
-				disconnectButton.setVisible(false);
-				usernameTextField.setEnabled(false);
-				repositoryComboBox.setEnabled(false);
-				addButton.setEnabled(false);
-				break;
-			case CONNECTED:
-				userAvatar.setVisible(false);
-				connectionInfoLabel.setText("Using a public connection");
-				tokenField.setEnabled(false);
-				connectButton.setVisible(false);
-				disconnectButton.setVisible(true);
-				usernameTextField.setEnabled(true);
-				repositoryComboBox.setEnabled(true);
-				addButton.setEnabled(true);
-				break;
-			case LOGGED:
-				User user = RepositoryDataSourceService.getInstance().getRepositoryDataSource().getCurrentUser();
-				userAvatar.setSrc((user.getAvatarUrl() != null)?user.getAvatarUrl():"");
-				connectionInfoLabel.setText("Connected as: " + user.getUsername());
-				tokenField.setEnabled(false);
-				connectButton.setVisible(false);
-				disconnectButton.setVisible(true);
-				usernameTextField.setEnabled(true);
-				repositoryComboBox.setEnabled(true);
-				addButton.setEnabled(true);
-				break;
-			}
-			msgLabel.setText("");
-		} catch (RepositoryDataSourceException e) {
-			msgLabel.setText(e.toString());
-		}
-	}
-
 	private void resetUserNameTextField() {
 		try {
+			IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
 			if (repositoryDataSource.getConnectionType().equals(EnumConnectionType.LOGGED)) {
 				usernameTextField.setValue(repositoryDataSource.getCurrentUser().getUsername());
 			} else {
@@ -228,6 +112,7 @@ public class AddNewRepositoryForm extends Dialog {
 
 	private void updateUserRepositories() {
 		try {
+			IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
 			if (!usernameTextField.isEmpty()) {
 				repositoryComboBox.setItems(repositoryDataSource.getAllUserRepositories(usernameTextField.getValue()));
 			} else {

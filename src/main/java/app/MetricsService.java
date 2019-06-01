@@ -1,8 +1,11 @@
-package gui.common;
+package app;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import datamodel.Repository;
+import datamodel.RepositoryCalculatedMetrics;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricProfile;
 import metricsengine.MetricsResults;
@@ -14,9 +17,6 @@ import metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit;
 import metricsengine.metrics.MetricPeakChange;
 import metricsengine.metrics.MetricPercentageClosedIssues;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
-import model.Repository;
-import model.RepositoryCalculatedMetrics;
-import model.RepositoryInternalMetrics;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 

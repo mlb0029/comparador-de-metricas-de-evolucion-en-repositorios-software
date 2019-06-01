@@ -1,8 +1,8 @@
 package metricsengine;
 
+import datamodel.Repository;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueUncalculated;
-import model.Repository;
 
 /**
  * Partially implements the IMetric interface.

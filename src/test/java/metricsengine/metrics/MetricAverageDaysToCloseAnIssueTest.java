@@ -12,12 +12,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
 import metricsengine.AMetric;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
-import model.Repository;
-import model.RepositoryInternalMetrics;
 
 /**
  * Unit test for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue}.
@@ -81,7 +81,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#check(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
@@ -99,7 +99,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#run(model.Repository)}.
+	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#run(datamodel.Repository)}.
 	 * <p>
 	 *  Check "run" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."

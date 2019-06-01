@@ -1,7 +1,7 @@
 package metricsengine;
 
+import datamodel.Repository;
 import metricsengine.values.IValue;
-import model.Repository;
 
 /**
  * Wrapper for a metric that allows you to use other minimum and maximum values, 
