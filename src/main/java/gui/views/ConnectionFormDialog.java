@@ -38,7 +38,10 @@ public class ConnectionFormDialog extends Dialog {
 		for (IConnForm iConnForm : connectionForms) {
 			tabs.add(iConnForm.getTab());
 			forms.add(iConnForm.getPage());
-			iConnForm.addConnectionSuccessfulListener(c -> close());
+			iConnForm.addConnectionSuccessfulListener(c -> {
+				connectionForms.forEach(connForm -> connForm.clearFields());
+				close();
+			});
 		}
 
 		tabs.addSelectedChangeListener(event -> {
@@ -51,7 +54,15 @@ public class ConnectionFormDialog extends Dialog {
 				}
 			}
 		});
-
+		
+		addOpenedChangeListener(event -> {
+			if(event.isOpened()) {
+				connectionForms.forEach(connForm -> connForm.getPage().setVisible(false));
+				tabs.setSelectedTab(connectionForms.get(0).getTab());
+				connectionForms.get(0).getPage().setVisible(true);				
+			}
+		});
+		
 		HorizontalLayout connFormsHLayout = new HorizontalLayout(tabs, forms);
 		connFormsHLayout.setSizeFull();
 		add(connFormsHLayout);
@@ -65,23 +76,15 @@ public class ConnectionFormDialog extends Dialog {
 	private void createConnectionForms() {
 
 		IConnForm userPasswordConnForm = new UserPasswordConnForm();
-		userPasswordConnForm.getTab().setSelected(true);
-		userPasswordConnForm.getPage().setVisible(true);
 		connectionForms.add(userPasswordConnForm);
 
 		IConnForm paTokenConnForm = new PATokenForm();
-		paTokenConnForm.getTab().setSelected(false);
-		paTokenConnForm.getPage().setVisible(false);
 		connectionForms.add(paTokenConnForm);
 
 		IConnForm publicConnForm = new PublicConnectionForm();
-		publicConnForm.getTab().setSelected(false);
-		publicConnForm.getPage().setVisible(false);
 		connectionForms.add(publicConnForm);
 
 		IConnForm noConnForm = new NoConnectionForm();
-		noConnForm.getTab().setSelected(false);
-		noConnForm.getPage().setVisible(false);
 		connectionForms.add(noConnForm);
 	}
 
