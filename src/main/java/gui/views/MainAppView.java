@@ -1,22 +1,18 @@
 package gui.views;
 
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 @Route("")
-public class MainAppView extends Composite<Div> {
+public class MainAppView extends VerticalLayout {
 
 	private static final long serialVersionUID = -8176239269004450857L;
 
-	private VerticalLayout root = new VerticalLayout();
-	
 	private Div header = new Div();
 	
 	private Image brandingImage = new Image("images/logoUBU.jpg", "Logo UBU");
@@ -42,8 +38,7 @@ public class MainAppView extends Composite<Div> {
 			setUpHeader();
 			setUpContent();
 			setUpFooter();
-			root.add(header, content, footer);
-			getContent().add(root);
+			add(header, content, footer);
 			connectionFormDialog.open();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
