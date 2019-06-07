@@ -255,7 +255,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	public Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException{
 		Integer projectId;
 		if (! connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
-			projectId = obtenerIDProyecto(repositoryHTTPSURL);
+			projectId = getProjectId(repositoryHTTPSURL);
 			if (projectId != null) {
 				return new Repository(repositoryHTTPSURL, getRepositoryName(projectId), projectId);
 			} else {
@@ -306,7 +306,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * @param repositoryURL Project URL.
 	 * @return ID of a project.
 	 */
-	private Integer obtenerIDProyecto(String repositoryURL) {
+	private Integer getProjectId(String repositoryURL) {
 		try {
 			if(repositoryURL == null) return null;
 			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
