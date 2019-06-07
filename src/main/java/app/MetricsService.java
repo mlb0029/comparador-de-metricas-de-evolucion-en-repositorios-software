@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import datamodel.Repository;
-import datamodel.RepositoryCalculatedMetrics;
 import datamodel.RepositoryInternalMetrics;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricProfile;
@@ -74,7 +73,6 @@ public class MetricsService {
     	IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
     	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();
-    	RepositoryCalculatedMetrics repositoryCalculatedMetrics = null;
     	
     	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
     	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
@@ -82,8 +80,7 @@ public class MetricsService {
     	for (MetricConfiguration metricConfiguration : metricProfile.getMetricConfigurationCollection()) {
 			metricConfiguration.calculate(repository, metricsResults);
 		}
-    	repositoryCalculatedMetrics = new RepositoryCalculatedMetrics(metricProfile, metricsResults);
-    	repository.getCalculatedMetricsCollection().add(repositoryCalculatedMetrics);
+    	repository.getMetricsResultsCollection().add(metricsResults);
     }
     
     public void calculateMetricsRepository(Repository repository) throws RepositoryDataSourceException {

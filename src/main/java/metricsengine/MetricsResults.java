@@ -3,7 +3,7 @@ package metricsengine;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * Collect the measures of the metrics.
@@ -12,41 +12,56 @@ import java.util.Set;
  * @since 03/12/2018
  *
  */
-public class MetricsResults {
+public class MetricsResults implements Comparable<MetricsResults>{
 	
 	/**
 	 * Collection of measures.
 	 */
-	private Set<Measure> measures;
+	private Collection<Measure> measures = new HashSet<Measure>();
 
-	/**
-	 * Date of the collect.
-	 */
-	private Date date;
+	private Date creationDate = new Date();
+	
+	private Date lastModificationDate = creationDate;
 	
 	/**
 	 * Constructor.
 	 */
-	public MetricsResults() {
-		this.date = new Date();
-		measures = new HashSet<Measure>();
-	}
+	public MetricsResults() {}
+	
 	/**
-	 * Gets the collection of measures.
+	 * Gets a copy of the collection of measures.
 	 * 
 	 * @return The collection of measures.
 	 */
 	public Collection<Measure> getMeasures() {
-		return measures;
+		return new HashSet<Measure>(measures);
 	}
+	
+	public void setMeasures(Collection<Measure> measures) {
+		this.measures = measures;
+		lastModificationDate = new Date();
+	}
+	
 	/**
-	 * Gets the day of the collect.
+	 * Gets the creationDate.
 	 * 
-	 * @return The date of the collect.
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the creationDate
 	 */
-	public Date getDate() {
-		return date;
+	public Date getCreationDate() {
+		return (Date) creationDate.clone();
 	}
+
+	/**
+	 * Gets the lastModificationDate.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the lastModificationDate
+	 */
+	public Date getLastModificationDate() {
+		return (Date) lastModificationDate.clone();
+	}
+
 	/**
 	 * Adds a measure to the collection.
 	 * 
@@ -54,6 +69,44 @@ public class MetricsResults {
 	 */
 	public void addMeasure(Measure measure) {
 		measures.add(measure);
+		lastModificationDate = new Date();
+	}
+
+	public Measure getMeasureForTheMetric(Class<? extends IMetric> metricType) {
+		for (Measure measure : getMeasures()) {
+			if (measure.getMetricConfiguration().getMetric().getClass() == metricType)
+				return measure;
+		}
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(creationDate, lastModificationDate);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof MetricsResults))
+			return false;
+		MetricsResults other = (MetricsResults) obj;
+		return Objects.equals(creationDate, other.creationDate)
+				&& Objects.equals(lastModificationDate, other.lastModificationDate);
+	}
+
+	@Override
+	public int compareTo(MetricsResults o) {
+		return lastModificationDate.compareTo(o.lastModificationDate);
 	}
 	
 }

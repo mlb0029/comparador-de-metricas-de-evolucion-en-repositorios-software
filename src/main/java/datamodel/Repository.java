@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 
+import metricsengine.MetricsResults;
+
 /**
  * A repository data class.
  * 
@@ -36,9 +38,9 @@ public class Repository implements Serializable {
 	 */
 	private Integer id = null;
 
-	private RepositoryInternalMetrics repositoryInternalMetrics = null;
+	private RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics();
 	
-	private Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection;
+	private Collection<MetricsResults> metricsResultsCollection = new HashSet<MetricsResults>();
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -74,8 +76,6 @@ public class Repository implements Serializable {
 		setUrl(url);
 		setName(name);
 		setId(id);
-		repositoryInternalMetrics = new RepositoryInternalMetrics();
-		calculatedMetricsCollection = new HashSet<RepositoryCalculatedMetrics>();
 	}
 
 	/**
@@ -159,33 +159,35 @@ public class Repository implements Serializable {
 	}
 
 	/**
-	 * Gets the calculatedMetricsCollection.
+	 * Gets the metricsResultsCollection.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the calculatedMetricsCollection
+	 * @return the metricsResultsCollection
 	 */
-	public Collection<RepositoryCalculatedMetrics> getCalculatedMetricsCollection() {
-		return calculatedMetricsCollection;
+	public Collection<MetricsResults> getMetricsResultsCollection() {
+		return metricsResultsCollection;
 	}
 
 	/**
-	 * Returns the last collection of metrics that have been calculated.
+	 * Sets the metricsResultsCollection.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricsResultsCollection the metricsResultsCollection to set
+	 */
+	public void setMetricsResultsCollection(Collection<MetricsResults> metricsResultsCollection) {
+		this.metricsResultsCollection = metricsResultsCollection;
+	}
+
+	/**
+	 * Returns the last collection of metrics that have been calculated 
+	 * or null if they have never been calculated.
 	 * <p>
 	 * 
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return the last collection of metrics that have been calculated, never null
 	 */
-	public RepositoryCalculatedMetrics getLastCalculatedMetrics() {
-		return calculatedMetricsCollection.stream().max(Comparator.naturalOrder()).orElse(new RepositoryCalculatedMetrics());
-	}
-	/**
-	 * Sets the calculatedMetricsCollection.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param calculatedMetricsCollection the calculatedMetricsCollection to set
-	 */
-	public void setCalculatedMetricsCollection(Collection<RepositoryCalculatedMetrics> calculatedMetricsCollection) {
-		this.calculatedMetricsCollection = calculatedMetricsCollection;
+	public MetricsResults getLastMetricsResults() {
+		return getMetricsResultsCollection().stream().max(Comparator.naturalOrder()).orElse(null);
 	}
 }
