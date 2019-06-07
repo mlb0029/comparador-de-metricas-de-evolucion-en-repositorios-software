@@ -14,7 +14,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -107,25 +110,39 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesGrid.addColumn(this::getLastMeasurementDate)
 			.setHeader("Date")
 			.setWidth("8%");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricTotalNumberOfIssues.class))
+		Grid.Column<Repository> i1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricTotalNumberOfIssues.class))
 			.setHeader("I1");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricCommitsPerIssue.class))
+		Grid.Column<Repository> i2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricCommitsPerIssue.class))
 			.setHeader("I2");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPercentageClosedIssues.class))
+		Grid.Column<Repository> i3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPercentageClosedIssues.class))
 			.setHeader("I3");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysToCloseAnIssue.class))
+		Grid.Column<Repository> ti1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysToCloseAnIssue.class))
 			.setHeader("TI1");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysBetweenCommits.class))
+		Grid.Column<Repository> tc1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysBetweenCommits.class))
 			.setHeader("TC1");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricDaysBetweenFirstAndLastCommit.class))
+		Grid.Column<Repository> tc2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricDaysBetweenFirstAndLastCommit.class))
 			.setHeader("TC2");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricChangeActivityRange.class))
+		Grid.Column<Repository> tc3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricChangeActivityRange.class))
 			.setHeader("TC3");
-		repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPeakChange.class))
+		Grid.Column<Repository> c1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPeakChange.class))
 			.setHeader("C1");
 		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
 			.setWidth("5%");
 		repositoriesGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
+		
+		HeaderRow metricsClassification = repositoriesGrid.prependHeaderRow();
+		
+		Div procOrientHeader = new Div(new Span("Process Orientation"));
+		procOrientHeader.getStyle().set("text-align", "right");
+		procOrientHeader.setSizeFull();
+		metricsClassification.join(i1MetricColumn, i2MetricColumn, i3MetricColumn).setComponent(procOrientHeader);
+		
+		Div timeConstraintsHeader = new Div(new Span("Time Constraints"));
+		timeConstraintsHeader.getStyle().set("text-align", "right");
+		timeConstraintsHeader.setSizeFull();
+		metricsClassification.join(ti1MetricColumn, tc1MetricColumn, tc2MetricColumn, tc3MetricColumn, c1MetricColumn).setComponent(timeConstraintsHeader);
+		
+		
 		updateGrid();
 		
 		add(searchBarLayout, repositoriesGrid);
