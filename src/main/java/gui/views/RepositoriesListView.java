@@ -44,6 +44,7 @@ import metricsengine.metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
+import metricsengine.values.ValueUncalculated;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -102,33 +103,66 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesGrid.setColumns();
 		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
 		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
+				.setKey("removeButtonColumn")
+				.setSortable(false)
 				.setWidth("5%");
 		repositoriesGrid.addComponentColumn(r -> new Anchor(r.getUrl(), r.getName()))
+				.setKey("repositoryNameColumn")
 				.setWidth("20%")
+				.setSortable(true)
 				.setComparator(Repository::getName)
 				.setHeader("Repository");
 		repositoriesGrid.addColumn(this::getLastMeasurementDate)
+			.setKey("lastMeasurementDateColumn")
 			.setHeader("Date")
+			.setSortable(true)
+			.setComparator(r -> r.getRepositoryInternalMetrics().getDate())
 			.setWidth("8%");
 		Grid.Column<Repository> i1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricTotalNumberOfIssues.class))
+			.setKey("i1MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricTotalNumberOfIssues.class).compare(r1, r2))
 			.setHeader("I1");
 		Grid.Column<Repository> i2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricCommitsPerIssue.class))
+			.setKey("i2MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricCommitsPerIssue.class).compare(r1, r2))
 			.setHeader("I2");
 		Grid.Column<Repository> i3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPercentageClosedIssues.class))
+			.setKey("i3MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricPercentageClosedIssues.class).compare(r1, r2))
 			.setHeader("I3");
 		Grid.Column<Repository> ti1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysToCloseAnIssue.class))
+			.setKey("ti1MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricAverageDaysToCloseAnIssue.class).compare(r1, r2))
 			.setHeader("TI1");
 		Grid.Column<Repository> tc1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysBetweenCommits.class))
+			.setKey("tc1MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricAverageDaysBetweenCommits.class).compare(r1, r2))
 			.setHeader("TC1");
 		Grid.Column<Repository> tc2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricDaysBetweenFirstAndLastCommit.class))
+			.setKey("tc2MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricDaysBetweenFirstAndLastCommit.class).compare(r1, r2))
 			.setHeader("TC2");
 		Grid.Column<Repository> tc3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricChangeActivityRange.class))
+			.setKey("tc3MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricChangeActivityRange.class).compare(r1, r2))
 			.setHeader("TC3");
 		Grid.Column<Repository> c1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPeakChange.class))
+			.setKey("c1MetricColumn")
+			.setSortable(true)
+			.setComparator((r1, r2) -> Repository.getComparatorByMetric(MetricPeakChange.class).compare(r1, r2))
 			.setHeader("C1");
 		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
+			.setKey("calculateButtonColumn")
 			.setWidth("5%");
 		repositoriesGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
+		repositoriesGrid.setMultiSort(true);
 		
 		HeaderRow metricsClassification = repositoriesGrid.prependHeaderRow();
 		
@@ -188,13 +222,10 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 
 	private String getLastMeasurementDate(Repository repository) {
-		final String notCalculated = "NC";
-		final String notRepository = "NR";
 		String retorno = "";
 		
-		if (repository == null)	retorno = notRepository;
 		MetricsResults mr = repository.getLastMetricsResults();
-		if (mr == null ) retorno = notCalculated;
+		if (mr == null ) retorno = ValueUncalculated.VALUE;
 		retorno = formatDateShortEs(mr.getLastModificationDate());
 		return retorno;
 	}

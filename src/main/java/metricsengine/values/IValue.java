@@ -8,6 +8,8 @@ package metricsengine.values;
  */
 public interface IValue {
 	
+	public static final ValueComparator VALUE_COMPARATOR = new ValueComparator();
+	
 	/**
 	 * Return a string representing the value.
 	 * 

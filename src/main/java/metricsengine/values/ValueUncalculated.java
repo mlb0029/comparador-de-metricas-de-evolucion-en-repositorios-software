@@ -8,12 +8,14 @@ package metricsengine.values;
  */
 public class ValueUncalculated implements IValue {
 
+	public static final String VALUE = "NC";
+	
 	/* (non-Javadoc)
 	 * @see metricsengine.values.IValue#valueToString()
 	 */
 	@Override
 	public String valueToString() {
-		return "";
+		return VALUE;
 	}
 
 }

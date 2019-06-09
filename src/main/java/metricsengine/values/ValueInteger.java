@@ -6,7 +6,7 @@ package metricsengine.values;
  * @author MALB
  *
  */
-public class ValueInteger implements IValue {
+public class ValueInteger extends NumericValue {
 
 	/**
 	 * Integer value.
@@ -37,5 +37,20 @@ public class ValueInteger implements IValue {
 	@Override
 	public String valueToString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public int intValue() {
+		return value;
+	}
+
+	@Override
+	public long longValue() {
+		return value;
+	}
+
+	@Override
+	public double doubleValue() {
+		return value;
 	}
 }

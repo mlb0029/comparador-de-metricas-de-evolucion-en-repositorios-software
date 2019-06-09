@@ -6,7 +6,11 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 
+import metricsengine.IMetric;
+import metricsengine.Measure;
 import metricsengine.MetricsResults;
+import metricsengine.values.IValue;
+import metricsengine.values.ValueUncalculated;
 
 /**
  * A repository data class.
@@ -189,5 +193,29 @@ public class Repository implements Serializable {
 	 */
 	public MetricsResults getLastMetricsResults() {
 		return getMetricsResultsCollection().stream().max(Comparator.naturalOrder()).orElse(null);
+	}
+
+	public static Comparator<Repository> getComparatorByMetric(Class<? extends IMetric> metricType) {
+		return new Comparator<Repository>() {
+			
+			@Override
+			public int compare(Repository r1, Repository r2) {
+				Measure m1, m2;
+				IValue v1, v2;
+				if (r1.getLastMetricsResults() != null && r2.getLastMetricsResults() != null) {
+					m1 = r1.getLastMetricsResults().getMeasureForTheMetric(metricType);
+					m2 = r2.getLastMetricsResults().getMeasureForTheMetric(metricType);
+					v1 = (m1 == null)? new ValueUncalculated():m1.getMeasuredValue();
+					v2 = (m2 == null)? new ValueUncalculated():m2.getMeasuredValue();
+					return IValue.VALUE_COMPARATOR.compare(v1, v2);
+				} else if (r1.getLastMetricsResults() == null && r2.getLastMetricsResults() != null) {
+					return -1;
+				} else if (r1.getLastMetricsResults() != null && r2.getLastMetricsResults() == null) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		};
 	}
 }
