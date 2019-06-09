@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -9,7 +9,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class PublicConnectionForm extends AConnForm {
+public class PublicConnectionForm extends ConnectionFormTemplate {
 
 	/**
 	 * Description.

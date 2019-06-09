@@ -1,4 +1,4 @@
-package gui.views;
+package gui.views.connectionforms;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;

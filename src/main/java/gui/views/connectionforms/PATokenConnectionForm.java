@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -11,7 +11,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class PATokenForm extends AConnForm {
+public class PATokenConnectionForm extends ConnectionFormTemplate {
 	/**
 	 * Description.
 	 * 
@@ -30,7 +30,7 @@ public class PATokenForm extends AConnForm {
 	private Label tokenLabel;
 	private PasswordField tokenField;
 	
-	public PATokenForm() {
+	public PATokenConnectionForm() {
 		super(
 				TAB_NAME, 
 				DESCRIPTION, 

@@ -1,4 +1,4 @@
-package gui.views;
+package gui.views.addrepositoriyform;
 
 import java.util.ArrayList;
 import java.util.Collection;

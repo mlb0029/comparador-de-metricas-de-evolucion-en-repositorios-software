@@ -30,6 +30,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import app.MetricsService;
 import app.RepositoriesService;
 import datamodel.Repository;
+import gui.views.addrepositoriyform.AddNewRepositoryForm;
 import metricsengine.IMetric;
 import metricsengine.Measure;
 import metricsengine.MetricsResults;

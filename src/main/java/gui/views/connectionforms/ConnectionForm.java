@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public interface IConnForm extends Serializable{
+public interface ConnectionForm extends Serializable{
 	
 	public interface IConnectionSuccessfulListener {
 		void onConnectionSuccessful(EnumConnectionType connectionType);

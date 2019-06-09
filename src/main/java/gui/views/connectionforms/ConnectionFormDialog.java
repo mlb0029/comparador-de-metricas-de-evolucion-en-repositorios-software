@@ -1,4 +1,4 @@
-package gui.views;
+package gui.views.connectionforms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
 
-import gui.views.connectionForms.IConnForm;
-import gui.views.connectionForms.NoConnectionForm;
-import gui.views.connectionForms.PATokenForm;
-import gui.views.connectionForms.PublicConnectionForm;
-import gui.views.connectionForms.UserPasswordConnForm;
-
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -23,7 +17,7 @@ public class ConnectionFormDialog extends Dialog {
 
 	private static final long serialVersionUID = -2348702400211722166L;
 
-	private List<IConnForm> connectionForms = new ArrayList<>();
+	private List<ConnectionForm> connectionForms = new ArrayList<>();
 	
 	public ConnectionFormDialog() {
 		createConnectionForms();
@@ -35,7 +29,7 @@ public class ConnectionFormDialog extends Dialog {
 		Div forms = new Div();
 		forms.setWidth("70%");
 
-		for (IConnForm iConnForm : connectionForms) {
+		for (ConnectionForm iConnForm : connectionForms) {
 			tabs.add(iConnForm.getTab());
 			forms.add(iConnForm.getPage());
 			iConnForm.addConnectionSuccessfulListener(c -> {
@@ -45,7 +39,7 @@ public class ConnectionFormDialog extends Dialog {
 		}
 
 		tabs.addSelectedChangeListener(event -> {
-			for (IConnForm iConnForm : connectionForms) {
+			for (ConnectionForm iConnForm : connectionForms) {
 				if (iConnForm.getTab() == event.getSource().getSelectedTab())
 					iConnForm.getPage().setVisible(true);
 				else {
@@ -75,16 +69,16 @@ public class ConnectionFormDialog extends Dialog {
 
 	private void createConnectionForms() {
 
-		IConnForm userPasswordConnForm = new UserPasswordConnForm();
+		ConnectionForm userPasswordConnForm = new UserPasswordConnectionForm();
 		connectionForms.add(userPasswordConnForm);
 
-		IConnForm paTokenConnForm = new PATokenForm();
+		ConnectionForm paTokenConnForm = new PATokenConnectionForm();
 		connectionForms.add(paTokenConnForm);
 
-		IConnForm publicConnForm = new PublicConnectionForm();
+		ConnectionForm publicConnForm = new PublicConnectionForm();
 		connectionForms.add(publicConnForm);
 
-		IConnForm noConnForm = new NoConnectionForm();
+		ConnectionForm noConnForm = new NullConnectionForm();
 		connectionForms.add(noConnForm);
 	}
 

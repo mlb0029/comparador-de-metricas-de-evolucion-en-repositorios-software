@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -11,7 +11,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class NoConnectionForm extends AConnForm {
+public class NullConnectionForm extends ConnectionFormTemplate {
 
 	/**
 	 * Description.
@@ -28,7 +28,7 @@ public class NoConnectionForm extends AConnForm {
 	
 	private static final String BUTTON_TEXT = "Proceed";
 	
-	public NoConnectionForm() {
+	public NullConnectionForm() {
 		super(
 				TAB_NAME, 
 				DESCRIPTION, 

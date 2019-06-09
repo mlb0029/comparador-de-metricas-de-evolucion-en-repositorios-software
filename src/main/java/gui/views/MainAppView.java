@@ -8,6 +8,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import gui.views.connectionforms.CloseConnectionFormDialog;
+import gui.views.connectionforms.ConnectionFormDialog;
+import gui.views.connectionforms.ConnectionInfoComponent;
+
 @Route("")
 public class MainAppView extends VerticalLayout {
 

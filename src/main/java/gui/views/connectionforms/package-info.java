@@ -2,4 +2,4 @@
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-package gui.views.connectionForms;
+package gui.views.connectionforms;

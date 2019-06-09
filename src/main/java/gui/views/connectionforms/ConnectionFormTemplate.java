@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import app.RepositoryDataSourceService;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
-public abstract class AConnForm implements IConnForm{
+public abstract class ConnectionFormTemplate implements ConnectionForm{
 	
 	public class FormElement {
 		private String name;
@@ -48,7 +48,7 @@ public abstract class AConnForm implements IConnForm{
 	private Label result = new Label();
 	private Div page = new Div();
 
-	protected AConnForm(String tabName, String description, VaadinIcon buttonIcon, String buttonText) {
+	protected ConnectionFormTemplate(String tabName, String description, VaadinIcon buttonIcon, String buttonText) {
 		this.tab.setLabel(tabName);
 
 		this.form.setResponsiveSteps(new ResponsiveStep("0", 1, LabelsPosition.TOP),

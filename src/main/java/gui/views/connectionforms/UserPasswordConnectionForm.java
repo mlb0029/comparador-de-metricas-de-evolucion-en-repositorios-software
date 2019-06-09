@@ -1,4 +1,4 @@
-package gui.views.connectionForms;
+package gui.views.connectionforms;
 
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,7 +12,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class UserPasswordConnForm extends AConnForm {
+public class UserPasswordConnectionForm extends ConnectionFormTemplate {
 
 	private static final long serialVersionUID = -4845217735632848653L;
 
@@ -30,7 +30,7 @@ public class UserPasswordConnForm extends AConnForm {
 	private Label passwordLabel;
 	private PasswordField passwordField;
 
-	public UserPasswordConnForm() {
+	public UserPasswordConnectionForm() {
 		super(
 				TAB_NAME, 
 				DESCRIPTION, 
