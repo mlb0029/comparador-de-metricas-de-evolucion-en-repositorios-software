@@ -218,4 +218,14 @@ public class Repository implements Serializable {
 			}
 		};
 	}
+	
+	public static Comparator<Repository> getComparatorByName() {
+		return new Comparator<Repository>() {
+			
+			@Override
+			public int compare(Repository o1, Repository o2) {
+				return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+			}
+		};
+	}
 }
