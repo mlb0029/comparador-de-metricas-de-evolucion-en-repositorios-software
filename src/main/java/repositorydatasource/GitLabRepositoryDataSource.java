@@ -244,7 +244,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		} catch (RepositoryDataSourceException e) {
 			throw e;
 		} catch (GitLabApiException e) {
-			throw new RepositoryDataSourceException();
+			throw new RepositoryDataSourceException(RepositoryDataSourceException.USER_NOT_FOUND);
 		}
 	}
 

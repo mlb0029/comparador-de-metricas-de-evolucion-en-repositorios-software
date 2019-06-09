@@ -1,5 +1,9 @@
 package gui.views;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -66,6 +70,7 @@ public class AddNewRepositoryForm extends Dialog {
 			VerticalLayout vLayout = new VerticalLayout(repositorySelectorHLayout, msgLabel, addButton);
 			vLayout.setSizeFull();
 			add(vLayout);
+			addDialogCloseActionListener(event -> resetUserNameTextField());
 		} catch (Exception e) {
 			e.printStackTrace(); //TODO Redirigir a página de error
 		}
@@ -82,6 +87,7 @@ public class AddNewRepositoryForm extends Dialog {
 			if (RepositoriesService.getInstance().addRepository(repositoryToAdd)) {
 				try {
 					MetricsService.getMetricsService().calculateMetricsRepository(repositoryToAdd);
+					updateUserRepositories();
 					msgLabel.setText("");
 				} catch (RepositoryDataSourceException e) {
 					msgLabel.setText(e.getMessage());
@@ -113,18 +119,23 @@ public class AddNewRepositoryForm extends Dialog {
 	private void updateUserRepositories() {
 		try {
 			IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+			RepositoriesService repositoriesService = RepositoriesService.getInstance();
 			if (!usernameTextField.isEmpty()) {
-				repositoryComboBox.setItems(repositoryDataSource.getAllUserRepositories(usernameTextField.getValue()));
+				Collection<Repository> repositories = new ArrayList<Repository>();
+				repositories = repositoryDataSource.getAllUserRepositories(usernameTextField.getValue())
+						.stream()
+						.filter(r -> !repositoriesService.getRepositories().contains(r))
+						.sorted(Repository.getComparatorByName())
+						.collect(Collectors.toList());
+				repositoryComboBox.setItems(repositories);
 			} else {
 				repositoryComboBox.setItems();
 				repositoryComboBox.clear();
-				resetUserNameTextField();
 			}
 			msgLabel.setText("");
 		} catch (Exception e) {
 			msgLabel.setText(e.getMessage());
 			repositoryComboBox.setItems();
-			resetUserNameTextField();
 		}
 	}
 }
