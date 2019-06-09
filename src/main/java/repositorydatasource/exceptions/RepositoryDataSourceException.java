@@ -65,6 +65,12 @@ public class RepositoryDataSourceException extends Exception {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
+	public static final int USER_NOT_FOUND = 7;
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
 	private int code = -1;
 	
 	/**
@@ -89,7 +95,7 @@ public class RepositoryDataSourceException extends Exception {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public RepositoryDataSourceException() {
-		super();
+		this(-1);
 	}
 	
 	/**
@@ -119,6 +125,9 @@ public class RepositoryDataSourceException extends Exception {
 			break;
 		case REPOSITORY_NOT_FOUND:
 			message = "Repository not found: It doesn't exist or is inaccessible due to the connection level";
+			break;
+		case USER_NOT_FOUND:
+			message = "User not found";
 			break;
 		default:
 			message = "Unknown RepositoryDataSource error";
