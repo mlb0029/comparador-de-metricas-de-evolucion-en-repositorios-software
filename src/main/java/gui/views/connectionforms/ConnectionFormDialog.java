@@ -69,16 +69,16 @@ public class ConnectionFormDialog extends Dialog {
 
 	private void createConnectionForms() {
 
-		ConnectionForm userPasswordConnForm = new UserPasswordConnectionForm();
+		ConnectionForm userPasswordConnForm = new ConnectionFormUsingUserPassword();
 		connectionForms.add(userPasswordConnForm);
 
-		ConnectionForm paTokenConnForm = new PATokenConnectionForm();
+		ConnectionForm paTokenConnForm = new ConnectionFormUsingPAToken();
 		connectionForms.add(paTokenConnForm);
 
-		ConnectionForm publicConnForm = new PublicConnectionForm();
+		ConnectionForm publicConnForm = new ConnectionFormUsingPublicConn();
 		connectionForms.add(publicConnForm);
 
-		ConnectionForm noConnForm = new NullConnectionForm();
+		ConnectionForm noConnForm = new ConnectionFormWithoutConn();
 		connectionForms.add(noConnForm);
 	}
 
