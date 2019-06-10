@@ -8,7 +8,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-import gui.views.connectionforms.CloseConnectionFormDialog;
+import gui.views.connectionforms.CloseConnectionDialog;
 import gui.views.connectionforms.ConnectionFormDialog;
 import gui.views.connectionforms.ConnectionInfoComponent;
 
@@ -27,7 +27,7 @@ public class MainAppView extends VerticalLayout {
 
 	private ConnectionInfoComponent connectionInfoComponent = new ConnectionInfoComponent();
 	
-	private CloseConnectionFormDialog closeConnectionFormDialog = new CloseConnectionFormDialog();
+	private CloseConnectionDialog closeConnectionFormDialog = new CloseConnectionDialog();
 
 	private Div content = new Div();
 	
