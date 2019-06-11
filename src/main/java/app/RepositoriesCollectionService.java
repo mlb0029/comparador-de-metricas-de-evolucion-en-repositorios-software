@@ -1,16 +1,11 @@
 package app;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
-import javax.ws.rs.NotSupportedException;
-
+import app.listeners.Listener;
+import app.listeners.RepositoriesCollectionUpdatedEvent;
 import datamodel.Repository;
 
 /**
@@ -41,154 +36,71 @@ public class RepositoriesCollectionService implements Serializable {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private RepositoriesCollection repositoriesCollection;
+	private HashSet<Repository> repositoriesCollection = new HashSet<>();
 	
-	private RepositoriesCollectionService() {
-		repositoriesCollection = new RepositoriesCollection();
-	}
+	private HashSet<Listener<RepositoriesCollectionUpdatedEvent>> repositoriesCollectionUpdatedListeners = new HashSet<>();
+	
+	private RepositoriesCollectionService() {}
 
-	/**
-	 * Gets the single instance of the class.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the instance
-	 */
 	public static RepositoriesCollectionService getInstance() {
 		if (instance == null) instance = new RepositoriesCollectionService();
 		return instance;
 	}
 
-	/**
-	 * Gets the collection of repositories.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the repositories
-	 */
 	public Collection<Repository> getRepositories() {
-		return repositoriesCollection;
+		return new HashSet<Repository>(repositoriesCollection);
 	}
 	
-	/**
-	 * Adds the specified repository if it is not already present.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param repository
-	 * @return true if the repository doesn't exists in this collection
-	 */
-	public boolean addRepository(Repository repository) {
-		return repositoriesCollection.repositories.add(repository);
+	public void addRepository(Repository repository) throws RepositoriesCollectionServiceException {
+		if (!repositoriesCollection.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
+		notifyRepositoriesCollectionUpdatedListeners(repository, true);
 	}
 	
 	
-	/**
-	 * Removes the specified repository if present.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param repository
-	 * @return true if the repository was present
-	 */
-	public boolean removeRepository(Repository repository) {
-		return repositoriesCollection.repositories.remove(repository);
+	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
+		if (!repositoriesCollection.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
+		notifyRepositoriesCollectionUpdatedListeners(repository, false);
 	}
 	
 	public void save(String filePath) {
-		try {
-			FileOutputStream fileOut = new FileOutputStream(filePath);
-			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-			objectOut.writeObject(instance);
-            objectOut.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			FileOutputStream fileOut = new FileOutputStream(filePath);
+//			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+//			objectOut.writeObject(instance);
+//            objectOut.close();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void load(String filePath) {
+		// TODO ...
 		
 	}
+
+	/**
+	 * @param listener
+	 * @return
+	 * @see java.util.HashSet#add(java.lang.Object)
+	 */
+	public boolean addRepositoriesCollectionUpdatedListener(Listener<RepositoriesCollectionUpdatedEvent> listener) {
+		return repositoriesCollectionUpdatedListeners.add(listener);
+	}
+
+	/**
+	 * @param listener
+	 * @return
+	 * @see java.util.HashSet#remove(java.lang.Object)
+	 */
+	public boolean removeRepositoriesCollectionUpdatedListener(Listener<RepositoriesCollectionUpdatedEvent> listener) {
+		return repositoriesCollectionUpdatedListeners.remove(listener);
+	}
 	
-	private class RepositoriesCollection implements Collection<Repository>, Serializable{
-
-		/**
-		 * Description.
-		 * 
-		 * @author Miguel Ángel León Bardavío - mlb0029
-		 */
-		private static final long serialVersionUID = -1632073948461817997L;
-		
-		HashSet<Repository> repositories;
-		
-		RepositoriesCollection() {
-			repositories = new HashSet<Repository>();
-		}
-		
-		@Override
-		public int size() {
-			return repositories.size();
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return repositories.isEmpty();
-		}
-
-		@Override
-		public boolean contains(Object o) {
-			return repositories.contains(o);
-		}
-
-		@Override
-		public Iterator<Repository> iterator() {
-			return repositories.iterator();
-		}
-
-		@Override
-		public Object[] toArray() {
-			return repositories.toArray();
-		}
-
-		@Override
-		public <T> T[] toArray(T[] a) {
-			return repositories.toArray(a);
-		}
-
-		@Override
-		public boolean add(Repository e) {
-			throw new NotSupportedException();
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			throw new NotSupportedException();
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> c) {
-			return repositories.containsAll(c);
-		}
-
-		@Override
-		public boolean addAll(Collection<? extends Repository> c) {
-			throw new NotSupportedException();
-		}
-
-		@Override
-		public boolean removeAll(Collection<?> c) {
-			throw new NotSupportedException();
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> c) {
-			throw new NotSupportedException();
-		}
-
-		@Override
-		public void clear() {
-			throw new NotSupportedException();
-		}
-		
+	private void notifyRepositoriesCollectionUpdatedListeners(Repository repository, boolean isAdded) {
+		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent(repository, isAdded)));
 	}
 }

@@ -85,6 +85,6 @@ public class ConnectionFormUsingUserPassword extends ConnectionFormTemplate {
 
 	@Override
 	protected void connect() throws RepositoryDataSourceException {
-		RepositoryDataSourceService.getInstance().getRepositoryDataSource().connect(usernameField.getValue(), passwordField.getValue());
+		RepositoryDataSourceService.getInstance().connect(usernameField.getValue(), passwordField.getValue());
 	}
 }

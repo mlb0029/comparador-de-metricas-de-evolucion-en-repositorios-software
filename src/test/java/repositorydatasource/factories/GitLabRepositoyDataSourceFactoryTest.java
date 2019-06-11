@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import repositorydatasource.GitLabRepositoyDataSourceFactory;
-import repositorydatasource.IRepositoryDataSource;
-import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
-import repositorydatasource.IRepositoryDataSourceFactory;
+import repositorydatasource.RepositoyDataSourceFactoryGitlab;
+import repositorydatasource.RepositoryDataSource;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
+import repositorydatasource.RepositoryDataSourceFactory;
 
 /**
  * Test for GitLabRepositoyDataSourceFactory.
@@ -18,14 +18,14 @@ import repositorydatasource.IRepositoryDataSourceFactory;
 public class GitLabRepositoyDataSourceFactoryTest {
 	
 	/**
-	 * Test method for {@link repositorydatasource.GitLabRepositoyDataSourceFactory#getRepositoryDataSource()}.
+	 * Test method for {@link repositorydatasource.RepositoyDataSourceFactoryGitlab#getRepositoryDataSource()}.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	@Test
 	public void testCreateRepositoryDataSource() {
-		IRepositoryDataSourceFactory rdsf = new GitLabRepositoyDataSourceFactory();
-		IRepositoryDataSource rds = rdsf.getRepositoryDataSource();
+		RepositoryDataSourceFactory rdsf = new RepositoyDataSourceFactoryGitlab();
+		RepositoryDataSource rds = rdsf.getRepositoryDataSource();
 		assertTrue(rds != null && rds.getConnectionType() == EnumConnectionType.NOT_CONNECTED);
 	}
 }

@@ -73,7 +73,7 @@ public class ConnectionFormUsingPAToken extends ConnectionFormTemplate {
 
 	@Override
 	protected void connect() throws RepositoryDataSourceException {
-		RepositoryDataSourceService.getInstance().getRepositoryDataSource().connect(tokenField.getValue());
+		RepositoryDataSourceService.getInstance().connect(tokenField.getValue());
 	}
 
 }

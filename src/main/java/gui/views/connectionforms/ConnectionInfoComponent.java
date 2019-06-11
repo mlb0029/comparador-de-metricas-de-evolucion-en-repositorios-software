@@ -8,8 +8,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import app.RepositoryDataSourceService;
 import datamodel.User;
-import repositorydatasource.IRepositoryDataSource;
-import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -35,8 +34,8 @@ public class ConnectionInfoComponent extends Div {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public ConnectionInfoComponent() {
-		IRepositoryDataSource rds = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
-		rds.addConnectionChangeEventListener(this::update);
+		RepositoryDataSourceService rds = RepositoryDataSourceService.getInstance();
+		rds.addConnectionChangedEventListener(event -> update(event.getConnectionTypeAfter()));
 		update(rds.getConnectionType());
 		userAvatar.setWidth("50px");
 		userAvatar.setHeight("50px");
@@ -81,7 +80,7 @@ public class ConnectionInfoComponent extends Div {
 			break;
 		case LOGGED:
 			try {
-				User user = RepositoryDataSourceService.getInstance().getRepositoryDataSource().getCurrentUser();
+				User user = RepositoryDataSourceService.getInstance().getCurrentUser();
 				userAvatar.setVisible(true);
 				userAvatar.setSrc((user.getAvatarUrl() != null)?user.getAvatarUrl():"");
 				connectionInfoLabel.setText("Connected as: " + user.getUsername());

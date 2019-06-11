@@ -16,7 +16,7 @@ public class RepositoryDataSourceException extends Exception {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private static Logger logger = LoggerFactory.getLogger(RepositoryDataSourceException.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryDataSourceException.class);
 	
 	/**
 	 * Description.
@@ -145,11 +145,7 @@ public class RepositoryDataSourceException extends Exception {
 			break;
 		}
 		
-		logger.error(message);
-		
-		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-			logger.info(ste.toString());
-		}
+		log();
 	}
 
 	/**
@@ -163,11 +159,7 @@ public class RepositoryDataSourceException extends Exception {
 		this.code = errorCode;
 		this.message = message;
 		
-		logger.error(message);
-		
-		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-			logger.info(ste.toString());
-		}
+		log();
 	}
 	
 	
@@ -180,11 +172,7 @@ public class RepositoryDataSourceException extends Exception {
 	public RepositoryDataSourceException(String message) {
 		this.message = message;
 		
-		logger.error(message);
-		
-		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-			logger.info(ste.toString());
-		}
+		log();
 	}
 	
 	/* (non-Javadoc)
@@ -203,5 +191,13 @@ public class RepositoryDataSourceException extends Exception {
 	 */
 	public int getErrorCode() {
 		return code;
+	}
+
+	private void log() {
+		LOGGER.error(this.message);
+		
+		for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+			LOGGER.info(ste.toString());
+		}
 	}
 }

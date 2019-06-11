@@ -49,7 +49,7 @@ public class ConnectionFormUsingPublicConn extends ConnectionFormTemplate {
 
 	@Override
 	protected void connect() throws RepositoryDataSourceException {
-		RepositoryDataSourceService.getInstance().getRepositoryDataSource().connect();
+		RepositoryDataSourceService.getInstance().connect();
 	}
 
 }

@@ -1,27 +1,38 @@
 package app;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.gitlab4j.api.GitLabApiException;
 
-import repositorydatasource.GitLabRepositoyDataSourceFactory;
-import repositorydatasource.IRepositoryDataSource;
+import app.listeners.ConnectionChangedEvent;
+import app.listeners.ConnectionChangedEventListener;
+import datamodel.Repository;
+import datamodel.RepositoryInternalMetrics;
+import datamodel.User;
+import repositorydatasource.RepositoyDataSourceFactoryGitlab;
+import repositorydatasource.RepositoryDataSource;
+import repositorydatasource.RepositoryDataSourceFactory;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoryDataSourceService implements Serializable {
+public class RepositoryDataSourceService implements Serializable, RepositoryDataSource {
 	
 	private static final long serialVersionUID = -6197642368639361682L;
 
 	private static RepositoryDataSourceService instance;
 	
-	private IRepositoryDataSource repositoryDataSource;
+	private RepositoryDataSource repositoryDataSource;
+	
+	private Set<ConnectionChangedEventListener> connectionChangedEventListeners = new HashSet<>();
 	
 	private RepositoryDataSourceService() {
-		this.repositoryDataSource = new GitLabRepositoyDataSourceFactory().getRepositoryDataSource();
+		this.repositoryDataSource = new RepositoyDataSourceFactoryGitlab().getRepositoryDataSource();
 	}
 
 	/**
@@ -36,14 +47,90 @@ public class RepositoryDataSourceService implements Serializable {
 		if (instance == null) instance = new RepositoryDataSourceService();
 		return instance;
 	}
-
+	
 	/**
-	 * Gets the repositoryDataSource.
+	 * Sets the repositoryDataSource.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the repositoryDataSource
+	 * @param repositoryDataSource the repositoryDataSource to set
 	 */
-	public IRepositoryDataSource getRepositoryDataSource() {
-		return repositoryDataSource;
+	public void setRepositoryDataSource(RepositoryDataSourceFactory repositoryDataSourceFactory) {
+		this.repositoryDataSource = repositoryDataSourceFactory.getRepositoryDataSource();
+	}
+
+	public void addConnectionChangedEventListener(ConnectionChangedEventListener listener) {
+		connectionChangedEventListeners.add(listener);
+	}
+	
+	public void removeConnectionChangedEventListener(ConnectionChangedEventListener listener) {
+		connectionChangedEventListeners.remove(listener);
+	}
+
+	@Override
+	public void connect() throws RepositoryDataSourceException {
+		EnumConnectionType before = getConnectionType();
+		this.repositoryDataSource.connect();
+		EnumConnectionType after = getConnectionType();
+		connectionChangedEventListeners.forEach(l -> l.on(new ConnectionChangedEvent(before, after)));		
+	}
+
+	@Override
+	public void connect(String username, String password) throws RepositoryDataSourceException {
+		EnumConnectionType before = getConnectionType();
+		this.repositoryDataSource.connect(username, password);;
+		EnumConnectionType after = getConnectionType();
+		connectionChangedEventListeners.forEach(l -> l.on(new ConnectionChangedEvent(before, after)));
+	}
+
+	@Override
+	public void connect(String token) throws RepositoryDataSourceException {
+		EnumConnectionType before = getConnectionType();
+		this.repositoryDataSource.connect(token);;
+		EnumConnectionType after = getConnectionType();
+		connectionChangedEventListeners.forEach(l -> l.on(new ConnectionChangedEvent(before, after)));
+	}
+
+	@Override
+	public void disconnect() throws RepositoryDataSourceException {
+		EnumConnectionType before = getConnectionType();
+		this.repositoryDataSource.disconnect();
+		EnumConnectionType after = getConnectionType();
+		connectionChangedEventListeners.forEach(l -> l.on(new ConnectionChangedEvent(before, after)));
+	}
+
+	@Override
+	public EnumConnectionType getConnectionType() {
+		return this.repositoryDataSource.getConnectionType();
+	}
+
+	@Override
+	public User getCurrentUser() throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getCurrentUser();
+	}
+
+	@Override
+	public Collection<Repository> getCurrentUserRepositories() throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getCurrentUserRepositories();
+	}
+
+	@Override
+	public Collection<Repository> getAllUserRepositories(String username) throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getAllUserRepositories(username);
+	}
+
+	@Override
+	public Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getAllGroupRepositories(groupName);
+	}
+
+	@Override
+	public Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getRepository(repositoryHTTPSURL);
+	}
+
+	@Override
+	public RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository)
+			throws RepositoryDataSourceException {
+		return this.getRepositoryInternalMetrics(repository);
 	}
 }

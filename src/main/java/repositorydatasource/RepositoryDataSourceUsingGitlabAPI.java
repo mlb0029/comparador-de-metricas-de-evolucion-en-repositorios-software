@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +28,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author migue
  *
  */
-public class GitLabRepositoryDataSource implements IRepositoryDataSource {
+public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource {
 
 	/**
 	 * Serial.
@@ -38,8 +37,6 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 */
 	private static final long serialVersionUID = 2565951561088053095L;
 	
-	private Set<IRepositoryDataSourceListener> listeners = new HashSet<>();
-
 	/**
 	 * Default Host URL.
 	 */
@@ -48,12 +45,12 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = LoggerFactory.getLogger(GitLabRepositoryDataSource.class);
+	private static Logger logger = LoggerFactory.getLogger(RepositoryDataSourceUsingGitlabAPI.class);
 
 	/**
 	 * Single instance of the class.
 	 */
-	private static GitLabRepositoryDataSource instance;
+	private static RepositoryDataSourceUsingGitlabAPI instance;
 
 	/**
 	 * Connection type.
@@ -77,7 +74,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	/**
 	 * Constructor that returns a not connected gitlabrepositorydatasource.
 	 */
-	private GitLabRepositoryDataSource() {
+	private RepositoryDataSourceUsingGitlabAPI() {
 		connectionType = EnumConnectionType.NOT_CONNECTED;
 		gitLabApi = null;
 		currentUser = null;
@@ -88,8 +85,8 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	 * 
 	 * @return A gitlab repository data source.
 	 */
-	public static GitLabRepositoryDataSource getGitLabRepositoryDataSource() {
-		if (GitLabRepositoryDataSource.instance == null) GitLabRepositoryDataSource.instance = new GitLabRepositoryDataSource();
+	public static RepositoryDataSourceUsingGitlabAPI getGitLabRepositoryDataSource() {
+		if (RepositoryDataSourceUsingGitlabAPI.instance == null) RepositoryDataSourceUsingGitlabAPI.instance = new RepositoryDataSourceUsingGitlabAPI();
 		return instance;
 	}
 
@@ -99,10 +96,9 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	@Override
 	public void connect() throws RepositoryDataSourceException {
 		if( connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
-			gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, "");
+			gitLabApi = new GitLabApi(RepositoryDataSourceUsingGitlabAPI.HOST_URL, "");
 			currentUser = null;
 			connectionType = EnumConnectionType.CONNECTED;
-			listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 			logger.info("Established connection with GitLab");
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -117,10 +113,9 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		try {
 			if(username == null || password == null || username.isBlank() || password.isBlank()) throw new RepositoryDataSourceException(RepositoryDataSourceException.LOGIN_ERROR);
 			if(connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
-				gitLabApi = GitLabApi.oauth2Login(GitLabRepositoryDataSource.HOST_URL, username, password.toCharArray());
+				gitLabApi = GitLabApi.oauth2Login(RepositoryDataSourceUsingGitlabAPI.HOST_URL, username, password.toCharArray());
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
-				listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 				logger.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -140,10 +135,9 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	public void connect(String token) throws RepositoryDataSourceException {
 		try {
 			if(connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
-				gitLabApi = new GitLabApi(GitLabRepositoryDataSource.HOST_URL, token);
+				gitLabApi = new GitLabApi(RepositoryDataSourceUsingGitlabAPI.HOST_URL, token);
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
-				listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 				logger.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
@@ -163,7 +157,6 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	public void disconnect() throws RepositoryDataSourceException {
 		if (connectionType != EnumConnectionType.NOT_CONNECTED) {
 			reset();
-			listeners.forEach(l -> l.onConnectionChangeEvent(connectionType));
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_DISCONNECTED);
 		}
@@ -330,7 +323,7 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 	private Integer getProjectId(String repositoryURL) {
 		try {
 			if(repositoryURL == null) return null;
-			String sProyecto = repositoryURL.replaceAll(GitLabRepositoryDataSource.HOST_URL + "/", "");
+			String sProyecto = repositoryURL.replaceAll(RepositoryDataSourceUsingGitlabAPI.HOST_URL + "/", "");
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];
 			String propietarioYGrupo = sProyecto.replaceAll("/" + nombreProyecto, "");
 			Project pProyecto = gitLabApi.getProjectApi().getProject(propietarioYGrupo, nombreProyecto);
@@ -456,15 +449,5 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		} catch (GitLabApiException e) {
 			return null;
 		}
-	}
-
-	@Override
-	public void addConnectionChangeEventListener(IRepositoryDataSourceListener listener) {
-		listeners.add(listener);
-	}
-
-	@Override
-	public void removeConnectionChangeEventListener(IRepositoryDataSourceListener listener) {
-		listeners.remove(listener);
 	}
 }

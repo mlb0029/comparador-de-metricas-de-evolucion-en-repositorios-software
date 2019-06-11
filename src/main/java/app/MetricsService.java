@@ -16,7 +16,7 @@ import metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit;
 import metricsengine.metrics.MetricPeakChange;
 import metricsengine.metrics.MetricPercentageClosedIssues;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
-import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -70,7 +70,7 @@ public class MetricsService {
      * @throws RepositoryDataSourceException 
      */
     public void calculateMetricsRepository(Repository repository, MetricProfile metricProfile) throws RepositoryDataSourceException {
-    	IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+    	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
     	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();
     	

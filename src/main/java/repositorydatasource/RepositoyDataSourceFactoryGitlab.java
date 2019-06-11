@@ -6,14 +6,14 @@ package repositorydatasource;
  * @author MALB
  *
  */
-public class GitLabRepositoyDataSourceFactory implements IRepositoryDataSourceFactory {
+public class RepositoyDataSourceFactoryGitlab implements RepositoryDataSourceFactory {
 
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSourceFactory#getRepositoryDataSource()
 	 */
 	@Override
-	public IRepositoryDataSource getRepositoryDataSource() {
-		return GitLabRepositoryDataSource.getGitLabRepositoryDataSource();
+	public RepositoryDataSource getRepositoryDataSource() {
+		return RepositoryDataSourceUsingGitlabAPI.getGitLabRepositoryDataSource();
 	}
 
 }

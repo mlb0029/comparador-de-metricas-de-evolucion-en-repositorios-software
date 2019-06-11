@@ -9,8 +9,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import app.RepositoryDataSourceService;
-import repositorydatasource.IRepositoryDataSource;
-import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+import repositorydatasource.RepositoryDataSource;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 public class CloseConnectionDialog extends Dialog {
@@ -21,7 +21,7 @@ public class CloseConnectionDialog extends Dialog {
 	
 	private ConnectionDialog connectionFormDialog = new ConnectionDialog();
 	
-	private IRepositoryDataSource rds = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+	private RepositoryDataSource rds = RepositoryDataSourceService.getInstance();
 	
 	private Button closeConnectionButton = new Button();
 	

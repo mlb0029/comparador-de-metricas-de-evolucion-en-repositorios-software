@@ -16,6 +16,7 @@ import com.vaadin.flow.component.tabs.Tab;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
+import app.RepositoriesCollectionServiceException;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
@@ -69,13 +70,13 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 			try {
 			Repository repository = createRepository();
 				if (repository != null) {
-					if (!RepositoriesCollectionService.getInstance().getRepositories().contains(repository)) {
 						MetricsService.getMetricsService().calculateMetricsRepository(repository);
-						RepositoriesCollectionService.getInstance().addRepository(repository);
-						listeners.forEach(l -> l.onAddedSuccessful(RepositoryDataSourceService.getInstance().getRepositoryDataSource().getConnectionType()));
-					} else {
-						result.setText("The repository already exists");
-					}
+						try {
+							RepositoriesCollectionService.getInstance().addRepository(repository);
+						} catch (RepositoriesCollectionServiceException e1) {
+							result.setText("The repository already exists");
+						}
+						listeners.forEach(l -> l.onAddedSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
 				}
 			} catch (RepositoryDataSourceException e1) {
 				result.setText(e1.getMessage());

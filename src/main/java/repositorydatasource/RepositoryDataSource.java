@@ -15,14 +15,7 @@ import repositorydatasource.exceptions.RepositoryDataSourceException;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public interface IRepositoryDataSource extends Serializable{
-	
-	public interface IRepositoryDataSourceListener {
-		void onConnectionChangeEvent(EnumConnectionType newConnectionType);
-	}
-	
-	void addConnectionChangeEventListener(IRepositoryDataSourceListener listener);
-	void removeConnectionChangeEventListener(IRepositoryDataSourceListener listener);
+public interface RepositoryDataSource extends Serializable{
 	
 	/**
 	 * Type of connection.

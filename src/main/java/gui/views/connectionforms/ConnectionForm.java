@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.Tab;
 
-import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

@@ -3,8 +3,8 @@ package gui.views.connectionforms;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 import app.RepositoryDataSourceService;
-import repositorydatasource.IRepositoryDataSource;
-import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
+import repositorydatasource.RepositoryDataSource;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -50,9 +50,9 @@ public class ConnectionFormWithoutConn extends ConnectionFormTemplate {
 
 	@Override
 	protected void connect() throws RepositoryDataSourceException {
-		IRepositoryDataSource rds = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+		RepositoryDataSource rds = RepositoryDataSourceService.getInstance();
 		if (!rds.getConnectionType().equals(EnumConnectionType.NOT_CONNECTED))
-			RepositoryDataSourceService.getInstance().getRepositoryDataSource().disconnect();
+			rds.disconnect();
 	}
 
 }

@@ -67,7 +67,7 @@ public abstract class ConnectionFormTemplate implements ConnectionForm{
 			if (isValid()) {
 				try {
 					connect();
-					listeners.forEach(l -> l.onConnectionSuccessful(RepositoryDataSourceService.getInstance().getRepositoryDataSource().getConnectionType()));
+					listeners.forEach(l -> l.onConnectionSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
 				} catch (RepositoryDataSourceException e1) {
 					result.setText(e1.getMessage());
 				}

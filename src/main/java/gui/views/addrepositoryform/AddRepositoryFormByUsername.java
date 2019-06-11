@@ -11,7 +11,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import app.RepositoriesCollectionService;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
-import repositorydatasource.IRepositoryDataSource;
+import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
@@ -87,7 +87,7 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 
 	private void updateUserRepositories() {
 		try {
-			IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
+			RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
 			RepositoriesCollectionService repositoriesService = RepositoriesCollectionService.getInstance();
 			if (!usernameTextField.isEmpty()) {
 				Collection<Repository> repositories = new ArrayList<Repository>();
