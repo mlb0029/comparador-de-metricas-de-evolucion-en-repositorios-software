@@ -132,6 +132,19 @@ public interface IRepositoryDataSource extends Serializable{
 	Collection<Repository> getAllUserRepositories(String username) throws RepositoryDataSourceException;
 	
 	/**
+	 * It obtains the public repositories of the group whose group name is passed by parameter 
+	 * </br>or the public and private repositories if possible.
+	 * <p>
+	 * Throw an exception if the group doesn't exist or problems when getting information of the group.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param groupName
+	 * @return
+	 * @throws RepositoryDataSourceException
+	 */
+	Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException;
+	
+	/**
 	 * Obtain a repository accessible by the logged in user 
 	 * or throw an exception if the repository is not accessible.
 	 * 

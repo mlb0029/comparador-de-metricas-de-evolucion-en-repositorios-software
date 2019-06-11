@@ -20,7 +20,7 @@ import datamodel.Repository;
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  */
-public class RepositoriesService implements Serializable {
+public class RepositoriesCollectionService implements Serializable {
 	
 	/**
 	 * Serial.
@@ -34,7 +34,7 @@ public class RepositoriesService implements Serializable {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private static RepositoriesService instance;
+	private static RepositoriesCollectionService instance;
 	
 	/**
 	 * Set of repositories.
@@ -43,7 +43,7 @@ public class RepositoriesService implements Serializable {
 	 */
 	private RepositoriesCollection repositoriesCollection;
 	
-	private RepositoriesService() {
+	private RepositoriesCollectionService() {
 		repositoriesCollection = new RepositoriesCollection();
 	}
 
@@ -53,8 +53,8 @@ public class RepositoriesService implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @return the instance
 	 */
-	public static RepositoriesService getInstance() {
-		if (instance == null) instance = new RepositoriesService();
+	public static RepositoriesCollectionService getInstance() {
+		if (instance == null) instance = new RepositoriesCollectionService();
 		return instance;
 	}
 

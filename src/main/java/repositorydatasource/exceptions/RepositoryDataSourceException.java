@@ -66,6 +66,14 @@ public class RepositoryDataSourceException extends Exception {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public static final int USER_NOT_FOUND = 7;
+	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	public static final int GROUP_NOT_FOUND = 8;
+	
 	/**
 	 * Description.
 	 * 
@@ -128,6 +136,9 @@ public class RepositoryDataSourceException extends Exception {
 			break;
 		case USER_NOT_FOUND:
 			message = "User not found";
+			break;
+		case GROUP_NOT_FOUND:
+			message = "Group not found";
 			break;
 		default:
 			message = "Unknown RepositoryDataSource error";

@@ -1,4 +1,4 @@
-package gui.views.addrepositoriyform;
+package gui.views.addrepositoryform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,14 +17,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import app.MetricsService;
-import app.RepositoriesService;
+import app.RepositoriesCollectionService;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import repositorydatasource.IRepositoryDataSource;
 import repositorydatasource.IRepositoryDataSource.EnumConnectionType;
 import repositorydatasource.exceptions.RepositoryDataSourceException;
 
-public class AddNewRepositoryForm extends Dialog {
+public class OldAddNewRepositoryForm extends Dialog {
 
 	/**
 	 * Serial.
@@ -40,7 +40,7 @@ public class AddNewRepositoryForm extends Dialog {
 
 	private Button addButton;
 
-	public AddNewRepositoryForm() {
+	public OldAddNewRepositoryForm() {
 		try {		
 			/* Repository Form */
 			usernameTextField = new TextField();
@@ -84,7 +84,7 @@ public class AddNewRepositoryForm extends Dialog {
 	private void addButton_Click(ClickEvent<Button> event) {
 		if (repositoryComboBox.getOptionalValue().isPresent()) {
 			Repository repositoryToAdd = repositoryComboBox.getValue();
-			if (RepositoriesService.getInstance().addRepository(repositoryToAdd)) {
+			if (RepositoriesCollectionService.getInstance().addRepository(repositoryToAdd)) {
 				try {
 					MetricsService.getMetricsService().calculateMetricsRepository(repositoryToAdd);
 					updateUserRepositories();
@@ -119,7 +119,7 @@ public class AddNewRepositoryForm extends Dialog {
 	private void updateUserRepositories() {
 		try {
 			IRepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance().getRepositoryDataSource();
-			RepositoriesService repositoriesService = RepositoriesService.getInstance();
+			RepositoriesCollectionService repositoriesService = RepositoriesCollectionService.getInstance();
 			if (!usernameTextField.isEmpty()) {
 				Collection<Repository> repositories = new ArrayList<Repository>();
 				repositories = repositoryDataSource.getAllUserRepositories(usernameTextField.getValue())

@@ -248,6 +248,27 @@ public class GitLabRepositoryDataSource implements IRepositoryDataSource {
 		}
 	}
 
+	@Override
+	public Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException {
+		Collection<Repository> repositories;
+		try {
+			if(! connectionType.equals(EnumConnectionType.NOT_CONNECTED)){
+				repositories = gitLabApi.getGroupApi()
+						.getOptionalGroup(groupName)
+						.orElseThrow(() -> new RepositoryDataSourceException(RepositoryDataSourceException.GROUP_NOT_FOUND))
+						.getProjects()
+						.stream()
+						.map(p -> new Repository(p.getWebUrl(), p.getName(), p.getId()))
+						.collect(Collectors.toList());
+			} else {
+				throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
+			}
+			return repositories;
+		} catch (RepositoryDataSourceException e) {
+			throw e;
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#getRepository(java.lang.String)
 	 */

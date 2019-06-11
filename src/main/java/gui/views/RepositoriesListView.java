@@ -28,9 +28,9 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
 import app.MetricsService;
-import app.RepositoriesService;
+import app.RepositoriesCollectionService;
 import datamodel.Repository;
-import gui.views.addrepositoriyform.AddNewRepositoryForm;
+import gui.views.addrepositoryform.AddRepositoryDialog;
 import metricsengine.IMetric;
 import metricsengine.Measure;
 import metricsengine.MetricsResults;
@@ -60,7 +60,7 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
-	private AddNewRepositoryForm addNewRepositoryFormDialog;
+	private AddRepositoryDialog addRepositoryFormDialog;
 	private TextField searchTextField;
 	private Button addNewRepositoryButton;
 	private Button saveButton;
@@ -74,7 +74,7 @@ public class RepositoriesListView extends VerticalLayout {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public RepositoriesListView() {
-		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesService.getInstance().getRepositories());
+		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
 		
 		searchTextField = new TextField();
 		searchTextField.setPlaceholder("Search");
@@ -83,12 +83,11 @@ public class RepositoriesListView extends VerticalLayout {
 		searchTextField.setValueChangeMode(ValueChangeMode.EAGER);
 		searchTextField.addValueChangeListener(e -> filter());
 		
-		addNewRepositoryFormDialog = new AddNewRepositoryForm();
-		addNewRepositoryFormDialog.onAddRepositoryListener(e -> updateGrid());
+		addRepositoryFormDialog = new AddRepositoryDialog();
 		
 		addNewRepositoryButton = new Button("Repository", new Icon(VaadinIcon.PLUS));
 		addNewRepositoryButton.setWidth("10%");
-		addNewRepositoryButton.addClickListener(e -> addNewRepositoryFormDialog.open());
+		addNewRepositoryButton.addClickListener(e -> addRepositoryFormDialog.open());
 		
 		saveButton = new Button(new Icon(VaadinIcon.CLOUD_DOWNLOAD_O));
 		saveButton.setWidth("5%");

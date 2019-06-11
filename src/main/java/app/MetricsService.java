@@ -88,7 +88,7 @@ public class MetricsService {
     }
     
     public void calculateMetricsAllRepositories(MetricProfile metricProfile) throws RepositoryDataSourceException {
-    	for (Repository repository : RepositoriesService.getInstance().getRepositories()) {
+    	for (Repository repository : RepositoriesCollectionService.getInstance().getRepositories()) {
 			calculateMetricsRepository(repository, metricProfile);
 		}
     }
