@@ -16,6 +16,14 @@ import gui.views.connectionforms.ConnectionInfoComponent;
 public class MainAppView extends VerticalLayout {
 
 	private static final long serialVersionUID = -8176239269004450857L;
+	
+	/**
+	 * To know if it is the start of the application or a page refresh. 
+	 * Since a page refresh creates a new instance of the components.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static boolean IS_INITIALIZED = false;
 
 	private Div header = new Div();
 	
@@ -43,7 +51,9 @@ public class MainAppView extends VerticalLayout {
 			setUpContent();
 			setUpFooter();
 			add(header, content, footer);
-			connectionFormDialog.open();
+			if (!IS_INITIALIZED)
+				connectionFormDialog.open();
+			MainAppView.IS_INITIALIZED = true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +71,6 @@ public class MainAppView extends VerticalLayout {
 		connectionButton.addClickListener(e -> closeConnectionFormDialog.open());
 		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButton);
 		header.getElement().appendChild(headerHLayout.getElement());
-		
 	}
 
 	private void setUpContent() {
