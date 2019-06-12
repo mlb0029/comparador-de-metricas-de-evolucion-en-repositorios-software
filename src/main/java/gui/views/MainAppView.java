@@ -4,10 +4,12 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import exceptions.GUIException;
 import gui.views.connectionforms.CloseConnectionDialog;
 import gui.views.connectionforms.ConnectionDialog;
 import gui.views.connectionforms.ConnectionInfoComponent;
@@ -45,6 +47,8 @@ public class MainAppView extends VerticalLayout {
 
 	private ConnectionDialog connectionFormDialog = new ConnectionDialog();
 
+	private RepositoriesListView repositoriesListView = new RepositoriesListView();
+	
 	public MainAppView() {
 		try {
 			setUpHeader();
@@ -55,8 +59,10 @@ public class MainAppView extends VerticalLayout {
 				connectionFormDialog.open();
 			MainAppView.IS_INITIALIZED = true;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Exception guiEx = new GUIException(GUIException.MAIN_INITIALIZATION_ERROR, e);// To log, don't throw
+			getElement().removeAllChildren();
+			getElement().appendChild(new Span("Error occurred, contact the administrator."
+					+ " Error Message: " + guiEx.getMessage()).getElement());
 		}
 	}
 	
@@ -76,7 +82,7 @@ public class MainAppView extends VerticalLayout {
 	private void setUpContent() {
 		content.setHeight("80%");
 		content.setWidthFull();
-		content.getElement().appendChild(new RepositoriesListView().getElement());
+		content.getElement().appendChild(repositoriesListView.getElement());
 	}
 
 	private void setUpFooter() {
@@ -88,5 +94,4 @@ public class MainAppView extends VerticalLayout {
 		footerHLayout.setWidthFull();
 		footer.getElement().appendChild(footerHLayout.getElement());
 	}
-	
 }

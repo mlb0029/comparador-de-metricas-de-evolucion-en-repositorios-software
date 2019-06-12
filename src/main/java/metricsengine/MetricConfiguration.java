@@ -1,6 +1,7 @@
 package metricsengine;
 
 import datamodel.Repository;
+import exceptions.MetricsEngineException;
 import metricsengine.values.IValue;
 
 /**

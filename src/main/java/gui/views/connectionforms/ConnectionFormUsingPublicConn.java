@@ -3,7 +3,7 @@ package gui.views.connectionforms;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 import app.RepositoryDataSourceService;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

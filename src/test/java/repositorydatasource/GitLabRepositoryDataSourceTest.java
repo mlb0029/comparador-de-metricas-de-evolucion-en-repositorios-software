@@ -18,8 +18,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import datamodel.Repository;
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * Test for GitLabRepositoryDataSource.

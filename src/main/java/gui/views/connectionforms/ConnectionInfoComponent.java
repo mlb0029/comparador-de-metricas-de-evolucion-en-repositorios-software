@@ -8,8 +8,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import app.RepositoryDataSourceService;
 import datamodel.User;
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

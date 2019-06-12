@@ -9,9 +9,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import app.RepositoryDataSourceService;
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 public class CloseConnectionDialog extends Dialog {
 

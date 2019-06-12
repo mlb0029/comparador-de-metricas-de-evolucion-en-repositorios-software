@@ -3,10 +3,14 @@ package app;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+
+import javax.ws.rs.NotSupportedException;
 
 import app.listeners.Listener;
 import app.listeners.RepositoriesCollectionUpdatedEvent;
 import datamodel.Repository;
+import exceptions.RepositoriesCollectionServiceException;
 
 /**
  * It contains a set of repositories.
@@ -36,7 +40,7 @@ public class RepositoriesCollectionService implements Serializable {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private HashSet<Repository> repositoriesCollection = new HashSet<>();
+	private RepositoriesCollection repositoriesCollection = new RepositoriesCollection();
 	
 	private HashSet<Listener<RepositoriesCollectionUpdatedEvent>> repositoriesCollectionUpdatedListeners = new HashSet<>();
 	
@@ -48,17 +52,17 @@ public class RepositoriesCollectionService implements Serializable {
 	}
 
 	public Collection<Repository> getRepositories() {
-		return new HashSet<Repository>(repositoriesCollection);
+		return repositoriesCollection;
 	}
 	
 	public void addRepository(Repository repository) throws RepositoriesCollectionServiceException {
-		if (!repositoriesCollection.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
+		if (!repositoriesCollection.repositories.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
 		notifyRepositoriesCollectionUpdatedListeners(repository, true);
 	}
 	
 	
 	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
-		if (!repositoriesCollection.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
+		if (!repositoriesCollection.repositories.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
 		notifyRepositoriesCollectionUpdatedListeners(repository, false);
 	}
 	
@@ -103,4 +107,88 @@ public class RepositoriesCollectionService implements Serializable {
 	private void notifyRepositoriesCollectionUpdatedListeners(Repository repository, boolean isAdded) {
 		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent(repository, isAdded)));
 	}
+	
+	//Necesario para el ListDataProvider<Repository> repositoriesDataProvider de RepositoriesListView
+	private class RepositoriesCollection implements Collection<Repository>, Serializable{
+
+		/**
+		 * Description.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		private static final long serialVersionUID = -1632073948461817997L;
+		
+		HashSet<Repository> repositories;
+		
+		public RepositoriesCollection() {
+			repositories = new HashSet<Repository>();
+		}
+		
+		@Override
+		public int size() {
+			return repositories.size();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return repositories.isEmpty();
+		}
+
+		@Override
+		public boolean contains(Object o) {
+			return repositories.contains(o);
+		}
+
+		@Override
+		public Iterator<Repository> iterator() {
+			return repositories.iterator();
+		}
+
+		@Override
+		public Object[] toArray() {
+			return repositories.toArray();
+		}
+
+		@Override
+		public <T> T[] toArray(T[] a) {
+			return repositories.toArray(a);
+		}
+
+		@Override
+		public boolean add(Repository e) {
+			throw new NotSupportedException();
+		}
+
+		@Override
+		public boolean remove(Object o) {
+			throw new NotSupportedException();
+		}
+
+		@Override
+		public boolean containsAll(Collection<?> c) {
+			return repositories.containsAll(c);
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends Repository> c) {
+			throw new NotSupportedException();
+		}
+
+		@Override
+		public boolean removeAll(Collection<?> c) {
+			throw new NotSupportedException();
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> c) {
+			throw new NotSupportedException();
+		}
+
+		@Override
+		public void clear() {
+			throw new NotSupportedException();
+		}
+		
+	}
+
 }

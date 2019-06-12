@@ -16,10 +16,10 @@ import com.vaadin.flow.component.tabs.Tab;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
-import app.RepositoriesCollectionServiceException;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoriesCollectionServiceException;
+import exceptions.RepositoryDataSourceException;
 
 public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 	
@@ -66,20 +66,18 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 
 		this.button.setIcon(new Icon(VaadinIcon.PLUS));
 		this.button.setText("Add");
-		this.button.addClickListener(e -> {
+		this.button.addClickListener(event -> {
 			try {
 			Repository repository = createRepository();
 				if (repository != null) {
-						MetricsService.getMetricsService().calculateMetricsRepository(repository);
-						try {
-							RepositoriesCollectionService.getInstance().addRepository(repository);
-						} catch (RepositoriesCollectionServiceException e1) {
-							result.setText("The repository already exists");
-						}
-						listeners.forEach(l -> l.onAddedSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
+					MetricsService.getMetricsService().calculateMetricsRepository(repository);
+					RepositoriesCollectionService.getInstance().addRepository(repository);
+					listeners.forEach(l -> l.onAddedSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
 				}
-			} catch (RepositoryDataSourceException e1) {
-				result.setText(e1.getMessage());
+			} catch (RepositoryDataSourceException ex) {
+				result.setText(ex.getMessage());
+			} catch (RepositoriesCollectionServiceException ex) {
+				result.setText(ex.getMessage());
 			}
 		});
 		this.form.add(this.button);

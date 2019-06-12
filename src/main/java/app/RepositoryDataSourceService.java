@@ -12,10 +12,10 @@ import app.listeners.ConnectionChangedEventListener;
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
 import datamodel.User;
+import exceptions.RepositoryDataSourceException;
 import repositorydatasource.RepositoyDataSourceFactoryGitlab;
 import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.RepositoryDataSourceFactory;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

@@ -15,7 +15,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
 
 import app.RepositoryDataSourceService;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoryDataSourceException;
 
 public abstract class ConnectionFormTemplate implements ConnectionForm{
 	

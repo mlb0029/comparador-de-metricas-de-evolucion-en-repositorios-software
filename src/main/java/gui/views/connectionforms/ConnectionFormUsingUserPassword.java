@@ -6,7 +6,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 
 import app.RepositoryDataSourceService;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

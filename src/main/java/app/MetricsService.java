@@ -5,6 +5,8 @@ import java.util.Map;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
+import exceptions.MetricsServiceException;
+import exceptions.RepositoryDataSourceException;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricProfile;
 import metricsengine.MetricsResults;
@@ -17,7 +19,6 @@ import metricsengine.metrics.MetricPeakChange;
 import metricsengine.metrics.MetricPercentageClosedIssues;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
 import repositorydatasource.RepositoryDataSource;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029

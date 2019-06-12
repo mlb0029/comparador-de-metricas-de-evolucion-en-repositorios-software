@@ -30,6 +30,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import app.MetricsService;
 import app.RepositoriesCollectionService;
 import datamodel.Repository;
+import exceptions.RepositoriesCollectionServiceException;
+import exceptions.RepositoryDataSourceException;
 import gui.views.addrepositoryform.AddRepositoryDialog;
 import metricsengine.IMetric;
 import metricsengine.Measure;
@@ -46,7 +48,6 @@ import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 import metricsengine.values.ValueUncalculated;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
 
 /**
  * View that allows you to work with a list of repositories.
@@ -75,6 +76,7 @@ public class RepositoriesListView extends VerticalLayout {
 	 */
 	public RepositoriesListView() {
 		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
+		RepositoriesCollectionService.getInstance().addRepositoriesCollectionUpdatedListener(event -> updateGrid());
 		
 		searchTextField = new TextField();
 		searchTextField.setPlaceholder("Search");
@@ -200,8 +202,10 @@ public class RepositoriesListView extends VerticalLayout {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.TRASH));
 		button.addClickListener( event -> {
-			repositoriesDataProvider.getItems().remove(repository);
-			updateGrid();
+			try {
+				RepositoriesCollectionService.getInstance().removeRepository(repository);
+				updateGrid();
+			} catch (RepositoriesCollectionServiceException e) {/*TODO*/}
 		});
 		return button;
 	}

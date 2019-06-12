@@ -6,7 +6,7 @@ import java.util.Collection;
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
 import datamodel.User;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoryDataSourceException;
 
 /**
  * It defines the functions that will allow 

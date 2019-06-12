@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
 import datamodel.User;
-import repositorydatasource.exceptions.RepositoryDataSourceException;
+import exceptions.RepositoryDataSourceException;
 
 /**
  * Implements IRepositoryDataSource that obtains the data from GitLab
@@ -45,7 +45,7 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 	/**
 	 * Logger.
 	 */
-	private static Logger logger = LoggerFactory.getLogger(RepositoryDataSourceUsingGitlabAPI.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryDataSourceUsingGitlabAPI.class);
 
 	/**
 	 * Single instance of the class.
@@ -99,7 +99,7 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 			gitLabApi = new GitLabApi(RepositoryDataSourceUsingGitlabAPI.HOST_URL, "");
 			currentUser = null;
 			connectionType = EnumConnectionType.CONNECTED;
-			logger.info("Established connection with GitLab");
+			LOGGER.info("Established connection with GitLab");
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
 		}
@@ -116,7 +116,7 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 				gitLabApi = GitLabApi.oauth2Login(RepositoryDataSourceUsingGitlabAPI.HOST_URL, username, password.toCharArray());
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
-				logger.info("Login to GitLab");
+				LOGGER.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
 			}
@@ -138,7 +138,7 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 				gitLabApi = new GitLabApi(RepositoryDataSourceUsingGitlabAPI.HOST_URL, token);
 				currentUser = getCurrentUser(gitLabApi.getUserApi().getCurrentUser());
 				connectionType = EnumConnectionType.LOGGED;
-				logger.info("Login to GitLab");
+				LOGGER.info("Login to GitLab");
 			} else {
 				throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
 			}
