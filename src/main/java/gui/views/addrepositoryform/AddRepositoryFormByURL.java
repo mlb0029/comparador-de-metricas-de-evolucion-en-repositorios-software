@@ -64,7 +64,7 @@ public class AddRepositoryFormByURL extends AddRepositoryFormTemplate {
 	 * @see gui.views.addrepositoryform.AddRepositoryFormTemplate#createRepository()
 	 */
 	@Override
-	protected Repository createRepository() throws RepositoryDataSourceException {
+	protected Repository getRepositoryFromForms() throws RepositoryDataSourceException {
 		return RepositoryDataSourceService.getInstance().getRepository(urlTextField.getOptionalValue().orElse(""));
 	}
 

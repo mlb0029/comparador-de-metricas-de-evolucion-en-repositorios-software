@@ -131,6 +131,6 @@ public class RepositoryDataSourceService implements Serializable, RepositoryData
 	@Override
 	public RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository)
 			throws RepositoryDataSourceException {
-		return this.getRepositoryInternalMetrics(repository);
+		return this.repositoryDataSource.getRepositoryInternalMetrics(repository);
 	}
 }

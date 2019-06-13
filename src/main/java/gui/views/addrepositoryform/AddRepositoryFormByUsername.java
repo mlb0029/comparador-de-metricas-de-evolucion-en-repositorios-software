@@ -81,7 +81,7 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 	 * @see gui.views.addrepositoryform.AddRepositoryFormTemplate#connect()
 	 */
 	@Override
-	protected Repository createRepository() throws RepositoryDataSourceException {
+	protected Repository getRepositoryFromForms() throws RepositoryDataSourceException {
 		return repositoryComboBox.getOptionalValue().orElseThrow( () -> new RepositoryDataSourceException("No repository selected"));
 	}
 

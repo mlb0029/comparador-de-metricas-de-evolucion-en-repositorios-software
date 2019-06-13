@@ -1,5 +1,6 @@
 package app;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,14 @@ import repositorydatasource.RepositoryDataSource;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricsService {
+public class MetricsService implements Serializable {
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 6475817245020418420L;
 
 	private MetricProfile defaultMetricProfile;
 	

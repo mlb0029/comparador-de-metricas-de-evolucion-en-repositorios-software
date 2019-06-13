@@ -16,7 +16,6 @@ import com.vaadin.flow.component.tabs.Tab;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
-import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
@@ -66,26 +65,28 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 
 		this.button.setIcon(new Icon(VaadinIcon.PLUS));
 		this.button.setText("Add");
-		this.button.addClickListener(event -> {
-			try {
-			Repository repository = createRepository();
-				if (repository != null) {
-					MetricsService.getMetricsService().calculateMetricsRepository(repository);
-					RepositoriesCollectionService.getInstance().addRepository(repository);
-					listeners.forEach(l -> l.onAddedSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
-				}
-			} catch (RepositoryDataSourceException ex) {
-				result.setText(ex.getMessage());
-			} catch (RepositoriesCollectionServiceException ex) {
-				result.setText(ex.getMessage());
-			}
-		});
+		this.button.addClickListener(event -> addRepository());
 		this.form.add(this.button);
 		
 		this.result.setWidthFull();
 		this.form.add(this.result);
 		
 		this.page.add(form);
+	}
+
+	private void addRepository() {
+		try {
+			Repository repository = getRepositoryFromForms();
+			if (repository != null) {
+				MetricsService.getMetricsService().calculateMetricsRepository(repository);
+				RepositoriesCollectionService.getInstance().addRepository(repository);
+				listeners.forEach(l -> l.onAddedSuccessful(repository));
+			}
+		} catch (RepositoryDataSourceException ex) {
+			result.setText(ex.getMessage());
+		} catch (RepositoriesCollectionServiceException ex) {
+			result.setText(ex.getMessage());
+		}
 	}
 	
 	/**
@@ -150,7 +151,7 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 
 	protected abstract void addFormElements();
 
-	protected abstract Repository createRepository() throws RepositoryDataSourceException;
+	protected abstract Repository getRepositoryFromForms() throws RepositoryDataSourceException;
 
 	/* (non-Javadoc)
 	 * @see gui.views.connectionForms.IConnForm#addConnectionSuccessfulListener(gui.views.connectionForms.IConnForm.IConnectionSuccessfulListener)
