@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+.appName {
+	font-size: 3em;
+	vertical-align: middle;
+	padding-top: 18px;
+	margin-left: 40px;
+}

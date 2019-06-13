@@ -1,6 +1,7 @@
 package gui.views;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
@@ -14,6 +15,7 @@ import gui.views.connectionforms.CloseConnectionDialog;
 import gui.views.connectionforms.ConnectionDialog;
 import gui.views.connectionforms.ConnectionInfoComponent;
 
+@StyleSheet("site.css")
 @Route("")
 public class MainAppView extends VerticalLayout {
 
@@ -70,12 +72,20 @@ public class MainAppView extends VerticalLayout {
 		header.setHeight("15%");
 		header.setWidthFull();
 		
-		brandingImage.setHeight("100px");
-		brandingImage.setWidth("200px");
+		brandingImage.setHeight("6em");
+		brandingImage.setWidth("15%");
+		
+		appNameLabel.addClassName("appName");
+		appNameLabel.setWidth("45%");
+		
 		connectionButton.setIcon(connectionInfoComponent);
 		connectionButton.setMinHeight("60px");
 		connectionButton.addClickListener(e -> closeConnectionFormDialog.open());
-		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButton);
+		connectionButton.setId("connectionInfoButton");
+		VerticalLayout connectionButtonLayout = new VerticalLayout(connectionButton);
+		connectionButtonLayout.setAlignItems(Alignment.END);
+		connectionButtonLayout.setWidth("40%");
+		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButtonLayout);
 		header.getElement().appendChild(headerHLayout.getElement());
 	}
 
