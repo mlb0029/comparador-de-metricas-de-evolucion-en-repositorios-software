@@ -32,10 +32,6 @@ public class AddRepositoryDialog extends Dialog {
 		for (AddRepositoryForm form : addRepositoryForms) {
 			tabs.add(form.getTab());
 			formsPages.add(form.getPage());
-			form.addAddedSuccessfulListener(c -> {
-				addRepositoryForms.forEach(connForm -> connForm.clearFields());
-				close();
-			});
 		}
 
 		tabs.addSelectedChangeListener(event -> {
@@ -45,6 +41,7 @@ public class AddRepositoryDialog extends Dialog {
 				else {
 					form.getPage().setVisible(false);
 					form.clearFields();
+					form.clearMessage();
 				}
 			}
 		});
@@ -57,14 +54,20 @@ public class AddRepositoryDialog extends Dialog {
 			}
 		});
 		
+		addDialogCloseActionListener(event -> {
+			addRepositoryForms.forEach(f -> {
+				f.clearFields();
+				f.clearMessage();
+				});
+			close();
+		});
+		
 		HorizontalLayout connFormsHLayout = new HorizontalLayout(tabs, formsPages);
 		connFormsHLayout.setSizeFull();
 		add(connFormsHLayout);
 
 		setWidth("600px");
 		setHeight("400px");
-		setCloseOnEsc(true);
-		setCloseOnOutsideClick(true);
 	}
 
 	private void createConnectionForms() {

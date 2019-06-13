@@ -18,6 +18,7 @@ public interface AddRepositoryForm extends Serializable{
 	}
 	
 	void clearFields();
+	void clearMessage();
 	Tab getTab();
 	Div getPage();
 	

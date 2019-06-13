@@ -3,7 +3,7 @@ package exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ApplicationException extends Exception {
+public class ApplicationException extends Exception {
 	
 	/**
 	 * Serial version.
@@ -61,7 +61,6 @@ public abstract class ApplicationException extends Exception {
 	 */
 	public ApplicationException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -79,7 +78,9 @@ public abstract class ApplicationException extends Exception {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	protected abstract void generateMessage();
+	protected void generateMessage() {
+		message = "Unknown exception";
+	};
 
 	/**
 	 * It allows to establish a personalized message.

@@ -17,6 +17,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import app.MetricsService;
 import app.RepositoriesCollectionService;
 import datamodel.Repository;
+import exceptions.ApplicationException;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
 
@@ -77,15 +78,17 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 	private void addRepository() {
 		try {
 			Repository repository = getRepositoryFromForms();
-			if (repository != null) {
-				MetricsService.getMetricsService().calculateMetricsRepository(repository);
-				RepositoriesCollectionService.getInstance().addRepository(repository);
-				listeners.forEach(l -> l.onAddedSuccessful(repository));
-			}
+			RepositoriesCollectionService.getInstance().addRepository(repository);
+			MetricsService.getMetricsService().calculateMetricsRepository(repository);
+			listeners.forEach(l -> l.onAddedSuccessful(repository));
+			result.setText("Project added correctly");
 		} catch (RepositoryDataSourceException ex) {
 			result.setText(ex.getMessage());
 		} catch (RepositoriesCollectionServiceException ex) {
 			result.setText(ex.getMessage());
+		} catch (Exception ex) {
+			ApplicationException exceptipn = new ApplicationException("Unknown error", ex);
+			result.setText(exceptipn.getMessage());
 		}
 	}
 	
@@ -167,5 +170,13 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 	@Override
 	public void removeAddedSuccessfulListener(AddedSuccessfulListener listener) {
 		listeners.remove(listener);
+	}
+
+	/* (non-Javadoc)
+	 * @see gui.views.addrepositoryform.AddRepositoryForm#clearResult()
+	 */
+	@Override
+	public void clearMessage() {
+		this.result.setText("");
 	}
 }

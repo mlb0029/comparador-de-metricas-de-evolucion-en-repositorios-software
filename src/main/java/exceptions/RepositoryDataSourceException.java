@@ -94,7 +94,7 @@ public class RepositoryDataSourceException extends ApplicationException {
 			message = "Error: There is no connection";
 			break;
 		case REPOSITORY_NOT_FOUND:
-			message = "Repository not found: It doesn't exist or is inaccessible due to the connection level";
+			message = "Repository not found: It doesn't exists or it's inaccessible due to the connection level";
 			break;
 		case USER_NOT_FOUND:
 			message = "User not found";

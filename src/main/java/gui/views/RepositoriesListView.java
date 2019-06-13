@@ -86,6 +86,8 @@ public class RepositoriesListView extends VerticalLayout {
 		searchTextField.addValueChangeListener(e -> filter());
 		
 		addRepositoryFormDialog = new AddRepositoryDialog();
+		addRepositoryFormDialog.setCloseOnEsc(true);
+		addRepositoryFormDialog.setCloseOnOutsideClick(true);
 		
 		addNewRepositoryButton = new Button("Repository", new Icon(VaadinIcon.PLUS));
 		addNewRepositoryButton.setWidth("10%");

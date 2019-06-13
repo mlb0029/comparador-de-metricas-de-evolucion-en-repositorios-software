@@ -39,6 +39,7 @@ public class AddRepositoryFormByURL extends AddRepositoryFormTemplate {
 				TAB_NAME, 
 				DESCRIPTION 
 		);
+		addAddedSuccessfulListener(x -> clearFields());
 	}
 
 	/* (non-Javadoc)
@@ -67,5 +68,4 @@ public class AddRepositoryFormByURL extends AddRepositoryFormTemplate {
 	protected Repository getRepositoryFromForms() throws RepositoryDataSourceException {
 		return RepositoryDataSourceService.getInstance().getRepository(urlTextField.getOptionalValue().orElse(""));
 	}
-
 }

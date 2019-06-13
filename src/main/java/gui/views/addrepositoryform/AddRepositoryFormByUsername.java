@@ -44,6 +44,10 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 				TAB_NAME, 
 				DESCRIPTION 
 		);
+		addAddedSuccessfulListener(x -> {
+			repositoryComboBox.clear();
+			updateUserRepositories();
+		});
 	}
 
 	/* (non-Javadoc)
@@ -62,7 +66,7 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 	protected void addFormElements() {
 		usernameTextField = new TextField();
 		usernameTextField.setWidth("50%");
-		usernameTextField.setPlaceholder("Username");
+		usernameTextField.setPlaceholder("User ID or username");
 		usernameTextField.setClearButtonVisible(true);
 		usernameTextField.addValueChangeListener(event -> updateUserRepositories());
 		
@@ -97,6 +101,7 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 						.sorted(Repository.getComparatorByName())
 						.collect(Collectors.toList());
 				repositoryComboBox.setItems(repositories);
+				getResult().setText("User found");
 			} else {
 				repositoryComboBox.setItems();
 				repositoryComboBox.clear();

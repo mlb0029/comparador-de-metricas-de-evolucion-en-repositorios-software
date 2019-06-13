@@ -220,14 +220,14 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 	 * @see repositorydatasource.IRepositoryDataSource#getAllUserRepositories(java.lang.String)
 	 */
 	@Override
-	public Collection<Repository> getAllUserRepositories(String username) throws RepositoryDataSourceException {
+	public Collection<Repository> getAllUserRepositories(String userIdOrUsername) throws RepositoryDataSourceException {
 		Collection<Repository> repositories;
 		try {
-			if (currentUser != null && currentUser.getUsername().equals(username)) {
+			if (currentUser != null && currentUser.getUsername().equals(userIdOrUsername)) {
 				repositories = getCurrentUserRepositories();
 			} else if(! connectionType.equals(EnumConnectionType.NOT_CONNECTED)){
 				repositories = gitLabApi.getProjectApi()
-						.getUserProjectsStream(username, new ProjectFilter())
+						.getUserProjectsStream(userIdOrUsername, new ProjectFilter())
 							.map(p -> new Repository(p.getWebUrl(), p.getName(), p.getId()))
 							.collect(Collectors.toList());
 			} else {
@@ -242,12 +242,12 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 	}
 
 	@Override
-	public Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException {
+	public Collection<Repository> getAllGroupRepositories(String groupIdOrPath) throws RepositoryDataSourceException {
 		Collection<Repository> repositories;
 		try {
 			if(! connectionType.equals(EnumConnectionType.NOT_CONNECTED)){
 				repositories = gitLabApi.getGroupApi()
-						.getOptionalGroup(groupName)
+						.getOptionalGroup(groupIdOrPath)
 						.orElseThrow(() -> new RepositoryDataSourceException(RepositoryDataSourceException.GROUP_NOT_FOUND))
 						.getProjects()
 						.stream()

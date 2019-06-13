@@ -49,6 +49,10 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 				TAB_NAME, 
 				DESCRIPTION 
 		);
+		addAddedSuccessfulListener(x -> {
+			repositoryComboBox.clear();
+			updateGroupRepositories();
+		});
 	}
 
 	/* (non-Javadoc)
@@ -70,7 +74,7 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 		
 		groupNameTextField = new TextField();
 		groupNameTextField.setWidth("50%");
-		groupNameTextField.setPlaceholder("Username");
+		groupNameTextField.setPlaceholder("Group ID or groupname");
 		groupNameTextField.setClearButtonVisible(true);
 		groupNameTextField.addValueChangeListener(event -> updateGroupRepositories());
 		
@@ -105,13 +109,14 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 						.sorted(Repository.getComparatorByName())
 						.collect(Collectors.toList());
 				repositoryComboBox.setItems(repositories);
+				getResult().setText("Group found");
 			} else {
 				repositoryComboBox.setItems();
 				repositoryComboBox.clear();
 			}
 		} catch (Exception e) {
 			repositoryComboBox.setItems();
+			this.getResult().setText(e.getMessage());
 		}
 	}
-
 }
