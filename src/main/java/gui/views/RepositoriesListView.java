@@ -29,6 +29,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
+import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
@@ -48,6 +49,7 @@ import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 import metricsengine.values.ValueUncalculated;
+import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
 /**
  * View that allows you to work with a list of repositories.
@@ -180,11 +182,28 @@ public class RepositoriesListView extends VerticalLayout {
 		timeConstraintsHeader.setSizeFull();
 		metricsClassification.join(ti1MetricColumn, tc1MetricColumn, tc2MetricColumn, tc3MetricColumn, c1MetricColumn).setComponent(timeConstraintsHeader);
 		
-		
 		updateGrid();
+		connectionTypeStateUpdate(RepositoryDataSourceService.getInstance().getConnectionType());
 		
 		add(searchBarLayout, repositoriesGrid);
 		setSizeFull();
+		
+		RepositoryDataSourceService.getInstance().addConnectionChangedEventListener(event -> {
+			connectionTypeStateUpdate(event.getConnectionTypeAfter());
+		});
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param connectionType
+	 */
+	private void connectionTypeStateUpdate(EnumConnectionType connectionType) {
+		if (connectionType == EnumConnectionType.NOT_CONNECTED)
+			addNewRepositoryButton.setEnabled(false);
+		else
+			addNewRepositoryButton.setEnabled(true);
 	}
 	
 	private void updateGrid() {
