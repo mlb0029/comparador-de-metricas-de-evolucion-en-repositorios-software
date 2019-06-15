@@ -108,6 +108,7 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
 		repositoriesGrid.setColumns();
 		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
+		repositoriesGrid.setHeightByRows(true);
 		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
 				.setKey("removeButtonColumn")
 				.setSortable(false)

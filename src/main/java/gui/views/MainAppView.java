@@ -45,7 +45,7 @@ public class MainAppView extends VerticalLayout {
 	
 	private Div footer = new Div();
 
-	private Label authorNameLabel = new Label("By Miguel Ángel León Bardavío");
+	private Span authorNameLabel = new Span();
 
 	private ConnectionDialog connectionFormDialog = new ConnectionDialog();
 
@@ -53,6 +53,7 @@ public class MainAppView extends VerticalLayout {
 	
 	public MainAppView() {
 		try {
+			setSizeFull();
 			setUpHeader();
 			setUpContent();
 			setUpFooter();
@@ -90,17 +91,18 @@ public class MainAppView extends VerticalLayout {
 	}
 
 	private void setUpContent() {
-		content.setHeight("80%");
+		content.setMinHeight("70%");
 		content.setWidthFull();
 		content.getElement().appendChild(repositoriesListView.getElement());
 	}
 
 	private void setUpFooter() {
-		footer.setHeight("5%");
+		footer.setHeight("15%");
 		footer.setWidthFull();
 		HorizontalLayout footerHLayout = new HorizontalLayout();
 		footerHLayout.add(authorNameLabel);
-		footerHLayout.setAlignItems(Alignment.CENTER);
+		authorNameLabel.setText("Autor: Miguel Ángel León Bardavío\nTutor: Carlos López Nozal");
+		authorNameLabel.setId("Authors");
 		footerHLayout.setWidthFull();
 		footer.getElement().appendChild(footerHLayout.getElement());
 	}

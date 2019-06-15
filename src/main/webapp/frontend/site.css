@@ -6,3 +6,8 @@
 	padding-top: 18px;
 	margin-left: 40px;
 }
+
+#Authors {
+	vertical-align: bottom;
+	white-space: pre-line;
+}
