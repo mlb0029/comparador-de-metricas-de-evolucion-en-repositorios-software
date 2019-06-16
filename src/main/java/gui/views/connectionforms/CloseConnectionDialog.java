@@ -4,7 +4,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -55,7 +54,6 @@ public class CloseConnectionDialog extends Dialog {
 		});
 		HorizontalLayout buttonsLayout = new HorizontalLayout(closeConnectionButton, closeDialogButton);
 		VerticalLayout vLayout = new VerticalLayout(connectionInfoComponent, buttonsLayout);
-		vLayout.setAlignItems(Alignment.CENTER);
 		add(vLayout);
 	}
 
