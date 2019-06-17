@@ -10,8 +10,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.componentfactory.Tooltip;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
@@ -41,7 +39,6 @@ import gui.views.addrepositoryform.AddRepositoryDialog;
 import metricsengine.AMetric;
 import metricsengine.IMetric;
 import metricsengine.Measure;
-import metricsengine.MetricDescription;
 import metricsengine.MetricsResults;
 import metricsengine.metrics.MetricAverageDaysBetweenCommits;
 import metricsengine.metrics.MetricAverageDaysToCloseAnIssue;
@@ -194,28 +191,6 @@ public class RepositoriesListView extends VerticalLayout {
 	private void filter() {
 		repositoriesDataProvider.addFilter(repository -> repository.getName().toLowerCase().contains(searchTextField.getValue().toLowerCase()));
 	}
-
-	private MetricDescription getMetricDescription(Class<? extends AMetric> metricType) {
-		if (metricType == MetricTotalNumberOfIssues.class) {
-			return MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricCommitsPerIssue.class) {
-			return MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricPercentageClosedIssues.class) {
-			return MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricAverageDaysToCloseAnIssue.class) {
-			return MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricAverageDaysBetweenCommits.class) {
-			return MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricDaysBetweenFirstAndLastCommit.class) {
-			return MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricChangeActivityRange.class) {
-			return MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION;
-		} else if (metricType == MetricPeakChange.class) {
-			return MetricPeakChange.DEFAULT_METRIC_DESCRIPTION;
-		} else {
-			return null;
-		}
-	}
 	
 	private Grid.Column<Repository> addMetricColumn(String key, String headerText, Class<? extends AMetric> metricType) {
 		Label headerLabel = new Label(headerText);
@@ -224,23 +199,7 @@ public class RepositoriesListView extends VerticalLayout {
 			.setSortable(true)
 			.setComparator(Repository.getComparatorByMetric(metricType))
 			.setHeader(headerLabel);
-		MetricDescription metricDescription = getMetricDescription(metricType);
-		if (metricDescription != null)
-			addMetricDescriptionTooltipToHeader(headerLabel, metricDescription);
 		return metricColumn;
-	}
-	
-	private void addMetricDescriptionTooltipToHeader(Component attachComponent, MetricDescription metricDescription) {
-		Tooltip tooltip = new Tooltip(attachComponent);
-		Span nameDescription = new Span(metricDescription.getName() + " - " + metricDescription.getDescription());
-		nameDescription.addClassName("metricNameDescription");
-		Span category = new Span(metricDescription.getCategory());
-		category.addClassName("metricCategory");
-		VerticalLayout vLayout = new VerticalLayout(nameDescription, category);
-		vLayout.addClassName("metricHeaderTooltip");
-		vLayout.setSizeFull();
-		tooltip.add(vLayout);
-		add(tooltip);
 	}
 	
 	private Button createRemoveButton(Repository repository) {

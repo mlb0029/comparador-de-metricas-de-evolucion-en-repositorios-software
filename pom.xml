@@ -172,11 +172,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		   <groupId>com.vaadin.componentfactory</groupId>
-		   <artifactId>tooltip</artifactId>
-		   <version>1.2.1</version>
-		</dependency>
-		<dependency>
 		   <groupId>com.vaadin</groupId>
 		   <artifactId>vaadin-confirm-dialog-flow</artifactId>
 		</dependency>
