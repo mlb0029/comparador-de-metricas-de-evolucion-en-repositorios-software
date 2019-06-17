@@ -28,7 +28,7 @@ public class MetricAverageDaysBetweenCommits extends AMetric {
 			"Average of days between commits",
 			"",
 			"",
-			"Process Orientation",
+			"Time constraints",
 			"How much time is there between one commit and the next?",
 			"ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits.",
 			"CD, TNC: Repository",

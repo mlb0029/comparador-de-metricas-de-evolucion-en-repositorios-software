@@ -27,7 +27,7 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 			"Days between the first and the last commit",
 			"",
 			"",
-			"Process Orientation",
+			"Time constraints",
 			"How many days have passed between the first and last commit?",
 			"DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates",
 			"CD: Repository",

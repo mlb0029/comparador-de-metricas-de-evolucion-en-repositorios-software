@@ -24,7 +24,7 @@ public class MetricAverageDaysToCloseAnIssue extends AMetric {
 			"Average of days to close an issue",
 			"",
 			"",
-			"Process Orientation",
+			"Time constraints",
 			"How long does it take to close an issue?",
 			"ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue.",
 			"DCI, NCI:Repository",
