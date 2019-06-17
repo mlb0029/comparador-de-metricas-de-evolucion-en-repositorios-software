@@ -79,6 +79,7 @@ public class MetricsService implements Serializable {
      * @throws RepositoryDataSourceException 
      */
     public void calculateMetricsRepository(Repository repository, MetricProfile metricProfile) throws RepositoryDataSourceException {
+    	//TODO
     	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
     	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();

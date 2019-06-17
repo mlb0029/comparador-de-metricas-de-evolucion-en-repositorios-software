@@ -11,3 +11,30 @@
 	vertical-align: bottom;
 	white-space: pre-line;
 }
+
+.metricHeaderTooltip {
+	background-color: white !important;
+	color: black !important;
+}
+
+.metricNameDescription {
+	font-size: 1.5em;
+}
+
+.metricCategory {
+	font-size: 1.3em;
+	color: #555555;
+}
+
+.messageBoxRoot {
+	max-width: 27em;
+}
+
+.cancel-button {
+    flex-grow: 1;
+    margin-left: -0.5rem;
+}
+
+.messageBoxFooter {
+    margin-top: 0.7rem;
+}

@@ -10,6 +10,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.componentfactory.Tooltip;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.SelectionMode;
@@ -17,6 +19,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -33,9 +36,12 @@ import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
+import gui.views.MessageBoxDialog.MessageBoxCaption;
 import gui.views.addrepositoryform.AddRepositoryDialog;
+import metricsengine.AMetric;
 import metricsengine.IMetric;
 import metricsengine.Measure;
+import metricsengine.MetricDescription;
 import metricsengine.MetricsResults;
 import metricsengine.metrics.MetricAverageDaysBetweenCommits;
 import metricsengine.metrics.MetricAverageDaysToCloseAnIssue;
@@ -46,8 +52,7 @@ import metricsengine.metrics.MetricPeakChange;
 import metricsengine.metrics.MetricPercentageClosedIssues;
 import metricsengine.metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
-import metricsengine.values.ValueDecimal;
-import metricsengine.values.ValueInteger;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueUncalculated;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
@@ -63,6 +68,8 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
+	private static final String NOT_CALCULATED = "NC";
+	
 	private AddRepositoryDialog addRepositoryFormDialog;
 	private TextField searchTextField;
 	private Button addNewRepositoryButton;
@@ -125,46 +132,14 @@ public class RepositoriesListView extends VerticalLayout {
 			.setSortable(true)
 			.setComparator(r -> r.getRepositoryInternalMetrics().getDate())
 			.setWidth("8%");
-		Grid.Column<Repository> i1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricTotalNumberOfIssues.class))
-			.setKey("i1MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricTotalNumberOfIssues.class))
-			.setHeader("I1");
-		Grid.Column<Repository> i2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricCommitsPerIssue.class))
-			.setKey("i2MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricCommitsPerIssue.class))
-			.setHeader("I2");
-		Grid.Column<Repository> i3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPercentageClosedIssues.class))
-			.setKey("i3MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricPercentageClosedIssues.class))
-			.setHeader("I3");
-		Grid.Column<Repository> ti1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysToCloseAnIssue.class))
-			.setKey("ti1MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricAverageDaysToCloseAnIssue.class))
-			.setHeader("TI1");
-		Grid.Column<Repository> tc1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricAverageDaysBetweenCommits.class))
-			.setKey("tc1MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricAverageDaysBetweenCommits.class))
-			.setHeader("TC1");
-		Grid.Column<Repository> tc2MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricDaysBetweenFirstAndLastCommit.class))
-			.setKey("tc2MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricDaysBetweenFirstAndLastCommit.class))
-			.setHeader("TC2");
-		Grid.Column<Repository> tc3MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricChangeActivityRange.class))
-			.setKey("tc3MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricChangeActivityRange.class))
-			.setHeader("TC3");
-		Grid.Column<Repository> c1MetricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, MetricPeakChange.class))
-			.setKey("c1MetricColumn")
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(MetricPeakChange.class))
-			.setHeader("C1");
+		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", "I1", MetricTotalNumberOfIssues.class);
+		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", "I2", MetricCommitsPerIssue.class);
+		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", "I3", MetricPercentageClosedIssues.class);
+		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", "TI1", MetricAverageDaysToCloseAnIssue.class);
+		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", "TC1", MetricAverageDaysBetweenCommits.class);
+		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", "TC2", MetricDaysBetweenFirstAndLastCommit.class);
+		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", "TC3", MetricChangeActivityRange.class);
+		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", "C1", MetricPeakChange.class);
 		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
 			.setKey("calculateButtonColumn")
 			.setWidth("5%");
@@ -220,6 +195,54 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesDataProvider.addFilter(repository -> repository.getName().toLowerCase().contains(searchTextField.getValue().toLowerCase()));
 	}
 
+	private MetricDescription getMetricDescription(Class<? extends AMetric> metricType) {
+		if (metricType == MetricTotalNumberOfIssues.class) {
+			return MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricCommitsPerIssue.class) {
+			return MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricPercentageClosedIssues.class) {
+			return MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricAverageDaysToCloseAnIssue.class) {
+			return MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricAverageDaysBetweenCommits.class) {
+			return MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricDaysBetweenFirstAndLastCommit.class) {
+			return MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricChangeActivityRange.class) {
+			return MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION;
+		} else if (metricType == MetricPeakChange.class) {
+			return MetricPeakChange.DEFAULT_METRIC_DESCRIPTION;
+		} else {
+			return null;
+		}
+	}
+	
+	private Grid.Column<Repository> addMetricColumn(String key, String headerText, Class<? extends AMetric> metricType) {
+		Label headerLabel = new Label(headerText);
+		Grid.Column<Repository> metricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, metricType))
+			.setKey(key)
+			.setSortable(true)
+			.setComparator(Repository.getComparatorByMetric(metricType))
+			.setHeader(headerLabel);
+		MetricDescription metricDescription = getMetricDescription(metricType);
+		if (metricDescription != null)
+			addMetricDescriptionTooltipToHeader(headerLabel, metricDescription);
+		return metricColumn;
+	}
+	
+	private void addMetricDescriptionTooltipToHeader(Component attachComponent, MetricDescription metricDescription) {
+		Tooltip tooltip = new Tooltip(attachComponent);
+		Span nameDescription = new Span(metricDescription.getName() + " - " + metricDescription.getDescription());
+		nameDescription.addClassName("metricNameDescription");
+		Span category = new Span(metricDescription.getCategory());
+		category.addClassName("metricCategory");
+		VerticalLayout vLayout = new VerticalLayout(nameDescription, category);
+		vLayout.addClassName("metricHeaderTooltip");
+		vLayout.setSizeFull();
+		tooltip.add(vLayout);
+		add(tooltip);
+	}
+	
 	private Button createRemoveButton(Repository repository) {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.TRASH));
@@ -227,7 +250,15 @@ public class RepositoriesListView extends VerticalLayout {
 			try {
 				RepositoriesCollectionService.getInstance().removeRepository(repository);
 				updateGrid();
-			} catch (RepositoriesCollectionServiceException e) {/*TODO*/}
+			} catch (RepositoriesCollectionServiceException e) {
+				LOGGER.error("Error deleting a repository. Exception occurred: " + e.getMessage());
+				MessageBoxDialog mb = new MessageBoxDialog(
+					"Error", 
+					"An error has occurred while deleting the repository. Please, contact the application administrator.", 
+					"OK", 
+					okButtonClick -> {});
+				mb.open();
+			}
 		});
 		return button;
 	}
@@ -240,55 +271,85 @@ public class RepositoriesListView extends VerticalLayout {
 				MetricsService.getMetricsService().calculateMetricsRepository(repository);
 				updateGrid();
 			} catch (RepositoryDataSourceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
+					LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
+					MessageBoxDialog mb = new MessageBoxDialog(
+						"Access denied.", 
+						"The repository can not be accessed with the current connection.", 
+						"OK", 
+						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
+					mb.open();
+				} else {
+					new MessageBoxDialog(
+							"Error", 
+							"An error occurred while obtaining the metrics of the repository, contact the application administrator.", 
+							"OK", 
+							okClickEvent -> {})
+					.withCaption(MessageBoxCaption.ERROR)
+					.open();					
+				}
 			}
 		});
 		return button;
 	}
 
 	private String getLastMeasurementDate(Repository repository) {
-		String retorno = "";
-		
 		MetricsResults mr = repository.getLastMetricsResults();
-		if (mr == null ) retorno = ValueUncalculated.VALUE;
-		retorno = formatDateShortEs(mr.getLastModificationDate());
-		return retorno;
+		if (mr == null ) return ValueUncalculated.VALUE;
+		return formatDateShortEs(mr.getLastModificationDate());
 	}
 
 	private String getLastValueMeasuredForMetric(Repository repository, Class<? extends IMetric> metricType) {
-		final String notCalculated = "NC";
-		final String notRepository = "NR";
-		String retorno = "";
-		
-		if (repository == null)	retorno = notRepository;
 		MetricsResults mr = repository.getLastMetricsResults();
-		if (mr == null ) retorno = notCalculated;
+		if (mr == null ) return NOT_CALCULATED;
 		Measure measure = mr.getMeasureForTheMetric(metricType);
-		if (measure == null) retorno = notCalculated;
+		if (measure == null) return NOT_CALCULATED;
 		IValue value = measure.getMeasuredValue();
-		if(value != null) retorno = notCalculated;
-		if (value instanceof ValueInteger || value instanceof ValueDecimal)
-			retorno = formatStringTwoDecimals(value.valueToString());
-		return retorno;
+		if(value == null) return NOT_CALCULATED;
+		if (value instanceof NumericValue)
+			return formatStringTwoDecimals(value.valueToString());
+		else if (value instanceof ValueUncalculated)
+			return NOT_CALCULATED;
+		else
+			return value.valueToString();
 	}
 
+	/**
+	 * Formatea una fecha y devuelve una cadena de texto.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param date Fecha a formatear.
+	 * @return Fecha con formato SHORT para España.
+	 */
 	private String formatDateShortEs(Date date) {
 		return SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.forLanguageTag("es-ES")).format(date);
 	}
 
-	private String formatStringTwoDecimals(String str) {
+	/**
+	 * Formatea una cadena numérica en una cadena nuérica con dos decimales.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param numberString Número a formatear.
+	 * @return
+	 */
+	private String formatStringTwoDecimals(String numberString) {
 		try {
 			String valueFormated = "";
 			NumberFormat numberFormat = NumberFormat.getNumberInstance();
 			numberFormat.setMaximumFractionDigits(2);
-			if (NumberUtils.isNumber(str)) {
-				valueFormated = numberFormat.format(Double.parseDouble(str));				
+			if (NumberUtils.isNumber(numberString)) {
+				valueFormated = numberFormat.format(Double.parseDouble(numberString));				
 			}
 			return valueFormated;
 		} catch (Exception e) {
-			LOGGER.error("Error formatting the string: " + str + ". Exception occurred: " + e.getMessage());
-			throw e;
+			LOGGER.error("Error formatting the string: " + numberString + ". Exception occurred: " + e.getMessage());
+			MessageBoxDialog mb = new MessageBoxDialog(
+					"Error", 
+					"An error occurred while formatting this number: '"+ numberString + "'.Please, contact the application administrator.", 
+					"OK", 
+					event -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+			return "";
 		}
 	}
 }
