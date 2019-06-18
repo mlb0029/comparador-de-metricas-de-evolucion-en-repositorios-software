@@ -23,6 +23,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.ListDataProvider;
@@ -67,14 +68,47 @@ public class RepositoriesListView extends VerticalLayout {
 
 	private static final String NOT_CALCULATED = "NC";
 	
-	private AddRepositoryDialog addRepositoryFormDialog;
-	private TextField searchTextField;
-	private Button addNewRepositoryButton;
-	private Button saveButton;
-	private Button uploadButton;
-	private Grid<Repository> repositoriesGrid;
-	private ListDataProvider<Repository> repositoriesDataProvider;
+	private AddRepositoryDialog addRepositoryFormDialog = new AddRepositoryDialog();
+	private TextField searchTextField = new TextField();
+	private Select<RepositoryMenuItems> repositoryMenu = new Select<RepositoryMenuItems>();
+	private Select<ReviewMenuItems> reviewMenu = new Select<ReviewMenuItems>();
+	private Grid<Repository> repositoriesGrid = new Grid<Repository>();
+	private ListDataProvider<Repository> repositoriesDataProvider = null;
 
+	private enum RepositoryMenuItems {
+		ADD("Add new"),
+		IMPORT("Import"),
+		EXPORT("Export"),
+		EXPORT_CSV("Export to CSV");
+		
+		private String display;
+
+		private RepositoryMenuItems(String display) {
+			this.display = display;
+		}
+
+		public String getDisplay() {
+			return display;
+		}
+	}
+	
+	private enum ReviewMenuItems {
+		CREATE("Create new profile"),
+		DEFAULT("Use default profile"),
+		IMPORT("Import profile"),
+		EXPORT("Export profile");
+		
+		private String display;
+
+		private ReviewMenuItems(String display) {
+			this.display = display;
+		}
+
+		public String getDisplay() {
+			return display;
+		}
+	}
+	
 	/**
 	 * Initializes all components of the view.
 	 *
@@ -84,29 +118,121 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
 		RepositoriesCollectionService.getInstance().addRepositoriesCollectionUpdatedListener(event -> updateGrid());
 		
-		searchTextField = new TextField();
+		initializeRepositoryMenu();
+		
+		initializeReviewMenu();
+		
+		initializeSearchBar();
+		
+		
+		searchTextField.setWidth("60%");
+		repositoryMenu.setWidth("20%");
+		reviewMenu.setWidth("20%");
+		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, repositoryMenu, reviewMenu);
+		searchBarLayout.setWidthFull();
+		
+		initializeGrid();
+		
+		add(searchBarLayout, repositoriesGrid);
+		setSizeFull();
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private void initializeReviewMenu() {
+		reviewMenu.setItems(ReviewMenuItems.values());
+		reviewMenu.setTextRenderer(item -> item.getDisplay());
+		reviewMenu.setEmptySelectionAllowed(false);
+		reviewMenu.setPlaceholder("Repositories");
+		reviewMenu.addValueChangeListener(event -> {
+			if (!event.getHasValue().isEmpty()) {
+				event.getSource().clear();
+				switch (event.getValue()) {
+				case CREATE:
+					createMetricProfile();
+					break;
+				case DEFAULT:
+					loadDefaultMetricProfile();
+					break;
+				case IMPORT:
+					importMetricProfile();
+					break;
+				case EXPORT:
+					exportMetricProfile();
+					break;
+				default:
+					MessageBoxDialog mb = new MessageBoxDialog(
+						"Invalid selection", 
+						"", 
+						"OK", 
+						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
+					mb.open();
+					break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private void initializeRepositoryMenu() {
+		repositoryMenu.setItems(RepositoryMenuItems.values());
+		repositoryMenu.setTextRenderer(item -> item.getDisplay());
+		repositoryMenu.setEmptySelectionAllowed(false);
+		repositoryMenu.setPlaceholder("Repositories");
+		repositoryMenu.addValueChangeListener(event -> {
+			if (!event.getHasValue().isEmpty()) {
+				event.getSource().clear();
+				switch (event.getValue()) {
+				case ADD:
+					addNewRepository();
+					break;
+				case IMPORT:
+					importRepositories();
+					break;
+				case EXPORT:
+					exportRepositories();
+					break;
+				case EXPORT_CSV:
+					generateCSVRepositories();
+					break;
+				default:
+					MessageBoxDialog mb = new MessageBoxDialog(
+						"Invalid selection", 
+						"", 
+						"OK", 
+						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
+					mb.open();
+					break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private void initializeSearchBar() {
 		searchTextField.setPlaceholder("Search");
-		searchTextField.setWidth("80%");
 		searchTextField.setClearButtonVisible(true);
 		searchTextField.setValueChangeMode(ValueChangeMode.EAGER);
 		searchTextField.addValueChangeListener(e -> filter());
-		
-		addRepositoryFormDialog = new AddRepositoryDialog();
-		addRepositoryFormDialog.setCloseOnEsc(true);
-		addRepositoryFormDialog.setCloseOnOutsideClick(true);
-		
-		addNewRepositoryButton = new Button("Repository", new Icon(VaadinIcon.PLUS));
-		addNewRepositoryButton.setWidth("10%");
-		addNewRepositoryButton.addClickListener(e -> addRepositoryFormDialog.open());
-		
-		saveButton = new Button(new Icon(VaadinIcon.CLOUD_DOWNLOAD_O));
-		saveButton.setWidth("5%");
-		uploadButton = new Button(new Icon(VaadinIcon.CLOUD_UPLOAD_O));
-		uploadButton.setWidth("5%");
-		
-		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, addNewRepositoryButton, saveButton, uploadButton);
-		searchBarLayout.setWidthFull();
-		
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private void initializeGrid() {
 		repositoriesGrid = new Grid<Repository>(Repository.class);
 		repositoriesGrid.setWidthFull();
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
@@ -156,27 +282,82 @@ public class RepositoriesListView extends VerticalLayout {
 		metricsClassification.join(ti1MetricColumn, tc1MetricColumn, tc2MetricColumn, tc3MetricColumn, c1MetricColumn).setComponent(timeConstraintsHeader);
 		
 		updateGrid();
-		connectionTypeStateUpdate(RepositoryDataSourceService.getInstance().getConnectionType());
-		
-		add(searchBarLayout, repositoriesGrid);
-		setSizeFull();
-		
-		RepositoryDataSourceService.getInstance().addConnectionChangedEventListener(event -> {
-			connectionTypeStateUpdate(event.getConnectionTypeAfter());
-		});
 	}
 
-	/**
-	 * Description.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param connectionType
-	 */
-	private void connectionTypeStateUpdate(EnumConnectionType connectionType) {
-		if (connectionType == EnumConnectionType.NOT_CONNECTED)
-			addNewRepositoryButton.setEnabled(false);
-		else
-			addNewRepositoryButton.setEnabled(true);
+	private void addNewRepository() {
+		if (RepositoryDataSourceService.getInstance().getConnectionType() != EnumConnectionType.NOT_CONNECTED)
+			addRepositoryFormDialog.open();
+		else {
+			MessageBoxDialog mb = new MessageBoxDialog(
+				"Not allowed.", 
+				"Can not add a repository without connection.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+		}
+	}
+	
+	private void importRepositories() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void exportRepositories() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void generateCSVRepositories() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void createMetricProfile() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void loadDefaultMetricProfile() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void importMetricProfile() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+				"Error", 
+				"Not implemented. Please, contact the application administrator.", 
+				"OK", 
+				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+			mb.open();
+	}
+	
+	private void exportMetricProfile() {
+		MessageBoxDialog mb = new MessageBoxDialog(
+			"Error", 
+			"Not implemented. Please, contact the application administrator.", 
+			"OK", 
+			okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+		mb.open();
 	}
 	
 	private void updateGrid() {
