@@ -28,7 +28,7 @@ public class AMetricTest {
 	/**
 	 * Test metric.
 	 */
-	private static AMetric testMetric;
+	private static IMetric testMetric;
 	
 	/**
 	 * Daughter class of AMetric to perform tests.
@@ -130,7 +130,7 @@ public class AMetricTest {
 	}
 	 
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricsResults)}.
 	 * 
 	 * TODO Measure Equal, ToString Method
 	 */
@@ -141,16 +141,16 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricsResults)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] repository = {0}, min = {1}, max = {2}")
 	@MethodSource
-	public void testCalculateNullArgs(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {	
+	public void testCalculateNullArgs(Repository repository, MetricsResults metricsResults) {	
 		TestMetric testMetric = new TestMetric();
 		assertThrows(IllegalArgumentException.class, () -> {
-			testMetric.calculate(repository, metricConfig, metricsResults);
+			testMetric.calculate(repository, metricsResults);
 		}, "Expected exception when null arguments");
 	}
 	
@@ -167,13 +167,9 @@ public class AMetricTest {
 		MetricConfiguration mConfiguration = new MetricConfiguration(testMetric);
 		MetricsResults mResults = new MetricsResults();
 		return Stream.of(
-				Arguments.of(null, mConfiguration, mResults),
-				Arguments.of(repository, null, mResults),
-				Arguments.of(repository, mConfiguration, null),
-				Arguments.of(null, null, mResults),
-				Arguments.of(repository, null, null),
-				Arguments.of(null, mConfiguration, null),
-				Arguments.of(null, null, null)
+				Arguments.of(null, mResults),
+				Arguments.of(repository, null),
+				Arguments.of(null, null)
 				);
 	}
 }

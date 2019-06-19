@@ -105,7 +105,7 @@ public class MetricTotalNumberOfIssuesTest {
 		Repository repository = new Repository("URL", "Test", 1);
 		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(totalNumberOfIssues, null, null, null, null, null));
 		IValue actual = metricTotalNumberOfIssues.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
+		assertEquals(expected.getValueString(), actual.getValueString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**

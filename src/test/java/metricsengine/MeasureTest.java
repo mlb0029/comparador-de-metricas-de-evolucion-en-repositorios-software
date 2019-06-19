@@ -30,7 +30,7 @@ public class MeasureTest {
 		
 		Measure measure = new Measure(null, null);
 		assertNotNull(measure);
-		assertNull(measure.getMetricConfiguration());
+		assertNull(measure.getMetricMeasured());
 		assertNull(measure.getMeasuredValue());
 		assertNotNull(measure.getDateOfMeasurement());
 		assertEquals(dateFormat.format(date), dateFormat.format(measure.getDateOfMeasurement()));
@@ -51,8 +51,8 @@ public class MeasureTest {
 		
 		Measure measure = new Measure(metricConfiguration, valueInteger);
 		assertNotNull(measure);
-		assertNotNull(measure.getMetricConfiguration());
-		assertEquals(metricConfiguration, measure.getMetricConfiguration());
+		assertNotNull(measure.getMetricMeasured());
+		assertEquals(metricConfiguration, measure.getMetricMeasured());
 		assertNotNull(measure.getMeasuredValue());
 		assertEquals(valueInteger, measure.getMeasuredValue());
 		assertNotNull(measure.getDateOfMeasurement());

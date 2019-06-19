@@ -35,7 +35,7 @@ public class ValueInteger extends NumericValue {
 	 * @see metricsengine.IValue#getString()
 	 */
 	@Override
-	public String valueToString() {
+	public String getValueString() {
 		return String.valueOf(value);
 	}
 

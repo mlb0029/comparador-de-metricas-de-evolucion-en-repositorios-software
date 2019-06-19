@@ -35,7 +35,7 @@ public class ValueDecimal extends NumericValue {
 	 * @see metricsengine.IValue#getString()
 	 */
 	@Override
-	public String valueToString() {
+	public String getValueString() {
 		return String.valueOf(value);
 	}
 

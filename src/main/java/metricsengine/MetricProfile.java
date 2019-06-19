@@ -19,7 +19,7 @@ public class MetricProfile {
 	/**
 	 * All configurations.
 	 */
-	private HashMap<AMetric, MetricConfiguration> metricConfigurations;
+	private HashMap<IMetric, MetricConfiguration> metricConfigurations;
 	
 	/**
 	 * Constructor.
@@ -28,7 +28,7 @@ public class MetricProfile {
 	 */
 	public MetricProfile(String name) {
 		this.name = name;
-		this.metricConfigurations = new HashMap<AMetric, MetricConfiguration>();
+		this.metricConfigurations = new HashMap<IMetric, MetricConfiguration>();
 	}
 	
 	/**

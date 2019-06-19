@@ -37,11 +37,6 @@ public class MetricsResults implements Comparable<MetricsResults>{
 		return new HashSet<Measure>(measures);
 	}
 	
-	public void setMeasures(Collection<Measure> measures) {
-		this.measures = measures;
-		lastModificationDate = new Date();
-	}
-	
 	/**
 	 * Gets the creationDate.
 	 * 
@@ -74,7 +69,7 @@ public class MetricsResults implements Comparable<MetricsResults>{
 
 	public Measure getMeasureForTheMetric(Class<? extends IMetric> metricType) {
 		for (Measure measure : getMeasures()) {
-			if (measure.getMetricConfiguration().getMetric().getClass() == metricType)
+			if (measure.getMetricMeasured().getClass() == metricType)
 				return measure;
 		}
 		return null;
