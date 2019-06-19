@@ -27,6 +27,10 @@ public class RepositoriesCollectionServiceException extends ApplicationException
 	 */
 	public static final int NOT_EXIST_REPOSITORY = 2;
 	
+	public static final int IMPORT_ERROR = 3;
+	
+	public static final int EXPORT_ERROR = 4;
+	
 	/**
 	 * Constructor.
 	 *
@@ -80,6 +84,12 @@ public class RepositoriesCollectionServiceException extends ApplicationException
 			break;
 		case NOT_EXIST_REPOSITORY:
 			message = "The repository doesn't exists";
+			break;
+		case IMPORT_ERROR:
+			message = "An error occurred during the import";
+			break;
+		case EXPORT_ERROR:
+			message = "An error occurred during the export";
 			break;
 		default:
 			message = "Unknown RepositoryDataSource error";

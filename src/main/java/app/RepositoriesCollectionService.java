@@ -1,5 +1,9 @@
 package app;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,7 +31,7 @@ public class RepositoriesCollectionService implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private static final long serialVersionUID = 6585069143415079761L;
-
+	
 	/**
 	 * Single instance.
 	 * 
@@ -57,33 +61,37 @@ public class RepositoriesCollectionService implements Serializable {
 	
 	public void addRepository(Repository repository) throws RepositoriesCollectionServiceException {
 		if (!repositoriesCollection.repositories.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
-		notifyRepositoriesCollectionUpdatedListeners(repository, true);
+		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
 	
 	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
 		if (!repositoriesCollection.repositories.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
-		notifyRepositoriesCollectionUpdatedListeners(repository, false);
+		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
-	public void save(String filePath) {
-//		try {
-//			FileOutputStream fileOut = new FileOutputStream(filePath);
-//			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-//			objectOut.writeObject(instance);
-//            objectOut.close();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	public void exportRepositories () throws RepositoriesCollectionServiceException {
+		try (
+			FileOutputStream bos = new FileOutputStream("test.txt", false);
+			ObjectOutputStream objectOut = new ObjectOutputStream(bos);
+		){
+			objectOut.writeObject(repositoriesCollection);
+			objectOut.flush();
+		} catch (Exception e) {
+			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.EXPORT_ERROR, e);
+		}
 	}
 	
-	public void load(String filePath) {
-		// TODO ...
-		
+	public void importRepositories() throws RepositoriesCollectionServiceException {
+		try (
+			FileInputStream in = new FileInputStream("");
+			ObjectInputStream objectIn = new ObjectInputStream(in);
+		) {
+			repositoriesCollection =  (RepositoriesCollection) objectIn.readObject();
+			notifyRepositoriesCollectionUpdatedListeners();
+		} catch (Exception e) {
+			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
+		}
 	}
 
 	/**
@@ -104,8 +112,8 @@ public class RepositoriesCollectionService implements Serializable {
 		return repositoriesCollectionUpdatedListeners.remove(listener);
 	}
 	
-	private void notifyRepositoriesCollectionUpdatedListeners(Repository repository, boolean isAdded) {
-		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent(repository, isAdded)));
+	private void notifyRepositoriesCollectionUpdatedListeners() {
+		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent()));
 	}
 	
 	//Necesario para el ListDataProvider<Repository> repositoriesDataProvider de RepositoriesListView
