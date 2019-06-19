@@ -37,11 +37,6 @@ public class MetricsResults implements Comparable<MetricsResults>{
 		return new HashSet<Measure>(measures);
 	}
 	
-	public void setMeasures(Collection<Measure> measures) {
-		this.measures = measures;
-		lastModificationDate = new Date();
-	}
-	
 	/**
 	 * Gets the creationDate.
 	 * 

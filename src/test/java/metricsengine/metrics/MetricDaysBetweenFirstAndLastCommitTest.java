@@ -114,7 +114,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 		Repository repository = new Repository("URL", "Test", 1);
 		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		IValue actual = metricDaysBetweenFirstAndLastCommit.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation");
+		assertEquals(expected.getValueString(), actual.getValueString(), "Incorrect calculation");
 	}
 	
 	/**

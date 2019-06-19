@@ -57,6 +57,16 @@ public class Measure implements Serializable{
 	}
 
 	/**
+	 * Sets the metricConfiguration.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricConfiguration the metricConfiguration to set
+	 */
+	public void setMetricConfiguration(MetricConfiguration metricConfiguration) {
+		this.metricConfiguration = metricConfiguration;
+	}
+
+	/**
 	 * Gets the value of the measurement.
 	 * 
 	 * @return The value of the measurement.

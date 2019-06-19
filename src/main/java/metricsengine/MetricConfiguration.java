@@ -16,7 +16,7 @@ public class MetricConfiguration implements IMetric {
 	/**
 	 * Metric.
 	 */
-	private AMetric metric;
+	private IMetric metric;
 	
 	/**
 	 * Minimum value.
@@ -35,7 +35,7 @@ public class MetricConfiguration implements IMetric {
 	 * @param valueMin Minimum value.
 	 * @param valueMax Maximum value.
 	 */
-	public MetricConfiguration(AMetric metric, IValue valueMin, IValue valueMax) {
+	public MetricConfiguration(IMetric metric, IValue valueMin, IValue valueMax) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		if (valueMin == null || valueMax == null)
@@ -63,7 +63,7 @@ public class MetricConfiguration implements IMetric {
 	 * 
 	 * @return The metric.
 	 */
-	public AMetric getMetric() {
+	public IMetric getMetric() {
 		return metric;
 	}
 

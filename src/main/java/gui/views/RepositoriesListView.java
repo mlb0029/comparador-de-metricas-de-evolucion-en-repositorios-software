@@ -447,11 +447,11 @@ public class RepositoriesListView extends VerticalLayout {
 		IValue value = measure.getMeasuredValue();
 		if(value == null) return NOT_CALCULATED;
 		if (value instanceof NumericValue)
-			return formatStringTwoDecimals(value.valueToString());
+			return formatStringTwoDecimals(value.getValueString());
 		else if (value instanceof ValueUncalculated)
 			return NOT_CALCULATED;
 		else
-			return value.valueToString();
+			return value.getValueString();
 	}
 
 	/**

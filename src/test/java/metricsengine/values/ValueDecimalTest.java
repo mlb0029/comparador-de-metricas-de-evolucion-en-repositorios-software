@@ -22,7 +22,7 @@ public class ValueDecimalTest {
 		ValueDecimal value = new ValueDecimal(d);
 		assertNotNull(value);
 		assertEquals(d, value.getValue());
-		assertEquals(String.valueOf(d), value.valueToString());
+		assertEquals(String.valueOf(d), value.getValueString());
 	}
 
 }

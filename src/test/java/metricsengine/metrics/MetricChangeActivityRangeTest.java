@@ -109,7 +109,7 @@ public class MetricChangeActivityRangeTest {
 		Repository repository = new Repository("URL", "Test", 1);
 		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, null, lifeSpanMonths));
 		IValue actual = metricChangeActivityRange.run(repository);
-		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
+		assertEquals(expected.getValueString(), actual.getValueString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**
