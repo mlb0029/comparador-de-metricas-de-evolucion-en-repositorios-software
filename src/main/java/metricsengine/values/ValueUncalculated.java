@@ -14,7 +14,7 @@ public class ValueUncalculated implements IValue {
 	 * @see metricsengine.values.IValue#valueToString()
 	 */
 	@Override
-	public String getValueString() {
+	public String valueToString() {
 		return VALUE;
 	}
 

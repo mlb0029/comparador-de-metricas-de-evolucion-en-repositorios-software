@@ -110,7 +110,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 		Repository repository = new Repository("URL", "Test", 1);
 		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, null, numberOfClosedIssues, daysToCloseEachIssue, null, null));
 		IValue actual = metricAverageDaysToCloseAnIssue.run(repository);
-		assertEquals(expected.getValueString(), actual.getValueString(), "Incorrect calculation in test case: " + testCase);
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**

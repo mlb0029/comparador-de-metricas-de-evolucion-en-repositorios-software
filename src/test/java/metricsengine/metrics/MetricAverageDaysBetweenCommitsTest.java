@@ -114,7 +114,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 		Repository repository = new Repository("URL", "Test", 1);
 		repository.setRepositoryInternalMetrics(new RepositoryInternalMetrics(null, totalNumberOfCommits, null, null, commitDates, null));
 		IValue actual = metricAverageDaysBetweenCommits.run(repository);
-		assertEquals(expected.getValueString(), actual.getValueString(), "Incorrect calculation in test case: " + testCase);
+		assertEquals(expected.valueToString(), actual.valueToString(), "Incorrect calculation in test case: " + testCase);
 	}
 
 	/**

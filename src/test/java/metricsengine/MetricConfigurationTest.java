@@ -20,7 +20,7 @@ public class MetricConfigurationTest {
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValue() {
-		IMetric metric = new MetricTotalNumberOfIssues();
+		AMetric metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = new ValueInteger(0);
 		IValue valueMax = new ValueInteger(10);
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric, valueMin, valueMax);
@@ -54,7 +54,7 @@ public class MetricConfigurationTest {
 	 */
 	@Test
 	public void testMetricConfigurationAMetric() {
-		IMetric metric = new MetricTotalNumberOfIssues();
+		AMetric metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = metric.getValueMinDefault();
 		IValue valueMax = metric.getValueMaxDefault();
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
@@ -76,7 +76,7 @@ public class MetricConfigurationTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#calculate(repositorydatasource.model.Repository, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 */
 	@Disabled("Not yet implemented")
 	@Test

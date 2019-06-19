@@ -1,6 +1,7 @@
 package metricsengine;
 
 import datamodel.Repository;
+import exceptions.MetricsEngineException;
 import metricsengine.values.IValue;
 
 /**
@@ -15,7 +16,7 @@ public class MetricConfiguration implements IMetric {
 	/**
 	 * Metric.
 	 */
-	private IMetric metric;
+	private AMetric metric;
 	
 	/**
 	 * Minimum value.
@@ -34,7 +35,7 @@ public class MetricConfiguration implements IMetric {
 	 * @param valueMin Minimum value.
 	 * @param valueMax Maximum value.
 	 */
-	public MetricConfiguration(IMetric metric, IValue valueMin, IValue valueMax) {
+	public MetricConfiguration(AMetric metric, IValue valueMin, IValue valueMax) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		if (valueMin == null || valueMax == null)
@@ -49,7 +50,7 @@ public class MetricConfiguration implements IMetric {
 	 * 
 	 * @param metric Metric to configure.
 	 */
-	public MetricConfiguration(IMetric metric) {
+	public MetricConfiguration(AMetric metric) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		this.metric = metric;
@@ -62,7 +63,7 @@ public class MetricConfiguration implements IMetric {
 	 * 
 	 * @return The metric.
 	 */
-	public IMetric getMetric() {
+	public AMetric getMetric() {
 		return metric;
 	}
 
@@ -88,19 +89,23 @@ public class MetricConfiguration implements IMetric {
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)
 	 */
 	@Override
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
+		return this.metric.calculate(repository, metricConfig, metricsResults);
+	}
+	
+	/**
+	 * 
+	 * Execute the calculate method of IMetric taking the same instance 
+	 * as an argument to the MetricConfiguration parameter.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository  Entity to be measured
+	 * @param metricsResults Collector where to store the result
+	 * @return The calculated value.
+	 * @throws MetricsEngineException 
+	 * @see {@link IMetric#calculate(Repository, MetricConfiguration, MetricsResults)}
+	 */
 	public IValue calculate(Repository repository, MetricsResults metricsResults) {
-		return this.metric.calculate(repository, metricsResults);
-	}
-
-	@Override
-	public IValue getValueMaxDefault() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IValue getValueMinDefault() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.metric.calculate(repository, this, metricsResults);
 	}
 }

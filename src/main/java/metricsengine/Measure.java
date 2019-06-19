@@ -23,7 +23,7 @@ public class Measure implements Serializable{
 	/**
 	 * Metric that has been measured.
 	 */
-	private IMetric metricMeasured;
+	private MetricConfiguration metricConfiguration;
 	
 	/**
 	 * Value of the measurement.
@@ -38,11 +38,11 @@ public class Measure implements Serializable{
 	/**
 	 * Constructor.
 	 * 
-	 * @param metric Metric that has been measured.
+	 * @param metricConfiguration Metric that has been measured.
 	 * @param value Value of the measurement.
 	 */
-	public Measure(IMetric metric, IValue value) {
-		this.metricMeasured = metric;
+	public Measure(MetricConfiguration metricConfiguration, IValue value) {
+		this.metricConfiguration = metricConfiguration;
 		this.measuredValue = value;
 		this.dateOfMeasurement = new Date();
 	}
@@ -52,8 +52,8 @@ public class Measure implements Serializable{
 	 * 
 	 * @return The metric that has been measured.
 	 */
-	public IMetric getMetricMeasured() {
-		return metricMeasured;
+	public MetricConfiguration getMetricConfiguration() {
+		return metricConfiguration;
 	}
 
 	/**

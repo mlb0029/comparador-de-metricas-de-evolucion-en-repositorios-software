@@ -64,7 +64,6 @@ public abstract class AMetric implements IMetric {
 	 * 
 	 * @return The minimum value by default.
 	 */
-	@Override
 	public IValue getValueMinDefault() {
 		return valueMinDefault;
 	}
@@ -74,7 +73,6 @@ public abstract class AMetric implements IMetric {
 	 * 
 	 * @return The maximum value by default.
 	 */
-	@Override
 	public IValue getValueMaxDefault() {
 		return valueMaxDefault;
 	}
@@ -119,11 +117,11 @@ public abstract class AMetric implements IMetric {
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricsResults)
 	 */
 	@Override
-	public IValue calculate(Repository repository, MetricsResults metricsResults) {
+	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
 		IValue value;
-		if (repository == null ||  metricsResults == null) throw new IllegalArgumentException("All parameters must be not null");
+		if (repository == null || metricConfig == null ||  metricsResults == null) throw new IllegalArgumentException("All parameters must be not null");
 		value = (check(repository))?run(repository):new ValueUncalculated();
-		metricsResults.addMeasure(new Measure(this, value));
+		metricsResults.addMeasure(new Measure(metricConfig, value));
 		return value;
 	}
 	

@@ -22,6 +22,6 @@ public class ValueIntegerTest {
 		ValueInteger value = new ValueInteger(i);
 		assertNotNull(value);
 		assertEquals(i, value.getValue());
-		assertEquals(String.valueOf(i), value.getValueString());
+		assertEquals(String.valueOf(i), value.valueToString());
 	}
 }
