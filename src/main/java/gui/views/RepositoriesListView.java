@@ -408,7 +408,7 @@ public class RepositoriesListView extends VerticalLayout {
 		button.setIcon(new Icon(VaadinIcon.CALC_BOOK));
 		button.addClickListener( event -> {
 			try {
-				MetricsService.getMetricsService().calculateMetricsRepository(repository);
+				MetricsService.getMetricsService().calculateRepositoryMetrics(repository);
 				updateGrid();
 			} catch (RepositoryDataSourceException e) {
 				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {

@@ -1,12 +1,9 @@
 package app;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import exceptions.MetricsServiceException;
 import exceptions.RepositoryDataSourceException;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricProfile;
@@ -34,17 +31,13 @@ public class MetricsService implements Serializable {
 	 */
 	private static final long serialVersionUID = 6475817245020418420L;
 
-	private MetricProfile defaultMetricProfile;
+	private static final MetricProfile DEFAULT_METRIC_PROFILE = createDefaultMetricProfile() ;
 	
-	private Map<String, MetricProfile> metricsProfileMap;
+	private MetricProfile currentMetricProfile = DEFAULT_METRIC_PROFILE;
 	
-	private static MetricsService metricsService;
+	private static MetricsService metricsService = null;
 	
-	private MetricsService() {
-		metricsProfileMap = new HashMap<String, MetricProfile>();
-		defaultMetricProfile = createDefaultMetricProfile();
-		metricsProfileMap.put(defaultMetricProfile.getName(), defaultMetricProfile);
-	}
+	private MetricsService() {}
 
 	/**
 	 * Gets the single instance of metricsService.
@@ -56,30 +49,15 @@ public class MetricsService implements Serializable {
 		if (metricsService == null) metricsService = new MetricsService();
 		return metricsService;
 	}
-	
-	 public MetricProfile getMetricProfileByName(String name) {
-    	return metricsProfileMap.get(name);
-    }
     
-	 public void addMetricProfile(MetricProfile metricProfile) throws MetricsServiceException {
-		 if (metricProfile == null) throw new NullPointerException();
-		 if (metricsProfileMap.get(metricProfile.getName()) != null) {
-			 throw new MetricsServiceException(MetricsServiceException.METRICP_ROFILE_NAME_IN_USE);
-		 } else{
-			 metricsProfileMap.put(metricProfile.getName(), metricProfile);
-		 }
-	 }
-	 
     /**
-     * Updates th.
+     * Calculate the metrics of the repository following the current profile.
      * 
      * @author Miguel Ángel León Bardavío - mlb0029
      * @param repository
-     * @param metricProfile
-     * @throws RepositoryDataSourceException 
+     * @throws RepositoryDataSourceException
      */
-    public void calculateMetricsRepository(Repository repository, MetricProfile metricProfile) throws RepositoryDataSourceException {
-    	//TODO
+    public void calculateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
     	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
     	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();
@@ -87,28 +65,18 @@ public class MetricsService implements Serializable {
     	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
     	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
     	
-    	for (MetricConfiguration metricConfiguration : metricProfile.getMetricConfigurationCollection()) {
+    	for (MetricConfiguration metricConfiguration : currentMetricProfile.getMetricConfigurationCollection()) {
 			metricConfiguration.calculate(repository, metricsResults);
 		}
     	repository.getMetricsResultsCollection().add(metricsResults);
     }
     
-    public void calculateMetricsRepository(Repository repository) throws RepositoryDataSourceException {
-    	calculateMetricsRepository(repository, defaultMetricProfile);
-    }
-    
-    public void calculateMetricsAllRepositories(MetricProfile metricProfile) throws RepositoryDataSourceException {
-    	for (Repository repository : RepositoriesCollectionService.getInstance().getRepositories()) {
-			calculateMetricsRepository(repository, metricProfile);
-		}
-    }
-
-	/**
+    /**
 	 * Initializes the default metric profile.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	private MetricProfile createDefaultMetricProfile() {
+	private static MetricProfile createDefaultMetricProfile() {
 		MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));
