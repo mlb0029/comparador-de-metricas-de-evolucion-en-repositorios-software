@@ -81,3 +81,26 @@
 %Balsamiq Mockups & X & & &\\
 %VersionOne & X & X & X & X\\
 %}
+\section{Evolución de software}
+\subsection{Conceptos de evolución}
+Un sistema de Gestión de Configuración del Software (SCM) es capaz de gestionar la evolución y cambios del código fuente en el tiempo \cite{berczuk_software_2002, sommerville_software_2016}.
+En este apartado describiremos los conceptos básicos que utilizaremos para recoger, documentar, almacenar y recuperar los diferentes cambios que se produzcan en las entidades que formen parte nuestro sistema.
+Un proyecto software está compuesto por múltiples ficheros y directorios. Llamaremos ítem a cualquier fichero o directorio cuya evolución en el tiempo está controlada por un sistema de Gestión de Configuración del Software (SCM). Una vez que estén bajo control, será posible ver su historial de cambios o revisiones y recuperar un estado anterior.
+A medida que los ítems evolucionan en el tiempo, se van creando nuevas revisiones de los mismos. Como es lógico, algunos ítems sufrirán más cambios que otros a lo largo del desarrollo. El SCM almacena todas las revisiones de cada ítem, de manera que es posible volver al estado de uno de estos elementos en un momento dado.
+La creación de revisiones ocurre a través de las operaciones de desprotección (check-out) y protección (check-in). Cuando se va a hacer una modificación en un ítem, éste se desprotege para editarlo. Para crear una nueva revisión del ítem de forma que se pueda recuperar su estado en este punto, se protege, lo que indica al SCM que debe almacenar los nuevos contenidos del ítem.
+Al conjunto de revisiones de un ítem se le denomina historia y resume la evolución de ese ítem en el tiempo.
+Una rama es un contenedor de revisiones, capaz de almacenar la evolución de los ítems como se muestra en la Ilustración 1. Las ramas pueden contener revisiones de más de un ítem. De hecho, esta es la situación más habitual.
+Ilustración 1: Concepto de rama
+
+Una etiqueta o label es el modo de marcar revisiones para poder agruparlas según un cierto criterio, que normalmente fija el usuario. Cuando se aplica una etiqueta, se crea una instantánea de la situación de los ítems en el tiempo. Más tarde esa instantánea puede ser referenciada con facilidad para identificar ese momento específico. Una etiqueta es, en definitiva, un nombre más fácil de recordar que se asigna a un conjunto particular de revisiones.
+Las etiquetas se aplican siempre a las revisiones de los ítems que se encuentren actualmente en el espacio de trabajo o workspace, que es la zona donde el SCM puede mantener ítems bajo el control de versiones. A efectos prácticos, el workspace no dejará de ser un directorio en el disco.
+Los ítems, sus revisiones, las ramas donde se almacenan las revisiones y las etiquetas que agrupan las revisiones se almacenan en un repositorio, que será el espacio principal donde el SCM guarda todos los objetos.
+
+
+\subsection{Métricas de evolución}
+El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}.
+
+\section{Framework de medición}
+Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones [8]. Este framework (\ref{fig:MCTMotorMetricas}) es independiente del lenguaje y su objetivo es la reutilización en la implementación del cálculo de métricas.
+
+\imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
