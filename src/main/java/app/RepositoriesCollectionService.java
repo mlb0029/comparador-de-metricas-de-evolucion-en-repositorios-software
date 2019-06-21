@@ -1,7 +1,7 @@
 package app;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.ws.rs.NotSupportedException;
+
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import app.listeners.Listener;
 import app.listeners.RepositoriesCollectionUpdatedEvent;
@@ -60,34 +62,36 @@ public class RepositoriesCollectionService implements Serializable {
 	}
 	
 	public void addRepository(Repository repository) throws RepositoriesCollectionServiceException {
-		if (!repositoriesCollection.repositories.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
+		if (!repositoriesCollection.collection.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
 		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
 	
 	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
-		if (!repositoriesCollection.repositories.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
+		if (!repositoriesCollection.collection.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
 		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
-	public void exportRepositories () throws RepositoriesCollectionServiceException {
+	public InputStream exportRepositories () throws RepositoriesCollectionServiceException {
 		try (
-			FileOutputStream bos = new FileOutputStream("test.txt", false);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream objectOut = new ObjectOutputStream(bos);
 		){
-			objectOut.writeObject(repositoriesCollection);
+			objectOut.writeObject(repositoriesCollection.collection);
 			objectOut.flush();
+			return bos.toInputStream();
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.EXPORT_ERROR, e);
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void importRepositories() throws RepositoriesCollectionServiceException {
 		try (
 			FileInputStream in = new FileInputStream("");
 			ObjectInputStream objectIn = new ObjectInputStream(in);
 		) {
-			repositoriesCollection =  (RepositoriesCollection) objectIn.readObject();
+			repositoriesCollection.collection =  (HashSet<Repository>) objectIn.readObject();
 			notifyRepositoriesCollectionUpdatedListeners();
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
@@ -115,88 +119,74 @@ public class RepositoriesCollectionService implements Serializable {
 	private void notifyRepositoriesCollectionUpdatedListeners() {
 		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent()));
 	}
-	
-	//Necesario para el ListDataProvider<Repository> repositoriesDataProvider de RepositoriesListView
-	private class RepositoriesCollection implements Collection<Repository>, Serializable{
 
-		/**
-		 * Description.
-		 * 
-		 * @author Miguel Ángel León Bardavío - mlb0029
-		 */
-		private static final long serialVersionUID = -1632073948461817997L;
-		
-		HashSet<Repository> repositories;
-		
-		public RepositoriesCollection() {
-			repositories = new HashSet<Repository>();
-		}
+	private class RepositoriesCollection implements Collection<Repository> {
+
+		private HashSet<Repository> collection = new HashSet<Repository>();
 		
 		@Override
 		public int size() {
-			return repositories.size();
+			return collection.size();
 		}
 
 		@Override
 		public boolean isEmpty() {
-			return repositories.isEmpty();
+			return collection.isEmpty();
 		}
 
 		@Override
 		public boolean contains(Object o) {
-			return repositories.contains(o);
+			return collection.contains(o);
 		}
 
 		@Override
 		public Iterator<Repository> iterator() {
-			return repositories.iterator();
+			return collection.iterator();
 		}
 
 		@Override
 		public Object[] toArray() {
-			return repositories.toArray();
+			return collection.toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
-			return repositories.toArray(a);
+			return collection.toArray(a);
 		}
 
 		@Override
 		public boolean add(Repository e) {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
 
 		@Override
 		public boolean remove(Object o) {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
 
 		@Override
 		public boolean containsAll(Collection<?> c) {
-			return repositories.containsAll(c);
+			return collection.containsAll(c);
 		}
 
 		@Override
 		public boolean addAll(Collection<? extends Repository> c) {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
 
 		@Override
 		public boolean removeAll(Collection<?> c) {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
 
 		@Override
 		public boolean retainAll(Collection<?> c) {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
 
 		@Override
 		public void clear() {
-			throw new NotSupportedException();
+			throw new NotSupportedException("Not allowed. Use RepositoriesCollectionService instead.");
 		}
-		
 	}
-
 }

@@ -307,12 +307,25 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 	
 	private void exportRepositories() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+		if (RepositoriesCollectionService.getInstance().getRepositories().isEmpty()) {
+			MessageBoxDialog mb = new MessageBoxDialog(
+					"No repository", 
+					"No repository has been added, please add at least one before exporting.", 
+					"OK", 
+					okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
 			mb.open();
+		} else {
+			try {
+				new FileDownloadFormDialog(RepositoriesCollectionService.getInstance().exportRepositories()).open();
+			} catch (RepositoriesCollectionServiceException e) {
+				MessageBoxDialog mb = new MessageBoxDialog(
+						"Error", 
+						"An error has occurred. Please, contact the application administrator.", 
+						"OK", 
+						okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
+				mb.open();
+			}	
+		}
 	}
 	
 	private void generateCSVRepositories() {
