@@ -39,6 +39,13 @@ public class AMetricTest {
 	private static class TestMetric extends AMetric{
 		
 		/**
+		 * Description.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		private static final long serialVersionUID = 1L;
+
+		/**
 		 * Description of the metric.
 		 */
 		public static final MetricDescription DESCRIPTION = new MetricDescription("", "", "", "", "", "", "", "", "", EnumTypeOfScale.ABSOLUTE, "");

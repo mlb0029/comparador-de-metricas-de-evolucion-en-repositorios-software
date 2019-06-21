@@ -1,8 +1,17 @@
 package app.listeners;
 
+import java.io.Serializable;
+
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
-public class ConnectionChangedEvent {
+public class ConnectionChangedEvent implements Serializable{
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 2055762274587204233L;
 
 	private EnumConnectionType connectionTypeBefore;
 	

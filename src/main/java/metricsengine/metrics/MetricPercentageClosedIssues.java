@@ -15,6 +15,13 @@ import metricsengine.values.ValueDecimal;
 public class MetricPercentageClosedIssues extends AMetric {
 
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -8897628050510118688L;
+
+	/**
 	 * Default metric description.
 	 */
 	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(

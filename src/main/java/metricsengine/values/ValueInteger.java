@@ -9,6 +9,12 @@ package metricsengine.values;
 public class ValueInteger extends NumericValue {
 
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -7832402828225892645L;
+	/**
 	 * Integer value.
 	 */
 	private int value;

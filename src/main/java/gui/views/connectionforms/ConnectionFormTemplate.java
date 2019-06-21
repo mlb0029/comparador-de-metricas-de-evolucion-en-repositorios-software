@@ -1,5 +1,6 @@
 package gui.views.connectionforms;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,9 +18,15 @@ import com.vaadin.flow.component.tabs.Tab;
 import app.RepositoryDataSourceService;
 import exceptions.RepositoryDataSourceException;
 
-public abstract class ConnectionFormTemplate implements ConnectionForm{
+public abstract class ConnectionFormTemplate implements ConnectionForm {
 	
-	public class FormElement {
+	public class FormElement implements Serializable {
+		/**
+		 * Description.
+		 * 
+		 * @author Miguel Ángel León Bardavío - mlb0029
+		 */
+		private static final long serialVersionUID = -9073432172154725623L;
 		private String name;
 		private Component component;
 	

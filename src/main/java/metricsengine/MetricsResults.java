@@ -1,5 +1,6 @@
 package metricsengine;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,8 +13,15 @@ import java.util.Objects;
  * @since 03/12/2018
  *
  */
-public class MetricsResults implements Comparable<MetricsResults>{
+public class MetricsResults implements Comparable<MetricsResults>, Serializable{
 	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -8858272628476925489L;
+
 	/**
 	 * Collection of measures.
 	 */

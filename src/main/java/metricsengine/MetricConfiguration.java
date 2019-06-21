@@ -1,5 +1,7 @@
 package metricsengine;
 
+import java.io.Serializable;
+
 import datamodel.Repository;
 import exceptions.MetricsEngineException;
 import metricsengine.values.IValue;
@@ -11,8 +13,15 @@ import metricsengine.values.IValue;
  * @author MALB
  *
  */
-public class MetricConfiguration implements IMetric {
+public class MetricConfiguration implements IMetric, Serializable {
 	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -875910175265274713L;
+
 	/**
 	 * Metric.
 	 */

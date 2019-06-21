@@ -1,5 +1,7 @@
 package metricsengine;
 
+import java.io.Serializable;
+
 import datamodel.Repository;
 import metricsengine.values.IValue;
 
@@ -9,7 +11,7 @@ import metricsengine.values.IValue;
  * @author MALB
  *
  */
-public interface IMetric {
+public interface IMetric extends Serializable {
 	
 	/**
 	 * Calculate the metric for a repository passed by parameter and add it to the set passed also by parameter.

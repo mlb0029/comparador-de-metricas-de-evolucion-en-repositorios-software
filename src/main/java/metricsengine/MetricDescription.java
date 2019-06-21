@@ -1,12 +1,20 @@
 package metricsengine;
 
+import java.io.Serializable;
+
 /**
  * Description of a metric.
  * 
  * @author MALB
  *
  */
-public class MetricDescription {
+public class MetricDescription implements Serializable{
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 1005568648142879120L;
 	/**
 	 * Name.
 	 */

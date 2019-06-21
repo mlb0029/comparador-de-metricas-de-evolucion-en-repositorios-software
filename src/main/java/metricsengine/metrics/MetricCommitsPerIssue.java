@@ -17,6 +17,13 @@ import metricsengine.values.ValueDecimal;
 public class MetricCommitsPerIssue extends AMetric {
 	
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -3512786510470075695L;
+
+	/**
 	 * Default metric description.
 	 */
 	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(

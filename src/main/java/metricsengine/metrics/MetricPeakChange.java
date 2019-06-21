@@ -21,6 +21,13 @@ import metricsengine.values.ValueDecimal;
 public class MetricPeakChange extends AMetric {
 
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -6243492706698569581L;
+
+	/**
 	 * Default metric description.
 	 */
 	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(

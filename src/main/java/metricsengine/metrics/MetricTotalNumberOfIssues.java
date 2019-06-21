@@ -15,6 +15,13 @@ import metricsengine.values.ValueInteger;
 public class MetricTotalNumberOfIssues extends AMetric {
 
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 5961481794180264034L;
+
+	/**
 	 * Default metric description.
 	 */
 	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(

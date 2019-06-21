@@ -1,13 +1,22 @@
 package datamodel;
 
+import java.io.Serializable;
+
 /**
  * Information of the connected user.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class User {
+public class User implements Serializable{
 	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = -8802110263950506090L;
+
 	private Integer id;
 	
 	/**

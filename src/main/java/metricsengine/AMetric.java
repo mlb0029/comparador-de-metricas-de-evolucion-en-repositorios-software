@@ -13,6 +13,13 @@ import metricsengine.values.ValueUncalculated;
 public abstract class AMetric implements IMetric {
 	
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 8459616601304750512L;
+
+	/**
 	 * The description of the metric.
 	 */
 	private MetricDescription description;

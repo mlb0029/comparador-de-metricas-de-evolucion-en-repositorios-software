@@ -1,12 +1,14 @@
 package metricsengine.values;
 
+import java.io.Serializable;
+
 /**
  * Defines the interface of a metric value.
  *  
  * @author MALB
  *
  */
-public interface IValue {
+public interface IValue extends Serializable{
 	
 	public static final ValueComparator VALUE_COMPARATOR = new ValueComparator();
 	

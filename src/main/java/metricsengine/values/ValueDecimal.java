@@ -9,6 +9,12 @@ package metricsengine.values;
 public class ValueDecimal extends NumericValue {
 
 	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 301704522215335980L;
+	/**
 	 * Double value.
 	 */
 	private double value;

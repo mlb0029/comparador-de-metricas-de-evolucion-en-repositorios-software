@@ -1,5 +1,6 @@
 package metricsengine;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -9,8 +10,15 @@ import java.util.HashMap;
  * @author MALB
  *
  */
-public class MetricProfile {
+public class MetricProfile implements Serializable {
 	
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private static final long serialVersionUID = 7112648794381782207L;
+
 	/**
 	 * Name of the profile.
 	 */
