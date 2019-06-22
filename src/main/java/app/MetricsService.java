@@ -68,7 +68,21 @@ public class MetricsService implements Serializable {
     	for (MetricConfiguration metricConfiguration : currentMetricProfile.getMetricConfigurationCollection()) {
 			metricConfiguration.calculate(repository, metricsResults);
 		}
-    	repository.getMetricsResultsCollection().add(metricsResults);
+    	repository.setMetricsResults(metricsResults);
+    }
+    
+    public void evaluateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
+    	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
+    	RepositoryInternalMetrics repositoryInternalMetrics = null;
+    	MetricsResults metricsResults = new MetricsResults();
+    	
+    	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
+    	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
+    	
+    	for (MetricConfiguration metricConfiguration : currentMetricProfile.getMetricConfigurationCollection()) {
+			metricConfiguration.calculate(repository, metricsResults);
+		}
+    	repository.setMetricsResults(metricsResults);
     }
     
     /**

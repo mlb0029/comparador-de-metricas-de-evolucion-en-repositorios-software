@@ -539,13 +539,13 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 
 	private String getLastMeasurementDate(Repository repository) {
-		MetricsResults mr = repository.getLastMetricsResults();
+		MetricsResults mr = repository.getMetricsResults();
 		if (mr == null ) return ValueUncalculated.VALUE;
 		return formatDateShortEs(mr.getLastModificationDate());
 	}
 
 	private String getLastValueMeasuredForMetric(Repository repository, Class<? extends IMetric> metricType) {
-		MetricsResults mr = repository.getLastMetricsResults();
+		MetricsResults mr = repository.getMetricsResults();
 		if (mr == null ) return NOT_CALCULATED;
 		Measure measure = mr.getMeasureForTheMetric(metricType);
 		if (measure == null) return NOT_CALCULATED;

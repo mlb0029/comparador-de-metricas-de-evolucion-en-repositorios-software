@@ -1,9 +1,7 @@
 package datamodel;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Objects;
 
 import metricsengine.IMetric;
@@ -44,7 +42,7 @@ public class Repository implements Serializable {
 
 	private RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics();
 	
-	private Collection<MetricsResults> metricsResultsCollection = new HashSet<MetricsResults>();
+	private MetricsResults metricsResults = new MetricsResults();
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -161,38 +159,26 @@ public class Repository implements Serializable {
 	public void setRepositoryInternalMetrics(RepositoryInternalMetrics repositoryInternalMetrics) {
 		this.repositoryInternalMetrics = repositoryInternalMetrics;
 	}
+	
 
 	/**
-	 * Gets the metricsResultsCollection.
+	 * Gets the metricsResults.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the metricsResultsCollection
+	 * @return the metricsResults
 	 */
-	public Collection<MetricsResults> getMetricsResultsCollection() {
-		return metricsResultsCollection;
+	public MetricsResults getMetricsResults() {
+		return metricsResults;
 	}
 
 	/**
-	 * Sets the metricsResultsCollection.
+	 * Sets the metricsResults.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param metricsResultsCollection the metricsResultsCollection to set
+	 * @param metricsResults the metricsResults to set
 	 */
-	public void setMetricsResultsCollection(Collection<MetricsResults> metricsResultsCollection) {
-		this.metricsResultsCollection = metricsResultsCollection;
-	}
-
-	/**
-	 * Returns the last collection of metrics that have been calculated 
-	 * or null if they have never been calculated.
-	 * <p>
-	 * 
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @return the last collection of metrics that have been calculated, never null
-	 */
-	public MetricsResults getLastMetricsResults() {
-		return getMetricsResultsCollection().stream().max(Comparator.naturalOrder()).orElse(null);
+	public void setMetricsResults(MetricsResults metricsResults) {
+		this.metricsResults = metricsResults;
 	}
 
 	public static Comparator<Repository> getComparatorByMetric(Class<? extends IMetric> metricType) {
@@ -202,15 +188,15 @@ public class Repository implements Serializable {
 			public int compare(Repository r1, Repository r2) {
 				Measure m1, m2;
 				IValue v1, v2;
-				if (r1.getLastMetricsResults() != null && r2.getLastMetricsResults() != null) {
-					m1 = r1.getLastMetricsResults().getMeasureForTheMetric(metricType);
-					m2 = r2.getLastMetricsResults().getMeasureForTheMetric(metricType);
+				if (r1.getMetricsResults() != null && r2.getMetricsResults() != null) {
+					m1 = r1.getMetricsResults().getMeasureForTheMetric(metricType);
+					m2 = r2.getMetricsResults().getMeasureForTheMetric(metricType);
 					v1 = (m1 == null)? new ValueUncalculated():m1.getMeasuredValue();
 					v2 = (m2 == null)? new ValueUncalculated():m2.getMeasuredValue();
 					return IValue.VALUE_COMPARATOR.compare(v1, v2);
-				} else if (r1.getLastMetricsResults() == null && r2.getLastMetricsResults() != null) {
+				} else if (r1.getMetricsResults() == null && r2.getMetricsResults() != null) {
 					return -1;
-				} else if (r1.getLastMetricsResults() != null && r2.getLastMetricsResults() == null) {
+				} else if (r1.getMetricsResults() != null && r2.getMetricsResults() == null) {
 					return 1;
 				} else {
 					return 0;
