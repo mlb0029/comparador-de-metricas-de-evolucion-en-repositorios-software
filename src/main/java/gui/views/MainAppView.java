@@ -1,5 +1,7 @@
 package gui.views;
 
+import org.claspina.confirmdialog.ConfirmDialog;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
@@ -61,6 +63,7 @@ public class MainAppView extends VerticalLayout {
 			if (!IS_INITIALIZED)
 				connectionFormDialog.open();
 			MainAppView.IS_INITIALIZED = true;
+			ConfirmDialog.setButtonDefaultIconsVisible(false);
 		} catch (Exception e) {
 			Exception guiEx = new GUIException(GUIException.MAIN_INITIALIZATION_ERROR, e);// To log, don't throw
 			getElement().removeAllChildren();
