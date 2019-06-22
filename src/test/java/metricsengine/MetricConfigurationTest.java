@@ -16,11 +16,11 @@ import metricsengine.values.ValueInteger;
 public class MetricConfigurationTest {
 
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValue() {
-		AMetric metric = new MetricTotalNumberOfIssues();
+		MetricTemplate metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = new ValueInteger(0);
 		IValue valueMax = new ValueInteger(10);
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric, valueMin, valueMax);
@@ -32,7 +32,7 @@ public class MetricConfigurationTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValueNullArguments() {		
@@ -50,11 +50,11 @@ public class MetricConfigurationTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetric() {
-		AMetric metric = new MetricTotalNumberOfIssues();
+		MetricTemplate metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = metric.getValueMinDefault();
 		IValue valueMax = metric.getValueMaxDefault();
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
@@ -66,7 +66,7 @@ public class MetricConfigurationTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.AMetric)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricNullArguments() {

@@ -1,5 +1,7 @@
 package metricsengine;
 
+import java.text.NumberFormat;
+
 import datamodel.Repository;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueUncalculated;
@@ -10,7 +12,7 @@ import metricsengine.values.ValueUncalculated;
  * @author MALB
  *
  */
-public abstract class AMetric implements IMetric {
+public abstract class MetricTemplate implements Metric {
 	
 	/**
 	 * Description.
@@ -33,6 +35,8 @@ public abstract class AMetric implements IMetric {
 	 * Maximum value by default.
 	 */
 	private IValue valueMaxDefault;
+	
+	protected EvaluationFunction evaluationFunction;
 
 	/**
 	 * Constructor of a metric that establishes the description and the default values.
@@ -42,7 +46,7 @@ public abstract class AMetric implements IMetric {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public AMetric(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
+	protected MetricTemplate(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault, EvaluationFunction evaluationFunction) {
 		setDescription(description);
 		setValueMinDefault(valueMinDefault);
 		setValueMaxDefault(valueMaxDefault);
@@ -147,4 +151,12 @@ public abstract class AMetric implements IMetric {
 	 * @return The calculated value
 	 */
 	protected abstract IValue run(Repository repository);
+	
+	protected static Double formatTwoDecimals(Double number) {
+		String valueFormated = "";
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		numberFormat.setMaximumFractionDigits(2);
+		valueFormated = numberFormat.format(number);				
+		return Double.valueOf(valueFormated);
+	}
 }

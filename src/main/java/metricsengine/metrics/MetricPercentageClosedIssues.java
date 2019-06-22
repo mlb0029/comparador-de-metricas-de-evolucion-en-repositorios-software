@@ -1,7 +1,7 @@
 package metricsengine.metrics;
 
 import datamodel.Repository;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
@@ -12,7 +12,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricPercentageClosedIssues extends AMetric {
+public class MetricPercentageClosedIssues extends MetricTemplate {
 
 	/**
 	 * Description.
@@ -47,13 +47,26 @@ public class MetricPercentageClosedIssues extends AMetric {
 	 */
 	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(100.0);
 	
+	public static final EvaluationFunction EVALUATION_FUNCTION = 
+			(measuredValue, minValue, maxValue) -> {
+				try {
+					Double value, min;
+					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
+					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
+					if (value > min) return EvaluationResult.GOOD;
+					else if (value == min) return EvaluationResult.WARNING;
+					else return EvaluationResult.BAD;
+				} catch (Exception e){
+					return EvaluationResult.BAD;
+				}
+			};
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricPercentageClosedIssues() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
 	}
 	
 	/**
@@ -64,7 +77,7 @@ public class MetricPercentageClosedIssues extends AMetric {
 	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public MetricPercentageClosedIssues(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault);
+		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
 	}
 
 	/* (non-Javadoc)
@@ -87,6 +100,16 @@ public class MetricPercentageClosedIssues extends AMetric {
 	protected IValue run(Repository repository) {
 		double result = (double) repository.getRepositoryInternalMetrics().getNumberOfClosedIssues() * 100 / repository.getRepositoryInternalMetrics().getTotalNumberOfIssues() ;
 		return new ValueDecimal(result);
+	}
+
+	@Override
+	public EvaluationResult evaluate(IValue measuredValue) {
+		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
+	}
+
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return EVALUATION_FUNCTION;
 	}
 
 }

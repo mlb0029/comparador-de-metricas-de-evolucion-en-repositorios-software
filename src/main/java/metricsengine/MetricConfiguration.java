@@ -13,7 +13,7 @@ import metricsengine.values.IValue;
  * @author MALB
  *
  */
-public class MetricConfiguration implements IMetric, Serializable {
+public class MetricConfiguration implements Metric, Serializable {
 	
 	/**
 	 * Description.
@@ -25,7 +25,7 @@ public class MetricConfiguration implements IMetric, Serializable {
 	/**
 	 * Metric.
 	 */
-	private IMetric metric;
+	private Metric metric;
 	
 	/**
 	 * Minimum value.
@@ -44,7 +44,7 @@ public class MetricConfiguration implements IMetric, Serializable {
 	 * @param valueMin Minimum value.
 	 * @param valueMax Maximum value.
 	 */
-	public MetricConfiguration(IMetric metric, IValue valueMin, IValue valueMax) {
+	public MetricConfiguration(Metric metric, IValue valueMin, IValue valueMax) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		if (valueMin == null || valueMax == null)
@@ -59,7 +59,7 @@ public class MetricConfiguration implements IMetric, Serializable {
 	 * 
 	 * @param metric Metric to configure.
 	 */
-	public MetricConfiguration(AMetric metric) {
+	public MetricConfiguration(MetricTemplate metric) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		this.metric = metric;
@@ -72,7 +72,7 @@ public class MetricConfiguration implements IMetric, Serializable {
 	 * 
 	 * @return The metric.
 	 */
-	public IMetric getMetric() {
+	public Metric getMetric() {
 		return metric;
 	}
 
@@ -112,9 +112,19 @@ public class MetricConfiguration implements IMetric, Serializable {
 	 * @param metricsResults Collector where to store the result
 	 * @return The calculated value.
 	 * @throws MetricsEngineException 
-	 * @see {@link IMetric#calculate(Repository, MetricConfiguration, MetricsResults)}
+	 * @see {@link Metric#calculate(Repository, MetricConfiguration, MetricsResults)}
 	 */
 	public IValue calculate(Repository repository, MetricsResults metricsResults) {
 		return this.metric.calculate(repository, this, metricsResults);
+	}
+
+	@Override
+	public EvaluationResult evaluate(IValue value) {
+		return metric.getEvaluationFunction().evaluate(value, valueMin, valueMax);
+	}
+
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return metric.getEvaluationFunction();
 	}
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import datamodel.Repository;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
@@ -18,7 +18,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricPeakChange extends AMetric {
+public class MetricPeakChange extends MetricTemplate {
 
 	/**
 	 * Description.
@@ -53,13 +53,28 @@ public class MetricPeakChange extends AMetric {
 	 */
 	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(40.0);
 	
+	public static final EvaluationFunction EVALUATION_FUNCTION = 
+			(measuredValue, minValue, maxValue) -> {
+				try {
+					Double value, min, max;
+					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
+					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
+					max = MetricTemplate.formatTwoDecimals(((ValueDecimal) maxValue).getValue());
+					if (value > min && value < max) return EvaluationResult.GOOD;
+					else if (value == min || value == max) return EvaluationResult.WARNING;
+					else return EvaluationResult.BAD;
+				} catch (Exception e){
+					return EvaluationResult.BAD;
+				}
+			};
+			
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricPeakChange() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
 	}
 	
 	/**
@@ -70,7 +85,7 @@ public class MetricPeakChange extends AMetric {
 	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public MetricPeakChange(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault);
+		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
 	}
 
 	/* (non-Javadoc)
@@ -124,5 +139,15 @@ public class MetricPeakChange extends AMetric {
 		
 		peakChange = (double) commitsInPeakMonth / totalNumberOfCommits; 
 		return new ValueDecimal(peakChange);
+	}
+
+	@Override
+	public EvaluationResult evaluate(IValue measuredValue) {
+		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
+	}
+
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return EVALUATION_FUNCTION;
 	}
 }

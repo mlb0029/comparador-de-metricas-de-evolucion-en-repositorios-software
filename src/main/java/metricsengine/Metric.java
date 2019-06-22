@@ -11,7 +11,15 @@ import metricsengine.values.IValue;
  * @author MALB
  *
  */
-public interface IMetric extends Serializable {
+public interface Metric extends Serializable {
+	
+	public enum EvaluationResult {
+		GOOD, WARNING, BAD
+	}
+		
+	public interface EvaluationFunction {
+		EvaluationResult evaluate(IValue value, IValue minValue, IValue maxValue);
+	}
 	
 	/**
 	 * Calculate the metric for a repository passed by parameter and add it to the set passed also by parameter.
@@ -22,4 +30,9 @@ public interface IMetric extends Serializable {
 	 * @return The calculated value or ValueUncalculated if imposible to calculate.
 	 */
 	IValue calculate(Repository repository,MetricConfiguration metricConfig, MetricsResults metricsResults);
+	
+	EvaluationResult evaluate(IValue measuredValue);
+
+	EvaluationFunction getEvaluationFunction();
+	
 }

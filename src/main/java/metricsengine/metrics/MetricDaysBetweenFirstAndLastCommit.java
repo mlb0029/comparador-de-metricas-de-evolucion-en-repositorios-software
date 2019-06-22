@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import datamodel.Repository;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
+import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueInteger;
 
 /**
@@ -17,7 +18,7 @@ import metricsengine.values.ValueInteger;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
+public class MetricDaysBetweenFirstAndLastCommit extends MetricTemplate {
 
 	/**
 	 * Description.
@@ -52,13 +53,28 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 */
 	public static final IValue DEFAULT_MAX_VALUE = new ValueInteger(198);
 	
+	public static final EvaluationFunction EVALUATION_FUNCTION = 
+			(measuredValue, minValue, maxValue) -> {
+				try {
+					Double value, min, max;
+					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
+					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
+					max = MetricTemplate.formatTwoDecimals(((ValueDecimal) maxValue).getValue());
+					if (value > min && value < max) return EvaluationResult.GOOD;
+					else if (value == min || value == max) return EvaluationResult.WARNING;
+					else return EvaluationResult.BAD;
+				} catch (Exception e){
+					return EvaluationResult.BAD;
+				}
+			};
+			
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricDaysBetweenFirstAndLastCommit() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
 	}
 	
 	/**
@@ -69,7 +85,7 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public MetricDaysBetweenFirstAndLastCommit(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault);
+		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
 	}
 
 	/* (non-Javadoc)
@@ -103,5 +119,15 @@ public class MetricDaysBetweenFirstAndLastCommit extends AMetric {
 		long lastDate = commitDates.get(commitDates.size() - 1).getTime();
 		int result = (int) ((lastDate - firstDate) / (1000 * 60 * 60 * 24));
 		return new ValueInteger(result);
+	}
+
+	@Override
+	public EvaluationResult evaluate(IValue measuredValue) {
+		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
+	}
+
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return EVALUATION_FUNCTION;
 	}
 }

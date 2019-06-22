@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
@@ -64,7 +64,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		AMetric metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
+		MetricTemplate metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
 		assertTrue(metricDescription == metricDaysBetweenFirstAndLastCommit.getDescription(), "Expected another description");
 		assertTrue(min == metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricDaysBetweenFirstAndLastCommit.getValueMaxDefault(), "Expected another max value");

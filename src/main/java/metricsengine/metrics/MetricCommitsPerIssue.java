@@ -1,9 +1,10 @@
 package metricsengine.metrics;
 
 import datamodel.Repository;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -14,7 +15,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricCommitsPerIssue extends AMetric {
+public class MetricCommitsPerIssue extends MetricTemplate {
 	
 	/**
 	 * Description.
@@ -49,13 +50,28 @@ public class MetricCommitsPerIssue extends AMetric {
 	 */
 	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(1.0);
 	
+	public static final EvaluationFunction EVALUATION_FUNCTION = 
+			(measuredValue, minValue, maxValue) -> {
+				try {
+					Double value, min, max;
+					value = MetricTemplate.formatTwoDecimals(((NumericValue) measuredValue).doubleValue());
+					min = MetricTemplate.formatTwoDecimals(((NumericValue) minValue).doubleValue());
+					max = MetricTemplate.formatTwoDecimals(((NumericValue) maxValue).doubleValue());
+					if (value > min && value < max) return EvaluationResult.GOOD;
+					else if (value == min || value == max) return EvaluationResult.WARNING;
+					else return EvaluationResult.BAD;
+				} catch (Exception e){
+					return EvaluationResult.BAD;
+				}
+			};
+			
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricCommitsPerIssue() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
 	}
 	
 	/**
@@ -66,7 +82,7 @@ public class MetricCommitsPerIssue extends AMetric {
 	 * @param valueMaxDefault Maximum value by default.
 	 */
 	public MetricCommitsPerIssue(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault);
+		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
 	}
 
 	/* (non-Javadoc)
@@ -89,5 +105,15 @@ public class MetricCommitsPerIssue extends AMetric {
 	protected IValue run(Repository repository) {
 		double result = (double) repository.getRepositoryInternalMetrics().getTotalNumberOfIssues() / repository.getRepositoryInternalMetrics().getTotalNumberOfCommits();
 		return new ValueDecimal(result);
+	}
+
+	@Override
+	public EvaluationResult evaluate(IValue measuredValue) {
+		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
+	}
+
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return EVALUATION_FUNCTION;
 	}
 }

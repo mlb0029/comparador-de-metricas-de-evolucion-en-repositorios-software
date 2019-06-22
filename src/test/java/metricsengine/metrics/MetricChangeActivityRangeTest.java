@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
@@ -58,7 +58,7 @@ public class MetricChangeActivityRangeTest {
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricChangeActivityRangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		AMetric metricChangeActivityRange = new MetricChangeActivityRange(metricDescription, min, max);
+		MetricTemplate metricChangeActivityRange = new MetricChangeActivityRange(metricDescription, min, max);
 		assertTrue(metricDescription == metricChangeActivityRange.getDescription(), "Expected another description");
 		assertTrue(min == metricChangeActivityRange.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricChangeActivityRange.getValueMaxDefault(), "Expected another max value");

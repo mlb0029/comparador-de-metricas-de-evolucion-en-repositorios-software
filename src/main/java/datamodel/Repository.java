@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
 
-import metricsengine.IMetric;
+import metricsengine.Metric;
 import metricsengine.Measure;
 import metricsengine.MetricsResults;
 import metricsengine.values.IValue;
@@ -181,7 +181,7 @@ public class Repository implements Serializable {
 		this.metricsResults = metricsResults;
 	}
 
-	public static Comparator<Repository> getComparatorByMetric(Class<? extends IMetric> metricType) {
+	public static Comparator<Repository> getComparatorByMetric(Class<? extends Metric> metricType) {
 		return new Comparator<Repository>() {
 			
 			@Override

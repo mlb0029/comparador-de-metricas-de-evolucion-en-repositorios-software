@@ -18,7 +18,7 @@ import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
 
 /**
- * Test class for {@link AMetric}.
+ * Test class for {@link MetricTemplate}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -28,7 +28,7 @@ public class AMetricTest {
 	/**
 	 * Test metric.
 	 */
-	private static AMetric testMetric;
+	private static MetricTemplate testMetric;
 	
 	/**
 	 * Daughter class of AMetric to perform tests.
@@ -36,7 +36,7 @@ public class AMetricTest {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 *
 	 */
-	private static class TestMetric extends AMetric{
+	private static class TestMetric extends MetricTemplate{
 		
 		/**
 		 * Description.
@@ -67,7 +67,7 @@ public class AMetricTest {
 		 * @author Miguel Ángel León Bardavío - mlb0029
 		 */
 		public TestMetric() {
-			super(DESCRIPTION, MINVALUE, MAXVALUE);
+			super(DESCRIPTION, MINVALUE, MAXVALUE, null);
 		}
 		
 		/**
@@ -79,7 +79,7 @@ public class AMetricTest {
 		 * @param valueMaxDefault Max value.
 		 */
 		public TestMetric(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-			super(description, valueMinDefault, valueMaxDefault);
+			super(description, valueMinDefault, valueMaxDefault, null);
 		}
 	
 		/* (non-Javadoc)
@@ -97,6 +97,18 @@ public class AMetricTest {
 		protected IValue run(Repository repository) {
 			return new ValueInteger(repository.getId());
 		}
+
+		@Override
+		public EvaluationResult evaluate(IValue measuredValue) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public EvaluationFunction getEvaluationFunction() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	/**
@@ -111,12 +123,12 @@ public class AMetricTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.AMetric#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testAMetric(MetricDescription metricDescription, IValue min, IValue max) {
-		AMetric testMetric = new TestMetric(metricDescription, min, max);
+		MetricTemplate testMetric = new TestMetric(metricDescription, min, max);
 		assertTrue(metricDescription == testMetric.getDescription(), "Expected another description");
 		assertTrue(min == testMetric.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == testMetric.getValueMaxDefault(), "Expected another max value");
@@ -124,7 +136,7 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.AMetric#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	* <p>
 	 * Using null arguments.
 	 */
@@ -137,7 +149,7 @@ public class AMetricTest {
 	}
 	 
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.MetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * 
 	 * TODO Measure Equal, ToString Method
 	 */
@@ -148,7 +160,7 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.AMetric#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.MetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * <p>
 	 * Using null arguments.
 	 */

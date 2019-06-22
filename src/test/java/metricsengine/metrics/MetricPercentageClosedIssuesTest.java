@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.AMetric;
+import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
@@ -59,7 +59,7 @@ public class MetricPercentageClosedIssuesTest {
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
 	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		AMetric metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
+		MetricTemplate metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricPercentageClosedIssues.getDescription(), "Expected another description");
 		assertTrue(min == metricPercentageClosedIssues.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricPercentageClosedIssues.getValueMaxDefault(), "Expected another max value");

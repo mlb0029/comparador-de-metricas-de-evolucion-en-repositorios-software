@@ -57,34 +57,33 @@ public class MetricsService implements Serializable {
      * @param repository
      * @throws RepositoryDataSourceException
      */
-    public void calculateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
+    public void obtainAndEvaluateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
     	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
     	RepositoryInternalMetrics repositoryInternalMetrics = null;
-    	MetricsResults metricsResults = new MetricsResults();
     	
     	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
     	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
     	
-    	for (MetricConfiguration metricConfiguration : currentMetricProfile.getMetricConfigurationCollection()) {
-			metricConfiguration.calculate(repository, metricsResults);
-		}
-    	repository.setMetricsResults(metricsResults);
+    	evaluateRepositoryMetrics(repository);
     }
     
     public void evaluateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
-    	RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
-    	RepositoryInternalMetrics repositoryInternalMetrics = null;
     	MetricsResults metricsResults = new MetricsResults();
-    	
-    	repositoryInternalMetrics = repositoryDataSource.getRepositoryInternalMetrics(repository);
-    	repository.setRepositoryInternalMetrics(repositoryInternalMetrics);
-    	
+    	    	
     	for (MetricConfiguration metricConfiguration : currentMetricProfile.getMetricConfigurationCollection()) {
 			metricConfiguration.calculate(repository, metricsResults);
 		}
+    	
     	repository.setMetricsResults(metricsResults);
     }
     
+    public MetricProfile getCurrentMetricProfile() {
+    	MetricProfile toReturn = new MetricProfile(currentMetricProfile.getName());
+    	for (MetricConfiguration mc : currentMetricProfile.getMetricConfigurationCollection()) {
+			toReturn.addMetricConfiguration(mc);
+		}
+    	return toReturn;
+    }
     /**
 	 * Initializes the default metric profile.
 	 * 

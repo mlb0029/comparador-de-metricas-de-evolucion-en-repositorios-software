@@ -27,7 +27,7 @@ public class MetricProfile implements Serializable {
 	/**
 	 * All configurations.
 	 */
-	private HashMap<IMetric, MetricConfiguration> metricConfigurations;
+	private HashMap<Class<? extends Metric>, MetricConfiguration> metricConfigurations;
 	
 	/**
 	 * Constructor.
@@ -36,7 +36,7 @@ public class MetricProfile implements Serializable {
 	 */
 	public MetricProfile(String name) {
 		this.name = name;
-		this.metricConfigurations = new HashMap<IMetric, MetricConfiguration>();
+		this.metricConfigurations = new HashMap<Class<? extends Metric>, MetricConfiguration>();
 	}
 	
 	/**
@@ -66,13 +66,16 @@ public class MetricProfile implements Serializable {
 		return this.metricConfigurations.values();
 	}
 
+	public MetricConfiguration getMetricConfigurationByMetric(Class<? extends Metric> metricType) {
+		return metricConfigurations.get(metricType);
+	}
 	/**
 	 * Adds a metric configuration.
 	 * 
 	 * @param metricConfiguration Metric configuration.
 	 */
 	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
-		this.metricConfigurations.put(metricConfiguration.getMetric(), metricConfiguration);
+		this.metricConfigurations.put(metricConfiguration.getMetric().getClass(), metricConfiguration);
 	}
 
 	/**
@@ -81,6 +84,6 @@ public class MetricProfile implements Serializable {
 	 * @param metricConfiguration Metric configuration.
 	 */
 	public void removeMetricConfiguration(MetricConfiguration metricConfiguration) {
-		this.metricConfigurations.remove(metricConfiguration.getMetric());
+		this.metricConfigurations.remove(metricConfiguration.getMetric().getClass());
 	}
 }

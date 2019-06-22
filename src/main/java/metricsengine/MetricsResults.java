@@ -75,7 +75,7 @@ public class MetricsResults implements Comparable<MetricsResults>, Serializable{
 		lastModificationDate = new Date();
 	}
 
-	public Measure getMeasureForTheMetric(Class<? extends IMetric> metricType) {
+	public Measure getMeasureForTheMetric(Class<? extends Metric> metricType) {
 		for (Measure measure : getMeasures()) {
 			if (measure.getMetricConfiguration().getMetric().getClass() == metricType)
 				return measure;

@@ -41,9 +41,11 @@ import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
 import gui.views.addrepositoryform.AddRepositoryDialog;
-import metricsengine.AMetric;
-import metricsengine.IMetric;
+import metricsengine.MetricTemplate;
+import metricsengine.Metric;
+import metricsengine.Metric.EvaluationResult;
 import metricsengine.Measure;
+import metricsengine.MetricConfiguration;
 import metricsengine.MetricsResults;
 import metricsengine.metrics.MetricAverageDaysBetweenCommits;
 import metricsengine.metrics.MetricAverageDaysToCloseAnIssue;
@@ -76,7 +78,7 @@ public class RepositoriesListView extends VerticalLayout {
 	private TextField searchTextField = new TextField();
 	private Select<RepositoryMenuItems> repositoryMenu = new Select<RepositoryMenuItems>();
 	private Select<ReviewMenuItems> reviewMenu = new Select<ReviewMenuItems>();
-	private Grid<Repository> repositoriesGrid = new Grid<Repository>();
+	private Grid<Repository> repositoriesGrid = new Grid<Repository>(Repository.class);
 	private ListDataProvider<Repository> repositoriesDataProvider = null;
 
 	private enum RepositoryMenuItems {
@@ -247,80 +249,76 @@ public class RepositoriesListView extends VerticalLayout {
 		String headerText;
 		String headerTitle;
 		
-		repositoriesGrid = new Grid<Repository>(Repository.class);
 		repositoriesGrid.setWidthFull();
 		repositoriesGrid.setDataProvider(repositoriesDataProvider);
 		repositoriesGrid.setColumns();
 		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
-		repositoriesGrid.setHeightByRows(true);
+		//repositoriesGrid.setHeightByRows(true);
 		
 		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
 				.setKey("removeButtonColumn")
 				.setSortable(false)
-				.setWidth("5%");
+				.setWidth("5em");
 		
 		header = new Span("Project");
 		header.setTitle("Project name");
 		repositoriesGrid.addComponentColumn(r -> createProjectNameLink(r))
 			.setKey("repositoryNameColumn")
-			.setWidth("20%")
+			.setWidth("13em")
 			.setSortable(true)
 			.setComparator(Repository::getName)
 			.setHeader(header);
 		
 		header = new Span("Date");
 		header.setTitle("Measurement date");
-		repositoriesGrid.addColumn(this::getLastMeasurementDate)
+		repositoriesGrid.addComponentColumn(r -> {
+			String date = getLastMeasurementDate(r);
+			Label dateLbl = new Label(date);
+			dateLbl.setTitle(date);
+			return dateLbl;
+		})
 			.setKey("lastMeasurementDateColumn")
 			.setHeader(header)
 			.setSortable(true)
 			.setComparator(r -> r.getRepositoryInternalMetrics().getDate())
-			.setWidth("8%")
+			.setWidth("6em")
 			.setTextAlign(ColumnTextAlign.CENTER);
 		
 		headerText = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", headerText, headerTitle, MetricTotalNumberOfIssues.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", headerText, headerTitle, MetricTotalNumberOfIssues.class);
 		
 		headerText = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", headerText, headerTitle, MetricCommitsPerIssue.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", headerText, headerTitle, MetricCommitsPerIssue.class);
 		
 		headerText = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", headerText, headerTitle, MetricPercentageClosedIssues.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", headerText, headerTitle, MetricPercentageClosedIssues.class);
 		
 		headerText = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", headerText, headerTitle, MetricAverageDaysToCloseAnIssue.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", headerText, headerTitle, MetricAverageDaysToCloseAnIssue.class);
 		
 		headerText = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", headerText, headerTitle, MetricAverageDaysBetweenCommits.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", headerText, headerTitle, MetricAverageDaysBetweenCommits.class);
 		
 		headerText = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", headerText, headerTitle, MetricDaysBetweenFirstAndLastCommit.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", headerText, headerTitle, MetricDaysBetweenFirstAndLastCommit.class);
 		
 		headerText = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
 		headerTitle = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", headerText, headerTitle, MetricChangeActivityRange.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", headerText, headerTitle, MetricChangeActivityRange.class);
 		
 		headerText = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
 		headerTitle = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", headerText, headerTitle, MetricPeakChange.class)
-				.setTextAlign(ColumnTextAlign.END);
+		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", headerText, headerTitle, MetricPeakChange.class);
 		
 		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
 			.setKey("calculateButtonColumn")
-			.setWidth("5%")
+			.setWidth("5em")
 			.setTextAlign(ColumnTextAlign.END);
 		repositoriesGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
 		repositoriesGrid.setMultiSort(true);
@@ -338,6 +336,36 @@ public class RepositoriesListView extends VerticalLayout {
 		metricsClassification.join(ti1MetricColumn, tc1MetricColumn, tc2MetricColumn, tc3MetricColumn, c1MetricColumn).setComponent(timeConstraintsHeader);
 		
 		updateGrid();
+	}
+
+	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends MetricTemplate> metricType) {
+		VerticalLayout header = new VerticalLayout();
+		Label descriptionLabel = new Label(headerText);
+		descriptionLabel.setTitle(headerTitle);
+		header.add(descriptionLabel);
+		header.setPadding(false);
+		MetricConfiguration metricConfiguration = MetricsService.getMetricsService().getCurrentMetricProfile().getMetricConfigurationByMetric(metricType);
+		if(metricConfiguration != null) {
+			Label configLabel = new Label(metricConfiguration.getValueMin().getValueString() + " - " + metricConfiguration.getValueMax().getValueString());
+			configLabel.setTitle("Q1 = " + metricConfiguration.getValueMin().getValueString() + " & Q3 = " + metricConfiguration.getValueMax().getValueString());
+			configLabel.addClassName("MetricConfigTip");
+			header.add(configLabel);
+		}
+		header.setAlignItems(Alignment.END);
+		Grid.Column<Repository> metricColumn = repositoriesGrid.addComponentColumn(
+				r -> {
+					String value = getValueMeasuredForMetric(r, metricType);
+					Span span = new Span(value);
+					span.setClassName(getClassNameByEvaluation(r, metricType));
+					return span;
+				})
+			.setKey(key)
+			.setSortable(true)
+			.setComparator(Repository.getComparatorByMetric(metricType))
+			.setHeader(header)
+			.setWidth("8em")
+			.setTextAlign(ColumnTextAlign.END);
+		return metricColumn;
 	}
 
 	private void addNewRepository() {
@@ -466,17 +494,6 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoriesDataProvider.addFilter(repository -> repository.getName().toLowerCase().contains(searchTextField.getValue().toLowerCase()));
 	}
 	
-	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends AMetric> metricType) {
-		Label headerLabel = new Label(headerText);
-		headerLabel.setTitle(headerTitle);
-		Grid.Column<Repository> metricColumn = repositoriesGrid.addColumn(r -> getLastValueMeasuredForMetric(r, metricType))
-			.setKey(key)
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(metricType))
-			.setHeader(headerLabel);
-		return metricColumn;
-	}
-	
 	private Button createRemoveButton(Repository repository) {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.TRASH));
@@ -515,7 +532,7 @@ public class RepositoriesListView extends VerticalLayout {
 		button.setIcon(new Icon(VaadinIcon.CALC_BOOK));
 		button.addClickListener( event -> {
 			try {
-				MetricsService.getMetricsService().calculateRepositoryMetrics(repository);
+				MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
 				updateGrid();
 			} catch (RepositoryDataSourceException e) {
 				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
@@ -544,10 +561,36 @@ public class RepositoriesListView extends VerticalLayout {
 		return formatDateShortEs(mr.getLastModificationDate());
 	}
 
-	private String getLastValueMeasuredForMetric(Repository repository, Class<? extends IMetric> metricType) {
+	private Measure getMeasureForMetric(Repository repository, Class<? extends Metric> metricType) {
 		MetricsResults mr = repository.getMetricsResults();
-		if (mr == null ) return NOT_CALCULATED;
+		if (mr == null ) return null;
 		Measure measure = mr.getMeasureForTheMetric(metricType);
+		if (measure == null) return null;
+		return measure;
+	}
+	
+	private EvaluationResult getEvaluationForMetric(Repository repository, Class<? extends Metric> metricType) {
+		Measure measure = getMeasureForMetric(repository, metricType);
+		if (measure == null) return EvaluationResult.BAD;
+		return measure.getMetricConfiguration().evaluate(measure.getMeasuredValue());
+	}
+	
+	private String getClassNameByEvaluation(Repository repository, Class<? extends Metric> metricType) {
+		String classNames = "metricEvaluation ";
+		switch (getEvaluationForMetric(repository, metricType)) {
+		case GOOD:
+			return classNames + "metricEvaluationGood";
+		case WARNING:
+			return classNames + "metricEvaluationWarning";
+		case BAD:
+			return classNames + "metricEvaluationBad";
+		default:
+			return classNames;
+		}
+	}
+	
+	private String getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
+		Measure measure = getMeasureForMetric(repository, metricType);
 		if (measure == null) return NOT_CALCULATED;
 		IValue value = measure.getMeasuredValue();
 		if(value == null) return NOT_CALCULATED;

@@ -79,7 +79,7 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 		try {
 			Repository repository = getRepositoryFromForms();
 			RepositoriesCollectionService.getInstance().addRepository(repository);
-			MetricsService.getMetricsService().calculateRepositoryMetrics(repository);
+			MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
 			listeners.forEach(l -> l.onAddedSuccessful(repository));
 			result.setText("Project added correctly");
 		} catch (RepositoryDataSourceException ex) {
