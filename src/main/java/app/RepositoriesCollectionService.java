@@ -1,6 +1,5 @@
 package app;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -66,7 +65,6 @@ public class RepositoriesCollectionService implements Serializable {
 		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
-	
 	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
 		if (!repositoriesCollection.collection.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
 		notifyRepositoriesCollectionUpdatedListeners();
@@ -85,13 +83,16 @@ public class RepositoriesCollectionService implements Serializable {
 		}
 	}
 	
+	public enum ImportMode {OVERWRITE, APPEND}
+	
 	@SuppressWarnings("unchecked")
-	public void importRepositories() throws RepositoriesCollectionServiceException {
+	public void importRepositories(InputStream inputStream, ImportMode importMode) throws RepositoriesCollectionServiceException {
 		try (
-			FileInputStream in = new FileInputStream("");
-			ObjectInputStream objectIn = new ObjectInputStream(in);
+			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
 		) {
-			repositoriesCollection.collection =  (HashSet<Repository>) objectIn.readObject();
+			HashSet<Repository> repositories = (HashSet<Repository>) objectIn.readObject();
+			if(importMode == ImportMode.OVERWRITE) repositoriesCollection.collection.clear();
+			repositoriesCollection.collection.addAll(repositories);
 			notifyRepositoriesCollectionUpdatedListeners();
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);

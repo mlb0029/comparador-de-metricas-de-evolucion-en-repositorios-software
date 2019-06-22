@@ -1,5 +1,7 @@
 package gui.views;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -7,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.claspina.confirmdialog.ConfirmDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +34,11 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
+import app.RepositoriesCollectionService.ImportMode;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
 import exceptions.RepositoryDataSourceException;
-import gui.views.MessageBoxDialog.MessageBoxCaption;
 import gui.views.addrepositoryform.AddRepositoryDialog;
 import metricsengine.AMetric;
 import metricsengine.IMetric;
@@ -142,6 +145,51 @@ public class RepositoriesListView extends VerticalLayout {
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
+	private void initializeRepositoryMenu() {
+		repositoryMenu.setItems(RepositoryMenuItems.values());
+		repositoryMenu.setTextRenderer(item -> item.getDisplay());
+		repositoryMenu.setEmptySelectionAllowed(false);
+		repositoryMenu.setPlaceholder("Repositories");
+		repositoryMenu.addValueChangeListener(event -> {
+			if (!event.getHasValue().isEmpty()) {
+				event.getSource().clear();
+				switch (event.getValue()) {
+				case ADD:
+					addNewRepository();
+					break;
+				case IMPORT:
+					FileImportDialog fileImportDialog = new FileImportDialog()
+					.withCaption("Import repositories")
+					.withAcceptedFileTypes(".txt")
+					.withUploadListener(uploadEvent -> {
+						importRepositories(uploadEvent.getInputStream());
+					});
+					fileImportDialog.open();
+					break;
+				case EXPORT:
+					exportRepositories();
+					break;
+				case EXPORT_CSV:
+					generateCSVRepositories();
+					break;
+				default:
+					ConfirmDialog mb = ConfirmDialog
+					.createWarning()
+					.withCaption("Invalid selection")
+					.withMessage("")
+					.withOkButton();
+					mb.open();
+					break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
 	private void initializeReviewMenu() {
 		reviewMenu.setItems(ReviewMenuItems.values());
 		reviewMenu.setTextRenderer(item -> item.getDisplay());
@@ -164,51 +212,12 @@ public class RepositoriesListView extends VerticalLayout {
 					exportMetricProfile();
 					break;
 				default:
-					MessageBoxDialog mb = new MessageBoxDialog(
-						"Invalid selection", 
-						"", 
-						"OK", 
-						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
-					mb.open();
-					break;
-				}
-			}
-		});
-	}
-
-	/**
-	 * Description.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
-	private void initializeRepositoryMenu() {
-		repositoryMenu.setItems(RepositoryMenuItems.values());
-		repositoryMenu.setTextRenderer(item -> item.getDisplay());
-		repositoryMenu.setEmptySelectionAllowed(false);
-		repositoryMenu.setPlaceholder("Repositories");
-		repositoryMenu.addValueChangeListener(event -> {
-			if (!event.getHasValue().isEmpty()) {
-				event.getSource().clear();
-				switch (event.getValue()) {
-				case ADD:
-					addNewRepository();
-					break;
-				case IMPORT:
-					importRepositories();
-					break;
-				case EXPORT:
-					exportRepositories();
-					break;
-				case EXPORT_CSV:
-					generateCSVRepositories();
-					break;
-				default:
-					MessageBoxDialog mb = new MessageBoxDialog(
-						"Invalid selection", 
-						"", 
-						"OK", 
-						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
-					mb.open();
+					ConfirmDialog mb = ConfirmDialog
+						.createWarning()
+						.withCaption("Invalid selection")
+						.withMessage("")
+						.withOkButton();
+						mb.open();
 					break;
 				}
 			}
@@ -288,89 +297,113 @@ public class RepositoriesListView extends VerticalLayout {
 		if (RepositoryDataSourceService.getInstance().getConnectionType() != EnumConnectionType.NOT_CONNECTED)
 			addRepositoryFormDialog.open();
 		else {
-			MessageBoxDialog mb = new MessageBoxDialog(
-				"Not allowed.", 
-				"Can not add a repository without connection.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+			ConfirmDialog.createWarning()
+			.withCaption("Not allowed.")
+			.withMessage("Can not add a repository without connection.")
+			.withOkButton()
+			.open();
 		}
 	}
 	
-	private void importRepositories() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+	private void importRepositories(InputStream inputStream) {
+		RepositoriesCollectionService reCollectionService = RepositoriesCollectionService.getInstance();
+		ConfirmDialog errorMessage = 
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton();
+		if (!reCollectionService.getRepositories().isEmpty()) {
+			ConfirmDialog.createQuestion()
+			.withCaption("Overwrite repositories")
+			.withMessage("You currently have repositories. Do you want to overwrite the repositories or add them?")
+			.withCancelButton()
+			.withButton(new Button("Append", clickEvent -> {
+				try {
+					reCollectionService.importRepositories(inputStream, ImportMode.APPEND);
+				} catch (RepositoriesCollectionServiceException e) {
+					LOGGER.error("Error importing repositories. Exception occurred: " + e.getMessage());
+					errorMessage.open();
+				}
+			}))
+			.withButton(new Button("Overwrite", VaadinIcon.WARNING.create(), clickEvent -> {
+				try {
+					reCollectionService.importRepositories(inputStream, ImportMode.OVERWRITE);
+				} catch (RepositoriesCollectionServiceException e) {
+					LOGGER.error("Error importing repositories. Exception occurred: " + e.getMessage());
+					errorMessage.open();
+				}
+			}))
+			.open();
+		} else {
+			try {
+				reCollectionService.importRepositories(inputStream, ImportMode.APPEND);
+			} catch (RepositoriesCollectionServiceException e) {
+				LOGGER.error("Error importing repositories. Exception occurred: " + e.getMessage());
+				errorMessage.open();
+			}
+		}
 	}
 	
 	private void exportRepositories() {
 		if (RepositoriesCollectionService.getInstance().getRepositories().isEmpty()) {
-			MessageBoxDialog mb = new MessageBoxDialog(
-					"No repository", 
-					"No repository has been added, please add at least one before exporting.", 
-					"OK", 
-					okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
-			mb.open();
+			ConfirmDialog.createWarning()
+			.withCaption("No repository")
+			.withMessage("No repository has been added, please add at least one before exporting.")
+			.withOkButton()
+			.open();
 		} else {
 			try {
-				new FileDownloadFormDialog(RepositoriesCollectionService.getInstance().exportRepositories()).open();
-			} catch (RepositoriesCollectionServiceException e) {
-				MessageBoxDialog mb = new MessageBoxDialog(
-						"Error", 
-						"An error has occurred. Please, contact the application administrator.", 
-						"OK", 
-						okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-				mb.open();
+				ObjectInputStream objectInputStream = new ObjectInputStream(RepositoriesCollectionService.getInstance().exportRepositories());
+				new FileExportFormDialog(objectInputStream).open();
+			} catch (Exception e) {
+				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
 			}	
 		}
 	}
 	
 	private void generateCSVRepositories() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("Not implemented. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
 	}
 	
 	private void createMetricProfile() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("Not implemented. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
 	}
 	
 	private void loadDefaultMetricProfile() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("Not implemented. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
 	}
 	
 	private void importMetricProfile() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-				"Error", 
-				"Not implemented. Please, contact the application administrator.", 
-				"OK", 
-				okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("Not implemented. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
 	}
 	
 	private void exportMetricProfile() {
-		MessageBoxDialog mb = new MessageBoxDialog(
-			"Error", 
-			"Not implemented. Please, contact the application administrator.", 
-			"OK", 
-			okButtonClick -> {}).withCaption(MessageBoxCaption.ERROR);
-		mb.open();
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("Not implemented. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
 	}
 	
 	private void updateGrid() {
@@ -405,12 +438,11 @@ public class RepositoriesListView extends VerticalLayout {
 				updateGrid();
 			} catch (RepositoriesCollectionServiceException e) {
 				LOGGER.error("Error deleting a repository. Exception occurred: " + e.getMessage());
-				MessageBoxDialog mb = new MessageBoxDialog(
-					"Error", 
-					"An error has occurred while deleting the repository. Please, contact the application administrator.", 
-					"OK", 
-					okButtonClick -> {});
-				mb.open();
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred while deleting the repository. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
 			}
 		});
 		return button;
@@ -426,19 +458,17 @@ public class RepositoriesListView extends VerticalLayout {
 			} catch (RepositoryDataSourceException e) {
 				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
 					LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
-					MessageBoxDialog mb = new MessageBoxDialog(
-						"Access denied.", 
-						"The repository can not be accessed with the current connection.", 
-						"OK", 
-						okButtonClick -> {}).withCaption(MessageBoxCaption.WARNING);
-					mb.open();
+					ConfirmDialog.createWarning()
+					.withCaption("Error")
+					.withMessage("The repository can not be accessed with the current connection.")
+					.withOkButton()
+					.open();
 				} else {
-					new MessageBoxDialog(
-							"Error", 
-							"An error occurred while obtaining the metrics of the repository, contact the application administrator.", 
-							"OK", 
-							okClickEvent -> {})
-					.withCaption(MessageBoxCaption.ERROR)
+					LOGGER.error("An error occurred while obtaining the metrics of the repository. Exception occurred: " + e.getMessage());
+					ConfirmDialog.createError()
+					.withCaption("Error")
+					.withMessage("An error occurred while obtaining the metrics of the repository. Please, contact the application administrator.")
+					.withOkButton()
 					.open();					
 				}
 			}
@@ -496,12 +526,11 @@ public class RepositoriesListView extends VerticalLayout {
 			return valueFormated;
 		} catch (Exception e) {
 			LOGGER.error("Error formatting the string: " + numberString + ". Exception occurred: " + e.getMessage());
-			MessageBoxDialog mb = new MessageBoxDialog(
-					"Error", 
-					"An error occurred while formatting this number: '"+ numberString + "'.Please, contact the application administrator.", 
-					"OK", 
-					event -> {}).withCaption(MessageBoxCaption.ERROR);
-			mb.open();
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error occurred while formatting this number: '"+ numberString + "'.Please, contact the application administrator.")
+				.withOkButton()
+				.open();
 			return "";
 		}
 	}

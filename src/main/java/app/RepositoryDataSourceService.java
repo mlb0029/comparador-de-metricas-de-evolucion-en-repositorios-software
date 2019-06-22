@@ -8,14 +8,14 @@ import java.util.Set;
 import org.gitlab4j.api.GitLabApiException;
 
 import app.listeners.ConnectionChangedEvent;
-import app.listeners.ConnectionChangedEventListener;
+import app.listeners.Listener;
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
 import datamodel.User;
 import exceptions.RepositoryDataSourceException;
-import repositorydatasource.RepositoyDataSourceFactoryGitlab;
 import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.RepositoryDataSourceFactory;
+import repositorydatasource.RepositoyDataSourceFactoryGitlab;
 
 /**
  * @author Miguel Ángel León Bardavío - mlb0029
@@ -29,7 +29,7 @@ public class RepositoryDataSourceService implements Serializable, RepositoryData
 	
 	private RepositoryDataSource repositoryDataSource;
 	
-	private Set<ConnectionChangedEventListener> connectionChangedEventListeners = new HashSet<>();
+	private Set<Listener<ConnectionChangedEvent>> connectionChangedEventListeners = new HashSet<>();
 	
 	private RepositoryDataSourceService() {
 		this.repositoryDataSource = new RepositoyDataSourceFactoryGitlab().getRepositoryDataSource();
@@ -58,11 +58,11 @@ public class RepositoryDataSourceService implements Serializable, RepositoryData
 		this.repositoryDataSource = repositoryDataSourceFactory.getRepositoryDataSource();
 	}
 
-	public void addConnectionChangedEventListener(ConnectionChangedEventListener listener) {
+	public void addConnectionChangedEventListener(Listener<ConnectionChangedEvent> listener) {
 		connectionChangedEventListeners.add(listener);
 	}
 	
-	public void removeConnectionChangedEventListener(ConnectionChangedEventListener listener) {
+	public void removeConnectionChangedEventListener(Listener<ConnectionChangedEvent> listener) {
 		connectionChangedEventListeners.remove(listener);
 	}
 

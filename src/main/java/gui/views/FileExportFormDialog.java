@@ -3,7 +3,10 @@ package gui.views;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.claspina.confirmdialog.ButtonType;
+
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.server.StreamResource;
@@ -12,7 +15,7 @@ import com.vaadin.flow.server.StreamResource;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class FileDownloadFormDialog extends MessageBoxDialog {
+public class FileExportFormDialog extends ConfirmDialogWrapper {
 
 	/**
 	 * Description.
@@ -30,13 +33,16 @@ public class FileDownloadFormDialog extends MessageBoxDialog {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @throws IOException 
 	 */
-	public FileDownloadFormDialog(InputStream inputStream) {
+	public FileExportFormDialog(InputStream inputStream) {
 		DownloadLink downloadLink= new DownloadLink(DEFAULT_FILE_NAME, inputStream);
-
-		setHeader(HEADER);
-		setText(MESSAGE);
-		setConfirmButton(downloadLink);
-		setCancelable(true);
+		downloadLink.downloadButton.addClickListener(e -> close());
+		
+		withCaption(HEADER);
+		withIcon(DIALOG_DEFAULT_ICON_FACTORY.getQuestionIcon());
+		withMessage(MESSAGE);
+		withCancelButton();
+		withButton(downloadLink);
+		getButton(ButtonType.CANCEL).setIcon(null);
 	}
 
 	private static class DownloadLink extends Anchor {
@@ -47,18 +53,12 @@ public class FileDownloadFormDialog extends MessageBoxDialog {
 
 		private Button downloadButton = new Button(BUTTON_TEXT, VaadinIcon.DOWNLOAD.create());
 
-//		private InputStream content;
-
 		public DownloadLink(String filename, InputStream in) {
-//			this.content = in;
+			downloadButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 			setHref(getStreamResource(filename, in));
 			getElement().setAttribute("download", true);
 			add(downloadButton);
 		}
-
-//		public void setFilename(String filename) {
-//			setHref(getStreamResource(filename, content));
-//		}
 
 		private StreamResource getStreamResource(String filename, InputStream in) {
 			return new StreamResource(filename, () -> {
