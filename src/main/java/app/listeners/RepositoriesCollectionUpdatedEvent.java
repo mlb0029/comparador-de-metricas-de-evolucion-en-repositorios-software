@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class RepositoriesCollectionUpdatedEvent implements Serializable {
+public class RepositoriesCollectionUpdatedEvent implements Serializable, Event {
 
 	/**
 	 * Description.

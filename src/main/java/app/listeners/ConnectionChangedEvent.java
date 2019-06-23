@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
-public class ConnectionChangedEvent implements Serializable{
+public class ConnectionChangedEvent implements Serializable, Event{
 
 	/**
 	 * Description.

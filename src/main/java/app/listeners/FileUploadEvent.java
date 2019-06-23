@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class FileUploadEvent implements Serializable {
+public class FileUploadEvent implements Serializable, Event {
 
 	/**
 	 * Description.
