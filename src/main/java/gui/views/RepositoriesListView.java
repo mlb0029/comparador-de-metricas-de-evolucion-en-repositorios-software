@@ -2,28 +2,12 @@ package gui.views;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.ColumnTextAlign;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.Grid.SelectionMode;
-import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.grid.HeaderRow;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -39,25 +23,7 @@ import app.RepositoriesCollectionService.ImportMode;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
-import exceptions.RepositoryDataSourceException;
 import gui.views.addrepositoryform.AddRepositoryDialog;
-import metricsengine.MetricTemplate;
-import metricsengine.Metric;
-import metricsengine.Metric.EvaluationResult;
-import metricsengine.Measure;
-import metricsengine.MetricConfiguration;
-import metricsengine.MetricsResults;
-import metricsengine.metrics.MetricAverageDaysBetweenCommits;
-import metricsengine.metrics.MetricAverageDaysToCloseAnIssue;
-import metricsengine.metrics.MetricChangeActivityRange;
-import metricsengine.metrics.MetricCommitsPerIssue;
-import metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit;
-import metricsengine.metrics.MetricPeakChange;
-import metricsengine.metrics.MetricPercentageClosedIssues;
-import metricsengine.metrics.MetricTotalNumberOfIssues;
-import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
-import metricsengine.values.ValueUncalculated;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
 /**
@@ -72,13 +38,11 @@ public class RepositoriesListView extends VerticalLayout {
 	
 	private static final long serialVersionUID = 4840032243533665026L;
 
-	private static final String NOT_CALCULATED = "NC";
-	
 	private AddRepositoryDialog addRepositoryFormDialog = new AddRepositoryDialog();
 	private TextField searchTextField = new TextField();
 	private Select<RepositoryMenuItems> repositoryMenu = new Select<RepositoryMenuItems>();
 	private Select<ReviewMenuItems> reviewMenu = new Select<ReviewMenuItems>();
-	private Grid<Repository> repositoriesGrid = new Grid<Repository>(Repository.class);
+	private RepositoriesGrid repositoriesGrid = new RepositoriesGrid();
 	private ListDataProvider<Repository> repositoriesDataProvider = null;
 
 	private enum RepositoryMenuItems {
@@ -130,15 +94,15 @@ public class RepositoriesListView extends VerticalLayout {
 		
 		initializeSearchBar();
 		
+		repositoriesGrid.setDataProvider(repositoriesDataProvider);
+		updateGrid();
 		
 		searchTextField.setWidth("60%");
 		repositoryMenu.setWidth("20%");
 		reviewMenu.setWidth("20%");
 		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, repositoryMenu, reviewMenu);
 		searchBarLayout.setWidthFull();
-		
-		initializeGrid();
-		
+				
 		add(searchBarLayout, repositoriesGrid);
 		setSizeFull();
 	}
@@ -239,135 +203,6 @@ public class RepositoriesListView extends VerticalLayout {
 		searchTextField.addValueChangeListener(e -> filter());
 	}
 
-	/**
-	 * Description.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
-	private void initializeGrid() {
-		Span header = null;
-		String headerText;
-		String headerTitle;
-		
-		repositoriesGrid.setWidthFull();
-		repositoriesGrid.setDataProvider(repositoriesDataProvider);
-		repositoriesGrid.setColumns();
-		repositoriesGrid.setSelectionMode(SelectionMode.NONE);
-		//repositoriesGrid.setHeightByRows(true);
-		
-		repositoriesGrid.addComponentColumn(repository -> createRemoveButton(repository))
-				.setKey("removeButtonColumn")
-				.setSortable(false)
-				.setWidth("5em");
-		
-		header = new Span("Project");
-		header.setTitle("Project name");
-		repositoriesGrid.addComponentColumn(r -> createProjectNameLink(r))
-			.setKey("repositoryNameColumn")
-			.setWidth("13em")
-			.setSortable(true)
-			.setComparator(Repository::getName)
-			.setHeader(header);
-		
-		header = new Span("Date");
-		header.setTitle("Measurement date");
-		repositoriesGrid.addComponentColumn(r -> {
-			String date = getLastMeasurementDate(r);
-			Label dateLbl = new Label(date);
-			dateLbl.setTitle(date);
-			return dateLbl;
-		})
-			.setKey("lastMeasurementDateColumn")
-			.setHeader(header)
-			.setSortable(true)
-			.setComparator(r -> r.getRepositoryInternalMetrics().getDate())
-			.setWidth("6em")
-			.setTextAlign(ColumnTextAlign.CENTER);
-		
-		headerText = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", headerText, headerTitle, MetricTotalNumberOfIssues.class);
-		
-		headerText = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", headerText, headerTitle, MetricCommitsPerIssue.class);
-		
-		headerText = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", headerText, headerTitle, MetricPercentageClosedIssues.class);
-		
-		headerText = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", headerText, headerTitle, MetricAverageDaysToCloseAnIssue.class);
-		
-		headerText = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", headerText, headerTitle, MetricAverageDaysBetweenCommits.class);
-		
-		headerText = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getName();
-		headerTitle = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", headerText, headerTitle, MetricDaysBetweenFirstAndLastCommit.class);
-		
-		headerText = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
-		headerTitle = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", headerText, headerTitle, MetricChangeActivityRange.class);
-		
-		headerText = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
-		headerTitle = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", headerText, headerTitle, MetricPeakChange.class);
-		
-		repositoriesGrid.addComponentColumn(repository -> createCalculateButton(repository))
-			.setKey("calculateButtonColumn")
-			.setWidth("5em")
-			.setTextAlign(ColumnTextAlign.END);
-		repositoriesGrid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_ROW_STRIPES);
-		repositoriesGrid.setMultiSort(true);
-		
-		HeaderRow metricsClassification = repositoriesGrid.prependHeaderRow();
-		
-		Div procOrientHeader = new Div(new Span("Process Orientation"));
-		procOrientHeader.getStyle().set("text-align", "right");
-		procOrientHeader.setSizeFull();
-		metricsClassification.join(i1MetricColumn, i2MetricColumn, i3MetricColumn).setComponent(procOrientHeader);
-		
-		Div timeConstraintsHeader = new Div(new Span("Time Constraints"));
-		timeConstraintsHeader.getStyle().set("text-align", "right");
-		timeConstraintsHeader.setSizeFull();
-		metricsClassification.join(ti1MetricColumn, tc1MetricColumn, tc2MetricColumn, tc3MetricColumn, c1MetricColumn).setComponent(timeConstraintsHeader);
-		
-		updateGrid();
-	}
-
-	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends MetricTemplate> metricType) {
-		VerticalLayout header = new VerticalLayout();
-		Label descriptionLabel = new Label(headerText);
-		descriptionLabel.setTitle(headerTitle);
-		header.add(descriptionLabel);
-		header.setPadding(false);
-		MetricConfiguration metricConfiguration = MetricsService.getMetricsService().getCurrentMetricProfile().getMetricConfigurationByMetric(metricType);
-		if(metricConfiguration != null) {
-			Label configLabel = new Label(metricConfiguration.getValueMin().getValueString() + " - " + metricConfiguration.getValueMax().getValueString());
-			configLabel.setTitle("Q1 = " + metricConfiguration.getValueMin().getValueString() + " & Q3 = " + metricConfiguration.getValueMax().getValueString());
-			configLabel.addClassName("MetricConfigTip");
-			header.add(configLabel);
-		}
-		header.setAlignItems(Alignment.END);
-		Grid.Column<Repository> metricColumn = repositoriesGrid.addComponentColumn(
-				r -> {
-					String value = getValueMeasuredForMetric(r, metricType);
-					Span span = new Span(value);
-					span.setClassName(getClassNameByEvaluation(r, metricType));
-					return span;
-				})
-			.setKey(key)
-			.setSortable(true)
-			.setComparator(Repository.getComparatorByMetric(metricType))
-			.setHeader(header)
-			.setWidth("8em")
-			.setTextAlign(ColumnTextAlign.END);
-		return metricColumn;
-	}
-
 	private void addNewRepository() {
 		if (RepositoryDataSourceService.getInstance().getConnectionType() != EnumConnectionType.NOT_CONNECTED)
 			addRepositoryFormDialog.open();
@@ -458,11 +293,23 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 	
 	private void loadDefaultMetricProfile() {
-		ConfirmDialog.createError()
-		.withCaption("Error")
-		.withMessage("Not implemented. Please, contact the application administrator.")
-		.withOkButton()
-		.open();
+		try {
+			MetricsService ms = MetricsService.getMetricsService();
+			RepositoriesCollectionService rc = RepositoriesCollectionService.getInstance();
+			
+			ms.setCurrentMetricProfileToDefault();
+			for (Repository repository : rc.getRepositories()) {
+				ms.evaluateRepositoryMetrics(repository);
+			}
+			updateGrid();
+		} catch (Exception e) {
+			LOGGER.error("Error evaluating repositories.. Exception occurred: " + e.getMessage());
+			ConfirmDialog.createError()
+			.withCaption("Error")
+			.withMessage("An error has occurred. Please, contact the application administrator.")
+			.withOkButton()
+			.open();
+		}
 	}
 	
 	private void importMetricProfile() {
@@ -492,151 +339,5 @@ public class RepositoriesListView extends VerticalLayout {
 	 */
 	private void filter() {
 		repositoriesDataProvider.addFilter(repository -> repository.getName().toLowerCase().contains(searchTextField.getValue().toLowerCase()));
-	}
-	
-	private Button createRemoveButton(Repository repository) {
-		Button button = new Button();
-		button.setIcon(new Icon(VaadinIcon.TRASH));
-		button.getElement().setProperty("title", "Remove project");
-		button.addClickListener( event -> {
-			try {
-				RepositoriesCollectionService.getInstance().removeRepository(repository);
-				updateGrid();
-			} catch (RepositoriesCollectionServiceException e) {
-				LOGGER.error("Error deleting a repository. Exception occurred: " + e.getMessage());
-				ConfirmDialog.createError()
-				.withCaption("Error")
-				.withMessage("An error has occurred while deleting the repository. Please, contact the application administrator.")
-				.withOkButton()
-				.open();
-			}
-		});
-		return button;
-	}
-	
-	private Div createProjectNameLink(Repository repository) {
-		Div div = new Div();
-		if (repository.getUrl() != null && repository.getUrl() != "") {
-			Anchor repositoryNameLink = new Anchor(repository.getUrl(), repository.getName());
-			div.add(repositoryNameLink);
-		} else {
-			Label repositoryNameLabel = new Label(repository.getName());
-			div.add(repositoryNameLabel);
-		}
-		div.setTitle(repository.getName());
-		return div;
-	}
-	
-	private Button createCalculateButton(Repository repository) {
-		Button button = new Button();
-		button.setIcon(new Icon(VaadinIcon.CALC_BOOK));
-		button.addClickListener( event -> {
-			try {
-				MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
-				updateGrid();
-			} catch (RepositoryDataSourceException e) {
-				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
-					LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
-					ConfirmDialog.createWarning()
-					.withCaption("Error")
-					.withMessage("The repository can not be accessed with the current connection.")
-					.withOkButton()
-					.open();
-				} else {
-					LOGGER.error("An error occurred while obtaining the metrics of the repository. Exception occurred: " + e.getMessage());
-					ConfirmDialog.createError()
-					.withCaption("Error")
-					.withMessage("An error occurred while obtaining the metrics of the repository. Please, contact the application administrator.")
-					.withOkButton()
-					.open();					
-				}
-			}
-		});
-		return button;
-	}
-
-	private String getLastMeasurementDate(Repository repository) {
-		MetricsResults mr = repository.getMetricsResults();
-		if (mr == null ) return ValueUncalculated.VALUE;
-		return formatDateShortEs(mr.getLastModificationDate());
-	}
-
-	private Measure getMeasureForMetric(Repository repository, Class<? extends Metric> metricType) {
-		MetricsResults mr = repository.getMetricsResults();
-		if (mr == null ) return null;
-		Measure measure = mr.getMeasureForTheMetric(metricType);
-		if (measure == null) return null;
-		return measure;
-	}
-	
-	private EvaluationResult getEvaluationForMetric(Repository repository, Class<? extends Metric> metricType) {
-		Measure measure = getMeasureForMetric(repository, metricType);
-		if (measure == null) return EvaluationResult.BAD;
-		return measure.getMetricConfiguration().evaluate(measure.getMeasuredValue());
-	}
-	
-	private String getClassNameByEvaluation(Repository repository, Class<? extends Metric> metricType) {
-		String classNames = "metricEvaluation ";
-		switch (getEvaluationForMetric(repository, metricType)) {
-		case GOOD:
-			return classNames + "metricEvaluationGood";
-		case WARNING:
-			return classNames + "metricEvaluationWarning";
-		case BAD:
-			return classNames + "metricEvaluationBad";
-		default:
-			return classNames;
-		}
-	}
-	
-	private String getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
-		Measure measure = getMeasureForMetric(repository, metricType);
-		if (measure == null) return NOT_CALCULATED;
-		IValue value = measure.getMeasuredValue();
-		if(value == null) return NOT_CALCULATED;
-		if (value instanceof NumericValue)
-			return formatStringTwoDecimals(value.getValueString());
-		else if (value instanceof ValueUncalculated)
-			return NOT_CALCULATED;
-		else
-			return value.getValueString();
-	}
-
-	/**
-	 * Formatea una fecha y devuelve una cadena de texto.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param date Fecha a formatear.
-	 * @return Fecha con formato SHORT para España.
-	 */
-	private String formatDateShortEs(Date date) {
-		return SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.forLanguageTag("es-ES")).format(date);
-	}
-
-	/**
-	 * Formatea una cadena numérica en una cadena nuérica con dos decimales.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param numberString Número a formatear.
-	 * @return
-	 */
-	private String formatStringTwoDecimals(String numberString) {
-		try {
-			String valueFormated = "";
-			NumberFormat numberFormat = NumberFormat.getNumberInstance();
-			numberFormat.setMaximumFractionDigits(2);
-			if (NumberUtils.isNumber(numberString)) {
-				valueFormated = numberFormat.format(Double.parseDouble(numberString));				
-			}
-			return valueFormated;
-		} catch (Exception e) {
-			LOGGER.error("Error formatting the string: " + numberString + ". Exception occurred: " + e.getMessage());
-				ConfirmDialog.createError()
-				.withCaption("Error")
-				.withMessage("An error occurred while formatting this number: '"+ numberString + "'.Please, contact the application administrator.")
-				.withOkButton()
-				.open();
-			return "";
-		}
 	}
 }
