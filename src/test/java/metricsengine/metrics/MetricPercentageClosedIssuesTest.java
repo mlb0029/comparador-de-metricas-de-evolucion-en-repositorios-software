@@ -12,13 +12,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricPercentageClosedIssues}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -43,7 +45,7 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues()}.
 	 */
 	@Test
 	public void testMetricPercentageClosedIssues() {
@@ -54,12 +56,12 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
+	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricPercentageClosedIssues.getDescription(), "Expected another description");
 		assertTrue(min == metricPercentageClosedIssues.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricPercentageClosedIssues.getValueMaxDefault(), "Expected another max value");
@@ -67,20 +69,20 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricPercentageClosedIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricPercentageClosedIssuesNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricPercentageClosedIssues(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues
@@ -99,7 +101,7 @@ public class MetricPercentageClosedIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPercentageClosedIssues#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "PIC = (NCI/TNI) * 100. PIC = Percentage of issues closed.TNI = Total number of issues. NCI = Number of closed issues"

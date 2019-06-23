@@ -1,9 +1,8 @@
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;
 
 import datamodel.Repository;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
-import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueInteger;
 
 /**
@@ -12,7 +11,7 @@ import metricsengine.values.ValueInteger;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricTotalNumberOfIssues extends MetricTemplate {
+public class MetricTotalNumberOfIssues extends NumericValueMetricTemplate {
 
 	/**
 	 * Description.
@@ -40,26 +39,12 @@ public class MetricTotalNumberOfIssues extends MetricTemplate {
 	/**
 	 * Minimum acceptable value.
 	 */
-	public static final ValueInteger DEFAULT_MIN_VALUE = new ValueInteger(6);
+	public static final NumericValue DEFAULT_MIN_VALUE = new ValueInteger(6);
 	
 	/**
 	 * Maximum acceptable value.
 	 */
-	public static final ValueInteger DEFAULT_MAX_VALUE = new ValueInteger(44);
-	
-	public static final EvaluationFunction EVALUATION_FUNCTION = 
-	(measuredValue, minValue, maxValue) -> {
-		try {
-			Integer value, min;
-			value = ((ValueInteger) measuredValue).getValue();
-			min = ((ValueInteger) minValue).getValue();
-			if (value > min) return EvaluationResult.GOOD;
-			else if (value == min) return EvaluationResult.WARNING;
-			else return EvaluationResult.BAD;
-		} catch (Exception e){
-			return EvaluationResult.BAD;
-		}
-	};
+	public static final NumericValue DEFAULT_MAX_VALUE = new ValueInteger(44);
 	
 	/**
 	 * Constructor that initializes the metric with default values.
@@ -67,7 +52,7 @@ public class MetricTotalNumberOfIssues extends MetricTemplate {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricTotalNumberOfIssues() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
 	}
 	
 	/**
@@ -77,15 +62,15 @@ public class MetricTotalNumberOfIssues extends MetricTemplate {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricTotalNumberOfIssues(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
+	public MetricTotalNumberOfIssues(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
+		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
 	}
 
 	/* (non-Javadoc)
 	 * @see metricsengine.AMetric#check(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected Boolean check(Repository repository) {
+	public Boolean check(Repository repository) {
 		Integer tni = repository.getRepositoryInternalMetrics().getTotalNumberOfIssues();
 		return tni != null &&
 				tni >= 0;
@@ -95,17 +80,7 @@ public class MetricTotalNumberOfIssues extends MetricTemplate {
 	 * @see metricsengine.AMetric#run(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected IValue run(Repository repository) {
+	public NumericValue run(Repository repository) {
 		return new ValueInteger(repository.getRepositoryInternalMetrics().getTotalNumberOfIssues());
-	}
-
-	@Override
-	public EvaluationResult evaluate(IValue measuredValue) {
-		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
-	}
-
-	@Override
-	public EvaluationFunction getEvaluationFunction() {
-		return EVALUATION_FUNCTION;
 	}
 }

@@ -1,9 +1,8 @@
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;
 
 import datamodel.Repository;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
-import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -12,7 +11,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricPercentageClosedIssues extends MetricTemplate {
+public class MetricPercentageClosedIssues extends NumericValueMetricTemplate {
 
 	/**
 	 * Description.
@@ -40,33 +39,19 @@ public class MetricPercentageClosedIssues extends MetricTemplate {
 	/**
 	 * Minimum acceptable value.
 	 */
-	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(87.0);
+	public static final NumericValue DEFAULT_MIN_VALUE = new ValueDecimal(87.0);
 	
 	/**
 	 * Maximum acceptable value.
 	 */
-	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(100.0);
-	
-	public static final EvaluationFunction EVALUATION_FUNCTION = 
-			(measuredValue, minValue, maxValue) -> {
-				try {
-					Double value, min;
-					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
-					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
-					if (value > min) return EvaluationResult.GOOD;
-					else if (value == min) return EvaluationResult.WARNING;
-					else return EvaluationResult.BAD;
-				} catch (Exception e){
-					return EvaluationResult.BAD;
-				}
-			};
+	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(100.0);
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricPercentageClosedIssues() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
 	}
 	
 	/**
@@ -76,15 +61,15 @@ public class MetricPercentageClosedIssues extends MetricTemplate {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricPercentageClosedIssues(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
+	public MetricPercentageClosedIssues(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
+		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
 	}
 
 	/* (non-Javadoc)
 	 * @see metricsengine.metrics.AMetric#check(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected Boolean check(Repository repository) {
+	public Boolean check(Repository repository) {
 		Integer tni = repository.getRepositoryInternalMetrics().getTotalNumberOfIssues();
 		Integer nci = repository.getRepositoryInternalMetrics().getNumberOfClosedIssues();
 		return tni != null && 
@@ -97,19 +82,9 @@ public class MetricPercentageClosedIssues extends MetricTemplate {
 	 * @see metricsengine.metrics.AMetric#run(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected IValue run(Repository repository) {
+	public NumericValue run(Repository repository) {
 		double result = (double) repository.getRepositoryInternalMetrics().getNumberOfClosedIssues() * 100 / repository.getRepositoryInternalMetrics().getTotalNumberOfIssues() ;
 		return new ValueDecimal(result);
-	}
-
-	@Override
-	public EvaluationResult evaluate(IValue measuredValue) {
-		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
-	}
-
-	@Override
-	public EvaluationFunction getEvaluationFunction() {
-		return EVALUATION_FUNCTION;
 	}
 
 }

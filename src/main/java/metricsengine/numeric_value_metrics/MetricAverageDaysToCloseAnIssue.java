@@ -1,11 +1,10 @@
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;
 
 import java.util.Collection;
 
 import datamodel.Repository;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
-import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -14,7 +13,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricAverageDaysToCloseAnIssue extends MetricTemplate {
+public class MetricAverageDaysToCloseAnIssue extends NumericValueMetricTemplate {
 
 	/**
 	 * Description.
@@ -42,27 +41,12 @@ public class MetricAverageDaysToCloseAnIssue extends MetricTemplate {
 	/**
 	 * Minimum acceptable value.
 	 */
-	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(2.2);
+	public static final NumericValue DEFAULT_MIN_VALUE = new ValueDecimal(2.2);
 	
 	/**
 	 * Maximum acceptable value.
 	 */
-	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(19.41);
-	
-	public static final EvaluationFunction EVALUATION_FUNCTION = 
-			(measuredValue, minValue, maxValue) -> {
-				try {
-					Double value, min, max;
-					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
-					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
-					max = MetricTemplate.formatTwoDecimals(((ValueDecimal) maxValue).getValue());
-					if (value > min && value < max) return EvaluationResult.GOOD;
-					else if (value == min || value == max) return EvaluationResult.WARNING;
-					else return EvaluationResult.BAD;
-				} catch (Exception e){
-					return EvaluationResult.BAD;
-				}
-			};
+	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(19.41);
 			
 	/**
 	 * Constructor that initializes the metric with default values.
@@ -70,7 +54,7 @@ public class MetricAverageDaysToCloseAnIssue extends MetricTemplate {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricAverageDaysToCloseAnIssue() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
 	/**
@@ -80,15 +64,15 @@ public class MetricAverageDaysToCloseAnIssue extends MetricTemplate {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricAverageDaysToCloseAnIssue(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
+	public MetricAverageDaysToCloseAnIssue(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
+		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 
 	/* (non-Javadoc)
 	 * @see metricsengine.metrics.AMetric#check(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected Boolean check(Repository repository) {
+	public Boolean check(Repository repository) {
 		Collection<Integer> daysToCloseEachIssue = repository.getRepositoryInternalMetrics().getDaysToCloseEachIssue();
 		Integer numberOfClosedIssues = repository.getRepositoryInternalMetrics().getNumberOfClosedIssues();
 		
@@ -110,18 +94,8 @@ public class MetricAverageDaysToCloseAnIssue extends MetricTemplate {
 	 * @see metricsengine.metrics.AMetric#run(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected IValue run(Repository repository) {
+	public NumericValue run(Repository repository) {
 		double result = repository.getRepositoryInternalMetrics().getDaysToCloseEachIssue().stream().mapToInt(i -> i).average().orElseThrow();
 		return new ValueDecimal(result);
-	}
-
-	@Override
-	public EvaluationResult evaluate(IValue measuredValue) {
-		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
-	}
-
-	@Override
-	public EvaluationFunction getEvaluationFunction() {
-		return EVALUATION_FUNCTION;
 	}
 }

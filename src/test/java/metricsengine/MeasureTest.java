@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import metricsengine.metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.ValueInteger;
 
 /**

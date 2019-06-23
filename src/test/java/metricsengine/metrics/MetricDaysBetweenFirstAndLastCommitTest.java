@@ -18,13 +18,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueInteger;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -48,7 +50,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit()}.
 	 */
 	@Test
 	public void testMetricDaysBetweenFirstAndLastCommit() {
@@ -59,12 +61,12 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
+	public void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
 		assertTrue(metricDescription == metricDaysBetweenFirstAndLastCommit.getDescription(), "Expected another description");
 		assertTrue(min == metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricDaysBetweenFirstAndLastCommit.getValueMaxDefault(), "Expected another max value");
@@ -72,20 +74,20 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricDaysBetweenFirstAndLastCommitNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricDaysBetweenFirstAndLastCommitNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates"
@@ -103,7 +105,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "DBFLC = Max(CD) - Min(CD) (in days). DBFLC = Days between the first and the last commit, CD = Vector with de commits dates"

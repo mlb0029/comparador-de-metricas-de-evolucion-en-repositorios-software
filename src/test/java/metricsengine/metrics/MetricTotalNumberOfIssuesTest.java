@@ -13,10 +13,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
 import metricsengine.*;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.*;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricTotalNumberOfIssues}
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues}
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -40,7 +42,7 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues()}.
 	 */
 	@Test
 	public void testMetricTotalNumberOfIssues() {
@@ -51,12 +53,12 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricTotalNumberOfIssuesMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
+	public void testMetricTotalNumberOfIssuesMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
 		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
 		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricTotalNumberOfIssues.getValueMaxDefault(), "Expected another max value");
@@ -64,20 +66,20 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricTotalNumberOfIssues(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "TNI = Total number of issues"
@@ -94,7 +96,7 @@ public class MetricTotalNumberOfIssuesTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricTotalNumberOfIssues#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 *"TNI = Total number of issues"

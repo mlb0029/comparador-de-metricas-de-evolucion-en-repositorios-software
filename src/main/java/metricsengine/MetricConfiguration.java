@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import datamodel.Repository;
 import exceptions.MetricsEngineException;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
 
 /**
@@ -59,7 +60,7 @@ public class MetricConfiguration implements Metric, Serializable {
 	 * 
 	 * @param metric Metric to configure.
 	 */
-	public MetricConfiguration(MetricTemplate metric) {
+	public MetricConfiguration(NumericValueMetricTemplate metric) {
 		if (metric == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		this.metric = metric;

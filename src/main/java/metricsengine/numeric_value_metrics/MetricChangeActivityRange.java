@@ -1,9 +1,8 @@
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;
 
 import datamodel.Repository;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
-import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -11,7 +10,7 @@ import metricsengine.values.ValueDecimal;
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  */
-public class MetricChangeActivityRange extends MetricTemplate {
+public class MetricChangeActivityRange extends NumericValueMetricTemplate {
 	
 	/**
 	 * Description.
@@ -39,12 +38,12 @@ public class MetricChangeActivityRange extends MetricTemplate {
 	/**
 	 * Minimum acceptable value.
 	 */
-	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(6.0);
+	public static final NumericValue DEFAULT_MIN_VALUE = new ValueDecimal(6.0);
 	
 	/**
 	 * Maximum acceptable value.
 	 */
-	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(26.4);
+	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(26.4);
 	
 	/**
 	 * Constructor that initializes the metric with default values.
@@ -52,24 +51,9 @@ public class MetricChangeActivityRange extends MetricTemplate {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricChangeActivityRange() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
-	public static final EvaluationFunction EVALUATION_FUNCTION = 
-			(measuredValue, minValue, maxValue) -> {
-				try {
-					Double value, min, max;
-					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
-					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
-					max = MetricTemplate.formatTwoDecimals(((ValueDecimal) maxValue).getValue());
-					if (value > min && value < max) return EvaluationResult.GOOD;
-					else if (value == min || value == max) return EvaluationResult.WARNING;
-					else return EvaluationResult.BAD;
-				} catch (Exception e){
-					return EvaluationResult.BAD;
-				}
-			};
-			
 	/**
 	 * Constructor that initializes the metric with default values passed by parameter.
 	 * 
@@ -77,15 +61,12 @@ public class MetricChangeActivityRange extends MetricTemplate {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricChangeActivityRange(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
+	public MetricChangeActivityRange(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
+		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 
-	/* (non-Javadoc)
-	 * @see metricsengine.metrics.AMetric#check(repositorydatasource.model.Repository)
-	 */
 	@Override
-	protected Boolean check(Repository repository) {
+	public Boolean check(Repository repository) {
 		return  repository != null &&
 				repository.getRepositoryInternalMetrics().getTotalNumberOfCommits() != null &&
 				repository.getRepositoryInternalMetrics().getTotalNumberOfCommits() >= 0 &&
@@ -93,22 +74,9 @@ public class MetricChangeActivityRange extends MetricTemplate {
 				repository.getRepositoryInternalMetrics().getLifeSpanMonths() > 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see metricsengine.metrics.AMetric#run(repositorydatasource.model.Repository)
-	 */
 	@Override
-	protected IValue run(Repository repository) {
+	public NumericValue run(Repository repository) {
 		double result = (double) repository.getRepositoryInternalMetrics().getTotalNumberOfCommits() / repository.getRepositoryInternalMetrics().getLifeSpanMonths();
 		return new ValueDecimal(result);
-	}
-
-	@Override
-	public EvaluationResult evaluate(IValue measuredValue) {
-		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
-	}
-
-	@Override
-	public EvaluationFunction getEvaluationFunction() {
-		return EVALUATION_FUNCTION;
 	}
 }

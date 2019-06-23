@@ -34,18 +34,16 @@ import datamodel.Repository;
 import exceptions.RepositoryDataSourceException;
 import metricsengine.Measure;
 import metricsengine.Metric;
-import metricsengine.Metric.EvaluationResult;
 import metricsengine.MetricConfiguration;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricsResults;
-import metricsengine.metrics.MetricAverageDaysBetweenCommits;
-import metricsengine.metrics.MetricAverageDaysToCloseAnIssue;
-import metricsengine.metrics.MetricChangeActivityRange;
-import metricsengine.metrics.MetricCommitsPerIssue;
-import metricsengine.metrics.MetricDaysBetweenFirstAndLastCommit;
-import metricsengine.metrics.MetricPeakChange;
-import metricsengine.metrics.MetricPercentageClosedIssues;
-import metricsengine.metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits;
+import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue;
+import metricsengine.numeric_value_metrics.MetricChangeActivityRange;
+import metricsengine.numeric_value_metrics.MetricCommitsPerIssue;
+import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
+import metricsengine.numeric_value_metrics.MetricPeakChange;
+import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
 import metricsengine.values.IValue;
 import metricsengine.values.NumericValue;
 import metricsengine.values.ValueUncalculated;
@@ -93,7 +91,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 		header.setTitle("Project name");
 		addComponentColumn(r -> createProjectNameLink(r))
 			.setKey("repositoryNameColumn")
-			.setWidth("13em")
+			.setWidth("12em")
 			.setSortable(true)
 			.setComparator(Repository::getName)
 			.setHeader(header);
@@ -166,7 +164,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 		
 	}
 	
-	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends MetricTemplate> metricType) {
+	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends Metric> metricType) {
 		VerticalLayout header = new VerticalLayout();
 		Label descriptionLabel = new Label(headerText);
 		descriptionLabel.setTitle(headerTitle);
@@ -182,6 +180,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 					String value = getValueMeasuredForMetric(r, metricType);
 					Span span = new Span(value);
 					span.setClassName(getClassNameByEvaluation(r, metricType));
+					if(value.equals(NOT_CALCULATED)) span.setTitle("Not calculated");
 					return span;
 				})
 			.setKey(key)
@@ -203,8 +202,8 @@ public class RepositoriesGrid extends Grid<Repository> {
 	private void setMetricConfigTip(Class<? extends Metric> metricType, Label configLabel) {
 		MetricConfiguration metricConfiguration = MetricsService.getMetricsService().getCurrentMetricProfile().getMetricConfigurationByMetric(metricType);
 		if(metricConfiguration != null) {
-			configLabel.setText(metricConfiguration.getValueMin().getValueString() + " - " + metricConfiguration.getValueMax().getValueString());
-			configLabel.setTitle("Q1 = " + metricConfiguration.getValueMin().getValueString() + " & Q3 = " + metricConfiguration.getValueMax().getValueString());
+			configLabel.setText(formatStringTwoDecimals(metricConfiguration.getValueMin().getValueString()) + " - " + formatStringTwoDecimals(metricConfiguration.getValueMax().getValueString()));
+			configLabel.setTitle("Q1 = " + formatStringTwoDecimals(metricConfiguration.getValueMin().getValueString()) + " & Q3 = " + formatStringTwoDecimals(metricConfiguration.getValueMax().getValueString()));
 			configLabel.addClassName("MetricConfigTip");
 		}
 	}
@@ -214,7 +213,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 			setMetricConfigTip(mct.getKey(), mct.getValue());
 		}
 	}
-	
+
 	private Button createRemoveButton(Repository repository) {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.TRASH));
@@ -297,15 +296,9 @@ public class RepositoriesGrid extends Grid<Repository> {
 		return measure;
 	}
 	
-	private EvaluationResult getEvaluationForMetric(Repository repository, Class<? extends Metric> metricType) {
-		Measure measure = getMeasureForMetric(repository, metricType);
-		if (measure == null) return EvaluationResult.BAD;
-		return measure.getMetricConfiguration().evaluate(measure.getMeasuredValue());
-	}
-	
 	private String getClassNameByEvaluation(Repository repository, Class<? extends Metric> metricType) {
 		String classNames = "metricEvaluation ";
-		switch (getEvaluationForMetric(repository, metricType)) {
+		switch (getMeasureForMetric(repository, metricType).evaluate()) {
 		case GOOD:
 			return classNames + "metricEvaluationGood";
 		case WARNING:

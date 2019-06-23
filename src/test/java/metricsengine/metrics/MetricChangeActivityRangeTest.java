@@ -12,13 +12,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricChangeActivityRange;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricChangeActivityRange}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -42,7 +44,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#MetricChangeActivityRange()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#MetricChangeActivityRange()}.
 	 */
 	@Test
 	public void testMetricChangeActivityRange() {
@@ -53,12 +55,12 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricChangeActivityRangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricChangeActivityRange = new MetricChangeActivityRange(metricDescription, min, max);
+	public void testMetricChangeActivityRangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricChangeActivityRange = new MetricChangeActivityRange(metricDescription, min, max);
 		assertTrue(metricDescription == metricChangeActivityRange.getDescription(), "Expected another description");
 		assertTrue(min == metricChangeActivityRange.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricChangeActivityRange.getValueMaxDefault(), "Expected another max value");
@@ -66,20 +68,20 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricChangeActivityRangeNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricChangeActivityRangeNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricChangeActivityRange(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"
@@ -98,7 +100,7 @@ public class MetricChangeActivityRangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricChangeActivityRange#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "CAR = TNC / NM. CAR = Number of changes relative to the number of months in the period, TNC = Total number of commits, NM = Number of months"

@@ -14,13 +14,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -44,7 +46,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue()}.
 	 */
 	@Test
 	public void testMetricAverageDaysToCloseAnIssue() {
@@ -55,12 +57,12 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricAverageDaysToCloseAnIssueDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricAverageDaysToCloseAnIssue = new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
+	public void testMetricAverageDaysToCloseAnIssueDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricAverageDaysToCloseAnIssue = new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
 		assertTrue(metricDescription == metricAverageDaysToCloseAnIssue.getDescription(), "Expected another description");
 		assertTrue(min == metricAverageDaysToCloseAnIssue.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricAverageDaysToCloseAnIssue.getValueMaxDefault(), "Expected another max value");
@@ -68,20 +70,20 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricAverageDaysToCloseAnIssueNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricAverageDaysToCloseAnIssueNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."
@@ -99,7 +101,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysToCloseAnIssue#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#run(datamodel.Repository)}.
 	 * <p>
 	 *  Check "run" method for values in this formula: <br/>
 	 * "ADCI = SUM(DCI) / NCI. ADCI = Average of days to close an issue. NCI = Number of closed issues. DCI = Vector with the days it took to close each issue."

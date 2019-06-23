@@ -12,13 +12,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricCommitsPerIssue;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricCommitsPerIssue}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -42,7 +44,7 @@ public class MetricCommitsPerIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#MetricCommitsPerIssue()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#MetricCommitsPerIssue()}.
 	 */
 	@Test
 	public void testMetricCommitsPerIssue() {
@@ -53,12 +55,12 @@ public class MetricCommitsPerIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricCommitsPerIssueDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricCommitsPerIssue = new MetricCommitsPerIssue(metricDescription, min, max);
+	public void testMetricCommitsPerIssueDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricCommitsPerIssue = new MetricCommitsPerIssue(metricDescription, min, max);
 		assertTrue(metricDescription == metricCommitsPerIssue.getDescription(), "Expected another description");
 		assertTrue(min == metricCommitsPerIssue.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricCommitsPerIssue.getValueMaxDefault(), "Expected another max value");
@@ -66,20 +68,20 @@ public class MetricCommitsPerIssueTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricCommitsPerIssueNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricCommitsPerIssueNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricCommitsPerIssue(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"
@@ -97,7 +99,7 @@ public class MetricCommitsPerIssueTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricCommitsPerIssue#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits"

@@ -285,25 +285,37 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 	
 	private void createMetricProfile() {
-		ConfirmDialog.createError()
-		.withCaption("Error")
-		.withMessage("Not implemented. Please, contact the application administrator.")
-		.withOkButton()
-		.open();
+		if(RepositoriesCollectionService.getInstance().getRepositories().isEmpty()) {
+			ConfirmDialog.createWarning()
+			.withCaption("No repository")
+			.withMessage("No repository has been added, please add at least one.")
+			.withOkButton()
+			.open();
+		} else {
+			try {
+				MetricsService ms = MetricsService.getMetricsService();		
+				ms.setCurrentMetricProfileToCalculated();
+				ms.evaluateRepositoryMetrics();
+				updateGrid();
+			} catch (Exception e) {
+				LOGGER.error("Error evaluating repositories with calculated profile. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
+			}
+		}
 	}
 	
 	private void loadDefaultMetricProfile() {
 		try {
-			MetricsService ms = MetricsService.getMetricsService();
-			RepositoriesCollectionService rc = RepositoriesCollectionService.getInstance();
-			
+			MetricsService ms = MetricsService.getMetricsService();		
 			ms.setCurrentMetricProfileToDefault();
-			for (Repository repository : rc.getRepositories()) {
-				ms.evaluateRepositoryMetrics(repository);
-			}
+			ms.evaluateRepositoryMetrics();
 			updateGrid();
 		} catch (Exception e) {
-			LOGGER.error("Error evaluating repositories.. Exception occurred: " + e.getMessage());
+			LOGGER.error("Error evaluating repositories with default profile. Exception occurred: " + e.getMessage());
 			ConfirmDialog.createError()
 			.withCaption("Error")
 			.withMessage("An error has occurred. Please, contact the application administrator.")

@@ -24,7 +24,7 @@ import metricsengine.values.ValueInteger;
 public class ArgumentsProviders {
 
 	/**
-	 * Arguments for {@link metricsengine.MetricTemplate#AMetric(MetricDescription, IValue, IValue)}
+	 * Arguments for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#AMetric(MetricDescription, IValue, IValue)}
 	 * <p>
 	 * Returns: description, Ivalue min, Ivalue max.
 	 * 
@@ -40,7 +40,7 @@ public class ArgumentsProviders {
 	}
 	
 	/**
-	 * Arguments for {@link metricsengine.MetricTemplate#AMetric(MetricDescription, IValue, IValue)}
+	 * Arguments for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#AMetric(MetricDescription, IValue, IValue)}
 	 * <p>
 	 * Returns: description, Ivalue min, Ivalue max.
 	 * 

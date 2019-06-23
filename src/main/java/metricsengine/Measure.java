@@ -83,4 +83,8 @@ public class Measure implements Serializable{
 	public Date getDateOfMeasurement() {
 		return dateOfMeasurement;
 	}
+	
+	public EvaluationResult evaluate() {
+		return metricConfiguration.evaluate(measuredValue);
+	}
 }

@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import metricsengine.metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
 
@@ -16,11 +17,11 @@ import metricsengine.values.ValueInteger;
 public class MetricConfigurationTest {
 
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.numeric_value_metrics.NumericValueMetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValue() {
-		MetricTemplate metric = new MetricTotalNumberOfIssues();
+		NumericValueMetricTemplate metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = new ValueInteger(0);
 		IValue valueMax = new ValueInteger(10);
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric, valueMin, valueMax);
@@ -32,7 +33,7 @@ public class MetricConfigurationTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.numeric_value_metrics.NumericValueMetricTemplate, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValueNullArguments() {		
@@ -50,11 +51,11 @@ public class MetricConfigurationTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.numeric_value_metrics.NumericValueMetricTemplate)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetric() {
-		MetricTemplate metric = new MetricTotalNumberOfIssues();
+		NumericValueMetricTemplate metric = new MetricTotalNumberOfIssues();
 		IValue valueMin = metric.getValueMinDefault();
 		IValue valueMax = metric.getValueMaxDefault();
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
@@ -66,7 +67,7 @@ public class MetricConfigurationTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.MetricTemplate)}.
+	 * Test method for {@link metricsengine.MetricConfiguration#MetricConfiguration(metricsengine.numeric_value_metrics.NumericValueMetricTemplate)}.
 	 */
 	@Test
 	public void testMetricConfigurationAMetricNullArguments() {

@@ -51,12 +51,17 @@ public class ValueInteger extends NumericValue {
 	}
 
 	@Override
-	public long longValue() {
+	public double doubleValue() {
 		return value;
 	}
 
 	@Override
-	public double doubleValue() {
-		return value;
+	public IValue valueFactory(int value) {
+		return new ValueInteger(value);
+	}
+
+	@Override
+	public IValue valueFactory(double value) {
+		return new ValueInteger((int) Math.round(value));
 	}
 }

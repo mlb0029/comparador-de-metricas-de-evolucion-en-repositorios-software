@@ -1,9 +1,14 @@
-package metricsengine;
-
-import java.text.NumberFormat;
+package metricsengine.numeric_value_metrics;
 
 import datamodel.Repository;
+import metricsengine.EvaluationResult;
+import metricsengine.Measure;
+import metricsengine.Metric;
+import metricsengine.MetricConfiguration;
+import metricsengine.MetricDescription;
+import metricsengine.MetricsResults;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueUncalculated;
 
 /**
@@ -12,7 +17,7 @@ import metricsengine.values.ValueUncalculated;
  * @author MALB
  *
  */
-public abstract class MetricTemplate implements Metric {
+public abstract class NumericValueMetricTemplate implements Metric {
 	
 	/**
 	 * Description.
@@ -20,6 +25,33 @@ public abstract class MetricTemplate implements Metric {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private static final long serialVersionUID = 8459616601304750512L;
+
+	protected static final EvaluationFunction EVAL_FUNC_GREATER_THAN_Q1 = (measuredValue, minValue, maxValue) -> {
+		try {
+			Double value, min;
+			value = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) measuredValue).doubleValue());
+			min = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) minValue).doubleValue());
+			if (value > min) return EvaluationResult.GOOD;
+			else if (value.equals(min)) return EvaluationResult.WARNING;
+			else return EvaluationResult.BAD;
+		} catch (Exception e){
+			return EvaluationResult.BAD;
+		}
+	};
+
+	protected static final EvaluationFunction EVAL_FUNC_BETWEEN_Q1_Q3 = (measuredValue, minValue, maxValue) -> {
+		try {
+			Double value, min, max;
+			value = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) measuredValue).doubleValue());
+			min = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) minValue).doubleValue());
+			max = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) maxValue).doubleValue());
+			if (value > min && value < max) return EvaluationResult.GOOD;
+			else if (value.equals(min)  || value.equals(max)) return EvaluationResult.WARNING;
+			else return EvaluationResult.BAD;
+		} catch (Exception e){
+			return EvaluationResult.BAD;
+		}
+	};
 
 	/**
 	 * The description of the metric.
@@ -36,8 +68,8 @@ public abstract class MetricTemplate implements Metric {
 	 */
 	private IValue valueMaxDefault;
 	
-	protected EvaluationFunction evaluationFunction;
-
+	private EvaluationFunction evaluationFunction;
+	
 	/**
 	 * Constructor of a metric that establishes the description and the default values.
 	 * 
@@ -46,10 +78,11 @@ public abstract class MetricTemplate implements Metric {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	protected MetricTemplate(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault, EvaluationFunction evaluationFunction) {
+	protected NumericValueMetricTemplate(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault, EvaluationFunction evaluationFunction) {
 		setDescription(description);
 		setValueMinDefault(valueMinDefault);
 		setValueMaxDefault(valueMaxDefault);
+		setEvaluationFunction(evaluationFunction);
 	}
 
 	/**
@@ -88,6 +121,14 @@ public abstract class MetricTemplate implements Metric {
 		return valueMaxDefault;
 	}
 	
+	/* (non-Javadoc)
+	 * @see metricsengine.Metric#getEvaluationFunction()
+	 */
+	@Override
+	public EvaluationFunction getEvaluationFunction() {
+		return evaluationFunction;
+	}
+
 	/**
 	 * Sets the description of the metric.
 	 * 
@@ -124,6 +165,16 @@ public abstract class MetricTemplate implements Metric {
 		this.valueMaxDefault = valueMaxDefault;
 	}
 
+	/**
+	 * Sets the evaluationFunction.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param evaluationFunction the evaluationFunction to set
+	 */
+	private void setEvaluationFunction(EvaluationFunction evaluationFunction) {
+		this.evaluationFunction = evaluationFunction;
+	}
+
 	/* (non-Javadoc)
 	 * @see metricsengine.IMetric#calculate(repositorydatasource.model.Repository, metricsengine.MetricsResults)
 	 */
@@ -150,13 +201,20 @@ public abstract class MetricTemplate implements Metric {
 	 * @param repository Repository from which to obtain the metric
 	 * @return The calculated value
 	 */
-	protected abstract IValue run(Repository repository);
+	protected abstract NumericValue run(Repository repository);
 	
+	/* (non-Javadoc)
+	 * @see metricsengine.Metric#evaluate(metricsengine.values.IValue)
+	 */
+	@Override
+	public EvaluationResult evaluate(IValue measuredValue) {
+		if (measuredValue instanceof NumericValue)
+			return getEvaluationFunction().evaluate(measuredValue, valueMinDefault, valueMaxDefault);
+		else
+			return EvaluationResult.BAD;
+	}
+
 	protected static Double formatTwoDecimals(Double number) {
-		String valueFormated = "";
-		NumberFormat numberFormat = NumberFormat.getNumberInstance();
-		numberFormat.setMaximumFractionDigits(2);
-		valueFormated = numberFormat.format(number);				
-		return Double.valueOf(valueFormated);
+		return Math.round(number * 100.0) / 100.0;
 	}
 }

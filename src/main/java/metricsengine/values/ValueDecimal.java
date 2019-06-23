@@ -51,13 +51,18 @@ public class ValueDecimal extends NumericValue {
 	}
 
 	@Override
-	public long longValue() {
-		return (long) value;
+	public double doubleValue() {
+		return value;
 	}
 
 	@Override
-	public double doubleValue() {
-		return value;
+	public IValue valueFactory(int value) {
+		return new ValueDecimal((double) value);
+	}
+
+	@Override
+	public IValue valueFactory(double value) {
+		return new ValueDecimal(value);
 	}
 
 }

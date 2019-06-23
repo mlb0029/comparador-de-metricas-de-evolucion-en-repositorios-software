@@ -17,5 +17,9 @@ public interface IValue extends Serializable{
 	 * 
 	 * @return A value parsed to string.
 	 */
-	String getValueString();	
+	String getValueString();
+
+	IValue valueFactory(double value);
+
+	IValue valueFactory(int value);	
 }

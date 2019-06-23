@@ -13,12 +13,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import metricsengine.MetricDescription.EnumTypeOfScale;
-import metricsengine.metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueInteger;
 
 /**
- * Test class for {@link MetricTemplate}.
+ * Test class for {@link NumericValueMetricTemplate}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -28,7 +30,7 @@ public class AMetricTest {
 	/**
 	 * Test metric.
 	 */
-	private static MetricTemplate testMetric;
+	private static NumericValueMetricTemplate testMetric;
 	
 	/**
 	 * Daughter class of AMetric to perform tests.
@@ -36,7 +38,7 @@ public class AMetricTest {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 *
 	 */
-	private static class TestMetric extends MetricTemplate{
+	private static class TestMetric extends NumericValueMetricTemplate{
 		
 		/**
 		 * Description.
@@ -53,12 +55,12 @@ public class AMetricTest {
 		/**
 		 * Minimum acceptable value.
 		 */
-		public static final IValue MINVALUE = new ValueInteger(0);
+		public static final NumericValue MINVALUE = new ValueInteger(0);
 		
 		/**
 		 * Maximum acceptable value.
 		 */
-		public static final IValue MAXVALUE = new ValueInteger(10);
+		public static final NumericValue MAXVALUE = new ValueInteger(10);
 		
 		/**
 		 * 
@@ -78,7 +80,7 @@ public class AMetricTest {
 		 * @param valueMinDefault Min value.
 		 * @param valueMaxDefault Max value.
 		 */
-		public TestMetric(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
+		public TestMetric(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
 			super(description, valueMinDefault, valueMaxDefault, null);
 		}
 	
@@ -94,7 +96,7 @@ public class AMetricTest {
 		 * @see metricsengine.AMetric#run(repositorydatasource.model.Repository)
 		 */
 		@Override
-		protected IValue run(Repository repository) {
+		protected NumericValue run(Repository repository) {
 			return new ValueInteger(repository.getId());
 		}
 
@@ -123,12 +125,12 @@ public class AMetricTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.MetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testAMetric(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate testMetric = new TestMetric(metricDescription, min, max);
+	public void testAMetric(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate testMetric = new TestMetric(metricDescription, min, max);
 		assertTrue(metricDescription == testMetric.getDescription(), "Expected another description");
 		assertTrue(min == testMetric.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == testMetric.getValueMaxDefault(), "Expected another max value");
@@ -136,20 +138,20 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#AMetric(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	* <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testAMetricNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testAMetricNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricTotalNumberOfIssues(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 	 
 	/**
-	 * Test method for {@link metricsengine.MetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * 
 	 * TODO Measure Equal, ToString Method
 	 */
@@ -160,7 +162,7 @@ public class AMetricTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.MetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.NumericValueMetricTemplate#calculate(datamodel.Repository, metricsengine.MetricConfiguration, metricsengine.MetricsResults)}.
 	 * <p>
 	 * Using null arguments.
 	 */

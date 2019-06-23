@@ -12,6 +12,10 @@ public abstract class NumericValue implements IValue {
 	 */
 	private static final long serialVersionUID = 6874013537289624369L;
 	public abstract int intValue();
-	public abstract long longValue();
 	public abstract double doubleValue();
+	
+	@Override
+	public abstract IValue valueFactory(int value);
+	@Override
+	public abstract IValue valueFactory(double value);
 }

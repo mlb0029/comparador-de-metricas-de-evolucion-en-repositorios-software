@@ -24,4 +24,14 @@ public class ValueUncalculated implements IValue {
 		return VALUE;
 	}
 
+	@Override
+	public IValue valueFactory(double value) {
+		return new ValueUncalculated();
+	}
+
+	@Override
+	public IValue valueFactory(int value) {
+		return new ValueUncalculated();
+	}
+
 }

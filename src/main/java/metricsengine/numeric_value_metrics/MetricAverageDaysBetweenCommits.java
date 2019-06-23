@@ -1,4 +1,4 @@
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import datamodel.Repository;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
-import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -18,7 +17,7 @@ import metricsengine.values.ValueDecimal;
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
-public class MetricAverageDaysBetweenCommits extends MetricTemplate {
+public class MetricAverageDaysBetweenCommits extends NumericValueMetricTemplate {
 	
 	/**
 	 * Description.
@@ -46,27 +45,12 @@ public class MetricAverageDaysBetweenCommits extends MetricTemplate {
 	/**
 	 * Minimum acceptable value.
 	 */
-	public static final IValue DEFAULT_MIN_VALUE = new ValueDecimal(1.0);
+	public static final NumericValue DEFAULT_MIN_VALUE = new ValueDecimal(1.0);
 	
 	/**
 	 * Maximum acceptable value.
 	 */
-	public static final IValue DEFAULT_MAX_VALUE = new ValueDecimal(4.3);
-	
-	public static final EvaluationFunction EVALUATION_FUNCTION = 
-			(measuredValue, minValue, maxValue) -> {
-				try {
-					Double value, min, max;
-					value = MetricTemplate.formatTwoDecimals(((ValueDecimal) measuredValue).getValue());
-					min = MetricTemplate.formatTwoDecimals(((ValueDecimal) minValue).getValue());
-					max = MetricTemplate.formatTwoDecimals(((ValueDecimal) maxValue).getValue());
-					if (value > min && value < max) return EvaluationResult.GOOD;
-					else if (value == min || value == max) return EvaluationResult.WARNING;
-					else return EvaluationResult.BAD;
-				} catch (Exception e){
-					return EvaluationResult.BAD;
-				}
-			};
+	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(4.3);
 			
 	/**
 	 * Constructor that initializes the metric with default values.
@@ -74,7 +58,7 @@ public class MetricAverageDaysBetweenCommits extends MetricTemplate {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public MetricAverageDaysBetweenCommits() {
-		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, EVALUATION_FUNCTION);
+		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
 	/**
@@ -84,15 +68,15 @@ public class MetricAverageDaysBetweenCommits extends MetricTemplate {
 	 * @param valueMinDefault Minimum value by default.
 	 * @param valueMaxDefault Maximum value by default.
 	 */
-	public MetricAverageDaysBetweenCommits(MetricDescription description, IValue valueMinDefault, IValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, EVALUATION_FUNCTION);
+	public MetricAverageDaysBetweenCommits(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
+		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 
 	/* (non-Javadoc)
 	 * @see metricsengine.metrics.AMetric#check(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected Boolean check(Repository repository) {
+	public Boolean check(Repository repository) {
 		Collection<Date> commitDates = repository.getRepositoryInternalMetrics().getCommitDates();
 		Integer totalNumberOfCommits = repository.getRepositoryInternalMetrics().getTotalNumberOfCommits();
 		
@@ -113,7 +97,7 @@ public class MetricAverageDaysBetweenCommits extends MetricTemplate {
 	 * @see metricsengine.metrics.AMetric#run(repositorydatasource.model.Repository)
 	 */
 	@Override
-	protected IValue run(Repository repository) {
+	public NumericValue run(Repository repository) {
 		long date1;
 		long date2;
 		int daysBetweenCommits;
@@ -126,15 +110,5 @@ public class MetricAverageDaysBetweenCommits extends MetricTemplate {
 			lstDaysBetweenCommits.add(daysBetweenCommits);
 		}
 		return new ValueDecimal(lstDaysBetweenCommits.stream().mapToInt(i -> i.intValue()).average().orElseThrow());
-	}
-
-	@Override
-	public EvaluationResult evaluate(IValue measuredValue) {
-		return getEvaluationFunction().evaluate(measuredValue, getValueMinDefault(), getValueMaxDefault());
-	}
-
-	@Override
-	public EvaluationFunction getEvaluationFunction() {
-		return EVALUATION_FUNCTION;
 	}
 }

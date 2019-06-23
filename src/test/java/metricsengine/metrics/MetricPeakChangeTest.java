@@ -18,13 +18,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricPeakChange;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricPeakChange}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricPeakChange}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -48,7 +50,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#MetricPeakChange()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#MetricPeakChange()}.
 	 */
 	@Test
 	public void testMetricPeakChange() {
@@ -59,12 +61,12 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricPeakChangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricPeakChange = new MetricPeakChange(metricDescription, min, max);
+	public void testMetricPeakChangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricPeakChange = new MetricPeakChange(metricDescription, min, max);
 		assertTrue(metricDescription == metricPeakChange.getDescription(), "Expected another description");
 		assertTrue(min == metricPeakChange.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricPeakChange.getValueMaxDefault(), "Expected another max value");
@@ -72,20 +74,20 @@ public class MetricPeakChangeTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricPeakChangeNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricPeakChangeNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricPeakChange(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"
@@ -103,7 +105,7 @@ public class MetricPeakChangeTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricPeakChange#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "PCC = NCPM / TNC. PCC = Peak Change Count, NCPM = Number of commits in peak month, TNC = Total number of commits"

@@ -20,7 +20,6 @@ public class MetricsServiceException extends ApplicationException {
 	 */
 	public static final int METRICP_ROFILE_NAME_IN_USE = 1;
 
-
 	/**
 	 * Constructor.
 	 *

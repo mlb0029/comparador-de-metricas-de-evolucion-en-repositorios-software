@@ -18,13 +18,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricTemplate;
 import metricsengine.MetricDescription;
+import metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits;
+import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
- * Unit test for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits}.
+ * Unit test for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits}.
  * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
@@ -48,7 +50,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#MetricAverageDaysBetweenCommits()}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits#MetricAverageDaysBetweenCommits()}.
 	 */
 	@Test
 	public void testMetricAverageDaysBetweenCommits() {
@@ -59,12 +61,12 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#MetricAverageDaysBetweenCommits(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits#MetricAverageDaysBetweenCommits(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricAverageDaysBetweenCommitsMetricDescriptionValueMinValueMax(MetricDescription metricDescription, IValue min, IValue max) {
-		MetricTemplate metricAverageDaysBetweenCommits = new MetricAverageDaysBetweenCommits(metricDescription, min, max);
+	public void testMetricAverageDaysBetweenCommitsMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
+		NumericValueMetricTemplate metricAverageDaysBetweenCommits = new MetricAverageDaysBetweenCommits(metricDescription, min, max);
 		assertTrue(metricDescription == metricAverageDaysBetweenCommits.getDescription(), "Expected another description");
 		assertTrue(min == metricAverageDaysBetweenCommits.getValueMinDefault(), "Expected another min value");
 		assertTrue(max == metricAverageDaysBetweenCommits.getValueMaxDefault(), "Expected another max value");
@@ -72,20 +74,20 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
 	 * <p>
 	 * Using null arguments.
 	 */
 	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
 	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricAverageDaysBetweenCommitsNullArguments(MetricDescription metricDescription, IValue min, IValue max) {
+	public void testMetricAverageDaysBetweenCommitsNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
 		assertThrows(IllegalArgumentException.class, () -> {
 			new MetricAverageDaysBetweenCommits(metricDescription, min, max);
 		}, "Expected exception when null arguments");
 	}
 
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits#check(datamodel.Repository)}.
 	 * <p>
 	 * Check "check" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."
@@ -103,7 +105,7 @@ public class MetricAverageDaysBetweenCommitsTest {
 	}
 	
 	/**
-	 * Test method for {@link metricsengine.metrics.MetricAverageDaysBetweenCommits#run(datamodel.Repository)}.
+	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits#run(datamodel.Repository)}.
 	 * <p>
 	 * Check "run" method for values in this formula: <br/>
 	 * "ADBC = SUM([i]-[i-1]; [i] = 1 -> [i] < TNC; CD)/(TNC-1) (in days). ADBC = Average of days between commits, CD = Vector with de commits dates, TNC = Total number of commits."

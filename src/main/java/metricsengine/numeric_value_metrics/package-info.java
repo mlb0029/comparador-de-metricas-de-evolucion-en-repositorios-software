@@ -4,4 +4,4 @@
  * @author MALB
  * 
  */
-package metricsengine.metrics;
+package metricsengine.numeric_value_metrics;

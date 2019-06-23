@@ -13,10 +13,6 @@ import metricsengine.values.IValue;
  */
 public interface Metric extends Serializable {
 	
-	public enum EvaluationResult {
-		GOOD, WARNING, BAD
-	}
-		
 	public interface EvaluationFunction {
 		EvaluationResult evaluate(IValue value, IValue minValue, IValue maxValue);
 	}
@@ -34,5 +30,4 @@ public interface Metric extends Serializable {
 	EvaluationResult evaluate(IValue measuredValue);
 
 	EvaluationFunction getEvaluationFunction();
-	
 }
