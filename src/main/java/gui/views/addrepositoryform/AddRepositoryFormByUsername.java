@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -21,6 +24,8 @@ import repositorydatasource.RepositoryDataSource;
 public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 
 	private static final long serialVersionUID = 244817979729487325L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddRepositoryFormByUsername.class);
 	
 	private static final String TAB_NAME = "By Username";
 	
@@ -56,7 +61,9 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 	@Override
 	public void clearFields() {
 		usernameTextField.clear();
+		usernameTextField.setInvalid(false);
 		repositoryComboBox.clear();
+		repositoryComboBox.setInvalid(false);
 	}
 
 	/* (non-Javadoc)
@@ -69,12 +76,14 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 		usernameTextField.setPlaceholder("User ID or username");
 		usernameTextField.setClearButtonVisible(true);
 		usernameTextField.addValueChangeListener(event -> updateUserRepositories());
+		usernameTextField.setRequired(true);
 		
 		repositoryComboBox = new ComboBox<Repository>();
 		repositoryComboBox.setWidth("50%");
-		repositoryComboBox.setPlaceholder("Repository");
+		repositoryComboBox.setPlaceholder("Project");
 		repositoryComboBox.setAllowCustomValue(false);
 		repositoryComboBox.setItemLabelGenerator(repository -> repository.getName());
+		repositoryComboBox.setRequired(true);
 		
 		HorizontalLayout repositorySelectorHLayout = new HorizontalLayout(usernameTextField, repositoryComboBox);
 		repositorySelectorHLayout.setWidthFull();
@@ -86,7 +95,7 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 	 */
 	@Override
 	protected Repository getRepositoryFromForms() throws RepositoryDataSourceException {
-		return repositoryComboBox.getOptionalValue().orElseThrow( () -> new RepositoryDataSourceException("No repository selected"));
+		return repositoryComboBox.getOptionalValue().orElse(null);
 	}
 
 	private void updateUserRepositories() {
@@ -102,13 +111,31 @@ public class AddRepositoryFormByUsername extends AddRepositoryFormTemplate {
 						.collect(Collectors.toList());
 				repositoryComboBox.setItems(repositories);
 				getResult().setText("User found");
+				getResult().setClassName("");
 			} else {
 				repositoryComboBox.setItems();
 				repositoryComboBox.clear();
 			}
+		} catch (RepositoryDataSourceException e) {
+			LOGGER.error("Error on updateUserRepositories(). Exception occurred: " + e.getMessage());
+			String errorMessage = "";
+			getResult().setClassName("errorMessage");
+			switch (e.getErrorCode()) {
+			case RepositoryDataSourceException.USER_NOT_FOUND:
+				errorMessage = "User not found";
+				break;
+			default:
+				errorMessage = "An error has occurred. Please, contact the application administrator.";
+				break;
+			}
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
 		} catch (Exception e) {
-			repositoryComboBox.setItems();
-			this.getResult().setText(e.getMessage());
+			LOGGER.error("Error on updateUserRepositories(). Exception occurred: " + e.getMessage());
+			String errorMessage = "";
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
 		}
 	}
 }

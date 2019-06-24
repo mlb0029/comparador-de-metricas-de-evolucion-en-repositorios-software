@@ -43,7 +43,7 @@ public class RepositoriesListView extends VerticalLayout {
 	private Select<RepositoryMenuItems> repositoryMenu = new Select<RepositoryMenuItems>();
 	private Select<ReviewMenuItems> reviewMenu = new Select<ReviewMenuItems>();
 	private RepositoriesGrid repositoriesGrid = new RepositoriesGrid();
-	private ListDataProvider<Repository> repositoriesDataProvider = null;
+	private ListDataProvider<Repository> repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
 
 	private enum RepositoryMenuItems {
 		ADD("Add new"),
@@ -85,26 +85,35 @@ public class RepositoriesListView extends VerticalLayout {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	public RepositoriesListView() {
-		repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
-		RepositoriesCollectionService.getInstance().addRepositoriesCollectionUpdatedListener(event -> updateGrid());
-		
-		initializeRepositoryMenu();
-		
-		initializeReviewMenu();
-		
-		initializeSearchBar();
-		
-		repositoriesGrid.setDataProvider(repositoriesDataProvider);
-		updateGrid();
-		
-		searchTextField.setWidth("60%");
-		repositoryMenu.setWidth("20%");
-		reviewMenu.setWidth("20%");
-		HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, repositoryMenu, reviewMenu);
-		searchBarLayout.setWidthFull();
-				
-		add(searchBarLayout, repositoriesGrid);
-		setSizeFull();
+		try {
+			repositoriesDataProvider = DataProvider.ofCollection(RepositoriesCollectionService.getInstance().getRepositories());
+			RepositoriesCollectionService.getInstance().addRepositoriesCollectionUpdatedListener(event -> updateGrid());
+			
+			initializeRepositoryMenu();
+			
+			initializeReviewMenu();
+			
+			initializeSearchBar();
+			
+			repositoriesGrid.setDataProvider(repositoriesDataProvider);
+			updateGrid();
+			
+			searchTextField.setWidth("60%");
+			repositoryMenu.setWidth("20%");
+			reviewMenu.setWidth("20%");
+			HorizontalLayout searchBarLayout = new HorizontalLayout(searchTextField, repositoryMenu, reviewMenu);
+			searchBarLayout.setWidthFull();
+					
+			add(searchBarLayout, repositoriesGrid);
+			setSizeFull();
+		} catch (Exception e) {
+			LOGGER.error("Error initializing RepositoriesListView. Exception occurred: " + e.getMessage());
+			ConfirmDialog.createError()
+			.withCaption("Error")
+			.withMessage("An error has occurred. Please, contact the application administrator.")
+			.withOkButton()
+			.open();
+		}
 	}
 
 	/**
@@ -116,38 +125,47 @@ public class RepositoriesListView extends VerticalLayout {
 		repositoryMenu.setItems(RepositoryMenuItems.values());
 		repositoryMenu.setTextRenderer(item -> item.getDisplay());
 		repositoryMenu.setEmptySelectionAllowed(false);
-		repositoryMenu.setPlaceholder("Repositories");
+		repositoryMenu.setPlaceholder("Project management");
 		repositoryMenu.addValueChangeListener(event -> {
-			if (!event.getHasValue().isEmpty()) {
-				event.getSource().clear();
-				switch (event.getValue()) {
-				case ADD:
-					addNewRepository();
-					break;
-				case IMPORT:
-					FileImportDialog fileImportDialog = new FileImportDialog()
-					.withCaption("Import repositories")
-					.withAcceptedFileTypes(".txt")
-					.withUploadListener(uploadEvent -> {
-						importRepositories(uploadEvent.getInputStream());
-					});
-					fileImportDialog.open();
-					break;
-				case EXPORT:
-					exportRepositories();
-					break;
-				case EXPORT_CSV:
-					generateCSVRepositories();
-					break;
-				default:
-					ConfirmDialog mb = ConfirmDialog
-					.createWarning()
-					.withCaption("Invalid selection")
-					.withMessage("")
-					.withOkButton();
-					mb.open();
-					break;
+			try {
+				if (!event.getHasValue().isEmpty()) {
+					event.getSource().clear();
+					switch (event.getValue()) {
+					case ADD:
+						addNewRepository();
+						break;
+					case IMPORT:
+						FileImportDialog fileImportDialog = new FileImportDialog()
+						.withCaption("Import repositories")
+						.withAcceptedFileTypes(".txt")
+						.withUploadListener(uploadEvent -> {
+							importRepositories(uploadEvent.getInputStream());
+						});
+						fileImportDialog.open();
+						break;
+					case EXPORT:
+						exportRepositories();
+						break;
+					case EXPORT_CSV:
+						generateCSVRepositories();
+						break;
+					default:
+						ConfirmDialog mb = ConfirmDialog
+						.createWarning()
+						.withCaption("Invalid selection")
+						.withMessage("")
+						.withOkButton();
+						mb.open();
+						break;
+					}
 				}
+			} catch (Exception e) {
+				LOGGER.error("Error in repository menu. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
 			}
 		});
 	}
@@ -161,32 +179,41 @@ public class RepositoriesListView extends VerticalLayout {
 		reviewMenu.setItems(ReviewMenuItems.values());
 		reviewMenu.setTextRenderer(item -> item.getDisplay());
 		reviewMenu.setEmptySelectionAllowed(false);
-		reviewMenu.setPlaceholder("Evaluate");
+		reviewMenu.setPlaceholder("Evaluate projects");
 		reviewMenu.addValueChangeListener(event -> {
-			if (!event.getHasValue().isEmpty()) {
-				event.getSource().clear();
-				switch (event.getValue()) {
-				case CREATE:
-					createMetricProfile();
-					break;
-				case DEFAULT:
-					loadDefaultMetricProfile();
-					break;
-				case IMPORT:
-					importMetricProfile();
-					break;
-				case EXPORT:
-					exportMetricProfile();
-					break;
-				default:
-					ConfirmDialog mb = ConfirmDialog
-						.createWarning()
-						.withCaption("Invalid selection")
-						.withMessage("")
-						.withOkButton();
-						mb.open();
-					break;
+			try {
+				if (!event.getHasValue().isEmpty()) {
+					event.getSource().clear();
+					switch (event.getValue()) {
+					case CREATE:
+						createMetricProfile();
+						break;
+					case DEFAULT:
+						loadDefaultMetricProfile();
+						break;
+					case IMPORT:
+						importMetricProfile();
+						break;
+					case EXPORT:
+						exportMetricProfile();
+						break;
+					default:
+						ConfirmDialog mb = ConfirmDialog
+							.createWarning()
+							.withCaption("Invalid selection")
+							.withMessage("")
+							.withOkButton();
+							mb.open();
+						break;
+					}
 				}
+			} catch (Exception e) {
+				LOGGER.error("Error in reviewMenu. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
 			}
 		});
 	}

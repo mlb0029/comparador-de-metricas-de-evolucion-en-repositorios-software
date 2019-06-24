@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -27,6 +30,8 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 	 */
 	private static final long serialVersionUID = 4044675763677227398L;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddRepositoryFormByGroup.class);
+	
 	private static final String TAB_NAME = "By Group";
 	
 	private static final String DESCRIPTION = "Enter a group name to be able to choose between one of its repositories.";
@@ -61,7 +66,9 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 	@Override
 	public void clearFields() {
 		groupNameTextField.clear();
+		groupNameTextField.setInvalid(false);
 		repositoryComboBox.clear();
+		repositoryComboBox.setInvalid(false);
 	}
 
 	/* (non-Javadoc)
@@ -77,12 +84,14 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 		groupNameTextField.setPlaceholder("Group ID or groupname");
 		groupNameTextField.setClearButtonVisible(true);
 		groupNameTextField.addValueChangeListener(event -> updateGroupRepositories());
+		groupNameTextField.setRequired(true);
 		
 		repositoryComboBox = new ComboBox<Repository>();
 		repositoryComboBox.setWidth("50%");
-		repositoryComboBox.setPlaceholder("Repository");
+		repositoryComboBox.setPlaceholder("Project");
 		repositoryComboBox.setAllowCustomValue(false);
 		repositoryComboBox.setItemLabelGenerator(repository -> repository.getName());
+		repositoryComboBox.setRequired(true);
 		
 		HorizontalLayout repositorySelectorHLayout = new HorizontalLayout(groupNameTextField, repositoryComboBox);
 		repositorySelectorHLayout.setWidthFull();
@@ -93,8 +102,8 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 	 * @see gui.views.addrepositoryform.AddRepositoryFormTemplate#connect()
 	 */
 	@Override
-	protected Repository getRepositoryFromForms() throws RepositoryDataSourceException {
-		return repositoryComboBox.getOptionalValue().orElseThrow( () -> new RepositoryDataSourceException("No repository selected"));
+	protected Repository getRepositoryFromForms() {
+		return repositoryComboBox.getOptionalValue().orElse(null);
 	}
 	
 	private void updateGroupRepositories() {
@@ -110,13 +119,31 @@ public class AddRepositoryFormByGroup extends AddRepositoryFormTemplate {
 						.collect(Collectors.toList());
 				repositoryComboBox.setItems(repositories);
 				getResult().setText("Group found");
+				getResult().setClassName("");
 			} else {
 				repositoryComboBox.setItems();
 				repositoryComboBox.clear();
 			}
+		} catch (RepositoryDataSourceException e) {
+			LOGGER.error("Error on updateGroupRepositories(). Exception occurred: " + e.getMessage());
+			String errorMessage = "";
+			getResult().setClassName("errorMessage");
+			switch (e.getErrorCode()) {
+			case RepositoryDataSourceException.GROUP_NOT_FOUND:
+				errorMessage = "Group not found. It doesn't exists or may be inaccessible due to your connection level.";
+				break;
+			default:
+				errorMessage = "An error has occurred. Please, contact the application administrator.";
+				break;
+			}
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
 		} catch (Exception e) {
-			repositoryComboBox.setItems();
-			this.getResult().setText(e.getMessage());
+			LOGGER.error("Error on updateGroupRepositories(). Exception occurred: " + e.getMessage());
+			String errorMessage = "";
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
 		}
 	}
 }

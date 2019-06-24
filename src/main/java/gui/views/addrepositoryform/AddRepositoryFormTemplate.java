@@ -3,6 +3,9 @@ package gui.views.addrepositoryform;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -43,6 +46,8 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 
 	private static final long serialVersionUID = 7001361983934286617L;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddRepositoryFormTemplate.class);
+	
 	private Set<AddedSuccessfulListener> listeners = new HashSet<>();
 	
 	private Tab tab = new Tab();
@@ -78,17 +83,38 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 	private void addRepository() {
 		try {
 			Repository repository = getRepositoryFromForms();
-			RepositoriesCollectionService.getInstance().addRepository(repository);
-			MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
-			listeners.forEach(l -> l.onAddedSuccessful(repository));
-			result.setText("Project added correctly");
-		} catch (RepositoryDataSourceException ex) {
-			result.setText(ex.getMessage());
-		} catch (RepositoriesCollectionServiceException ex) {
-			result.setText(ex.getMessage());
-		} catch (Exception ex) {
-			ApplicationException exceptipn = new ApplicationException("Unknown error", ex);
-			result.setText(exceptipn.getMessage());
+			if(repository != null) {
+				RepositoriesCollectionService.getInstance().addRepository(repository);
+				MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
+				listeners.forEach(l -> l.onAddedSuccessful(repository));
+				result.setText("Project added correctly");
+				result.setClassName("");				
+			} else {
+				String errorMessage = "No project selected.";
+				getResult().setClassName("errorMessage");
+				getResult().setText(errorMessage);
+				getResult().setTitle(errorMessage);
+			}
+		} catch (ApplicationException e) {
+			String errorMessage = "";
+			if (e instanceof RepositoryDataSourceException) {
+				if (((RepositoryDataSourceException)e).getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND){
+					errorMessage = "Project not found. It doesn't exists or may be inaccessible due to your connection level.";
+				}
+			} else if (e instanceof RepositoriesCollectionServiceException) {
+				if (((RepositoriesCollectionServiceException)e).getErrorCode() == RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS){
+					errorMessage = "The project already exists.";
+				}
+			}
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
+		} catch (Exception e) {
+			LOGGER.error("" + e.getMessage());
+			String errorMessage = "An error has occurred. Please, contact the application administrator.";
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
 		}
 	}
 	
@@ -154,7 +180,7 @@ public abstract class AddRepositoryFormTemplate implements AddRepositoryForm{
 
 	protected abstract void addFormElements();
 
-	protected abstract Repository getRepositoryFromForms() throws RepositoryDataSourceException;
+	protected abstract Repository getRepositoryFromForms() throws ApplicationException;
 
 	/* (non-Javadoc)
 	 * @see gui.views.connectionForms.IConnForm#addConnectionSuccessfulListener(gui.views.connectionForms.IConnForm.IConnectionSuccessfulListener)

@@ -1,5 +1,9 @@
 package gui.views.connectionforms;
 
+import org.claspina.confirmdialog.ConfirmDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.icon.Icon;
@@ -15,6 +19,8 @@ import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 public class CloseConnectionDialog extends Dialog {
 
 	private static final long serialVersionUID = -3169215633646184159L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CloseConnectionDialog.class);
 
 	private ConnectionInfoComponent connectionInfoComponent = new ConnectionInfoComponent();
 	
@@ -31,10 +37,10 @@ public class CloseConnectionDialog extends Dialog {
 			if(event.isOpened()) {
 				if (rds.getConnectionType().equals(EnumConnectionType.NOT_CONNECTED)) {
 					closeConnectionButton.setText("Connect");
-					closeConnectionButton.setIcon(new Icon(VaadinIcon.CONNECT));
+					closeConnectionButton.setIcon(VaadinIcon.CONNECT.create());
 				} else {
 					closeConnectionButton.setText("Close connection");
-					closeConnectionButton.setIcon(new Icon(VaadinIcon.UNLINK));
+					closeConnectionButton.setIcon(VaadinIcon.UNLINK.create());
 				}							
 			}
 		});
@@ -45,8 +51,12 @@ public class CloseConnectionDialog extends Dialog {
 				try {
 					rds.disconnect();
 				} catch (RepositoryDataSourceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOGGER.error("" + e.getMessage());
+					ConfirmDialog.createError()
+					.withCaption("Error")
+					.withMessage("An error has occurred. Please, contact the application administrator.")
+					.withOkButton()
+					.open();
 				}
 			}
 			close();

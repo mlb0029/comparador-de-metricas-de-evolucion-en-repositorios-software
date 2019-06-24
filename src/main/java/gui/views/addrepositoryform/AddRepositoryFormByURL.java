@@ -48,6 +48,7 @@ public class AddRepositoryFormByURL extends AddRepositoryFormTemplate {
 	@Override
 	public void clearFields() {
 		urlTextField.clear();
+		urlTextField.setInvalid(false);
 	}
 
 	/* (non-Javadoc)
@@ -58,6 +59,7 @@ public class AddRepositoryFormByURL extends AddRepositoryFormTemplate {
 		this.urlTextField = new TextField();
 		urlTextField.setPlaceholder("Project URL");
 		urlTextField.setWidthFull();
+		urlTextField.setRequired(true);
 		getForm().add(urlTextField);
 	}
 

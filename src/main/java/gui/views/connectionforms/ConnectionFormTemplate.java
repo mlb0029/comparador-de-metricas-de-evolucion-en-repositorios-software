@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -20,12 +23,8 @@ import exceptions.RepositoryDataSourceException;
 
 public abstract class ConnectionFormTemplate implements ConnectionForm {
 	
+	
 	public class FormElement implements Serializable {
-		/**
-		 * Description.
-		 * 
-		 * @author Miguel Ángel León Bardavío - mlb0029
-		 */
 		private static final long serialVersionUID = -9073432172154725623L;
 		private String name;
 		private Component component;
@@ -45,6 +44,8 @@ public abstract class ConnectionFormTemplate implements ConnectionForm {
 	}
 
 	private static final long serialVersionUID = 7001361983934286617L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionFormTemplate.class);
 	
 	private Set<IConnectionSuccessfulListener> listeners = new HashSet<>();
 	
@@ -70,15 +71,8 @@ public abstract class ConnectionFormTemplate implements ConnectionForm {
 		if(buttonIcon != null)
 			this.button.setIcon(new Icon(buttonIcon));
 		this.button.setText(buttonText);
-		this.button.addClickListener(e -> {
-			if (isValid()) {
-				try {
-					connect();
-					listeners.forEach(l -> l.onConnectionSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
-				} catch (RepositoryDataSourceException e1) {
-					result.setText(e1.getMessage());
-				}
-			}
+		this.button.addClickListener(event -> {
+			onConnectButtonClick();
 		});
 		this.form.add(this.button);
 		
@@ -86,6 +80,39 @@ public abstract class ConnectionFormTemplate implements ConnectionForm {
 		this.form.add(this.result);
 		
 		this.page.add(form);
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
+	private void onConnectButtonClick() {
+		try {
+			if (isValid()) {
+				connect();
+				listeners.forEach(l -> l.onConnectionSuccessful(RepositoryDataSourceService.getInstance().getConnectionType()));
+			}
+		} catch (RepositoryDataSourceException e) {
+			String errorMessage = "";
+			if (e.getErrorCode() == RepositoryDataSourceException.ALREADY_CONNECTED)
+				errorMessage = "Connection failure: A connection already exists";
+			else if (e.getErrorCode() == RepositoryDataSourceException.CONNECTION_ERROR)
+				errorMessage = "Connection failure: Unable to establish a connection";
+			else if (e.getErrorCode() == RepositoryDataSourceException.LOGIN_ERROR)
+				errorMessage = "Login failure: incorrect credentials";
+			else
+				errorMessage = "An error has occurred. Please, contact the application administrator.";
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
+		} catch (Exception e) {
+			LOGGER.error("" + e.getMessage());
+			String errorMessage = "An error has occurred. Please, contact the application administrator.";
+			getResult().setClassName("errorMessage");
+			getResult().setText(errorMessage);
+			getResult().setTitle(errorMessage);
+		}
 	}
 	
 	/**

@@ -88,7 +88,6 @@ public class ConnectionInfoComponent extends Div {
 				userAvatar.setVisible(false);
 				userAvatar.setSrc("");
 				connectionInfoLabel.setText("Connected as: [ERROR]");
-				//TODO Lanzar mensaje de error
 			}
 			break;
 		}

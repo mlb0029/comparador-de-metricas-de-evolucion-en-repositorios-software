@@ -135,7 +135,16 @@ public class MetricsService implements Serializable {
     }
     
     
-    /**
+    private IValue getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
+		MetricsResults mr = repository.getMetricsResults();
+		if (mr == null ) return null;
+		Measure measure = mr.getMeasureForTheMetric(metricType);
+		if (measure == null) return null;
+		IValue measuredValue = measure.getMeasuredValue();
+		return measuredValue;
+	}
+
+	/**
 	 * Calculate the metrics of the repository following the current profile.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
@@ -189,15 +198,6 @@ public class MetricsService implements Serializable {
 	
 	private void notifyRepositoriesCollectionUpdatedListeners(MetricProfile previousMetricProfile, MetricProfile newMetricProfile) {
 		currentMetricProfileChangedEventListeners.forEach(l -> l.on(new CurrentMetricProfileChangedEvent(previousMetricProfile, newMetricProfile)));
-	}
-
-	private IValue getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
-		MetricsResults mr = repository.getMetricsResults();
-		if (mr == null ) return null;
-		Measure measure = mr.getMeasureForTheMetric(metricType);
-		if (measure == null) return null;
-		IValue measuredValue = measure.getMeasuredValue();
-		return measuredValue;
 	}
 	
 }
