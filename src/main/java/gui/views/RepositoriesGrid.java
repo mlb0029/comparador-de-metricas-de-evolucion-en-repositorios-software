@@ -277,7 +277,12 @@ public class RepositoriesGrid extends Grid<Repository> {
 		button.addClickListener( event -> {
 			try {
 				MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
-				getDataProvider().refreshAll();;
+				getDataProvider().refreshAll();
+				ConfirmDialog.createInfo()
+				.withCaption("Sucessful")
+				.withMessage("Repository metrics achieved")
+				.withOkButton()
+				.open();
 			} catch (RepositoryDataSourceException e) {
 				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
 					LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
