@@ -31,7 +31,7 @@ public class MetricPeakChange extends NumericValueMetricTemplate {
 	 */
 	public static final MetricDescription DEFAULT_METRIC_DESCRIPTION = new MetricDescription(
 			"C1 - Peak Change Count",
-			"Number of changes in the peak monthnormalized on the overall number of changes",
+			"Number of changes in the peak month normalized on the overall number of changes",
 			"Jacek Ratzinger",
 			"2007",
 			"Time constraints",

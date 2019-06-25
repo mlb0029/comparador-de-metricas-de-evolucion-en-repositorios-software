@@ -44,6 +44,7 @@ import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
 import metricsengine.numeric_value_metrics.MetricPeakChange;
 import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
 import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.ProjectEvaluation;
 import metricsengine.values.IValue;
 import metricsengine.values.NumericValue;
 import metricsengine.values.ValueUncalculated;
@@ -113,35 +114,37 @@ public class RepositoriesGrid extends Grid<Repository> {
 		
 		headerText = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", headerText, headerTitle, MetricTotalNumberOfIssues.class);
+		Grid.Column<Repository> i1MetricColumn = addMetricColumn("i1MetricColumn", headerText, headerTitle,"", MetricTotalNumberOfIssues.class);
 		
 		headerText = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", headerText, headerTitle, MetricCommitsPerIssue.class);
+		Grid.Column<Repository> i2MetricColumn = addMetricColumn("i2MetricColumn", headerText, headerTitle, "", MetricCommitsPerIssue.class);
 		
 		headerText = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", headerText, headerTitle, MetricPercentageClosedIssues.class);
+		Grid.Column<Repository> i3MetricColumn = addMetricColumn("i3MetricColumn", headerText, headerTitle,"%", MetricPercentageClosedIssues.class);
 		
 		headerText = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", headerText, headerTitle, MetricAverageDaysToCloseAnIssue.class);
+		Grid.Column<Repository> ti1MetricColumn = addMetricColumn("ti1MetricColumn", headerText, headerTitle,"", MetricAverageDaysToCloseAnIssue.class);
 		
 		headerText = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", headerText, headerTitle, MetricAverageDaysBetweenCommits.class);
+		Grid.Column<Repository> tc1MetricColumn = addMetricColumn("tc1MetricColumn", headerText, headerTitle,"", MetricAverageDaysBetweenCommits.class);
 		
 		headerText = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getName();
 		headerTitle = MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", headerText, headerTitle, MetricDaysBetweenFirstAndLastCommit.class);
+		Grid.Column<Repository> tc2MetricColumn = addMetricColumn("tc2MetricColumn", headerText, headerTitle, "", MetricDaysBetweenFirstAndLastCommit.class);
 		
 		headerText = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
 		headerTitle = MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", headerText, headerTitle, MetricChangeActivityRange.class);
+		Grid.Column<Repository> tc3MetricColumn = addMetricColumn("tc3MetricColumn", headerText, headerTitle, "", MetricChangeActivityRange.class);
 		
 		headerText = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0];
 		headerTitle = MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getDescription();
-		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", headerText, headerTitle, MetricPeakChange.class);
+		Grid.Column<Repository> c1MetricColumn = addMetricColumn("c1MetricColumn", headerText, headerTitle, "", MetricPeakChange.class);
+		
+		/*Grid.Column<Repository> projectEvaluation =*/ addProjectEvalColumn();
 		
 		addComponentColumn(repository -> createCalculateButton(repository))
 			.setKey("calculateButtonColumn")
@@ -164,7 +167,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 		
 	}
 	
-	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, Class<? extends Metric> metricType) {
+	private Grid.Column<Repository> addMetricColumn(String key, String headerText, String headerTitle, String metricUnits, Class<? extends Metric> metricType) {
 		VerticalLayout header = new VerticalLayout();
 		Label descriptionLabel = new Label(headerText);
 		descriptionLabel.setTitle(headerTitle);
@@ -178,6 +181,7 @@ public class RepositoriesGrid extends Grid<Repository> {
 		Grid.Column<Repository> metricColumn = addComponentColumn(
 				r -> {
 					String value = getValueMeasuredForMetric(r, metricType);
+					if(value != NOT_CALCULATED) value += metricUnits;
 					Span span = new Span(value);
 					span.setClassName(getClassNameByEvaluation(r, metricType));
 					if(value.equals(NOT_CALCULATED)) span.setTitle("Not calculated");
@@ -192,6 +196,26 @@ public class RepositoriesGrid extends Grid<Repository> {
 		return metricColumn;
 	}
 
+	private Grid.Column<Repository> addProjectEvalColumn() {
+		Label descriptionLabel = new Label("Calif.");
+		descriptionLabel.setTitle("Percentage of metrics rated as 'good'");
+		Grid.Column<Repository> metricColumn = addComponentColumn(
+				r -> {
+					String value = getValueMeasuredForMetric(r, ProjectEvaluation.class);
+					if(value != NOT_CALCULATED) value += "%";
+					Span span = new Span(value);
+					span.setClassName("metricEvaluation");
+					if(value.equals(NOT_CALCULATED)) span.setTitle("Not calculated");
+					return span;
+				})
+			.setKey("projectCalification")
+			.setSortable(true)
+			.setComparator(Repository.getComparatorByMetric(ProjectEvaluation.class))
+			.setHeader(descriptionLabel)
+			.setWidth("8em")
+			.setTextAlign(ColumnTextAlign.END);
+		return metricColumn;
+	}
 	/**
 	 * Description.
 	 * 
@@ -298,31 +322,42 @@ public class RepositoriesGrid extends Grid<Repository> {
 	
 	private String getClassNameByEvaluation(Repository repository, Class<? extends Metric> metricType) {
 		String classNames = "metricEvaluation ";
-		switch (getMeasureForMetric(repository, metricType).evaluate()) {
-		case GOOD:
-			return classNames + "metricEvaluationGood";
-		case WARNING:
-			return classNames + "metricEvaluationWarning";
-		case BAD:
+		Measure measureForMetric = getMeasureForMetric(repository, metricType);
+		if (measureForMetric != null) {
+			switch (measureForMetric.evaluate()) {
+			case GOOD:
+				return classNames + "metricEvaluationGood";
+			case WARNING:
+				return classNames + "metricEvaluationWarning";
+			case BAD:
+				return classNames + "metricEvaluationBad";
+			default:
+				return classNames;
+			}
+		} else {
 			return classNames + "metricEvaluationBad";
-		default:
-			return classNames;
 		}
 	}
 	
 	private String getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
-		Measure measure = getMeasureForMetric(repository, metricType);
+		Measure measure;
+		if (metricType == ProjectEvaluation.class) {
+			measure = repository.getProjectEvaluation();
+		} else {
+			measure = getMeasureForMetric(repository, metricType);			
+		}
 		if (measure == null) return NOT_CALCULATED;
 		IValue value = measure.getMeasuredValue();
 		if(value == null) return NOT_CALCULATED;
-		if (value instanceof NumericValue)
-			return formatStringTwoDecimals(value.getValueString());
-		else if (value instanceof ValueUncalculated)
+		if (value instanceof NumericValue) {
+			Double d = ((NumericValue) value).doubleValue();
+			return formatStringTwoDecimals(d.toString());
+		} else if (value instanceof ValueUncalculated)
 			return NOT_CALCULATED;
 		else
 			return value.getValueString();
 	}
-
+	
 	/**
 	 * Formatea una fecha y devuelve una cadena de texto.
 	 * 

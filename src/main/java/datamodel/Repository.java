@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
 
-import metricsengine.Metric;
+import metricsengine.EvaluationResult;
 import metricsengine.Measure;
+import metricsengine.Metric;
+import metricsengine.MetricConfiguration;
 import metricsengine.MetricsResults;
+import metricsengine.numeric_value_metrics.ProjectEvaluation;
 import metricsengine.values.IValue;
+import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueUncalculated;
 
 /**
@@ -43,6 +47,8 @@ public class Repository implements Serializable {
 	private RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics();
 	
 	private MetricsResults metricsResults = new MetricsResults();
+	
+	private Measure projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluation()), new ValueUncalculated());
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -179,6 +185,41 @@ public class Repository implements Serializable {
 	 */
 	public void setMetricsResults(MetricsResults metricsResults) {
 		this.metricsResults = metricsResults;
+		evaluateProject(metricsResults);
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param metricsResults
+	 */
+	public void evaluateProject(MetricsResults metricsResults) {
+		int contGoodMeasures = 0;
+		double projectEval = 0;
+		IValue projectEvalValue;
+		
+		for (Measure measure : metricsResults.getMeasures()) {
+			if (measure.evaluate().equals(EvaluationResult.GOOD))
+				contGoodMeasures++;
+		}
+		if(metricsResults.getMeasures().size() > 0) {
+			projectEval = contGoodMeasures*100/metricsResults.getMeasures().size();
+			projectEvalValue = new ValueDecimal(projectEval);
+		} else {
+			projectEvalValue = new ValueUncalculated();
+		}
+		this.projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluation()), projectEvalValue);
+	}	
+
+	/**
+	 * Gets the projectEvaluation.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the projectEvaluation
+	 */
+	public Measure getProjectEvaluation() {
+		return projectEvaluation;
 	}
 
 	public static Comparator<Repository> getComparatorByMetric(Class<? extends Metric> metricType) {
@@ -189,8 +230,13 @@ public class Repository implements Serializable {
 				Measure m1, m2;
 				IValue v1, v2;
 				if (r1.getMetricsResults() != null && r2.getMetricsResults() != null) {
-					m1 = r1.getMetricsResults().getMeasureForTheMetric(metricType);
-					m2 = r2.getMetricsResults().getMeasureForTheMetric(metricType);
+					if(metricType == ProjectEvaluation.class) {
+						m1 = r1.getProjectEvaluation();
+						m2 = r2.getProjectEvaluation();
+					} else {
+						m1 = r1.getMetricsResults().getMeasureForTheMetric(metricType);
+						m2 = r2.getMetricsResults().getMeasureForTheMetric(metricType);						
+					}
 					v1 = (m1 == null)? new ValueUncalculated():m1.getMeasuredValue();
 					v2 = (m2 == null)? new ValueUncalculated():m2.getMeasuredValue();
 					return IValue.VALUE_COMPARATOR.compare(v1, v2);

@@ -322,7 +322,7 @@ public class RepositoriesListView extends VerticalLayout {
 			try {
 				MetricsService ms = MetricsService.getMetricsService();		
 				ms.setCurrentMetricProfileToCalculated();
-				ms.evaluateRepositoryMetrics();
+				ms.evaluateRepositoryCollection();
 				updateGrid();
 			} catch (Exception e) {
 				LOGGER.error("Error evaluating repositories with calculated profile. Exception occurred: " + e.getMessage());
@@ -339,7 +339,7 @@ public class RepositoriesListView extends VerticalLayout {
 		try {
 			MetricsService ms = MetricsService.getMetricsService();		
 			ms.setCurrentMetricProfileToDefault();
-			ms.evaluateRepositoryMetrics();
+			ms.evaluateRepositoryCollection();
 			updateGrid();
 		} catch (Exception e) {
 			LOGGER.error("Error evaluating repositories with default profile. Exception occurred: " + e.getMessage());

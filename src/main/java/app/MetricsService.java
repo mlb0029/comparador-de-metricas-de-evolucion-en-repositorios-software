@@ -171,7 +171,7 @@ public class MetricsService implements Serializable {
 		repository.setMetricsResults(metricsResults);
 	}
 	
-	public void evaluateRepositoryMetrics() throws RepositoryDataSourceException {
+	public void evaluateRepositoryCollection() throws RepositoryDataSourceException {
 		RepositoriesCollectionService rc = RepositoriesCollectionService.getInstance();
 		for (Repository repository : rc.getRepositories()) {
 			evaluateRepositoryMetrics(repository);

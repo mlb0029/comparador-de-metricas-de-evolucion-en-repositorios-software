@@ -24,7 +24,11 @@ public class ValueDecimal extends NumericValue {
 	 * 
 	 * @param value The value to set.
 	 */
-	public ValueDecimal(Double value) {
+	public ValueDecimal(double value) {
+		this.value = value;
+	}
+	
+	public ValueDecimal(int value) {
 		this.value = value;
 	}
 
