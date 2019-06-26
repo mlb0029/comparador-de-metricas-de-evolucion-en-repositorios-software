@@ -20,6 +20,11 @@ public class MetricsServiceException extends ApplicationException {
 	 */
 	public static final int METRICP_ROFILE_NAME_IN_USE = 1;
 
+	public static final int IMPORT_ERROR = 2;
+	
+	public static final int EXPORT_ERROR = 3;
+	
+	public static final int CORRUPTED = 4;
 	/**
 	 * Constructor.
 	 *
@@ -75,10 +80,19 @@ public class MetricsServiceException extends ApplicationException {
 	protected void generateMessage() {
 		switch (code) {
 		case METRICP_ROFILE_NAME_IN_USE:
-			message = "Connection failure: Unable to establish a connection";
+			message = "The name is already in use for another profile.";
+			break;
+		case IMPORT_ERROR:
+			message = "An error occurred during the import";
+			break;
+		case EXPORT_ERROR:
+			message = "An error occurred during the export";
+			break;
+		case CORRUPTED:
+			message = "File corrupted";
 			break;
 		default:
-			message = "Unknown RepositoryDataSource error";
+			message = "Unknown MetricsService error";
 			break;
 		}
 	}

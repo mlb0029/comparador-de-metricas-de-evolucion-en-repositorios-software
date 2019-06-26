@@ -1,11 +1,16 @@
 package app;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +47,12 @@ public class MetricsService implements Serializable {
 	private static final long serialVersionUID = 6475817245020418420L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricsService.class);
+	
+	public static final String DEFAULT_PROFILE_NAME = "DEFAULT";
+	
+	public static final String IMPORTED_PROFILE_NAME = "IMPORTED";
+	
+	public static final String NEW_PROFILE_NAME = "CALCULATED";
 
 	private static final MetricProfile DEFAULT_METRIC_PROFILE = createDefaultMetricProfile() ;
 	
@@ -59,7 +70,7 @@ public class MetricsService implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private static MetricProfile createDefaultMetricProfile() {
-		MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
+		MetricProfile defaultMetricProfile = new MetricProfile(DEFAULT_PROFILE_NAME);
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssuesFactory()));
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssueFactory()));
 		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssuesFactory()));
@@ -99,7 +110,7 @@ public class MetricsService implements Serializable {
     public void setCurrentMetricProfileToCalculated() throws MetricsServiceException {
     	try {
     		MetricProfile oldMetricProfile = currentMetricProfile;
-			MetricProfile metricProfile = new MetricProfile("CALCULATED");
+			MetricProfile metricProfile = new MetricProfile(NEW_PROFILE_NAME);
 			Collection<Repository> repositories = RepositoriesCollectionService.getInstance().getRepositories();
 			
 			ArrayList<Double> datasetForMetric;
@@ -135,7 +146,36 @@ public class MetricsService implements Serializable {
     }
     
     
-    private IValue getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
+    public void importCurrentMetricProfile(InputStream inputStream) throws MetricsServiceException {
+		try (
+			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
+		) {
+			MetricProfile oldMetricProfile = currentMetricProfile;
+			MetricProfile mP = (MetricProfile) objectIn.readObject();
+			mP.setName(IMPORTED_PROFILE_NAME);
+			currentMetricProfile = mP;
+			notifyRepositoriesCollectionUpdatedListeners(oldMetricProfile, currentMetricProfile);
+		} catch (StreamCorruptedException e) {
+			throw new MetricsServiceException(MetricsServiceException.CORRUPTED, e);
+		} catch (Exception e) {
+			throw new MetricsServiceException(MetricsServiceException.IMPORT_ERROR, e);
+		}
+	}
+
+	public InputStream exportCurrentMetricProfile() throws MetricsServiceException {
+		try (
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream objectOut = new ObjectOutputStream(bos);
+		){
+			objectOut.writeObject(currentMetricProfile);
+			objectOut.flush();
+			return bos.toInputStream();
+		} catch (Exception e) {
+			throw new MetricsServiceException(MetricsServiceException.EXPORT_ERROR, e);
+		}
+	}
+
+	private IValue getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
 		MetricsResults mr = repository.getMetricsResults();
 		if (mr == null ) return null;
 		Measure measure = mr.getMeasureForTheMetric(metricType);

@@ -21,7 +21,9 @@ import app.RepositoriesCollectionService;
 import app.RepositoriesCollectionService.ImportMode;
 import app.RepositoryDataSourceService;
 import datamodel.Repository;
+import exceptions.MetricsServiceException;
 import exceptions.RepositoriesCollectionServiceException;
+import exceptions.RepositoryDataSourceException;
 import gui.views.addrepositoryform.AddRepositoryDialog;
 import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
@@ -191,7 +193,13 @@ public class RepositoriesListView extends VerticalLayout {
 						loadDefaultMetricProfile();
 						break;
 					case IMPORT:
-						importMetricProfile();
+						FileImportDialog fileImportDialog = new FileImportDialog()
+						.withCaption("Import metric profile")
+						.withAcceptedFileTypes(".txt")
+						.withUploadListener(uploadEvent -> {
+							importMetricProfile(uploadEvent.getInputStream());
+						});
+						fileImportDialog.open();
 						break;
 					case EXPORT:
 						exportMetricProfile();
@@ -364,20 +372,77 @@ public class RepositoriesListView extends VerticalLayout {
 		}
 	}
 	
-	private void importMetricProfile() {
-		ConfirmDialog.createError()
-		.withCaption("Error")
-		.withMessage("Not implemented. Please, contact the application administrator.")
-		.withOkButton()
-		.open();
+	private void importMetricProfile(InputStream inputStream) {
+		MetricsService metricsService = MetricsService.getMetricsService();
+		if (metricsService.getCurrentMetricProfile() == null) {
+			ConfirmDialog.createError()
+				.withCaption("No profile to export")
+				.withMessage("No profile has been loaded.")
+				.withOkButton()
+				.open();
+		} else if (metricsService.getCurrentMetricProfile().getName().equals(MetricsService.NEW_PROFILE_NAME)) {
+			ConfirmDialog.createQuestion()
+			.withCaption("Overwrite current metric profile")
+			.withMessage("You have created the current profile. If you import another, the current profile will be lost. Continue?")
+			.withCancelButton()
+			.withButton(new Button("Continue", VaadinIcon.WARNING.create(), clickEvent -> {
+				importMetricProfileAndEvaluate(inputStream, metricsService);
+			}))
+			.open();
+		} else {
+			importMetricProfileAndEvaluate(inputStream, metricsService);
+		}
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param inputStream
+	 * @param metricsService
+	 */
+	private void importMetricProfileAndEvaluate(InputStream inputStream, MetricsService metricsService) {
+		try {
+			metricsService.importCurrentMetricProfile(inputStream);
+			metricsService.evaluateRepositoryCollection();
+			updateGrid();
+		} catch (RepositoryDataSourceException e) {
+			LOGGER.error("Error evaluating repositories with imported profile. Exception occurred: " + e.getMessage());
+			ConfirmDialog.createError()
+			.withCaption("Error")
+			.withMessage("Error occurred while evaluating the repositories with the imported profile. Please, contact the application administrator.")
+			.withOkButton()
+			.open();
+		} catch (MetricsServiceException e) {
+			LOGGER.error("Error while importing the profile. Exception occurred: " + e.getMessage());
+			ConfirmDialog.createError()
+			.withCaption("Error")
+			.withMessage("Error while importing the profile. Please, contact the application administrator.")
+			.withOkButton()
+			.open();
+		}
 	}
 	
 	private void exportMetricProfile() {
-		ConfirmDialog.createError()
-		.withCaption("Error")
-		.withMessage("Not implemented. Please, contact the application administrator.")
-		.withOkButton()
-		.open();
+		if (MetricsService.getMetricsService().getCurrentMetricProfile() == null) {
+			ConfirmDialog.createWarning()
+			.withCaption("No metric profile")
+			.withMessage("No metric profile has been loaded")
+			.withOkButton()
+			.open();
+		} else {
+			try {
+				InputStream in = MetricsService.getMetricsService().exportCurrentMetricProfile();
+				new FileExportFormDialog(in).open();
+			} catch (Exception e) {
+				LOGGER.error("Error exporting the actual metric profile. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
+			}	
+		}
 	}
 	
 	private void updateGrid() {
