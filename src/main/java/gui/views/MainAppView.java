@@ -4,10 +4,13 @@ import org.claspina.confirmdialog.ConfirmDialog;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -38,6 +41,8 @@ public class MainAppView extends VerticalLayout {
 	private Label appNameLabel = new Label("Evolution metrics");
 	
 	private Button connectionButton = new Button();
+	
+	private Anchor helpLink = new Anchor();
 
 	private ConnectionInfoComponent connectionInfoComponent = new ConnectionInfoComponent();
 	
@@ -86,7 +91,17 @@ public class MainAppView extends VerticalLayout {
 		connectionButton.setMinHeight("60px");
 		connectionButton.addClickListener(e -> closeConnectionFormDialog.open());
 		connectionButton.setId("connectionInfoButton");
-		VerticalLayout connectionButtonLayout = new VerticalLayout(connectionButton);
+		
+		Icon questionIcon = VaadinIcon.QUESTION.create();
+		questionIcon.setSize("37px");
+		Button helpButton = new Button(questionIcon);
+		helpButton.setHeight("60px");	
+		helpButton.setWidth("60px");
+		helpLink.setHref("https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/wikis/home");
+		helpLink.setTarget("_blank");
+		helpLink.add(helpButton);
+		
+		VerticalLayout connectionButtonLayout = new VerticalLayout(new HorizontalLayout(connectionButton, helpLink));
 		connectionButtonLayout.setAlignItems(Alignment.END);
 		connectionButtonLayout.setWidth("40%");
 		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButtonLayout);
