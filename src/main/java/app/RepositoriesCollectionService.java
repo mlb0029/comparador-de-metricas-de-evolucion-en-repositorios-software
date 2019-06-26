@@ -17,6 +17,21 @@ import app.listeners.Listener;
 import app.listeners.RepositoriesCollectionUpdatedEvent;
 import datamodel.Repository;
 import exceptions.RepositoriesCollectionServiceException;
+import metricsengine.Measure;
+import metricsengine.Metric;
+import metricsengine.MetricsResults;
+import metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits;
+import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue;
+import metricsengine.numeric_value_metrics.MetricChangeActivityRange;
+import metricsengine.numeric_value_metrics.MetricCommitsPerIssue;
+import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
+import metricsengine.numeric_value_metrics.MetricPeakChange;
+import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.ProjectEvaluation;
+import metricsengine.values.IValue;
+import metricsengine.values.NumericValue;
+import metricsengine.values.ValueUncalculated;
 
 /**
  * It contains a set of repositories.
@@ -82,6 +97,75 @@ public class RepositoriesCollectionService implements Serializable {
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.EXPORT_ERROR, e);
 		}
+	}
+	
+	public InputStream exportRepositoriesToCSV () throws RepositoriesCollectionServiceException {
+		try (
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		){
+			StringBuffer sb = new StringBuffer();
+			String header = "";
+			header += "Name" + ";";
+			header += "URL" + ";";
+			header += "Date" + ";";
+			header +=  MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricAverageDaysBetweenCommits.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getName() + ";";
+			header +=  MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0].trim() + ";";
+			header +=  MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getName().split("-")[0].trim() + ";";
+			sb.append(header + "\n");
+			String line;
+			for (Repository repository : repositoriesCollection) {
+				line = "";
+				line += (repository.getName() != null?repository.getName():"") + ";";
+				line += (repository.getUrl() != null?repository.getUrl():"") + ";";
+				line += (repository.getMetricsResults() != null?repository.getMetricsResults().getLastModificationDate():"") + ";";
+				line += getValueMeasuredForMetric(repository, MetricTotalNumberOfIssues.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricCommitsPerIssue.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricPercentageClosedIssues.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricAverageDaysToCloseAnIssue.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricAverageDaysBetweenCommits.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricDaysBetweenFirstAndLastCommit.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricChangeActivityRange.class) + ";";
+				line += getValueMeasuredForMetric(repository, MetricPeakChange.class);
+				sb.append(line + "\n");
+			}
+			bos.write(sb.toString().getBytes());
+			return bos.toInputStream();
+		} catch (Exception e) {
+			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.EXPORT_ERROR, e);
+		}
+	}
+	
+	private String getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
+		String notCalculated = "NC";
+		Measure measure;
+		if (metricType == ProjectEvaluation.class) {
+			measure = repository.getProjectEvaluation();
+		} else {
+			measure = getMeasureForMetric(repository, metricType);			
+		}
+		if (measure == null) return notCalculated;
+		IValue value = measure.getMeasuredValue();
+		if(value == null) return notCalculated;
+		if (value instanceof NumericValue) {
+			Double d = ((NumericValue) value).doubleValue();
+			return d.toString();
+		} else if (value instanceof ValueUncalculated)
+			return notCalculated;
+		else
+			return value.getValueString();
+	}
+	
+	private Measure getMeasureForMetric(Repository repository, Class<? extends Metric> metricType) {
+		MetricsResults mr = repository.getMetricsResults();
+		if (mr == null ) return null;
+		Measure measure = mr.getMeasureForTheMetric(metricType);
+		if (measure == null) return null;
+		return measure;
 	}
 	
 	public enum ImportMode {OVERWRITE, APPEND}

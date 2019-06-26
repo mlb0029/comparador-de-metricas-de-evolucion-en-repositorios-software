@@ -303,11 +303,25 @@ public class RepositoriesListView extends VerticalLayout {
 	}
 	
 	private void generateCSVRepositories() {
-		ConfirmDialog.createError()
-		.withCaption("Error")
-		.withMessage("Not implemented. Please, contact the application administrator.")
-		.withOkButton()
-		.open();
+		if (RepositoriesCollectionService.getInstance().getRepositories().isEmpty()) {
+			ConfirmDialog.createWarning()
+			.withCaption("No repository")
+			.withMessage("No repository has been added, please add at least one before exporting.")
+			.withOkButton()
+			.open();
+		} else {
+			try {
+				InputStream in = RepositoriesCollectionService.getInstance().exportRepositoriesToCSV();
+				new FileExportFormDialog(in).open();
+			} catch (Exception e) {
+				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
+				ConfirmDialog.createError()
+				.withCaption("Error")
+				.withMessage("An error has occurred. Please, contact the application administrator.")
+				.withOkButton()
+				.open();
+			}	
+		}
 	}
 	
 	private void createMetricProfile() {
