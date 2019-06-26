@@ -26,7 +26,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 */
 	private static final long serialVersionUID = 8459616601304750512L;
 
-	protected static final EvaluationFunction EVAL_FUNC_GREATER_THAN_Q1 = (measuredValue, minValue, maxValue) -> {
+	protected transient static final EvaluationFunction EVAL_FUNC_GREATER_THAN_Q1 = (measuredValue, minValue, maxValue) -> {
 		try {
 			Double value, min;
 			value = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) measuredValue).doubleValue());
@@ -39,7 +39,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 		}
 	};
 
-	protected static final EvaluationFunction EVAL_FUNC_BETWEEN_Q1_Q3 = (measuredValue, minValue, maxValue) -> {
+	protected transient static final EvaluationFunction EVAL_FUNC_BETWEEN_Q1_Q3 = (measuredValue, minValue, maxValue) -> {
 		try {
 			Double value, min, max;
 			value = NumericValueMetricTemplate.formatTwoDecimals(((NumericValue) measuredValue).doubleValue());
@@ -68,7 +68,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 */
 	private IValue valueMaxDefault;
 	
-	private EvaluationFunction evaluationFunction;
+	private transient EvaluationFunction evaluationFunction;
 	
 	/**
 	 * Constructor of a metric that establishes the description and the default values.
@@ -90,6 +90,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 * 
 	 * @return The name of the metric.
 	 */
+	@Override
 	public String getName() {
 		return description.getName();
 	}
@@ -99,6 +100,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 * 
 	 * @return The description of the metric. 
 	 */
+	@Override
 	public MetricDescription getDescription() {
 		return description;
 	}
@@ -108,6 +110,7 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 * 
 	 * @return The minimum value by default.
 	 */
+	@Override
 	public IValue getValueMinDefault() {
 		return valueMinDefault;
 	}
@@ -117,13 +120,11 @@ public abstract class NumericValueMetricTemplate implements Metric {
 	 * 
 	 * @return The maximum value by default.
 	 */
+	@Override
 	public IValue getValueMaxDefault() {
 		return valueMaxDefault;
 	}
 	
-	/* (non-Javadoc)
-	 * @see metricsengine.Metric#getEvaluationFunction()
-	 */
 	@Override
 	public EvaluationFunction getEvaluationFunction() {
 		return evaluationFunction;

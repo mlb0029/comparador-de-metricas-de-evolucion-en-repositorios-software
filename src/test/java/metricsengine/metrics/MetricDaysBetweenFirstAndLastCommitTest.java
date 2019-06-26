@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,11 +18,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommitFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueInteger;
 
 /**
@@ -46,7 +44,7 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit();
+		metricDaysBetweenFirstAndLastCommit = (MetricDaysBetweenFirstAndLastCommit) new MetricDaysBetweenFirstAndLastCommitFactory().getMetric();
 	}
 
 	/**
@@ -58,32 +56,6 @@ public class MetricDaysBetweenFirstAndLastCommitTest {
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_MIN_VALUE , metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected default static min value");
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_MAX_VALUE, metricDaysBetweenFirstAndLastCommit.getValueMaxDefault(), "Expected default static max value");
 		assertEquals(MetricDaysBetweenFirstAndLastCommit.DEFAULT_METRIC_DESCRIPTION.getName(), metricDaysBetweenFirstAndLastCommit.getName(), "Expected default static name");
-	}
-	
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricDaysBetweenFirstAndLastCommitMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricDaysBetweenFirstAndLastCommit = new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
-		assertTrue(metricDescription == metricDaysBetweenFirstAndLastCommit.getDescription(), "Expected another description");
-		assertTrue(min == metricDaysBetweenFirstAndLastCommit.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricDaysBetweenFirstAndLastCommit.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricDaysBetweenFirstAndLastCommit.getName(), "Expected another name");
-	}
-	
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit#MetricDaysBetweenFirstAndLastCommit(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricDaysBetweenFirstAndLastCommitNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricDaysBetweenFirstAndLastCommit(metricDescription, min, max);
-		}, "Expected exception when null arguments");
 	}
 	
 	/**

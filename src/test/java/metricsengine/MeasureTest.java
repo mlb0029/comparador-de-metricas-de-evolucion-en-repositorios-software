@@ -1,13 +1,15 @@
 package metricsengine;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssuesFactory;
 import metricsengine.values.ValueInteger;
 
 /**
@@ -46,7 +48,7 @@ public class MeasureTest {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
 		Date date = new Date();
 		
-		MetricConfiguration metricConfiguration = new MetricConfiguration(new MetricTotalNumberOfIssues());
+		MetricConfiguration metricConfiguration = new MetricConfiguration(new MetricTotalNumberOfIssuesFactory());
 		ValueInteger valueInteger = new ValueInteger(0);
 		
 		Measure measure = new Measure(metricConfiguration, valueInteger);

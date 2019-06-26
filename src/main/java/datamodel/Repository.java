@@ -10,6 +10,7 @@ import metricsengine.Metric;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricsResults;
 import metricsengine.numeric_value_metrics.ProjectEvaluation;
+import metricsengine.numeric_value_metrics.ProjectEvaluationFactory;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueDecimal;
 import metricsengine.values.ValueUncalculated;
@@ -48,7 +49,7 @@ public class Repository implements Serializable {
 	
 	private MetricsResults metricsResults = new MetricsResults();
 	
-	private Measure projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluation()), new ValueUncalculated());
+	private Measure projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluationFactory()), new ValueUncalculated());
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -209,7 +210,7 @@ public class Repository implements Serializable {
 		} else {
 			projectEvalValue = new ValueUncalculated();
 		}
-		this.projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluation()), projectEvalValue);
+		this.projectEvaluation = new Measure(new MetricConfiguration(new ProjectEvaluationFactory()), projectEvalValue);
 	}	
 
 	/**

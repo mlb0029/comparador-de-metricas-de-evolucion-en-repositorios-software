@@ -51,27 +51,23 @@ public class MetricPeakChange extends NumericValueMetricTemplate {
 	 * Maximum acceptable value.
 	 */
 	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(40.0);
+	
+	private static MetricPeakChange instance = null;
 			
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	public MetricPeakChange() {
+	private MetricPeakChange() {
 		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
-	/**
-	 * Constructor that initializes the metric with default values passed by parameter.
-	 * 
-	 * @param description Description of the metric.
-	 * @param valueMinDefault Minimum value by default.
-	 * @param valueMaxDefault Maximum value by default.
-	 */
-	public MetricPeakChange(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
+	public static MetricPeakChange getInstance() {
+		if (instance == null) instance = new MetricPeakChange();
+		return instance;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see metricsengine.metrics.AMetric#check(repositorydatasource.model.Repository)
 	 */

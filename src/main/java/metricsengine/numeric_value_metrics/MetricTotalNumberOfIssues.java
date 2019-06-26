@@ -46,26 +46,22 @@ public class MetricTotalNumberOfIssues extends NumericValueMetricTemplate {
 	 */
 	public static final NumericValue DEFAULT_MAX_VALUE = new ValueInteger(44);
 	
+	private static MetricTotalNumberOfIssues instance = null;
+	
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	public MetricTotalNumberOfIssues() {
+	private MetricTotalNumberOfIssues() {
 		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
 	}
 	
-	/**
-	 * Constructor that initializes the metric with default values passed by parameter.
-	 * 
-	 * @param description Description of the metric.
-	 * @param valueMinDefault Minimum value by default.
-	 * @param valueMaxDefault Maximum value by default.
-	 */
-	public MetricTotalNumberOfIssues(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_GREATER_THAN_Q1);
+	public static MetricTotalNumberOfIssues getInstance() {
+		if (instance == null) instance = new MetricTotalNumberOfIssues();
+		return instance;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see metricsengine.AMetric#check(repositorydatasource.model.Repository)
 	 */

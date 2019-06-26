@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.stream.Stream;
 
@@ -12,11 +12,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricPercentageClosedIssuesFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -41,7 +39,7 @@ public class MetricPercentageClosedIssuesTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricPercentageClosedIssues = new MetricPercentageClosedIssues();
+		metricPercentageClosedIssues = (MetricPercentageClosedIssues) new MetricPercentageClosedIssuesFactory().getMetric();
 	}
 
 	/**
@@ -55,32 +53,6 @@ public class MetricPercentageClosedIssuesTest {
 		assertEquals(MetricPercentageClosedIssues.DEFAULT_METRIC_DESCRIPTION.getName(), metricPercentageClosedIssues.getName(), "Expected default static name");
 	}
 
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricPercentageClosedIssuesDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricPercentageClosedIssues = new MetricPercentageClosedIssues(metricDescription, min, max);
-		assertTrue(metricDescription == metricPercentageClosedIssues.getDescription(), "Expected another description");
-		assertTrue(min == metricPercentageClosedIssues.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricPercentageClosedIssues.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricPercentageClosedIssues.getName(), "Expected another name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#MetricPercentageClosedIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricPercentageClosedIssuesNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricPercentageClosedIssues(metricDescription, min, max);
-		}, "Expected exception when null arguments");
-	}
-	
 	/**
 	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPercentageClosedIssues#check(datamodel.Repository)}.
 	 * <p>

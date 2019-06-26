@@ -13,10 +13,19 @@ import metricsengine.values.IValue;
  */
 public interface Metric extends Serializable {
 	
+	@FunctionalInterface
 	public interface EvaluationFunction {
 		EvaluationResult evaluate(IValue value, IValue minValue, IValue maxValue);
 	}
 	
+	String getName();
+
+	MetricDescription getDescription();
+
+	IValue getValueMinDefault();
+
+	IValue getValueMaxDefault();
+
 	/**
 	 * Calculate the metric for a repository passed by parameter and add it to the set passed also by parameter.
 	 * 
@@ -26,7 +35,7 @@ public interface Metric extends Serializable {
 	 * @return The calculated value or ValueUncalculated if imposible to calculate.
 	 */
 	IValue calculate(Repository repository,MetricConfiguration metricConfig, MetricsResults metricsResults);
-	
+
 	EvaluationResult evaluate(IValue measuredValue);
 
 	EvaluationFunction getEvaluationFunction();

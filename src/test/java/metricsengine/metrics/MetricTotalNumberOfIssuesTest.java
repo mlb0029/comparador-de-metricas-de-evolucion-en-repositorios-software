@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.stream.Stream;
 
@@ -12,10 +12,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.*;
 import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
-import metricsengine.values.*;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssuesFactory;
+import metricsengine.values.IValue;
+import metricsengine.values.ValueInteger;
 
 /**
  * Unit test for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues}
@@ -38,7 +38,7 @@ public class MetricTotalNumberOfIssuesTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricTotalNumberOfIssues = new MetricTotalNumberOfIssues();
+		metricTotalNumberOfIssues = (MetricTotalNumberOfIssues) new MetricTotalNumberOfIssuesFactory().getMetric();
 	}
 
 	/**
@@ -52,32 +52,6 @@ public class MetricTotalNumberOfIssuesTest {
 		assertEquals(MetricTotalNumberOfIssues.DEFAULT_METRIC_DESCRIPTION.getName(), metricTotalNumberOfIssues.getName(), "Expected default static name");
 	}
 
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricTotalNumberOfIssuesMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricTotalNumberOfIssues = new MetricTotalNumberOfIssues(metricDescription, min, max);
-		assertTrue(metricDescription == metricTotalNumberOfIssues.getDescription(), "Expected another description");
-		assertTrue(min == metricTotalNumberOfIssues.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricTotalNumberOfIssues.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricTotalNumberOfIssues.getName(), "Expected another name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#MetricTotalNumberOfIssues(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricTotalNumberOfIssuesNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricTotalNumberOfIssues(metricDescription, min, max);
-		}, "Expected exception when null arguments");
-	}
-	
 	/**
 	 * Test method for {@link metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues#check(datamodel.Repository)}.
 	 * <p>

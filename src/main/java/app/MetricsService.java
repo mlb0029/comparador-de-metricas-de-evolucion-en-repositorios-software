@@ -21,14 +21,14 @@ import metricsengine.Metric;
 import metricsengine.MetricConfiguration;
 import metricsengine.MetricProfile;
 import metricsengine.MetricsResults;
-import metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommits;
-import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue;
-import metricsengine.numeric_value_metrics.MetricChangeActivityRange;
-import metricsengine.numeric_value_metrics.MetricCommitsPerIssue;
-import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommit;
-import metricsengine.numeric_value_metrics.MetricPeakChange;
-import metricsengine.numeric_value_metrics.MetricPercentageClosedIssues;
-import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
+import metricsengine.numeric_value_metrics.MetricAverageDaysBetweenCommitsFactory;
+import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssueFactory;
+import metricsengine.numeric_value_metrics.MetricChangeActivityRangeFactory;
+import metricsengine.numeric_value_metrics.MetricCommitsPerIssueFactory;
+import metricsengine.numeric_value_metrics.MetricDaysBetweenFirstAndLastCommitFactory;
+import metricsengine.numeric_value_metrics.MetricPeakChangeFactory;
+import metricsengine.numeric_value_metrics.MetricPercentageClosedIssuesFactory;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssuesFactory;
 import metricsengine.values.IValue;
 import metricsengine.values.NumericValue;
 import repositorydatasource.RepositoryDataSource;
@@ -60,14 +60,14 @@ public class MetricsService implements Serializable {
 	 */
 	private static MetricProfile createDefaultMetricProfile() {
 		MetricProfile defaultMetricProfile = new MetricProfile("DEFAULT");
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssues()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssue()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssues()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysToCloseAnIssue()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysBetweenCommits()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricDaysBetweenFirstAndLastCommit()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricChangeActivityRange()));
-		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPeakChange()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricTotalNumberOfIssuesFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricCommitsPerIssueFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPercentageClosedIssuesFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysToCloseAnIssueFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricAverageDaysBetweenCommitsFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricDaysBetweenFirstAndLastCommitFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricChangeActivityRangeFactory()));
+		defaultMetricProfile.addMetricConfiguration(new MetricConfiguration(new MetricPeakChangeFactory()));
 		return defaultMetricProfile;
 	}
 
@@ -124,7 +124,7 @@ public class MetricsService implements Serializable {
 				q3ForMetric = descriptiveStatisticsForMetric.getPercentile(75);
 				q1ForMetricConfig = metricC.getValueMin().valueFactory(q1ForMetric);
 				q3ForMetricConfig = metricC.getValueMax().valueFactory(q3ForMetric);
-				metricProfile.addMetricConfiguration(new MetricConfiguration(metricC.getMetric(), q1ForMetricConfig, q3ForMetricConfig));
+				metricProfile.addMetricConfiguration(new MetricConfiguration(metricC.getMetricFactory(), q1ForMetricConfig, q3ForMetricConfig));
 			}
 			currentMetricProfile = metricProfile;
 			notifyRepositoriesCollectionUpdatedListeners(oldMetricProfile, metricProfile);

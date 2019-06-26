@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import datamodel.Repository;
 import exceptions.MetricsEngineException;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
 import metricsengine.values.IValue;
 
 /**
@@ -26,7 +25,7 @@ public class MetricConfiguration implements Metric, Serializable {
 	/**
 	 * Metric.
 	 */
-	private Metric metric;
+	private MetricFactory metricFactory;
 	
 	/**
 	 * Minimum value.
@@ -45,12 +44,12 @@ public class MetricConfiguration implements Metric, Serializable {
 	 * @param valueMin Minimum value.
 	 * @param valueMax Maximum value.
 	 */
-	public MetricConfiguration(Metric metric, IValue valueMin, IValue valueMax) {
-		if (metric == null)
+	public MetricConfiguration(MetricFactory metricFactory, IValue valueMin, IValue valueMax) {
+		if (metricFactory == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
 		if (valueMin == null || valueMax == null)
 			throw new IllegalArgumentException("There can be no metric configuration without configuration values");
-		this.metric = metric;
+		this.metricFactory = metricFactory;
 		this.valueMin = valueMin;
 		this.valueMax = valueMax;
 	}
@@ -60,12 +59,21 @@ public class MetricConfiguration implements Metric, Serializable {
 	 * 
 	 * @param metric Metric to configure.
 	 */
-	public MetricConfiguration(NumericValueMetricTemplate metric) {
-		if (metric == null)
+	public MetricConfiguration(MetricFactory metricFactory) {
+		if (metricFactory == null)
 			throw new IllegalArgumentException("There can be no metric configuration without specifying a metric");
-		this.metric = metric;
-		this.valueMin = metric.getValueMinDefault();
-		this.valueMax = metric.getValueMaxDefault();
+		this.metricFactory = metricFactory;
+		this.valueMin = metricFactory.getMetric().getValueMinDefault();
+		this.valueMax = metricFactory.getMetric().getValueMaxDefault();
+	}
+	
+	/**
+	 * Gets the metric.
+	 * 
+	 * @return The metric.
+	 */
+	public MetricFactory getMetricFactory() {
+		return metricFactory;
 	}
 	
 	/**
@@ -74,7 +82,7 @@ public class MetricConfiguration implements Metric, Serializable {
 	 * @return The metric.
 	 */
 	public Metric getMetric() {
-		return metric;
+		return metricFactory.getMetric();
 	}
 
 	/**
@@ -100,7 +108,7 @@ public class MetricConfiguration implements Metric, Serializable {
 	 */
 	@Override
 	public IValue calculate(Repository repository, MetricConfiguration metricConfig, MetricsResults metricsResults) {
-		return this.metric.calculate(repository, metricConfig, metricsResults);
+		return getMetric().calculate(repository, metricConfig, metricsResults);
 	}
 	
 	/**
@@ -116,16 +124,36 @@ public class MetricConfiguration implements Metric, Serializable {
 	 * @see {@link Metric#calculate(Repository, MetricConfiguration, MetricsResults)}
 	 */
 	public IValue calculate(Repository repository, MetricsResults metricsResults) {
-		return this.metric.calculate(repository, this, metricsResults);
+		return getMetric().calculate(repository, this, metricsResults);
 	}
 
 	@Override
 	public EvaluationResult evaluate(IValue value) {
-		return metric.getEvaluationFunction().evaluate(value, valueMin, valueMax);
+		return getMetric().getEvaluationFunction().evaluate(value, valueMin, valueMax);
+	}
+
+	@Override
+	public IValue getValueMaxDefault() {
+		return getValueMaxDefault();
+	}
+
+	@Override
+	public IValue getValueMinDefault() {
+		return getValueMinDefault();
+	}
+
+	@Override
+	public MetricDescription getDescription() {
+		return getMetric().getDescription();
+	}
+
+	@Override
+	public String getName() {
+		return getName();
 	}
 
 	@Override
 	public EvaluationFunction getEvaluationFunction() {
-		return metric.getEvaluationFunction();
+		return getMetric().getEvaluationFunction();
 	}
 }

@@ -1,7 +1,6 @@
 package gui.views;
 
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 
 import org.claspina.confirmdialog.ConfirmDialog;
 import org.slf4j.Logger;
@@ -252,7 +251,7 @@ public class RepositoriesListView extends VerticalLayout {
 		if (!reCollectionService.getRepositories().isEmpty()) {
 			ConfirmDialog.createQuestion()
 			.withCaption("Overwrite repositories")
-			.withMessage("You currently have repositories. Do you want to overwrite the repositories or add them?")
+			.withMessage("You currently have repositories. Do you want to overwrite the repositories or append them?")
 			.withCancelButton()
 			.withButton(new Button("Append", clickEvent -> {
 				try {
@@ -290,8 +289,8 @@ public class RepositoriesListView extends VerticalLayout {
 			.open();
 		} else {
 			try {
-				ObjectInputStream objectInputStream = new ObjectInputStream(RepositoriesCollectionService.getInstance().exportRepositories());
-				new FileExportFormDialog(objectInputStream).open();
+				InputStream in = RepositoriesCollectionService.getInstance().exportRepositories();
+				new FileExportFormDialog(in).open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()

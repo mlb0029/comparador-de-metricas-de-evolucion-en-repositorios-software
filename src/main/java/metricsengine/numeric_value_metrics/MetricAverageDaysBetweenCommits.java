@@ -51,25 +51,21 @@ public class MetricAverageDaysBetweenCommits extends NumericValueMetricTemplate 
 	 * Maximum acceptable value.
 	 */
 	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(4.3);
-			
+	
+	private static MetricAverageDaysBetweenCommits instance = null;
+	
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	public MetricAverageDaysBetweenCommits() {
+	private MetricAverageDaysBetweenCommits() {
 		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
-	/**
-	 * Constructor that initializes the metric with default values passed by parameter.
-	 * 
-	 * @param description Description of the metric.
-	 * @param valueMinDefault Minimum value by default.
-	 * @param valueMaxDefault Maximum value by default.
-	 */
-	public MetricAverageDaysBetweenCommits(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
+	public static MetricAverageDaysBetweenCommits getInstance() {
+		if (instance == null) instance = new MetricAverageDaysBetweenCommits();
+		return instance;
 	}
 
 	/* (non-Javadoc)

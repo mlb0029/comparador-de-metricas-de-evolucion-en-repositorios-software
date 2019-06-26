@@ -1,12 +1,13 @@
 package metricsengine;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssues;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricTotalNumberOfIssuesFactory;
 import metricsengine.values.IValue;
 import metricsengine.values.ValueInteger;
 
@@ -21,13 +22,13 @@ public class MetricConfigurationTest {
 	 */
 	@Test
 	public void testMetricConfigurationAMetricIValueIValue() {
-		NumericValueMetricTemplate metric = new MetricTotalNumberOfIssues();
+		MetricFactory metricF = new MetricTotalNumberOfIssuesFactory();
 		IValue valueMin = new ValueInteger(0);
 		IValue valueMax = new ValueInteger(10);
-		MetricConfiguration metricConfiguration = new MetricConfiguration(metric, valueMin, valueMax);
+		MetricConfiguration metricConfiguration = new MetricConfiguration(metricF, valueMin, valueMax);
 		
 		assertNotNull(metricConfiguration);
-		assertEquals(metric, metricConfiguration.getMetric());
+		assertEquals(metricF.getMetric(), metricConfiguration.getMetric());
 		assertEquals(valueMin, metricConfiguration.getValueMin());
 		assertEquals(valueMax, metricConfiguration.getValueMax());
 	}
@@ -42,11 +43,11 @@ public class MetricConfigurationTest {
 		}, "The exception 'IllegalArgumentException' was expected. You should not create a metric configuration without metrics.");
 		
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricConfiguration(new MetricTotalNumberOfIssues(), null, new ValueInteger(10));
+			new MetricConfiguration(new MetricTotalNumberOfIssuesFactory(), null, new ValueInteger(10));
 		}, "The exception 'IllegalArgumentException' was expected. You should not create a metric configuration without configuration values.");
 		
 		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricConfiguration(new MetricTotalNumberOfIssues(), new ValueInteger(0), null);
+			new MetricConfiguration(new MetricTotalNumberOfIssuesFactory(), new ValueInteger(0), null);
 		}, "The exception 'IllegalArgumentException' was expected. You should not create a metric configuration without configuration values.");
 	}
 
@@ -55,13 +56,13 @@ public class MetricConfigurationTest {
 	 */
 	@Test
 	public void testMetricConfigurationAMetric() {
-		NumericValueMetricTemplate metric = new MetricTotalNumberOfIssues();
-		IValue valueMin = metric.getValueMinDefault();
-		IValue valueMax = metric.getValueMaxDefault();
-		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
+		MetricFactory metricF = new MetricTotalNumberOfIssuesFactory();
+		IValue valueMin = metricF.getMetric().getValueMinDefault();
+		IValue valueMax = metricF.getMetric().getValueMaxDefault();
+		MetricConfiguration metricConfiguration = new MetricConfiguration(metricF);
 		
 		assertNotNull(metricConfiguration);
-		assertEquals(metric, metricConfiguration.getMetric());
+		assertEquals(metricF, metricConfiguration.getMetricFactory());
 		assertEquals(valueMin, metricConfiguration.getValueMin());
 		assertEquals(valueMax, metricConfiguration.getValueMax());
 	}

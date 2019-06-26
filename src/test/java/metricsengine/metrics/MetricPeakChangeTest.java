@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,11 +18,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricPeakChange;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricPeakChangeFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -46,7 +44,7 @@ public class MetricPeakChangeTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricPeakChange = new MetricPeakChange();
+		metricPeakChange = (MetricPeakChange) new MetricPeakChangeFactory().getMetric();
 	}
 
 	/**
@@ -58,32 +56,6 @@ public class MetricPeakChangeTest {
 		assertEquals(MetricPeakChange.DEFAULT_MIN_VALUE , metricPeakChange.getValueMinDefault(), "Expected default static min value");
 		assertEquals(MetricPeakChange.DEFAULT_MAX_VALUE, metricPeakChange.getValueMaxDefault(), "Expected default static max value");
 		assertEquals(MetricPeakChange.DEFAULT_METRIC_DESCRIPTION.getName(), metricPeakChange.getName(), "Expected default static name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricPeakChangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricPeakChange = new MetricPeakChange(metricDescription, min, max);
-		assertTrue(metricDescription == metricPeakChange.getDescription(), "Expected another description");
-		assertTrue(min == metricPeakChange.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricPeakChange.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricPeakChange.getName(), "Expected another name");
-	}
-	
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricPeakChange#MetricPeakChange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricPeakChangeNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricPeakChange(metricDescription, min, max);
-		}, "Expected exception when null arguments");
 	}
 
 	/**

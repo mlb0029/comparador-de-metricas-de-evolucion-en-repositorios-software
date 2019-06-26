@@ -1,6 +1,7 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.stream.Stream;
 
@@ -12,11 +13,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricChangeActivityRange;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricChangeActivityRangeFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -40,7 +39,7 @@ public class MetricChangeActivityRangeTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricChangeActivityRange = new MetricChangeActivityRange();
+		metricChangeActivityRange = (MetricChangeActivityRange) new MetricChangeActivityRangeFactory().getMetric();
 	}
 
 	/**
@@ -52,32 +51,6 @@ public class MetricChangeActivityRangeTest {
 		assertEquals(MetricChangeActivityRange.DEFAULT_MIN_VALUE , metricChangeActivityRange.getValueMinDefault(), "Expected default static min value");
 		assertEquals(MetricChangeActivityRange.DEFAULT_MAX_VALUE, metricChangeActivityRange.getValueMaxDefault(), "Expected default static max value");
 		assertEquals(MetricChangeActivityRange.DEFAULT_METRIC_DESCRIPTION.getName(), metricChangeActivityRange.getName(), "Expected default static name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricChangeActivityRangeMetricDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricChangeActivityRange = new MetricChangeActivityRange(metricDescription, min, max);
-		assertTrue(metricDescription == metricChangeActivityRange.getDescription(), "Expected another description");
-		assertTrue(min == metricChangeActivityRange.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricChangeActivityRange.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricChangeActivityRange.getName(), "Expected another name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricChangeActivityRange#MetricChangeActivityRange(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricChangeActivityRangeNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricChangeActivityRange(metricDescription, min, max);
-		}, "Expected exception when null arguments");
 	}
 
 	/**

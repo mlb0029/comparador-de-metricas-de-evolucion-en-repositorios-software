@@ -31,6 +31,8 @@ public class RepositoriesCollectionServiceException extends ApplicationException
 	
 	public static final int EXPORT_ERROR = 4;
 	
+	public static final int CORRUPTED = 5;
+	
 	/**
 	 * Constructor.
 	 *
@@ -90,6 +92,9 @@ public class RepositoriesCollectionServiceException extends ApplicationException
 			break;
 		case EXPORT_ERROR:
 			message = "An error occurred during the export";
+			break;
+		case CORRUPTED:
+			message = "File corrupted";
 			break;
 		default:
 			message = "Unknown RepositoryDataSource error";

@@ -45,26 +45,22 @@ public class MetricChangeActivityRange extends NumericValueMetricTemplate {
 	 */
 	public static final NumericValue DEFAULT_MAX_VALUE = new ValueDecimal(26.4);
 	
+	private static MetricChangeActivityRange instance = null;
+	
 	/**
 	 * Constructor that initializes the metric with default values.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
-	public MetricChangeActivityRange() {
+	private MetricChangeActivityRange() {
 		super(DEFAULT_METRIC_DESCRIPTION, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
 	}
 	
-	/**
-	 * Constructor that initializes the metric with default values passed by parameter.
-	 * 
-	 * @param description Description of the metric.
-	 * @param valueMinDefault Minimum value by default.
-	 * @param valueMaxDefault Maximum value by default.
-	 */
-	public MetricChangeActivityRange(MetricDescription description, NumericValue valueMinDefault, NumericValue valueMaxDefault) {
-		super(description, valueMinDefault, valueMaxDefault, NumericValueMetricTemplate.EVAL_FUNC_BETWEEN_Q1_Q3);
+	public static MetricChangeActivityRange getInstance() {
+		if (instance == null) instance = new MetricChangeActivityRange();
+		return instance;
 	}
-
+	
 	@Override
 	public Boolean check(Repository repository) {
 		return  repository != null &&

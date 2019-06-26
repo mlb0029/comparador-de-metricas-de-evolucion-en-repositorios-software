@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,11 +14,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssueFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -42,7 +40,7 @@ public class MetricAverageDaysToCloseAnIssueTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricAverageDaysToCloseAnIssue = new MetricAverageDaysToCloseAnIssue();
+		metricAverageDaysToCloseAnIssue = (MetricAverageDaysToCloseAnIssue) new MetricAverageDaysToCloseAnIssueFactory().getMetric();
 	}
 
 	/**
@@ -56,32 +54,6 @@ public class MetricAverageDaysToCloseAnIssueTest {
 		assertEquals(MetricAverageDaysToCloseAnIssue.DEFAULT_METRIC_DESCRIPTION.getName(), metricAverageDaysToCloseAnIssue.getName(), "Expected default static name");
 	}
 
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricAverageDaysToCloseAnIssueDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricAverageDaysToCloseAnIssue = new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
-		assertTrue(metricDescription == metricAverageDaysToCloseAnIssue.getDescription(), "Expected another description");
-		assertTrue(min == metricAverageDaysToCloseAnIssue.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricAverageDaysToCloseAnIssue.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricAverageDaysToCloseAnIssue.getName(), "Expected another name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#MetricAverageDaysToCloseAnIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricAverageDaysToCloseAnIssueNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricAverageDaysToCloseAnIssue(metricDescription, min, max);
-		}, "Expected exception when null arguments");
-	}
-	
 	/**
 	 * Test method for {@link metricsengine.numeric_value_metrics.MetricAverageDaysToCloseAnIssue#check(datamodel.Repository)}.
 	 * <p>

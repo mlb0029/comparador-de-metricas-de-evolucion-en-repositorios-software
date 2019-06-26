@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.StreamCorruptedException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,6 +95,8 @@ public class RepositoriesCollectionService implements Serializable {
 			if(importMode == ImportMode.OVERWRITE) repositoriesCollection.collection.clear();
 			repositoriesCollection.collection.addAll(repositories);
 			notifyRepositoriesCollectionUpdatedListeners();
+		} catch (StreamCorruptedException e) {
+			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
 		}

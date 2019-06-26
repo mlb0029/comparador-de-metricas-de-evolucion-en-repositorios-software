@@ -1,6 +1,6 @@
 package metricsengine.metrics;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.stream.Stream;
 
@@ -12,11 +12,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import datamodel.Repository;
 import datamodel.RepositoryInternalMetrics;
-import metricsengine.MetricDescription;
 import metricsengine.numeric_value_metrics.MetricCommitsPerIssue;
-import metricsengine.numeric_value_metrics.NumericValueMetricTemplate;
+import metricsengine.numeric_value_metrics.MetricCommitsPerIssueFactory;
 import metricsengine.values.IValue;
-import metricsengine.values.NumericValue;
 import metricsengine.values.ValueDecimal;
 
 /**
@@ -40,7 +38,7 @@ public class MetricCommitsPerIssueTest {
 	 */
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		metricCommitsPerIssue = new MetricCommitsPerIssue();
+		metricCommitsPerIssue = (MetricCommitsPerIssue) new MetricCommitsPerIssueFactory().getMetric();
 	}
 
 	/**
@@ -54,32 +52,6 @@ public class MetricCommitsPerIssueTest {
 		assertEquals(MetricCommitsPerIssue.DEFAULT_METRIC_DESCRIPTION.getName(), metricCommitsPerIssue.getName(), "Expected default static name");
 	}
 
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithArguments")
-	public void testMetricCommitsPerIssueDescriptionValueMinValueMax(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		NumericValueMetricTemplate metricCommitsPerIssue = new MetricCommitsPerIssue(metricDescription, min, max);
-		assertTrue(metricDescription == metricCommitsPerIssue.getDescription(), "Expected another description");
-		assertTrue(min == metricCommitsPerIssue.getValueMinDefault(), "Expected another min value");
-		assertTrue(max == metricCommitsPerIssue.getValueMaxDefault(), "Expected another max value");
-		assertEquals(metricDescription.getName(), metricCommitsPerIssue.getName(), "Expected another name");
-	}
-
-	/**
-	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#MetricCommitsPerIssue(metricsengine.MetricDescription, metricsengine.values.IValue, metricsengine.values.IValue)}.
-	 * <p>
-	 * Using null arguments.
-	 */
-	@ParameterizedTest(name = "[{index}] metricDescription = {0}, min = {1}, max = {2}")
-	@MethodSource("metricsengine.metrics.ArgumentsProviders#argumentsForAMetricConstructorWithNullArguments")
-	public void testMetricCommitsPerIssueNullArguments(MetricDescription metricDescription, NumericValue min, NumericValue max) {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MetricCommitsPerIssue(metricDescription, min, max);
-		}, "Expected exception when null arguments");
-	}
-	
 	/**
 	 * Test method for {@link metricsengine.numeric_value_metrics.MetricCommitsPerIssue#check(datamodel.Repository)}.
 	 * <p>
