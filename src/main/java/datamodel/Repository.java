@@ -103,7 +103,7 @@ public class Repository implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param url the url to set
 	 */
-	private void setUrl(String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
@@ -123,7 +123,7 @@ public class Repository implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param name the name to set
 	 */
-	private void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -143,7 +143,7 @@ public class Repository implements Serializable {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param id the id to set
 	 */
-	private void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -205,7 +205,7 @@ public class Repository implements Serializable {
 				contGoodMeasures++;
 		}
 		if(metricsResults.getMeasures().size() > 0) {
-			projectEval = contGoodMeasures*100/metricsResults.getMeasures().size();
+			projectEval = ((double)contGoodMeasures*100/metricsResults.getMeasures().size());
 			projectEvalValue = new ValueDecimal(projectEval);
 		} else {
 			projectEvalValue = new ValueUncalculated();

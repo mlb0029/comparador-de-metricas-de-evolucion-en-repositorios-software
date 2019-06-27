@@ -138,7 +138,7 @@ public interface RepositoryDataSource extends Serializable{
 	Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException;
 	
 	/**
-	 * Obtain a repository accessible by the logged in user 
+	 * Obtain a repository accessible by the logged in user using the url
 	 * or throw an exception if the repository is not accessible.
 	 * 
 	 * @param repositoryURL URL of a repository.
@@ -146,6 +146,18 @@ public interface RepositoryDataSource extends Serializable{
 	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
 	 */
 	Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException;
+	
+	
+	/**
+	 * Obtain a repository accessible by the logged in user using the id 
+	 * or throw an exception if the repository is not accessible.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repositoryId
+	 * @return
+	 * @throws RepositoryDataSourceException
+	 */
+	Repository getRepository(int repositoryId) throws RepositoryDataSourceException;
 	
 	/**
 	 * Updates the internal metrics of the repository that is passed by parameter,

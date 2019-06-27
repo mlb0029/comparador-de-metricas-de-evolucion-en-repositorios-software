@@ -30,6 +30,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import app.MetricsService;
 import app.RepositoriesCollectionService;
+import app.RepositoryDataSourceService;
 import datamodel.Repository;
 import exceptions.RepositoryDataSourceException;
 import metricsengine.Measure;
@@ -275,40 +276,51 @@ public class RepositoriesGrid extends Grid<Repository> {
 		Button button = new Button();
 		button.setIcon(new Icon(VaadinIcon.CALC_BOOK));
 		button.addClickListener( event -> {
-			try {
-				MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
-				getDataProvider().refreshAll();
-				ConfirmDialog.createInfo()
-				.withCaption("Sucessful")
-				.withMessage("Repository metrics achieved")
+			updateRepositoryInfo(repository);
+		});
+		return button;
+	}
+
+	/**
+	 * Description.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository
+	 */
+	private void updateRepositoryInfo(Repository repository) {
+		try {
+			RepositoryDataSourceService.getInstance().updateRepository(repository);
+			MetricsService.getMetricsService().obtainAndEvaluateRepositoryMetrics(repository);
+			getDataProvider().refreshAll();
+			ConfirmDialog.createInfo()
+			.withCaption("Sucessful")
+			.withMessage("Repository metrics achieved")
+			.withOkButton()
+			.open();
+		} catch (RepositoryDataSourceException e) {
+			if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
+				LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
+				ConfirmDialog.createWarning()
+				.withCaption("Error")
+				.withMessage("The repository can not be accessed with the current connection.")
 				.withOkButton()
 				.open();
-			} catch (RepositoryDataSourceException e) {
-				if (e.getErrorCode() == RepositoryDataSourceException.REPOSITORY_NOT_FOUND) {
-					LOGGER.warn("Attempt to recalculate metrics from a repository without access.");
-					ConfirmDialog.createWarning()
-					.withCaption("Error")
-					.withMessage("The repository can not be accessed with the current connection.")
-					.withOkButton()
-					.open();
-				} else {
-					LOGGER.error("An error occurred while obtaining the metrics of the repository. Exception occurred: " + e.getMessage());
-					ConfirmDialog.createError()
-					.withCaption("Error")
-					.withMessage("An error occurred while obtaining the metrics of the repository. Please, contact the application administrator.")
-					.withOkButton()
-					.open();					
-				}
-			} catch (Exception e) {
+			} else {
 				LOGGER.error("An error occurred while obtaining the metrics of the repository. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()
 				.withCaption("Error")
 				.withMessage("An error occurred while obtaining the metrics of the repository. Please, contact the application administrator.")
 				.withOkButton()
-				.open();
+				.open();					
 			}
-		});
-		return button;
+		} catch (Exception e) {
+			LOGGER.error("An error occurred while obtaining the metrics of the repository. Exception occurred: " + e.getMessage());
+			ConfirmDialog.createError()
+			.withCaption("Error")
+			.withMessage("An error occurred while obtaining the metrics of the repository. Please, contact the application administrator.")
+			.withOkButton()
+			.open();
+		}
 	}
 
 	private String getLastMeasurementDate(Repository repository) {

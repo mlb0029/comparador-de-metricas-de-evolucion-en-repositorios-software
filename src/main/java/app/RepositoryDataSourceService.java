@@ -129,6 +129,18 @@ public class RepositoryDataSourceService implements Serializable, RepositoryData
 	}
 
 	@Override
+	public Repository getRepository(int repositoryId) throws RepositoryDataSourceException {
+		return this.repositoryDataSource.getRepository(repositoryId);
+	}
+
+	public void updateRepository(Repository repository) throws RepositoryDataSourceException {
+		Repository repo = this.repositoryDataSource.getRepository(repository.getId());
+		repository.setId(repo.getId());
+		repository.setName(repo.getName());
+		repository.setUrl(repo.getUrl());
+	}
+
+	@Override
 	public RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository)
 			throws RepositoryDataSourceException {
 		return this.repositoryDataSource.getRepositoryInternalMetrics(repository);

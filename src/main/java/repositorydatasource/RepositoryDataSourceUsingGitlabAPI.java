@@ -280,18 +280,37 @@ public class RepositoryDataSourceUsingGitlabAPI implements RepositoryDataSource 
 		}
 	}
 
+	@Override
+	public Repository getRepository(int repositoryId) throws RepositoryDataSourceException {
+		try {
+			if (! connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
+				Project pProyecto = gitLabApi.getProjectApi().getProject(repositoryId);
+				if (pProyecto != null) {
+					return new Repository(pProyecto.getWebUrl(), pProyecto.getName(), repositoryId);
+				} else {
+					throw new RepositoryDataSourceException(RepositoryDataSourceException.REPOSITORY_NOT_FOUND);
+				}
+			} else {
+				throw new RepositoryDataSourceException(RepositoryDataSourceException.NOT_CONNECTED);
+			}
+		} catch (GitLabApiException e) {
+			throw new RepositoryDataSourceException(RepositoryDataSourceException.REPOSITORY_NOT_FOUND);
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see repositorydatasource.IRepositoryDataSource#updateRepositoryInternalMetrics(model.Repository)
 	 */
 	@Override
 	public RepositoryInternalMetrics getRepositoryInternalMetrics(Repository repository) throws RepositoryDataSourceException {
-		int projectId = repository.getId();
-		int totalNumberOfIssues = getTotalNumberOfIssues(projectId);
-		int totalNumberOfCommits = getTotalNumberOfCommits(projectId);
-		int numberOfClosedIssues = getNumberOfClosedIssues(projectId);
+		getRepository(repository.getId());//Si no se obtiene, lanza una excepción
+		Integer projectId = repository.getId();
+		Integer totalNumberOfIssues = getTotalNumberOfIssues(projectId);
+		Integer totalNumberOfCommits = getTotalNumberOfCommits(projectId);
+		Integer numberOfClosedIssues = getNumberOfClosedIssues(projectId);
 		List<Integer> daysToCloseEachIssue = getDaysToCloseEachIssue(projectId);
 		Set<Date> commitDates = getCommitsDates(projectId);
-		int lifeSpanMonths = getRepositoryLifeInMonths(projectId);
+		Integer lifeSpanMonths = getRepositoryLifeInMonths(projectId);
 		RepositoryInternalMetrics repositoryInternalMetrics = new RepositoryInternalMetrics(
 				totalNumberOfIssues,
 				totalNumberOfCommits,

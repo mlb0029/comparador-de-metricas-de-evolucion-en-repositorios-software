@@ -298,7 +298,7 @@ public class RepositoriesListView extends VerticalLayout {
 		} else {
 			try {
 				InputStream in = RepositoriesCollectionService.getInstance().exportRepositories();
-				new FileExportFormDialog(in).open();
+				new FileExportFormDialog(in, "Export repositories", "Export repositories?", "evolution-metrics_reposiories_.txt").open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()
@@ -320,7 +320,7 @@ public class RepositoriesListView extends VerticalLayout {
 		} else {
 			try {
 				InputStream in = RepositoriesCollectionService.getInstance().exportRepositoriesToCSV();
-				new FileExportFormDialog(in).open();
+				new FileExportFormDialog(in, "Export to CSV", "Export repositories in CSV format?", "evolution-metrics_reposiories_csv_.csv").open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()
@@ -433,7 +433,7 @@ public class RepositoriesListView extends VerticalLayout {
 		} else {
 			try {
 				InputStream in = MetricsService.getMetricsService().exportCurrentMetricProfile();
-				new FileExportFormDialog(in).open();
+				new FileExportFormDialog(in, "Export metric profile", "Export metric profile?","evolution-metrics_metric-Profile.txt" ).open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting the actual metric profile. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()

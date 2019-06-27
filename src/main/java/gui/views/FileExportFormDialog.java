@@ -23,9 +23,6 @@ public class FileExportFormDialog extends ConfirmDialogWrapper {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private static final long serialVersionUID = -3024115021992696619L;
-	private static final String HEADER = "File download";
-	private static final String MESSAGE = "Export repositories?";
-	private static final String DEFAULT_FILE_NAME = "evolution-metrics_reposiories.txt";
 
 	/**
 	 * Constructor.
@@ -33,13 +30,13 @@ public class FileExportFormDialog extends ConfirmDialogWrapper {
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @throws IOException 
 	 */
-	public FileExportFormDialog(InputStream inputStream) {
-		DownloadLink downloadLink= new DownloadLink(DEFAULT_FILE_NAME, inputStream);
+	public FileExportFormDialog(InputStream inputStream, String header, String message, String defaultFilename) {
+		DownloadLink downloadLink= new DownloadLink(defaultFilename, inputStream);
 		downloadLink.downloadButton.addClickListener(e -> close());
 		
-		withCaption(HEADER);
+		withCaption(header);
 		withIcon(DIALOG_DEFAULT_ICON_FACTORY.getQuestionIcon());
-		withMessage(MESSAGE);
+		withMessage(message);
 		withCancelButton();
 		withButton(downloadLink);
 		getButton(ButtonType.CANCEL).setIcon(null);
