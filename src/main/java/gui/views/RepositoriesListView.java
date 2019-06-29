@@ -138,7 +138,7 @@ public class RepositoriesListView extends VerticalLayout {
 					case IMPORT:
 						FileImportDialog fileImportDialog = new FileImportDialog()
 						.withCaption("Import repositories")
-						.withAcceptedFileTypes(".txt")
+						.withAcceptedFileTypes(".emr")
 						.withUploadListener(uploadEvent -> {
 							importRepositories(uploadEvent.getInputStream());
 						});
@@ -195,7 +195,7 @@ public class RepositoriesListView extends VerticalLayout {
 					case IMPORT:
 						FileImportDialog fileImportDialog = new FileImportDialog()
 						.withCaption("Import metric profile")
-						.withAcceptedFileTypes(".txt")
+						.withAcceptedFileTypes(".emmp")
 						.withUploadListener(uploadEvent -> {
 							importMetricProfile(uploadEvent.getInputStream());
 						});
@@ -298,7 +298,7 @@ public class RepositoriesListView extends VerticalLayout {
 		} else {
 			try {
 				InputStream in = RepositoriesCollectionService.getInstance().exportRepositories();
-				new FileExportFormDialog(in, "Export repositories", "Export repositories?", "evolution-metrics_reposiories_.txt").open();
+				new FileExportFormDialog(in, "Export repositories", "Export repositories?", "evolution-metrics_reposiories_.emr").open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting a repository. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()
@@ -433,7 +433,7 @@ public class RepositoriesListView extends VerticalLayout {
 		} else {
 			try {
 				InputStream in = MetricsService.getMetricsService().exportCurrentMetricProfile();
-				new FileExportFormDialog(in, "Export metric profile", "Export metric profile?","evolution-metrics_metric-Profile.txt" ).open();
+				new FileExportFormDialog(in, "Export metric profile", "Export metric profile?","evolution-metrics_metric-Profile.emmp" ).open();
 			} catch (Exception e) {
 				LOGGER.error("Error exporting the actual metric profile. Exception occurred: " + e.getMessage());
 				ConfirmDialog.createError()
