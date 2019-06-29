@@ -152,7 +152,7 @@ public class RepositoriesCollectionService implements Serializable {
 		IValue value = measure.getMeasuredValue();
 		if(value == null) return notCalculated;
 		if (value instanceof NumericValue) {
-			Double d = ((NumericValue) value).doubleValue();
+			Double d = Math.round(((NumericValue) value).doubleValue() * 100.0) / 100.0;
 			return d.toString();
 		} else if (value instanceof ValueUncalculated)
 			return notCalculated;
