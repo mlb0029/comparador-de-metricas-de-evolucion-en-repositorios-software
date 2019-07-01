@@ -1,11 +1,42 @@
 \apendice{Documentación técnica de programación}
 
 \section{Introducción}
-
+Este documento detalla asuntos técnicos de programación.
 \section{Estructura de directorios}
-
+El código fuente presenta la siguiente estructura:
+\begin{itemize}
+	\item \textbf{\textit{/.gitignore}} Contiene los ficheros y directorios que el repositorio git no tendrá en cuenta
+	\item \textbf{\textit{/.gitlab-ci.yml}} Contiene las etapas y trabajos que se han definido para que se ejecuten en una máquina virtual proporcionada por GitLab (\textit{runner}) tras hacer un commit. Permite la integración y el despliegue continuo.
+	\item \textbf{\textit{/README.md}} Fichero con información relevante sobre el proyecto.
+	\item \textbf{\textit{/codacy-coverage-reporter-4.0.5-assembly.jar}} Ejecutable Java que necesario para una de las tareas de la integración continua: El informe de cobertura de las pruebas. Se ejecutará en una de las tareas definidas en el fichero /.gitlab-ci.yml.
+	\item \textbf{\textit{/pom.xml}} Fichero de configuración del proyecto maven.
+	\item \textbf{\textit{/system.properties}} Fichero con propiedades del proyecto. Ha sido necesario su uso para el despliegue en Heroku.
+	\item \textbf{\textit{/MemoriaProyecto}} Memoria del proyecto según la plantilla definida en \url{https://github.com/ubutfgm/plantillaLatex}.
+	\item \textbf{\textit{/src/test/resources}} Datos almacenados en ficheros CSV para proporcionar datos a test parametrizados.
+	\item \textbf{\textit{/src/test/java}} Casos de prueba JUnit para la realización de pruebas. Se organiza de la misma forma que /src/main/java
+	\item \textbf{\textit{/src/main/webapp/VAADIN/themes/MyTheme}} Tema principal utilizado por la aplicación. Generado por Vaadin.
+	\item \textbf{\textit{/src/main/webapp/frontend}} Ficheros \textit{.css} utilizados por la interfaz gráfica.
+	\item \textbf{\textit{/src/main/webapp/images}} Imágenes que se muestran en la interfaz gráfica.
+	\item \textbf{\textit{/src/main/resources}} Ficheros de configuración de la aplicación. En este caso el fichero log4j2.properties para configurar el log.
+	\item \textbf{\textit{/src/main/java}} Contiene todo el código fuente
+	\item \textbf{\textit{/src/main/java/app/}} Contiene fachadas que conectan la interfaz de usuario con el resto de componentes que componen la lógica de la aplicación.
+	\item \textbf{\textit{/src/main/java/app/listeners}} Contiene observadores y eventos utilizados por la aplicación
+	\item \textbf{\textit{/src/main/java/datamodel}} Contiene el modelo de datos de la aplicación.
+	\item \textbf{\textit{/src/main/java/exceptions}} Contiene excepciones definidas en la aplicación.
+	\item \textbf{\textit{/src/main/java/gui}} Contiene la interfaz de usuario.
+	\item \textbf{\textit{/src/main/java/gui/views}} Contiene páginas y componentes de Vaadin que componen la interfaz gráfica de la aplicación.
+	\item /src/main/java/metricsengine Define el motor de métricas.
+	\item \textbf{\textit{/src/main/java/metricsengine/numeric\_value\_metrics}} Métricas definidas por el programador y sus respectivas fábricas (Patrón de diseño método fábrica\footnote{https://refactoring.guru/design-patterns/factory-method}). Todas las métricas tienen resultados numéricos.
+	\item \textbf{\textit{/src/main/java/metricsengine/values}} Valores que devuelven las métricas.
+	\item \textbf{\textit{/src/main/java/repositorydatasource}} Framework de conexión a una forja de repositorios como GitLab.
+\end{itemize}
 \section{Manual del programador}
-
+Se explica en este apartado algunas bases para entender como continuar la programación de la aplicación y los puntos de extensión que se han definido.
+\subsection{Motor de métricas}
+El motor de métricas se ha desarrollado con una base inicial a una solución propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}\cite{marticorena_soporte_2005}. El diseño se puede observar en \ref{MCTMotorMetricas}.
+\imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
+\subsection{Framework de conexión}
+\subsection{Interfaz gráfica}
 \section{Compilación, instalación y ejecución del proyecto}
 
 \section{Pruebas del sistema}
