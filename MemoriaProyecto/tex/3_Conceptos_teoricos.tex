@@ -81,12 +81,41 @@
 %Balsamiq Mockups & X & & &\\
 %VersionOne & X & X & X & X\\
 %}
+En este capítulo se explican conceptos relevantes para la comprensión de este proyecto y su contexto.
 \section{Calidad de proceso y producto software}
-\cite{sommerville_software_2016}
+Todo proyecto de software tienen como objetivo desarrollar software de alta calidad, que cumpla con los requisitos acordados. Sin embargo, la calidad de un producto de software no tiene que ver solo con que se cumplan todos los requisitos funcionales, sino también otros requerimientos no funcionales que no se incluyen en la especificación como los de mantenimiento.
+
 %Comentar fig 25.3 - Ppales factores de la calidad de protducto software p561
+Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenierisoftware_2002} los principales factores que afectan a la calidad del producto, como se puede observar en la figura \ref{fig:M3-FactoresCalidad}:
+\begin{itemize}
+	\tightlist
+	\item Calidad del proceso
+	\item Tecnología de desarrollo
+	\item Calidad del personal
+	\item Costo, tiempo y duración
+\end{itemize}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.7]{M1-FactoresCalidad}
+	\caption{Principales factores de calidad del producto de software\cite{sommerville_ingenierisoftware_2002}}\label{fig:M3-FactoresCalidad}
+\end{figure}
+\FloatBarrier
+
 %Comentar fig 24.9 p549 relacion de metricas de proc y de prod
+
+Para llegar a tener un software de calidad hay que tener en cuenta todos los factores mencionados anteriormente en cada una de las tres fases de la administración de la calidad: Aseguramiento, planeación y control.
+
+La fase de control es la que se encarga de que el equipo de desarrollo cumpla los estándares y procedimientos definidos en el plan de calidad del proyecto. Esta fase puede realizarse mediante un proceso de medición.
+
+La medición del software es un proceso en el cual se asignan valores numéricos o simbólicos a atributos de un producto o proceso software. Una métrica es una medida relacionada con un atributo de un proceso o producto software (por ejemplo). Las métricas son de control o de predicción. Las \textbf{métricas de control} se asocian al proceso de desarrollo del software (p. ej. Media de días ue se tarda en cerrar una incidencia )y las \textbf{métricas de predicción} se asocian a productos software (p. ej. Complejidad ciclomática de una función). Y ambos tipos de métricas influyen en la toma de decisiones administrativas como se observa en la figura \ref{fig:M3-MetricasProcesoYProducto}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.5]{M3-MetricasProcesoYProducto}
+	\caption{Métricas de control y métricas de predicción\cite{sommerville_ingenierisoftware_2002}}\label{fig:M3-MetricasProcesoYProducto}
+\end{figure}
 %Comentar fg 24.1 p537 admin de calida en el proceso y desarrollo de software
 \section{Evolución de software}
+Este proyecto se centra en las métricas de control, es decir las que están asociadas al proceso de desarrollo o de evolución del software.
 \subsection{Conceptos de evolución}
 Un sistema de Gestión de Configuración del Software (SCM) es capaz de gestionar la evolución y cambios del código fuente en el tiempo \cite{berczuk_software_2002, sommerville_software_2016}.
 En este apartado describiremos los conceptos básicos que utilizaremos para recoger, documentar, almacenar y recuperar los diferentes cambios que se produzcan en las entidades que formen parte nuestro sistema.
@@ -103,21 +132,22 @@ Los ítems, sus revisiones, las ramas donde se almacenan las revisiones y las et
 
 
 \subsection{Métricas de evolución}
-El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}.
-
-\subsubsection{I1 - Número total de issues}
+Las métricas que se calculan de los proyectos son un conjunto de métricas que proceden de la Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}.\\\\
+\textbf{\underline{I1 - Número total de issues}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número total de issues creadas en el repositorio
 	\item \textbf{Propósito}: ¿Cuántas issues se han definido en el repositorio?
 	\item \textbf{Fórmula}: NTI. NTI = número total de issues
 	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
-	\item \textbf{Interpretación}: NTI >= 0. Mejor valores bajos
+	\item \textbf{Interpretación}: NTI >= 0. Valores bajos indican que no se utiliza un Sistema de seguimiento de incidencias, podría ser porque el proyecto acaba de comenzar
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: NTI = Contador
 \end{itemize}
-\subsubsection{I2 - Commits por issue}
+\textbf{\underline{I2 - Commits por issue}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número de commits por issue
 	\item \textbf{Propósito}: ¿Cuántos commits realizados por cada issue?
@@ -127,8 +157,9 @@ El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis
 	\item \textbf{Tipo de escala}: Ratio 
 	\item \textbf{Tipo de medida}: NTI, NTC = Contador
 \end{itemize}
-\subsubsection{I3 - Porcentaje de issues cerradas}
+\textbf{\underline{I3 - Porcentaje de issues cerradas}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Porcentaje de issues cerradas
 	\item \textbf{Propósito}: ¿Qué porcentaje de issues definidas en el repositorio se han cerrado?
@@ -138,30 +169,33 @@ El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
 \end{itemize}
-\subsubsection{TI1 - Media de días en cerrar una issue}
+\textbf{\underline{TI1 - Media de días en cerrar una issue}}
 \begin{itemize}
-	\item \textbf{Categoría}: Proceso de Orientación
-	\item \textbf{Descripción}: Porcentaje de issues cerradas
-	\item \textbf{Propósito}: ¿Qué porcentaje de issues definidas en el repositorio se han cerrado? 
-	\item \textbf{Fórmula}: PIC = NTIC*100/NTI. NTIC = Número total de issues cerradas, NTI = Numero total de issues
+	\tightlist
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}:  Media de días en cerrar una issue
+	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
+	\item \textbf{Fórmula}: MDCI = SUM(DCI) / NTIC . NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue
 	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
-	\item \textbf{Interpretación}: 0 <= PIC <= 100. Cuanto más alto mejor.
+	\item \textbf{Interpretación}: MDCI >= 0. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
 \end{itemize}
-\subsubsection{TC1 - Media de días entre commits}
+\textbf{\underline{TC1 - Media de días entre commits}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Media de días que pasan entre dos commits consecutivos
 	\item \textbf{Propósito}: ¿Cúanto tiempo suele pasar desde un commit hasta el siguiente?
 	\item \textbf{Fórmula}: MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit 
 	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
-	\item \textbf{Interpretación}: MDEC > 0. Cuanto más pequeño mejor.
+	\item \textbf{Interpretación}: MDEC >= 0. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTC = Contador; TC = Tiempo
 \end{itemize}
-\subsubsection{TC2 - Días entre primer y último commit}
+\textbf{\underline{TC2 - Días entre primer y último commit}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Días transcurridos entre el primer y el ultimo commit 
 	\item \textbf{Propósito}: ¿Cuantos días han pasado entre el primer y el último commit?
@@ -171,8 +205,9 @@ El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: TC = Tiempo
 \end{itemize}
-\subsubsection{TC3 - Ratio de actividad de commits por mes}
+\textbf{\underline{TC3 - Ratio de actividad de commits por mes}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Muestra el número de commits relativos al número de meses
 	\item \textbf{Propósito}:¿Cuál es el número medio de cambios por mes?
@@ -182,8 +217,9 @@ El conjunto de métricas utilizados en este proyecto proceden de la Master Tesis
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTC = Contador
 \end{itemize}
-\subsubsection{C1 - Número de commits en el mes pico}
+\textbf{\underline{C1 - Número de commits en el mes pico}}
 \begin{itemize}
+	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Número de commits en el mes que más commits se han realizado en relación con el número total de commits
 	\item \textbf{Propósito}: ¿Cuál es la proporción de trabajo realizado en el mes con mayor número de cambios?
