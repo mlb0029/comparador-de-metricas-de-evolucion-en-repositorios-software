@@ -117,45 +117,35 @@ La medición del software es un proceso en el cual se asignan valores numéricos
 \section{Evolución de software}
 Este proyecto se centra en las métricas de control, es decir las que están asociadas al proceso de desarrollo o de evolución del software.
 \subsection{Conceptos de evolución}
-Un sistema de Gestión de Configuración del Software (SCM) es capaz de gestionar la evolución y cambios del código fuente en el tiempo \cite{berczuk_software_2002, sommerville_software_2016}.
-En este apartado describiremos los conceptos básicos que utilizaremos para recoger, documentar, almacenar y recuperar los diferentes cambios que se produzcan en las entidades que formen parte nuestro sistema.
-Un proyecto software está compuesto por múltiples ficheros y directorios. Llamaremos ítem a cualquier fichero o directorio cuya evolución en el tiempo está controlada por un sistema de Gestión de Configuración del Software (SCM). Una vez que estén bajo control, será posible ver su historial de cambios o revisiones y recuperar un estado anterior.
-A medida que los ítems evolucionan en el tiempo, se van creando nuevas revisiones de los mismos. Como es lógico, algunos ítems sufrirán más cambios que otros a lo largo del desarrollo. El SCM almacena todas las revisiones de cada ítem, de manera que es posible volver al estado de uno de estos elementos en un momento dado.
-La creación de revisiones ocurre a través de las operaciones de desprotección (check-out) y protección (check-in). Cuando se va a hacer una modificación en un ítem, éste se desprotege para editarlo. Para crear una nueva revisión del ítem de forma que se pueda recuperar su estado en este punto, se protege, lo que indica al SCM que debe almacenar los nuevos contenidos del ítem.
-Al conjunto de revisiones de un ítem se le denomina historia y resume la evolución de ese ítem en el tiempo.
-Una rama es un contenedor de revisiones, capaz de almacenar la evolución de los ítems como se muestra en la Ilustración 1. Las ramas pueden contener revisiones de más de un ítem. De hecho, esta es la situación más habitual.
-Ilustración 1: Concepto de rama
+Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
+Todas estas herramientas sirven para llevar un control sobre la evolución de un proyecto software ya que facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de proceso que ayuden a mejorar la evolución del proyecto comparandolas con otras mediciones de otros proyectos.
 
-Una etiqueta o label es el modo de marcar revisiones para poder agruparlas según un cierto criterio, que normalmente fija el usuario. Cuando se aplica una etiqueta, se crea una instantánea de la situación de los ítems en el tiempo. Más tarde esa instantánea puede ser referenciada con facilidad para identificar ese momento específico. Una etiqueta es, en definitiva, un nombre más fácil de recordar que se asigna a un conjunto particular de revisiones.
-Las etiquetas se aplican siempre a las revisiones de los ítems que se encuentren actualmente en el espacio de trabajo o workspace, que es la zona donde el SCM puede mantener ítems bajo el control de versiones. A efectos prácticos, el workspace no dejará de ser un directorio en el disco.
-Los ítems, sus revisiones, las ramas donde se almacenan las revisiones y las etiquetas que agrupan las revisiones se almacenan en un repositorio, que será el espacio principal donde el SCM guarda todos los objetos.
+\subsection{Métricas de evolución o de proceso}
+Como se ha explicado antes, este proyecto trata de calcular métricas de proceso. Las métricas que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}:\\
 
-
-\subsection{Métricas de evolución}
-Las métricas que se calculan de los proyectos son un conjunto de métricas que proceden de la Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}.\\\\
-\textbf{\underline{I1 - Número total de issues}}
+\textbf{\underline{I1 - Número total de issues(incidencias)}}
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número total de issues creadas en el repositorio
 	\item \textbf{Propósito}: ¿Cuántas issues se han definido en el repositorio?
 	\item \textbf{Fórmula}: NTI. NTI = número total de issues
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: NTI >= 0. Valores bajos indican que no se utiliza un Sistema de seguimiento de incidencias, podría ser porque el proyecto acaba de comenzar
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: NTI = Contador
 \end{itemize}
-\textbf{\underline{I2 - Commits por issue}}
+\textbf{\underline{I2 - Commits(cambios) por issue}}
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número de commits por issue
-	\item \textbf{Propósito}: ¿Cuántos commits realizados por cada issue?
-	\item \textbf{Fórmula}: CI = NTC/NTI. NTI = Numero total de issues, NTC = Número total de commits
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Propósito}: ¿Cuál es el volumen medio de trabajo de las issues?
+	\item \textbf{Fórmula}: CI = NTC/NTI. NTC = Número total de commits, NTI = Numero total de issues
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: CI >= 0, Si se acerca a 1 se definen bien las issues, si alto: no se definen bien las issues, si bajo: desarrollo del proyecto lento
 	\item \textbf{Tipo de escala}: Ratio 
-	\item \textbf{Tipo de medida}: NTI, NTC = Contador
+	\item \textbf{Tipo de medida}: NTC, NTI = Contador
 \end{itemize}
 \textbf{\underline{I3 - Porcentaje de issues cerradas}}
 \begin{itemize}
@@ -164,7 +154,7 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\item \textbf{Descripción}: Porcentaje de issues cerradas
 	\item \textbf{Propósito}: ¿Qué porcentaje de issues definidas en el repositorio se han cerrado?
 	\item \textbf{Fórmula}: PIC = NTIC*100/NTI. NTIC = Número total de issues cerradas, NTI = Numero total de issues
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: 0 <= PIC <= 100. Cuanto más alto mejor
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
@@ -176,7 +166,7 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\item \textbf{Descripción}:  Media de días en cerrar una issue
 	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
 	\item \textbf{Fórmula}: MDCI = SUM(DCI) / NTIC . NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: MDCI >= 0. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
@@ -186,9 +176,9 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Media de días que pasan entre dos commits consecutivos
-	\item \textbf{Propósito}: ¿Cúanto tiempo suele pasar desde un commit hasta el siguiente?
+	\item \textbf{Propósito}: ¿Cuántos días suelen pasar desde un commit hasta el siguiente?
 	\item \textbf{Fórmula}: MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit 
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: MDEC >= 0. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTC = Contador; TC = Tiempo
@@ -199,9 +189,9 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Días transcurridos entre el primer y el ultimo commit 
 	\item \textbf{Propósito}: ¿Cuantos días han pasado entre el primer y el último commit?
-	\item \textbf{Fórmula}: DEPUC = TC2- TC1. TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit.
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
-	\item \textbf{Interpretación}: DEPUC >= 0
+	\item \textbf{Fórmula}: DEPUC = TC2- TC1. DEPUC = Días entre primer y último commit, TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit.
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: DEPUC >= 0. Mejor valores altos
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: TC = Tiempo
 \end{itemize}
@@ -212,7 +202,7 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\item \textbf{Descripción}: Muestra el número de commits relativos al número de meses
 	\item \textbf{Propósito}:¿Cuál es el número medio de cambios por mes?
 	\item \textbf{Fórmula}: RCM = NTC / 12
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: RCM > 0. Cuanto más alto mejor
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NTC = Contador
@@ -224,13 +214,13 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 	\item \textbf{Descripción}: Número de commits en el mes que más commits se han realizado en relación con el número total de commits
 	\item \textbf{Propósito}: ¿Cuál es la proporción de trabajo realizado en el mes con mayor número de cambios?
 	\item \textbf{Fórmula}: CCP = NCMP / NTC. NCMP = Número de commits en el mes pico, NTC = Número total de commits
-	\item \textbf{Fuente de medición}: Repositorio de un gestor de repositorios
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: 0 <= CCP <= 1. Mejor valores intermedios
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: NCMP, NTC = Contador
 \end{itemize}
 
 \section{Framework de medición}
-Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones [8]. Este framework (\ref{fig:MCTMotorMetricas}) es independiente del lenguaje y su objetivo es la reutilización en la implementación del cálculo de métricas.
+Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} [8]. El framework cuyo diseño se muetra en la figura \ref{fig:MCTMotorMetricas} es independiente del lenguaje y su objetivo es la reutilización en la implementación del cálculo de métricas.
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
 \imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
