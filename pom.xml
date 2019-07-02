@@ -7,14 +7,13 @@
 
 	<groupId>es.ubu.lsi</groupId>
 	<artifactId>evolution-metrics</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 
 	<scm>
 		<url>git@gitlab.com:mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software.git</url>
 		<connection>git@gitlab.com:mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software.git</connection>
 		<developerConnection>git@gitlab.com:mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software.git</developerConnection>
-		<tag>v0.0.1</tag>
 	</scm>
 	
 	<name>comparador-de-metricas-de-evolucion-en-repositorios-software</name>
@@ -235,8 +234,29 @@
 				<artifactId>maven-scm-plugin</artifactId>
 				<version>1.11.2</version>
 				<configuration>
-					<tag>${project.artifactId}-${project.version}</tag>
+					<tag>v${project.version}</tag>
 				</configuration>
+				<dependencies>
+		            <dependency>
+		               <groupId>org.codehaus.plexus</groupId>
+		               <artifactId>plexus-utils</artifactId>
+		               <version>2.1</version>
+		            </dependency>
+		            <dependency>
+		               <groupId>org.apache.maven.scm</groupId>
+		               <artifactId>maven-scm-provider-gitexe</artifactId>
+		               <version>1.2</version>
+		           </dependency>
+	         	</dependencies>
+	         	<executions>
+		          <execution>
+		          <id>tag</id>
+		          <phase>deploy</phase>
+		          <goals>
+		            <goal>tag</goal>
+		          </goals>
+		          </execution>
+		        </executions>
 			</plugin>
 			<!-- Deployment -->
 			<plugin>
