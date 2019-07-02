@@ -1,22 +1,36 @@
 \capitulo{2}{Objetivos del proyecto}
 
 %Este apartado explica de forma precisa y concisa cuales son los objetivos que se persiguen con la realización del proyecto. Se puede distinguir entre los objetivos marcados por los requisitos del software a construir y los objetivos de carácter técnico que plantea a la hora de llevar a la práctica el proyecto.
-\section{Requisitos}
-En este apartado se detallarán los requisitos funcionales, marcados por la aplicación que se está desarrollando y los no funcionales, planteados durante el desarrollo de la aplicación.
-\subsection{Requisitos funcionales}
-En primer lugar se detallan requisitos generales que surgen a partir del planteamiento del problema y los objetivos que se desean conseguir con este proyecto. En segundo lugar se definirán los requisitos más específicos de cada subsistema.
+En este apartado se detallarán los objetivos generales que se desean alcanzar en este proyecto, así como los objetivos más técnicos.
+
+\section{Objetivos generales}
+En primer lugar se detallan requisitos generales que surgen a partir del planteamiento del problema y los objetivos que se desean conseguir con este proyecto.
 \begin{itemize}
-	\item Se desea obtener métricas de evolución de uno o varios repositorios especificando sus URLs, con el objetivo de compararlos.
+	\item Se desea obtener medidas de métricas de evolución de uno o varios proyectos alojados en repositorios de GitLab.
 	\item Las métricas que se desean calcular de un repositorio son las siguientes:
 	\begin{itemize}
-		\item Número total de incidencia
-		\item Cambios por incidencia
-		\item Porcentaje de asuntos cerrados
-		\item Media de días en cerrar un asunto
+		\tightlist
+		\item Número total de incidencias (\textit{issues})
+		\item Cambios(\textit{commits}) por incidencia
+		\item Porcentaje de incidencias cerrados
+		\item Media de días en cerrar una incidencia
 		\item Media de días entre cambios
 		\item Días entre primer y último cambio
 		\item Rango de actividad de cambios por mes
 		\item Porcentaje de pico de cambios
 	\end{itemize}
+	\item El objetivo de obtener las métricas es poder evaluar el estado de un proyecto comparándolo con otros proyectos de la misma naturaleza. Para ello se deberán establecer unos valores mínimo y máximo de cada métrica basados en el cálculo de los cuartiles Q1 y Q3, respectivamente.
+	\item Se desea poder almacenar esta información para poder utilizarlo posteriormente.
 \end{itemize}
-\subsection{Requisitos no funcionales}
+\section{Objetivos técnicos}
+Este apartado recoge los requisitos más técnicos del proyecto.
+\begin{itemize}
+	\item Desarrollar la aplicación de manera que se puedan extender las métricas que se calculan con el menor coste posible.
+	\item La aplicación se debe desarrollar de tal manera que facilite la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket.
+	\item Separar, en la medida de lo posible, la lógica de la aplicación y la interfaz de usuario.
+	\item Crear una batería de pruebas automáticas que cubran la mayor parte del sistema desarrollado.
+	\item Utilizar una plataforma de desarrollo colaborativo que incluya un sistema de control de versiones, un sistema de seguimiento de incidencias y que permita una comunicación fluida entre el tutor y el alumno.
+	\item Utilizar un sistema de integración y despliegue continuo.
+	\item Generar documentación.
+	\item Utilizar sistemas que aseguren la calidad de código.
+\end{itemize}
