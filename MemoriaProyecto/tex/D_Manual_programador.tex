@@ -33,11 +33,17 @@ El código fuente presenta la siguiente estructura:
 \end{description}
 \section{Manual del programador}
 Se explica en este apartado algunas bases para entender como continuar la programación de la aplicación y los puntos de extensión que se han definido.
+Cada apartado de esta sección se centra en cada uno de los módulos que contiene la aplicación.
+\subsection{Framework de conexión}
+El framework de conexión a una plataforma de desarrollo colaborativo está definido en el paquete \textit{repositorydatasource}. Consta de dos interfaces, la más importante es la interfaz \textit{RepositoryDataSource}.
 \subsection{Motor de métricas}
 El motor de métricas se ha desarrollado con una base inicial a una solución propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}\cite{marticorena_soporte_2005}. El diseño se puede observar en \ref{MCTMotorMetricas}.
 \imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
-\subsection{Framework de conexión}
+
 \subsection{Interfaz gráfica}
+
+\subsection
 \section{Compilación, instalación y ejecución del proyecto}
 
 \section{Pruebas del sistema}
+Se ha generado una batería de pruebas en \textit{src/test/java}. Algunos de estos test son parametrizados y los valores se encuentran en ficheros \textit{.csv} en la carpeta \textit{src/test/resources}.

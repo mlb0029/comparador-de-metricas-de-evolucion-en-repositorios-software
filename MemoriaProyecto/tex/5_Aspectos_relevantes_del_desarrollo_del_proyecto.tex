@@ -12,12 +12,34 @@
 %No responsive
 
 %Comparacion de tfgs en la ubu, captura dde pantalla con comparativa tfg
-
+Este capítulo recoge los aspectos destacables durante el desarrollo del proyecto.
 \section{Motivación de la elección}
-\section{Ciclo de vida}
-\subsection{Documentación}
+La elección de este trabajo fue motivada por su relación con la asignatura de \textit{Desarrollo Avanzado de Sistemas Software}, en la que se enseña como desarrollar software de calidad.
+\section{Evolución del proyecto}
+Tras la elección del proyecto se acordó definir una evolución que siga las bases del modelo Scrum. Tomando un proceso de desarrollo incrementa con revisión de las iteraciones cada dos semanas.
+Se han definido sprints de dos semanas. Estas reuniones constaban de dos partes:
+\begin{itemize}
+	\item Revisión del sprint: En las que se revisaba el incremento generado, los problemas que hubo durante su desarrollo, las soluciones que se han implementado o que se plantean para el siguiente sprint.
+	\item Planificación del siguiente sprint: Se definían las nuevas tareas.
+\end{itemize}
+Las primeras fases del desarrollo fueron de investigación y configuración. Luego se planteó un diseño inicial, que fue la base para la implementación de nuevas funcionalidades aunque, con el tiempo, se fue modificando el diseño inicial para adaptarlo a las nuevas funcionalidades o para resolver ciertos problemas que aparecían. En las siguiente secciones se detalla más a fondo cada una de estas etapas de desarrollo.
+\section{Documentación}
+La fase de documentación duró un mes y fue a la par con la etapa de configuración. 
+
+Se recopiló información sobre trabajos relacionados como \textit{Activiti-Api}\cite{rlp0019_software_2019}, \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005} y \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y se estudió en qué entornos y qué herramientas se utilizarían para el desarrollo del proyecto.
+
+Uno de los estudios más relevantes fue la elección de un API Java que permitiese la conexión a GitLab. Había tres opciones:
+\begin{itemize}
+	\item Crear un framework propio de conexión a GitLab a partir de GitLab API. Añadía cierta complejidad al proyecto al tener que desarrollar otro módulo más, pero permitía poder definir las funciones que se necesitaban.
+	\item Usar timols/java-gitlab-api\footnote{\url{https://github.com/timols/java-gitlab-api}}\cite{olshansky_wrapper_2019}. Al principio fue la solución que se escogió, pero posteriormente se descubrió otro API bastante mejor. La documentación es bastante pobre y la evolución del proyecto software estaba parada o no evolucionaba bien, tenían demasiadas incidencias abiertas y no ofrecía gran parte de la funcionalidad que aportaba GitLab API.
+	\item  Usar \footnote{\url{https://github.com/gitlab4j/gitlab4j-api}}\cite{noauthor_gitlab4j_2019}. Es un proyecto bastante decente y, a día de hoy, sigue creciendo. Tiene un alto porcentaje de incidencias cerradas, un gran número de releases, y evolución constante. Este es el API con el que se ha desarrollado este proyecto.
+\end{itemize}
+Otro de las decisiones más difíciles fue la versión de Java. Recientemente se lanzó la versión de Java 11 y es la que inicialmente se utilizó en el proyecto. Ha habido bastantes problemas de compatibilidad, pero se han ido solucionando a lo largo del tiempo.
 \section{Configuración del proyecto}
-\subsection{Pruebas}
-\section{Integración continua}
-\section{Lógica de la aplicación}
-\section{Interfaz de usuario}
+Ha sido una de las etapas más complicadas del proyecto, con frecuencia aparecían problemas con herramientas que se elegían por problemas de compatibilidad con otras herramientas, escasa documentación, etc.
+
+El proyecto se iba a desarrollar en Java desde el principio. La versión más moderna que había entonces era Java 11. Al principio generó muchos problemas porque otras herramientas no la soportaban, pero al final se consiguió 
+%\section{Desarrollo}
+%\section{Pruebas}
+\section{CI/CD}
+Se han utilizado los sistemas de integracion continua y despliegue continuo de GitLab para controlar el correcto funcionamiento de la aplicación después de un cambio y para mejorar la calidad de las revisiones.

@@ -2,3 +2,18 @@
 
 %Todo proyecto debe incluir las conclusiones que se derivan de su desarrollo. Éstas pueden ser de diferente índole, dependiendo de la tipología del proyecto, pero normalmente van a estar presentes un conjunto de conclusiones relacionadas con los resultados del proyecto y un conjunto de conclusiones técnicas. 
 %Además, resulta muy útil realizar un informe crítico indicando cómo se puede mejorar el proyecto, o cómo se puede continuar trabajando en la línea del proyecto realizado. 
+\section{Conclusiones}
+En este proyecto se ha aprendido a configurar una aplicación web en Java, realizar interfaces gráficas usando solo Java, configurar un proyecto de forma que se facilite la integración y despliegue continuos y la importancia que tiene para un equipo de desarrollo software, la importancia del uso de herramientas que midan la calidad de código, la importancia que tienen las métricas de proceso a la hora de gestionar un proyecto software, la comodidad y eficiencia que tienen las metodologías ágiles.
+\section{Lineas de trabajo futuras}
+Se definen en lista ideas que podrían realizarse en el futuro:
+\begin{itemize}
+	\item Extender la funcionalidad a nuevas métricas de evolución
+	\item Extender las plataformas de desarrollo colaborativo a otras como GitHub, Bitbucket
+	\item GitLab ofrece la posibilidad a los usuarios de tener su propia instancia de GitLab en un servidor propio. Por ahora solo se puede conectar al host ``https://gitlab.com/'', se podría ampliar esta funcionalidad permitiendo realizar una conexión a servidores propios
+	\item Realizar un histórico de mediciones y almacenarlo en una base de datos
+	\item Hacer que la aplicación web sea adaptable (\textit{responsive})
+	\item Internacionalizar la aplicación
+	\item Los proyectos y perfiles de métricas importados y exportados se almacenan en un buffer en memoria. Mientras el proyecto sea pequeño no hay problema, pero conforme vaya creciendo habría que implementar otros sistemas de persistencia como bases de datos o ficheros.
+	\item Se podría permitir seleccionar varios proyectos de la tabla de la página principal para poder gestionar varios proyectos a la vez. Por ejemplo: crear un perfil de métricas sólo con los proyectos seleccionados, evaluar solo los proyectos seleccionados, eliminar varios proyectos a la vez, volver a obtener métricas de varios proyectos al mismo tiempo.
+	\item La aplicación web solo soporta una sesión, se podría preparar para poder explotarlo en un entorno multisesión.
+\end{itemize}
