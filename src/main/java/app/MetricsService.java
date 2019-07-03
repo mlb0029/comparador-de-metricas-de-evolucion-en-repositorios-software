@@ -39,6 +39,8 @@ import metricsengine.values.NumericValue;
 import repositorydatasource.RepositoryDataSource;
 
 /**
+ * Facade for the use of the metric motor.
+ * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
@@ -93,6 +95,12 @@ public class MetricsService implements Serializable {
 		return metricsService;
 	}
     
+    /**
+     * Gets the current profile.
+     * 
+     * @author Miguel Ángel León Bardavío - mlb0029
+     * @return the current profile.
+     */
     public MetricProfile getCurrentMetricProfile() {
     	MetricProfile toReturn = new MetricProfile(currentMetricProfile.getName());
     	for (MetricConfiguration mc : currentMetricProfile.getMetricConfigurationCollection()) {
@@ -101,12 +109,23 @@ public class MetricsService implements Serializable {
     	return toReturn;
     }
     
+    /**
+     * Sets the current profile to the default one.
+     * 
+     * @author Miguel Ángel León Bardavío - mlb0029
+     */
     public void setCurrentMetricProfileToDefault() {
     	MetricProfile old = currentMetricProfile;
     	currentMetricProfile = DEFAULT_METRIC_PROFILE;
     	notifyRepositoriesCollectionUpdatedListeners(old, DEFAULT_METRIC_PROFILE);
     }
     
+    /**
+     * Creates a new metric profile and sets as current metric profile.
+     * 
+     * @author Miguel Ángel León Bardavío - mlb0029
+     * @throws MetricsServiceException When error calculating the metric profile.
+     */
     public void setCurrentMetricProfileToCalculated() throws MetricsServiceException {
     	try {
     		MetricProfile oldMetricProfile = currentMetricProfile;
@@ -146,6 +165,13 @@ public class MetricsService implements Serializable {
     }
     
     
+    /**
+     * Modify the current profile to the imported one.
+     * 
+     * @author Miguel Ángel León Bardavío - mlb0029
+     * @param inputStream input stream
+     * @throws MetricsServiceException When file corrupted or another import error.
+     */
     public void importCurrentMetricProfile(InputStream inputStream) throws MetricsServiceException {
 		try (
 			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
@@ -162,6 +188,13 @@ public class MetricsService implements Serializable {
 		}
 	}
 
+	/**
+	 * Exports the current metric profile and returns as an input stream.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return An input stream that contains the current metric profile.
+	 * @throws MetricsServiceException When error ocurrs.
+	 */
 	public InputStream exportCurrentMetricProfile() throws MetricsServiceException {
 		try (
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -175,6 +208,14 @@ public class MetricsService implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the value measured in a repository for the metric passed by parameter.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository Repository from which the measure is obtained.
+	 * @param metricType Metric.
+	 * @return Value measured in that repository for that metric.
+	 */
 	private IValue getValueMeasuredForMetric(Repository repository, Class<? extends Metric> metricType) {
 		MetricsResults mr = repository.getMetricsResults();
 		if (mr == null ) return null;
@@ -185,11 +226,11 @@ public class MetricsService implements Serializable {
 	}
 
 	/**
-	 * Calculate the metrics of the repository following the current profile.
+	 * Obtains the measures of the repository and evaluate them following the current profile.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param repository
-	 * @throws RepositoryDataSourceException
+	 * @param repository Repository from which the measures are obtained.
+	 * @throws RepositoryDataSourceException When have not been able to obtain the measurements.
 	 */
 	public void obtainAndEvaluateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
 		RepositoryDataSource repositoryDataSource = RepositoryDataSourceService.getInstance();
@@ -201,6 +242,13 @@ public class MetricsService implements Serializable {
 		evaluateRepositoryMetrics(repository);
 	}
 
+	/**
+	 * Sets the metrics configutations of the repository.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository Project.
+	 * @throws RepositoryDataSourceException When problems evaluating.
+	 */
 	public void evaluateRepositoryMetrics(Repository repository) throws RepositoryDataSourceException {
 		MetricsResults metricsResults = new MetricsResults();
 		    	
@@ -211,6 +259,13 @@ public class MetricsService implements Serializable {
 		repository.setMetricsResults(metricsResults);
 	}
 	
+	/**
+	 * Sets the metrics configutations of the repository collection.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @see RepositoriesCollectionService
+	 * @throws RepositoryDataSourceException When problems evaluating.
+	 */
 	public void evaluateRepositoryCollection() throws RepositoryDataSourceException {
 		RepositoriesCollectionService rc = RepositoriesCollectionService.getInstance();
 		for (Repository repository : rc.getRepositories()) {
@@ -219,25 +274,33 @@ public class MetricsService implements Serializable {
 	}
 	
 	/**
-	 * @param listener
-	 * @return
-	 * @see java.util.HashSet#add(java.lang.Object)
+	 * Adds a current metric profile c hanged event listener.
+	 * 
+	 * @param listener Listener to add.
+	 * @return true if not already contain the specified element
 	 */
 	public boolean addCurrentMetricProfileChangedEventListener(Listener<CurrentMetricProfileChangedEvent> listener) {
 		return currentMetricProfileChangedEventListeners.add(listener);
 	}
 
 	/**
-	 * @param listener
-	 * @return
-	 * @see java.util.HashSet#remove(java.lang.Object)
+	 * Removes a current metric profile c hanged event listener.
+	 * 
+	 * @param listener Listener to remove.
+	 * @return true if the listener existed.
 	 */
 	public boolean removeCurrentMetricProfileChangedEventListener(Listener<CurrentMetricProfileChangedEvent> listener) {
 		return currentMetricProfileChangedEventListeners.remove(listener);
 	}
 	
+	/**
+	 * Notify listeners
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param previousMetricProfile Previous metric profile.
+	 * @param newMetricProfile New Metric profile.
+	 */
 	private void notifyRepositoriesCollectionUpdatedListeners(MetricProfile previousMetricProfile, MetricProfile newMetricProfile) {
 		currentMetricProfileChangedEventListeners.forEach(l -> l.on(new CurrentMetricProfileChangedEvent(previousMetricProfile, newMetricProfile)));
 	}
-	
 }

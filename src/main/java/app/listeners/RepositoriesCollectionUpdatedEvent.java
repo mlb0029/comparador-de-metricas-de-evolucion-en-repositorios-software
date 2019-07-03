@@ -3,25 +3,19 @@ package app.listeners;
 import java.io.Serializable;
 
 /**
+ * Event that triggers when the list of projects is modified.
+ * 
  * @author Miguel Ángel León Bardavío - mlb0029
  *
  */
 public class RepositoriesCollectionUpdatedEvent implements Serializable, Event {
 
-	/**
-	 * Description.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
 	private static final long serialVersionUID = 1061622858938632134L;
 
 	/**
-	 * Constructor.
+	 * Empty constructor.
 	 *
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param repository
-	 * @param added
 	 */
-	public RepositoriesCollectionUpdatedEvent() {
-	}
+	public RepositoriesCollectionUpdatedEvent() {}
 }

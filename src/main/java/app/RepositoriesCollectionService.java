@@ -42,11 +42,6 @@ import metricsengine.values.ValueUncalculated;
  */
 public class RepositoriesCollectionService implements Serializable {
 	
-	/**
-	 * Serial.
-	 * 
-	 * @author Miguel Ángel León Bardavío - mlb0029
-	 */
 	private static final long serialVersionUID = 6585069143415079761L;
 	
 	/**
@@ -67,25 +62,58 @@ public class RepositoriesCollectionService implements Serializable {
 	
 	private RepositoriesCollectionService() {}
 
+	/**
+	 * Gets the single instance of the class.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return the single instance of the class.
+	 */
 	public static RepositoriesCollectionService getInstance() {
 		if (instance == null) instance = new RepositoriesCollectionService();
 		return instance;
 	}
 
+	/**
+	 * Gets the collection of repositories.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @returnthe collection of repositories.
+	 */
 	public Collection<Repository> getRepositories() {
 		return repositoriesCollection;
 	}
 	
+	/**
+	 * Adds a repository and notify all RepositoriesCollectionUpdatedEvent Listeners.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository Repository to add.
+	 * @throws RepositoriesCollectionServiceException when repository already exists.
+	 */
 	public void addRepository(Repository repository) throws RepositoriesCollectionServiceException {
 		if (!repositoriesCollection.collection.add(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.REPOSITORY_ALREADY_EXISTS);
 		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
+	/**
+	 * Removes a repository and notify all RepositoriesCollectionUpdatedEvent Listeners.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param repository Repository to remove.
+	 * @throws RepositoriesCollectionServiceException if repository dosen't exists.
+	 */
 	public void removeRepository(Repository repository) throws RepositoriesCollectionServiceException {
 		if (!repositoriesCollection.collection.remove(repository)) throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.NOT_EXIST_REPOSITORY);
 		notifyRepositoriesCollectionUpdatedListeners();
 	}
 	
+	/**
+	 * Exports the repositories serialized to the returned input stream.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return an input stream with the repositories collection.
+	 * @throws RepositoriesCollectionServiceException when problems occur when exporting.
+	 */
 	public InputStream exportRepositories () throws RepositoriesCollectionServiceException {
 		try (
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -99,6 +127,13 @@ public class RepositoriesCollectionService implements Serializable {
 		}
 	}
 	
+	/**
+	 * Exports the repositories to a csv file and return the input stream..
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @return An input stream containing the csv file.
+	 * @throws RepositoriesCollectionServiceException when problems occur when exporting.
+	 */
 	public InputStream exportRepositoriesToCSV () throws RepositoriesCollectionServiceException {
 		try (
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -168,8 +203,23 @@ public class RepositoriesCollectionService implements Serializable {
 		return measure;
 	}
 	
+	/**
+	 * Append or overwrite the current repositories.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 *
+	 */
 	public enum ImportMode {OVERWRITE, APPEND}
 	
+	/**
+	 * Import repositories from file.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 * @param inputStream input stream
+	 * @param importMode import mode
+	 * @see ImportMode
+	 * @throws RepositoriesCollectionServiceException when problems occur when importing.
+	 */
 	@SuppressWarnings("unchecked")
 	public void importRepositories(InputStream inputStream, ImportMode importMode) throws RepositoriesCollectionServiceException {
 		try (
@@ -180,34 +230,47 @@ public class RepositoriesCollectionService implements Serializable {
 			repositoriesCollection.collection.addAll(repositories);
 			notifyRepositoriesCollectionUpdatedListeners();
 		} catch (StreamCorruptedException e) {
-			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
+			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.CORRUPTED, e);
 		} catch (Exception e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.IMPORT_ERROR, e);
 		}
 	}
 
 	/**
-	 * @param listener
-	 * @return
-	 * @see java.util.HashSet#add(java.lang.Object)
+	 * Adds a RepositoriesCollectionUpdated event listener.
+	 * 
+	 * @param listener Listener to add.
+	 * @return true if this set did not already contain the specified element
 	 */
 	public boolean addRepositoriesCollectionUpdatedListener(Listener<RepositoriesCollectionUpdatedEvent> listener) {
 		return repositoriesCollectionUpdatedListeners.add(listener);
 	}
 
 	/**
-	 * @param listener
-	 * @return
-	 * @see java.util.HashSet#remove(java.lang.Object)
+	 * Removes a RepositoriesCollectionUpdated event listener.
+	 * 
+	 * @param listener Listener to remove.
+	 * @return true if the set contained the specified element
 	 */
 	public boolean removeRepositoriesCollectionUpdatedListener(Listener<RepositoriesCollectionUpdatedEvent> listener) {
 		return repositoriesCollectionUpdatedListeners.remove(listener);
 	}
 	
+	/**
+	 * Notify all the RepositoriesCollectionUpdated event listeners.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 */
 	private void notifyRepositoriesCollectionUpdatedListeners() {
 		repositoriesCollectionUpdatedListeners.forEach(l -> l.on(new RepositoriesCollectionUpdatedEvent()));
 	}
 
+	/**
+	 * Public collection that prevents data from being modified.
+	 * 
+	 * @author Miguel Ángel León Bardavío - mlb0029
+	 *
+	 */
 	private class RepositoriesCollection implements Collection<Repository> {
 
 		private HashSet<Repository> collection = new HashSet<Repository>();
