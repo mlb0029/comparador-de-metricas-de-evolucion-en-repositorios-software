@@ -112,7 +112,7 @@ public interface RepositoryDataSource extends Serializable{
 	
 	/**
 	 * It obtains the public repositories of the user whose username is passed by parameter 
-	 * </br>or the public and private repositories if the user name matches 
+	 * <br/>or the public and private repositories if the user name matches 
 	 * the username of the connected user.
 	 * <p>
 	 * Throw an exception if the user doesn't exist or problems when getting information of the user.
@@ -125,15 +125,15 @@ public interface RepositoryDataSource extends Serializable{
 	Collection<Repository> getAllUserRepositories(String username) throws RepositoryDataSourceException;
 	
 	/**
-	 * It obtains the public repositories of the group whose group name is passed by parameter 
-	 * </br>or the public and private repositories if possible.
+	 * It obtains the public repositories of the group whose group name or id is passed by parameter 
+	 * <br/>or the public and private repositories if possible.
 	 * <p>
 	 * Throw an exception if the group doesn't exist or problems when getting information of the group.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param groupName
-	 * @return
-	 * @throws RepositoryDataSourceException
+	 * @param groupName group name or group id
+	 * @return Repositories owned by the group
+	 * @throws RepositoryDataSourceException Wen gorup not found
 	 */
 	Collection<Repository> getAllGroupRepositories(String groupName) throws RepositoryDataSourceException;
 	
@@ -141,7 +141,7 @@ public interface RepositoryDataSource extends Serializable{
 	 * Obtain a repository accessible by the logged in user using the url
 	 * or throw an exception if the repository is not accessible.
 	 * 
-	 * @param repositoryURL URL of a repository.
+	 * @param repositoryHTTPSURL URL of a repository.
 	 * @return The repository pointed to by the url.
 	 * @throws RepositoryDataSourceException When it has not been possible to obtain the repository.
 	 */
@@ -153,8 +153,8 @@ public interface RepositoryDataSource extends Serializable{
 	 * or throw an exception if the repository is not accessible.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @param repositoryId
-	 * @return
+	 * @param repositoryId Id of the repository
+	 * @return The repository whose id is the one passed as a parameter
 	 * @throws RepositoryDataSourceException
 	 */
 	Repository getRepository(int repositoryId) throws RepositoryDataSourceException;

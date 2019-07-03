@@ -77,7 +77,7 @@ public class RepositoriesCollectionService implements Serializable {
 	 * Gets the collection of repositories.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
-	 * @returnthe collection of repositories.
+	 * @return the collection of repositories.
 	 */
 	public Collection<Repository> getRepositories() {
 		return repositoriesCollection;
