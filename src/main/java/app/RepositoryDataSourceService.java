@@ -13,7 +13,7 @@ import datamodel.User;
 import exceptions.RepositoryDataSourceException;
 import repositorydatasource.RepositoryDataSource;
 import repositorydatasource.RepositoryDataSourceFactory;
-import repositorydatasource.RepositoyDataSourceFactoryGitlab;
+import repositorydatasource.RepositoryDataSourceFactoryGithub;
 
 /**
  * Wrapper of RepositoryDataSource with listeners and updateRepository function.
@@ -37,7 +37,7 @@ public class RepositoryDataSourceService implements Serializable, RepositoryData
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 */
 	private RepositoryDataSourceService() {
-		this.repositoryDataSource = new RepositoyDataSourceFactoryGitlab().getRepositoryDataSource();
+		this.repositoryDataSource = new RepositoryDataSourceFactoryGithub().getRepositoryDataSource();
 	}
 
 	/**
