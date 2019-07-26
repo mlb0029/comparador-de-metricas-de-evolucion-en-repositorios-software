@@ -380,7 +380,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 		//String sowner = sProyecto.replaceAll("/" + srepositoryName, "");
 		//RepositoryId projectId = RepositoryId.create(sowner, srepositoryName);
 		
-		getRepository(repository.getId());//Si no se obtiene, lanza una excepción
+		getRepository(repository.getId());
 		Integer projectId = repository.getId();
 		
 		Integer totalNumberOfIssues = getTotalNumberOfIssues(projectId);
@@ -504,7 +504,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 
 			Set<Date> sdates = new HashSet<Date>();
 
-			for (int i = 0; i < lcommits.size() - 1; i++) {
+			for (int i = 0; i < lcommits.size(); i++) {
 				sdates.add(new Date(lcommits.get(i).getCommit().getAuthor().getDate().getTime()));
 			}
 			return sdates;
