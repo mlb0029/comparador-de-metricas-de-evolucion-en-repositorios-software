@@ -5,6 +5,10 @@
 Este capitulo muestra las herramientas que se han utilizado para la alcanzar los objetivos del proyecto.
 \section{Herramientas utilizadas}
 \subsection{Entorno de desarrollo}
+\todo En todas las herramientas describir brevemente las funcionalidades de que se utilizan concretamente en el proyecto.
+\todo Se pueden acompañar con alguna captura de pantalla, porción de código y a una referencia al manual del progromador para obtener más detalle.
+\todo Por ejemplo Java SE v11.0.1 Expresiones Lambda en el uso de stream. 
+ \todo Apache Maven indicar brevemente el  flujo de trabajo utilizado de compilación, testing, calidad, package y despliegue 
 \begin{description}
 	\item[Eclipse IDE for Java EE Developers]. Entorno de programación Java para aplicaciones web. Se ha utilizado la version: 2018-09 (4.9.0).\\ Enlace a página de descarga:\\ \url{https://www.eclipse.org/downloads/}
 	\item[Java SE 11 (JDK)]. \textit{Java Development Kit}. Se ha utilizado la versión  v11.0.1.\\ Enlace a página de descarga:\\ \url{https://www.oracle.com/technetwork/java/javase/downloads/index.html}
@@ -21,6 +25,7 @@ Este capitulo muestra las herramientas que se han utilizado para la alcanzar los
 	\item[JUnit5]. Conjunto de bibliotecas para el desarrollo de pruebas unitarias. Se ha utilizado la versión  v5.3.1.\\ Enlace a página de descarga:\\ \url{https://junit.org/junit5/}
 \end{description}
 \subsection{Frameworks y librerías específicas para el proyecto}
+\todo Además de los enlaces de la aplicación añade los enlaces de tu repositorio
 \begin{description}
 	\item[gitlab4j-api]. Framework de conexión a GitLab API. Se ha utilizado la versión  v4.9.14.\\ Enlace:\\ \url{https://github.com/gitlab4j/gitlab4j-api}\\
 	Se ha preferido frente a timols/java-gitlab-api\footnote{\url{https://github.com/timols/java-gitlab-api}} tras realizar un estudio sobre sus métricas de evolución y una comparativa sobre la documentación. Concluyendo en que \textbf{gitlab4j-api} contiene mejor documentación, mejor evolución y a día de hoy se sigue desarrollando.
@@ -28,7 +33,7 @@ Este capitulo muestra las herramientas que se han utilizado para la alcanzar los
 \end{description}
 \subsection{Interfaz gráfica}
 \begin{description}
-	\item[Vaadin]. Framework para desarrollo de interfaces web con Java. Se ha utilizado la versión  v13.0.0\\ Enlace:\\ \url{https://vaadin.com/}
+	\item[Vaadin]. Framework para desarrollo de interfaces Web con Java. Se ha utilizado la versión  v13.0.0\\ Enlace:\\ \url{https://vaadin.com/}
 \end{description}
 \subsection{CI/CD y Calidad de código}
 \begin{description}
@@ -44,7 +49,7 @@ Este capitulo muestra las herramientas que se han utilizado para la alcanzar los
 	\item[Zotero]. Herramienta de gestión de fuentes bibliográficas.\\ Enlace:\\ \url{https://www.zotero.org/}
 \end{description}
 \subsection{Técnicas}
-A lo largo del proyecto se han utilizado numerosos patrones de diseño como Singleton, Factory Method, Wrapper, Builder, Listener, etc.
+A lo largo del proyecto se han utilizado numerosos patrones de diseño \cite{gamma_patrones_2002} como Singleton, Factory Method, Wrapper, Builder, Listener, etc.
 
 Para el motor de métricas se ha utilizado como base el framework propuesto en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. Ver figura \ref{fig:MCTMotorMetricas}.
 %herramientas codacy maven, gitlab, capturas, etc, cobertura, heroku, ci, pipeline, token...

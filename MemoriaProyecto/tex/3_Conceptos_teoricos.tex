@@ -121,7 +121,14 @@ Una plataforma de desarrollo colaborativo como GitLab puede presentar herramient
 Todas estas herramientas sirven para llevar un control sobre la evolución de un proyecto software ya que facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de proceso que ayuden a mejorar la evolución del proyecto comparandolas con otras mediciones de otros proyectos.
 
 \subsection{Métricas de evolución o de proceso}
-Como se ha explicado antes, este proyecto trata de calcular métricas de proceso. Las métricas que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}:\\
+Como se ha explicado peviamente, este proyecto calcula  métricas de proceso. Las métricas que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}. 
+A continuación se describen las métricas que se implementan en este proyecto usando la plantilla de definicion de la norma ISO 9126 \cite{ISO9126}.\\
+
+%\todo Cuando se ponen las fórmulas se puede utilizar el entorno matemático de Latex, mejora mucho la presentación.
+%\todo Se puede utilizar el editor de Latex Web  \url{https://www.codecogs.com/latex/eqneditor.php?lang=es-es}
+%\todo Un ejemplo de especificación  Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC
+%\todo aplicando los entornos matemáticos $\frac{\sum_{i=1,j=0}^{NTC} TC_i - TC_j}{NTC}$
+ 
 
 \textbf{\underline{I1 - Número total de issues(incidencias)}}
 \begin{itemize}
@@ -129,11 +136,11 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número total de issues creadas en el repositorio
 	\item \textbf{Propósito}: ¿Cuántas issues se han definido en el repositorio?
-	\item \textbf{Fórmula}: NTI. NTI = número total de issues
+	\item \textbf{Fórmula}: $NTI$. \textit{NTI = número total de issues}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: NTI >= 0. Valores bajos indican que no se utiliza un Sistema de seguimiento de incidencias, podría ser porque el proyecto acaba de comenzar
+	\item \textbf{Interpretación}: $NTI \geq 0$. Valores bajos indican que no se utiliza un sistema de seguimiento de incidencias, podría ser porque el proyecto acaba de comenzar
 	\item \textbf{Tipo de escala}: Absoluta
-	\item \textbf{Tipo de medida}: NTI = Contador
+	\item \textbf{Tipo de medida}: \textit{NTI = Contador}
 \end{itemize}
 \textbf{\underline{I2 - Commits(cambios) por issue}}
 \begin{itemize}
@@ -141,11 +148,11 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Número de commits por issue
 	\item \textbf{Propósito}: ¿Cuál es el volumen medio de trabajo de las issues?
-	\item \textbf{Fórmula}: CI = NTC/NTI. NTC = Número total de commits, NTI = Numero total de issues
+	\item \textbf{Fórmula}: $CI = \frac{NTC}{NTI}$. \textit{CI = Cambios por issue, NTC = Número total de commits, NTI = Numero total de issues}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: CI >= 0, Si se acerca a 1 se definen bien las issues, si alto: no se definen bien las issues, si bajo: desarrollo del proyecto lento
+	\item \textbf{Interpretación}: $CI \geq 0$, Si se acerca a 1 se definen bien las issues, si alto: no se definen bien las issues, si bajo: desarrollo del proyecto lento
 	\item \textbf{Tipo de escala}: Ratio 
-	\item \textbf{Tipo de medida}: NTC, NTI = Contador
+	\item \textbf{Tipo de medida}: \textit{NTC, NTI = Contador}
 \end{itemize}
 \textbf{\underline{I3 - Porcentaje de issues cerradas}}
 \begin{itemize}
@@ -153,11 +160,11 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Proceso de Orientación
 	\item \textbf{Descripción}: Porcentaje de issues cerradas
 	\item \textbf{Propósito}: ¿Qué porcentaje de issues definidas en el repositorio se han cerrado?
-	\item \textbf{Fórmula}: PIC = NTIC*100/NTI. NTIC = Número total de issues cerradas, NTI = Numero total de issues
+	\item \textbf{Fórmula}: $PIC = \frac{NTIC}{NTI}*100$. \textit{PIC = Porcentaje de issues cerradas, NTIC = Número total de issues cerradas, NTI = Numero total de issues}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: 0 <= PIC <= 100. Cuanto más alto mejor
+	\item \textbf{Interpretación}: $0 \leq PIC \leq 100$. Cuanto más alto mejor
 	\item \textbf{Tipo de escala}: Ratio
-	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
+	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
 \textbf{\underline{TI1 - Media de días en cerrar una issue}}
 \begin{itemize}
@@ -165,11 +172,11 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}:  Media de días en cerrar una issue
 	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
-	\item \textbf{Fórmula}: MDCI = SUM(DCI) / NTIC . NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue
+	\item \textbf{Fórmula}: $MDCI = \frac{\sum_{i=0}^{NTIC}DCI_i}{NTIC}$. \textit{MDCI = Media de días en cerrar una issue, NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: MDCI >= 0. Cuanto más pequeño mejor.
+	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
-	\item \textbf{Tipo de medida}: NTI, NTIC = Contador
+	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
 \textbf{\underline{TC1 - Media de días entre commits}}
 \begin{itemize}
@@ -177,11 +184,12 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Media de días que pasan entre dos commits consecutivos
 	\item \textbf{Propósito}: ¿Cuántos días suelen pasar desde un commit hasta el siguiente?
-	\item \textbf{Fórmula}: MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit 
+	\item \textbf{Fórmula}: $MDC = \frac{\sum_{i=1}^{NTC} TC_i - TC_{i-1}}{NTC}$. $TC_i - TC_{i-1}$ en días; \textit{MDC = Media de días entre cambios, NTC = Número total de commits, TC = Tiempo de Commit}
+	%$MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit$ 
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: MDEC >= 0. Cuanto más pequeño mejor.
+	\item \textbf{Interpretación}: $MDEC \geq 0$. Cuanto más pequeño mejor.
 	\item \textbf{Tipo de escala}: Ratio
-	\item \textbf{Tipo de medida}: NTC = Contador; TC = Tiempo
+	\item \textbf{Tipo de medida}: \textit{NTC = Contador; TC = Tiempo}
 \end{itemize}
 \textbf{\underline{TC2 - Días entre primer y último commit}}
 \begin{itemize}
@@ -189,11 +197,11 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Días transcurridos entre el primer y el ultimo commit 
 	\item \textbf{Propósito}: ¿Cuantos días han pasado entre el primer y el último commit?
-	\item \textbf{Fórmula}: DEPUC = TC2- TC1. DEPUC = Días entre primer y último commit, TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit.
+	\item \textbf{Fórmula}: $DEPUC = TC2- TC1$. $TC2- TC1$ en días;  \textit{DEPUC = Días entre primer y último commit, TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: DEPUC >= 0. Mejor valores altos
+	\item \textbf{Interpretación}: $DEPUC \geq 0$. Mejor valores altos
 	\item \textbf{Tipo de escala}: Absoluta
-	\item \textbf{Tipo de medida}: TC = Tiempo
+	\item \textbf{Tipo de medida}: \textit{TC = Tiempo}
 \end{itemize}
 \textbf{\underline{TC3 - Ratio de actividad de commits por mes}}
 \begin{itemize}
@@ -201,26 +209,45 @@ Como se ha explicado antes, este proyecto trata de calcular métricas de proceso
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Muestra el número de commits relativos al número de meses
 	\item \textbf{Propósito}:¿Cuál es el número medio de cambios por mes?
-	\item \textbf{Fórmula}: RCM = NTC / 12
+	\item \textbf{Fórmula}: $RCM = \frac{NTC}{12}$. \textit{RCM = Ratio de cambios por mes, NTC = Número total de commits}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: RCM > 0. Cuanto más alto mejor
+	\item \textbf{Interpretación}: $RCM > 0$. Cuanto más alto mejor
 	\item \textbf{Tipo de escala}: Ratio
-	\item \textbf{Tipo de medida}: NTC = Contador
+	\item \textbf{Tipo de medida}: \textit{NTC = Contador}
 \end{itemize}
-\textbf{\underline{C1 - Número de commits en el mes pico}}
+\textbf{\underline{C1 - Cambios pico}}
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Número de commits en el mes que más commits se han realizado en relación con el número total de commits
 	\item \textbf{Propósito}: ¿Cuál es la proporción de trabajo realizado en el mes con mayor número de cambios?
-	\item \textbf{Fórmula}: CCP = NCMP / NTC. NCMP = Número de commits en el mes pico, NTC = Número total de commits
+	\item \textbf{Fórmula}: $CP = \frac{NCMP}{NTC}$. \textit{CP = Cambios pico, NCMP = Número de commits en el mes pico, NTC = Número total de commits}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: 0 <= CCP <= 1. Mejor valores intermedios
+	\item \textbf{Interpretación}: $0 \leq CCP \leq 1$. Mejor valores intermedios
 	\item \textbf{Tipo de escala}: Ratio
-	\item \textbf{Tipo de medida}: NCMP, NTC = Contador
+	\item \textbf{Tipo de medida}: \textit{NCMP, NTC = Contador}
 \end{itemize}
 
-\section{Framework de medición}
-Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El framework cuyo diseño se muetra en la figura \ref{fig:MCTMotorMetricas} es independiente del lenguaje y su objetivo es la reutilización en la implementación del cálculo de métricas.
+\section{Framework de medición} 
+Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El framework cuyo diseño se muestra en la Figura \ref{fig:MCTMotorMetricas} es independiente del repositorio concreto (\textit{GitLab, GitHub,Bitbucket, SourceForge}) y su objetivo es la reutilización en la implementación del cálculo de métricas.
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
-\imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
+\imagen{MCTMotorMetricas}{Diagrama del framework para el cálculo de métricas con perfiles que almacena valores umbrales.}
+
+En la Figura  \ref{fig:MCTMotorMetricas} se muestra el diagrama de clases UML que identifica los conceptos principales del framework de medición y la relación entre ellos, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha especifican los patrones de diseño aplicados en el framework \citep{gamma_patrones_2002}.
+
+\section{Forjas de proyectos software}
+
+\todo Este párrafo está repetido en la introducción. Pero tiene que ser reducido en este apartado se puede detallar más extensamente con alguna captura de pantalla  que ayude a describir las equivalentes en múltiples repositorios.
+\todo revisar
+ 
+
+En la última década han surgido forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open source (SourceForge \footnote{\url{https://sourceforge.net/}}, Github \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}).  Estas forjas suelen integrar múltiples sistemas para dar soporte a los flujos de trabajo y registrar las interacciones entre los miembros del equipo. Además dan la posibilidad de extensión funcional con sistemas de terceros para gestionar otras actividades no soportadas directamente, por ejemplo Travis CI
+\footnote{\url{https://travis-ci.org/}} para gestionar la integración contínua o Codacy \footnote{\url{https://www.codacy.com/}} para gestionar las revisiones automáticas de calidad. Actualmente estas forjas han tenido una gran aceptación entre la comunidad de desarrolladores y existen muchos desarrollos de software de tendencia que las utilizan. La forjas de proyectos software proporcionan interfaces de programación que permiten acceder a toda la información registrada. 
+
+Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos. Se registran grandes conjuntos de datos difíciles de procesar. El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{guemes-pena_emerging_2018}:
+
+
+\subsection{Github vs. GitLab}
+\todo introducir la sección
+\todo Usa la información de esta página \url{https://about.gitlab.com/devops-tools/github-vs-gitlab.html} para recoger las características de los repositorios 
+y su comparación. 
