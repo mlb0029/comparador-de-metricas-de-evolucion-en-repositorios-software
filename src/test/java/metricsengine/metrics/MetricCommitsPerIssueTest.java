@@ -133,12 +133,12 @@ public class MetricCommitsPerIssueTest {
 	private static Stream<Arguments> testRun() {
 		return Stream.of(				        
 				Arguments.of(Integer.MAX_VALUE, Integer.MAX_VALUE, new ValueDecimal(1.0), "TNI, TNC = Integer.MAX_VALUE"),
-				Arguments.of(Integer.MAX_VALUE, 1, new ValueDecimal((double) Integer.MAX_VALUE), "TNI = Integer.MAX_VALUE"),
-				Arguments.of(1, Integer.MAX_VALUE, new ValueDecimal((double) 1 / Integer.MAX_VALUE), "TNC = Integer.MAX_VALUE"),
-				Arguments.of(0, 1, new ValueDecimal(0.0), "TNI = 0"),
-				Arguments.of(1, 1, new ValueDecimal(1.0), "TNI = TNC.TNI, TNC > 0"),
-				Arguments.of(10, 5, new ValueDecimal(2.0), "TNI > TNC.TNI, TNC > 0"),
-				Arguments.of(12, 432, new ValueDecimal((double) 12 / 432), "TNI < TNC.TNI, TNC > 0")
+				Arguments.of(Integer.MAX_VALUE, 1, new ValueDecimal((double) 1 / Integer.MAX_VALUE), "TNI = Integer.MAX_VALUE"),
+				Arguments.of(1, Integer.MAX_VALUE, new ValueDecimal((double) Integer.MAX_VALUE), "TNC = Integer.MAX_VALUE"),
+				Arguments.of(1, 0, new ValueDecimal(0.0), "TNC = 0"),
+				Arguments.of(5, 5, new ValueDecimal(1.0), "TNI = TNC.TNI, TNC > 0"),
+				Arguments.of(5, 10, new ValueDecimal(2.0), "TNC > TNI.TNI, TNC > 0"),
+				Arguments.of(432, 12, new ValueDecimal((double) 12 / 432), "TNC < TNI.TNI, TNC > 0")
 		);
 	}
 }
