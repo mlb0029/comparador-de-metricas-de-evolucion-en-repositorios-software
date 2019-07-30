@@ -86,7 +86,7 @@ En este capítulo se explican conceptos relevantes para la comprensión de este 
 Todo proyecto de software tienen como objetivo desarrollar software de alta calidad, que cumpla con los requisitos acordados. Sin embargo, la calidad de un producto de software no tiene que ver solo con que se cumplan todos los requisitos funcionales, sino también otros requerimientos no funcionales que no se incluyen en la especificación como los de mantenimiento.
 
 %Comentar fig 25.3 - Ppales factores de la calidad de protducto software p561
-Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenierisoftware_2002} los principales factores que afectan a la calidad del producto, como se puede observar en la figura \ref{fig:M3-FactoresCalidad}:
+Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenierisoftware_2002} los principales factores que afectan a la calidad del producto, como se puede observar en la Fig. \ref{fig:M3-FactoresCalidad}:
 \begin{itemize}
 	\tightlist
 	\item Calidad del proceso
@@ -103,11 +103,11 @@ Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenieri
 
 %Comentar fig 24.9 p549 relacion de metricas de proc y de prod
 
-Para llegar a tener un software de calidad hay que tener en cuenta todos los factores mencionados anteriormente en cada una de las tres fases de la administración de la calidad: Aseguramiento, planeación y control.
+Para llegar a tener un software de calidad hay que tener en cuenta todos los factores mencionados anteriormente en cada una de las tres fases de la administración de la calidad: aseguramiento, planeación y control.
 
 La fase de control es la que se encarga de que el equipo de desarrollo cumpla los estándares y procedimientos definidos en el plan de calidad del proyecto. Esta fase puede realizarse mediante un proceso de medición.
 
-La medición del software es un proceso en el cual se asignan valores numéricos o simbólicos a atributos de un producto o proceso software. Una métrica es una medida relacionada con un atributo de un proceso o producto software (por ejemplo). Las métricas son de control o de predicción. Las \textbf{métricas de control} se asocian al proceso de desarrollo del software (p. ej. Media de días ue se tarda en cerrar una incidencia )y las \textbf{métricas de predicción} se asocian a productos software (p. ej. Complejidad ciclomática de una función). Y ambos tipos de métricas influyen en la toma de decisiones administrativas como se observa en la figura \ref{fig:M3-MetricasProcesoYProducto}.
+La medición del software es un proceso en el cual se asignan valores numéricos o simbólicos a atributos de un producto o proceso software. Una métrica de software es una medida cuantitativa del grado en que un sistema, componente o proceso software posee un atributo dado. Las métricas son de control o de predicción. Las \textbf{métricas de control} se asocian al proceso de desarrollo del software, por ejemplo, la media de días que se tarda en cerrar una incidencia; y las \textbf{métricas de predicción} se asocian a productos software, por ejemplo, la complejidad ciclomática de una función. Y ambos tipos de métricas influyen en la toma de decisiones administrativas como se observa en la Fig. \ref{fig:M3-MetricasProcesoYProducto}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.5]{M3-MetricasProcesoYProducto}
@@ -150,7 +150,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Propósito}: ¿Cuál es el volumen medio de trabajo de las issues?
 	\item \textbf{Fórmula}: $CI = \frac{NTC}{NTI}$. \textit{CI = Cambios por issue, NTC = Número total de commits, NTI = Numero total de issues}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $CI \geq 0$, Si se acerca a 1 se definen bien las issues, si alto: no se definen bien las issues, si bajo: desarrollo del proyecto lento
+	\item \textbf{Interpretación}: $CI \geq 1$, Lo normal son valores altos. Si el valor es menor que uno significa que hay desarrollo sin documentar.
 	\item \textbf{Tipo de escala}: Ratio 
 	\item \textbf{Tipo de medida}: \textit{NTC, NTI = Contador}
 \end{itemize}
@@ -174,7 +174,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
 	\item \textbf{Fórmula}: $MDCI = \frac{\sum_{i=0}^{NTIC}DCI_i}{NTIC}$. \textit{MDCI = Media de días en cerrar una issue, NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor.
+	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor. Si se siguen metodologías ágiles de desarrollo iterativo e incremental como SCRUM, la métrica debería indicar la duración del \textit{sprint} definido en la fase de planificación del proyecto. En SCRUM se recomiendan duraciones del \textit{sprint} de entre una y seis semanas, siendo recomendable que no exceda de un mes\cite{noauthor_scrum_2019}.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
@@ -187,7 +187,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Fórmula}: $MDC = \frac{\sum_{i=1}^{NTC} TC_i - TC_{i-1}}{NTC}$. $TC_i - TC_{i-1}$ en días; \textit{MDC = Media de días entre cambios, NTC = Número total de commits, TC = Tiempo de Commit}
 	%$MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit$ 
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $MDEC \geq 0$. Cuanto más pequeño mejor.
+	\item \textbf{Interpretación}: $MDEC \geq 0$. Cuanto más pequeño mejor. Se recomienda no superar los 5 días.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTC = Contador; TC = Tiempo}
 \end{itemize}
@@ -199,7 +199,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Propósito}: ¿Cuantos días han pasado entre el primer y el último commit?
 	\item \textbf{Fórmula}: $DEPUC = TC2- TC1$. $TC2- TC1$ en días;  \textit{DEPUC = Días entre primer y último commit, TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $DEPUC \geq 0$. Mejor valores altos
+	\item \textbf{Interpretación}: $DEPUC \geq 0$. Cúanto más alto, más tiempo lleva en desarrollo el proyecto. En procesos software empresariales se debería comparar con la estimación temporal de la fase de planificación. 
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: \textit{TC = Tiempo}
 \end{itemize}
@@ -209,7 +209,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Muestra el número de commits relativos al número de meses
 	\item \textbf{Propósito}:¿Cuál es el número medio de cambios por mes?
-	\item \textbf{Fórmula}: $RCM = \frac{NTC}{12}$. \textit{RCM = Ratio de cambios por mes, NTC = Número total de commits}
+	\item \textbf{Fórmula}: $RCM = \frac{NTC}{NM}$. \textit{RCM = Ratio de cambios por mes, NTC = Número total de commits, NM = Número de meses que han pasado durante el desarrollo de la aplicación}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: $RCM > 0$. Cuanto más alto mejor
 	\item \textbf{Tipo de escala}: Ratio
@@ -223,17 +223,17 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Propósito}: ¿Cuál es la proporción de trabajo realizado en el mes con mayor número de cambios?
 	\item \textbf{Fórmula}: $CP = \frac{NCMP}{NTC}$. \textit{CP = Cambios pico, NCMP = Número de commits en el mes pico, NTC = Número total de commits}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $0 \leq CCP \leq 1$. Mejor valores intermedios
+	\item \textbf{Interpretación}: $0 \leq CCP \leq 1$. Mejor valores intermedios. Se recomienda no superar el 40\% del trabajo en un mes.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NCMP, NTC = Contador}
 \end{itemize}
 
 \section{Framework de medición} 
-Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El framework cuyo diseño se muestra en la Figura \ref{fig:MCTMotorMetricas} es independiente del repositorio concreto (\textit{GitLab, GitHub,Bitbucket, SourceForge}) y su objetivo es la reutilización en la implementación del cálculo de métricas.
+Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El framework cuyo diseño se muestra en la Fig. \ref{fig:MCTMotorMetricas} es independiente del repositorio concreto (\textit{GitLab, GitHub,Bitbucket, SourceForge}) y su objetivo es la reutilización en la implementación del cálculo de métricas.
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
 \imagen{MCTMotorMetricas}{Diagrama del framework para el cálculo de métricas con perfiles que almacena valores umbrales.}
 
-En la Figura  \ref{fig:MCTMotorMetricas} se muestra el diagrama de clases UML que identifica los conceptos principales del framework de medición y la relación entre ellos, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha especifican los patrones de diseño aplicados en el framework \citep{gamma_patrones_2002}.
+En la Fig. \ref{fig:MCTMotorMetricas} se muestra el diagrama de clases UML que identifica los conceptos principales del framework de medición y la relación entre ellos, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha especifican los patrones de diseño aplicados en el framework \citep{gamma_patrones_2002}.
 
 \section{Forjas de proyectos software}
 

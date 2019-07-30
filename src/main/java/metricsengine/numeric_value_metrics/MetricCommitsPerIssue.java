@@ -32,7 +32,7 @@ public class MetricCommitsPerIssue extends NumericValueMetricTemplate {
 			"",
 			"Process Orientation",
 			"How many commits per issues?",
-			"CI = TNI/TNC. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits",
+			"CI = TNC/TNI. CI = Commits per issue.TNI = Total number of issues. TNC = Total number of commits",
 			"TNI, TNC:Repository",
 			"CI >= 0. Better small values",
 			MetricDescription.EnumTypeOfScale.RATIO,
@@ -82,7 +82,7 @@ public class MetricCommitsPerIssue extends NumericValueMetricTemplate {
 	 */
 	@Override
 	public NumericValue run(Repository repository) {
-		double result = (double) repository.getRepositoryInternalMetrics().getTotalNumberOfIssues() / repository.getRepositoryInternalMetrics().getTotalNumberOfCommits();
+		double result = (double) repository.getRepositoryInternalMetrics().getTotalNumberOfCommits() / repository.getRepositoryInternalMetrics().getTotalNumberOfIssues();
 		return new ValueDecimal(result);
 	}
 }

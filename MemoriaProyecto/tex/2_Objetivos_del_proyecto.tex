@@ -4,14 +4,14 @@
 En este capítulo se detallarán los objetivos generales que se desean alcanzar en este proyecto, así como los objetivos más técnicos.
 
 \section{Objetivos generales}
-El objetivo general de este TFG es diseñar una aplicación web en Java que permita obtener un conjunto de métricas de evolución del proceso software \cite{ratzinger_space:_2007} reflejado en los repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio.
+El objetivo general de este TFG es diseñar una aplicación web en Java que permita obtener un conjunto de métricas de evolución del proceso software \cite{ratzinger_space:_2007} a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio.
 La aplicación se probará con datos reales para comparar los repositorios de Trabajos Fin de Grado del Grado de Ingeniería Informática presentados en GitLab.
    
 A continuación se desglosa el objetivo general  en objetivos más detallados.
 \begin{itemize}
 	\tightlist
 	\item Se obtendrán medidas de métricas de evolución de uno o varios proyectos alojados en repositorios de GitLab.
-	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en \cite{ratzinger_space:_2007} y 
+	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y 
 	adaptadas a los repositorios software:
 	\begin{itemize}
 		\tightlist
@@ -24,10 +24,9 @@ A continuación se desglosa el objetivo general  en objetivos más detallados.
 		\item Rango de actividad de cambios por mes
 		\item Porcentaje de pico de cambios
 	\end{itemize}
-	\item El objetivo de obtener las métricas es poder evaluar el estado de un proyecto comparándolo con otros proyectos de la misma naturaleza. Para ello se deberán establecer unos valores umbrales de cada métrica basados en el cálculo de los cuartiles Q1 y Q3, respectivamente.
-	\item Se desea poder calcular dinámicamente los valores umbrales en perfiles de configuración de medidas. Esta información sobre los
-	valores umbrales se puede almacenar de manera persistente para permitir comparaciones futuras. Un ejemplo de utilidad es guardar los valores umbrales 
-	de repositorios por lenguaje de programación, o en el caso de repositorios de TFG de la UBU por cursos académico.
+	\item El objetivo de obtener las métricas es poder evaluar el estado de un proyecto comparándolo con otros proyectos de la misma naturaleza. Para ello se deberán establecer unos valores umbrales por cada métrica basados en el cálculo de los cuartiles Q1 y Q3. Además, estos valores se calcularán dinámicamente y se almacenarán en perfiles de configuración de métricas.
+	\item Se dará la posibilidad de almacenar de manera persistente estos perfiles de métricas para permitir comparaciones futuras. Un ejemplo de utilidad es guardar los valores umbrales de repositorios por lenguaje de programación, o en el caso de repositorios de TFG de la UBU por curso académico.
+	\item También se permitirá almacenar de forma persistente las métricas obtenidas de los repositorios para su posterior consulta o tratamiento. Esto permitiría comparar nuevos proyectos con proyectos de los que ya se han calculado sus métricas.
 \end{itemize}
 \section{Objetivos técnicos}
 Este apartado recoge los requisitos más técnicos del proyecto.
@@ -43,5 +42,5 @@ Este apartado recoge los requisitos más técnicos del proyecto.
 	\item Diseñar una correcta gestión de errores definiendo excepciones de biblioteca y registrando eventos de error e información en ficheros de \textit{log}. 
 	\item Aplicar nuevas estructuras  del lenguaje Java para el desarrollo, como son expresiones lambda. 
 	\item Utilizar sistemas que aseguren la calidad continua del código que permitan evaluar la deuda técnica del proyecto.
-	\item Probar la aplicación con ejemplos reales y utilizando usos avanzados de bibliotecas, como la conjuntos de datos entrada de test en ficheros con formato tabulado tipo csv (\textit{comma separated values}). 	
+	\item Probar la aplicación con ejemplos reales y utilizando técnicas avanzadas, como entrada de datos de test en ficheros con formato tabulado tipo CSV (\textit{comma separated values}). 	
 \end{itemize}
