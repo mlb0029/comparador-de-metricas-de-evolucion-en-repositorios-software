@@ -476,7 +476,8 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			List<Integer> ldaystoclose = new ArrayList<Integer>();
 
 			for (Issue issue : lissues) {
-				ldaystoclose.add((int)(issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()));
+				long ldays =(issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) / (1000 * 60 * 60 * 24 );
+				ldaystoclose.add((int)ldays);
 			}
 			return ldaystoclose;
 		} catch (IOException e) {
