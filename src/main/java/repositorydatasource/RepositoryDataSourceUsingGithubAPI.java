@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-//import org.gitlab4j.api.GitLabApi;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
@@ -24,10 +22,6 @@ import org.eclipse.egit.github.core.service.IssueService;
 
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
-
-
-//import org.gitlab4j.api.GitLabApi;
-//import org.gitlab4j.api.GitLabApiException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +35,7 @@ import repositorydatasource.RepositoryDataSource.EnumConnectionType;
 
 public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5228642659883160983L;
-
-	/**
-	 * 
-	 */
-
 	/**
 	 * Single instance of the class.
 	 */
@@ -77,15 +63,14 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 	 */
 	private datamodel.User currentUser;
 
-	
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryDataSourceUsingGithubAPI.class);
 
 	private static final String HOST_URL = "https://github.com";
-	
-	private Map<Integer,org.eclipse.egit.github.core.Repository> mapUrlIdRepo;
+
+	private Map<Integer, org.eclipse.egit.github.core.Repository> mapUrlIdRepo;
 
 	/**
 	 * Constructor that returns a not connected githubrepositorydatasource.
@@ -94,7 +79,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 		connectionType = EnumConnectionType.NOT_CONNECTED;
 		githubclientApi = null;
 		currentUser = null;
-		mapUrlIdRepo = new HashMap<Integer,org.eclipse.egit.github.core.Repository>();
+		mapUrlIdRepo = new HashMap<Integer, org.eclipse.egit.github.core.Repository>();
 	}
 
 	/**
@@ -114,7 +99,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			githubclientApi = new GitHubClient();
 			currentUser = null;
 			connectionType = EnumConnectionType.CONNECTED;
-			LOGGER.info("Established connection with GitLab");
+			LOGGER.info("Established connection with GitHub");
 		} else {
 			throw new RepositoryDataSourceException(RepositoryDataSourceException.ALREADY_CONNECTED);
 		}
@@ -220,9 +205,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 	 */
 	private datamodel.User getCurrentUser(org.eclipse.egit.github.core.User githubUser) {
 		return new datamodel.User(githubUser.getId(), githubUser.getAvatarUrl(), githubUser.getEmail(),
-				githubUser.getName(),
-				// gitlabUser.getUsername()
-				githubUser.getLogin()
+				githubUser.getName(), githubUser.getLogin()
 
 		);
 	}
@@ -238,7 +221,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 						.getRepositories(currentUser.getUsername());
 
 				for (org.eclipse.egit.github.core.Repository repo : lRepositories) {
-					mapUrlIdRepo.put((int)repo.getId(),repo);
+					mapUrlIdRepo.put((int) repo.getId(), repo);
 					resultrepositories
 							.add(new datamodel.Repository(repo.getHtmlUrl(), repo.getName(), (int) repo.getId()));
 				}
@@ -264,7 +247,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 						.getRepositories(userIdOrUsername);
 				Collection<datamodel.Repository> resultrepositories = new ArrayList<datamodel.Repository>();
 				for (org.eclipse.egit.github.core.Repository repo : lRepositories) {
-					mapUrlIdRepo.put((int)repo.getId(),repo);
+					mapUrlIdRepo.put((int) repo.getId(), repo);
 					resultrepositories
 							.add(new datamodel.Repository(repo.getHtmlUrl(), repo.getName(), (int) repo.getId()));
 				}
@@ -283,10 +266,9 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 	@Override
 	public Collection<datamodel.Repository> getAllGroupRepositories(String groupName)
 			throws RepositoryDataSourceException {
-		// API github for group and user work same way  
+		// API github for group and user work same way
 		return getAllUserRepositories(groupName);
 	}
-		
 
 	@Override
 	public datamodel.Repository getRepository(String repositoryHTTPSURL) throws RepositoryDataSourceException {
@@ -319,7 +301,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			String nombreProyecto = sProyecto.split("/")[sProyecto.split("/").length - 1];
 			String propietarioYGrupo = sProyecto.replaceAll("/" + nombreProyecto, "");
 			Repository repo = repositoryService.getRepository(propietarioYGrupo, nombreProyecto);
-			mapUrlIdRepo.put((int)repo.getId(),repo);
+			mapUrlIdRepo.put((int) repo.getId(), repo);
 			return (int) repo.getId();
 		} catch (IOException e) {
 			return null;
@@ -348,17 +330,19 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 		}
 	}
 
+	/**
+	 * Gets Repository from repositoryId.
+	 * 
+	 * @param repositoryID Repository identifier .
+	 * @return Repository.
+	 */
 	@Override
 	public datamodel.Repository getRepository(int repositoryId) throws RepositoryDataSourceException {
 		if (!connectionType.equals(EnumConnectionType.NOT_CONNECTED)) {
-			// TODO Con el Gihub API no se puede obtener el RepositorioID.
+			// Con Gihub API no se puede obtener el RepositorioID.
 			// El ID es un dato calculado que se obtiene con la Fabrica RepositoryID
-			//if (mapUrlIdRepo.containsKey(repositoryId)) {
-			//RepositoryId repositoryID = RepositoryId.create("owner", "repository");
-			//repositoryService = new RepositoryService(githubclientApi);
-			//Repository repository = repositoryService.getRepository(repositoryID);
-			// Project pProyecto = gitLabApi.getProjectApi().getProject(repositoryId);
-			if ( mapUrlIdRepo.containsKey(repositoryId)) {
+
+			if (mapUrlIdRepo.containsKey(repositoryId)) {
 				Repository repository = mapUrlIdRepo.get(repositoryId);
 				return new datamodel.Repository(repository.getUrl(), repository.getName(), repositoryId);
 			} else {
@@ -374,15 +358,9 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			throws RepositoryDataSourceException {
 		repositoryService = new RepositoryService(githubclientApi);
 
-		//String repositoryURL = repository.getUrl();
-		//String sProyecto = repositoryURL.replaceAll(RepositoryDataSourceUsingGithubAPI.HOST_URL + "/", "");
-		//String srepositoryName = sProyecto.split("/")[sProyecto.split("/").length - 1];
-		//String sowner = sProyecto.replaceAll("/" + srepositoryName, "");
-		//RepositoryId projectId = RepositoryId.create(sowner, srepositoryName);
-		
 		getRepository(repository.getId());
 		Integer projectId = repository.getId();
-		
+
 		Integer totalNumberOfIssues = getTotalNumberOfIssues(projectId);
 		Integer totalNumberOfCommits = getTotalNumberOfCommits(projectId);
 		Integer numberOfClosedIssues = getNumberOfClosedIssues(projectId);
@@ -411,7 +389,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			Repository repository = mapUrlIdRepo.get(repoId);
 			RepositoryId githubRepoId = RepositoryId.createFromUrl(repository.getHtmlUrl());
 
-			return this.issueService.getIssues(githubRepoId , filtro).size();
+			return this.issueService.getIssues(githubRepoId, filtro).size();
 		} catch (IOException e) {
 			return null;
 		}
@@ -476,8 +454,8 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			List<Integer> ldaystoclose = new ArrayList<Integer>();
 
 			for (Issue issue : lissues) {
-				long ldays =(issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) / (1000 * 60 * 60 * 24 );
-				ldaystoclose.add((int)ldays);
+				long ldays = (issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) / (1000 * 60 * 60 * 24);
+				ldaystoclose.add((int) ldays);
 			}
 			return ldaystoclose;
 		} catch (IOException e) {
@@ -500,7 +478,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			List<RepositoryCommit> lcommits;
 			Repository repository = mapUrlIdRepo.get(repoId);
 			RepositoryId githubRepoId = RepositoryId.createFromUrl(repository.getHtmlUrl());
-			
+
 			lcommits = commitService.getCommits(githubRepoId);
 
 			Set<Date> sdates = new HashSet<Date>();
@@ -527,7 +505,7 @@ public class RepositoryDataSourceUsingGithubAPI implements RepositoryDataSource 
 			repositoryService = new RepositoryService(githubclientApi);
 			Repository repository = mapUrlIdRepo.get(repoId);
 			RepositoryId githubRepoId = RepositoryId.createFromUrl(repository.getHtmlUrl());
-			
+
 			Date createdAtDate = repositoryService.getRepository(githubRepoId).getCreatedAt();
 			Date lastActivityDate = repositoryService.getRepository(githubRepoId).getUpdatedAt();
 
