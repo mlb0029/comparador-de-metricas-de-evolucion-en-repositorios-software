@@ -134,12 +134,12 @@ public class MetricConfiguration implements Metric, Serializable {
 
 	@Override
 	public IValue getValueMaxDefault() {
-		return getValueMaxDefault();
+		return getMetric().getValueMaxDefault();
 	}
 
 	@Override
 	public IValue getValueMinDefault() {
-		return getValueMinDefault();
+		return getMetric().getValueMinDefault();
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class MetricConfiguration implements Metric, Serializable {
 
 	@Override
 	public String getName() {
-		return getName();
+		return getMetric().getName();
 	}
 
 	@Override
