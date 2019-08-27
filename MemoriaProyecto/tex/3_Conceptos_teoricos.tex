@@ -103,7 +103,7 @@ Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenieri
 
 %Comentar fig 24.9 p549 relacion de metricas de proc y de prod
 
-Para llegar a tener un software de calidad hay que tener en cuenta todos los factores mencionados anteriormente en cada una de las tres fases de la administración de la calidad: aseguramiento, planeación y control.
+Para llegar a tener un software de calidad hay que tener en cuenta todos los factores mencionados anteriormente en cada una de las tres fases de la administración de la calidad: aseguramiento, planificación y control.
 
 La fase de control es la que se encarga de que el equipo de desarrollo cumpla los estándares y procedimientos definidos en el plan de calidad del proyecto. Esta fase puede realizarse mediante un proceso de medición.
 
@@ -117,7 +117,7 @@ La medición del software es un proceso en el cual se asignan valores numéricos
 \section{Evolución de software}
 Este proyecto se centra en las métricas de control, es decir las que están asociadas al proceso de desarrollo o de evolución del software.
 \subsection{Conceptos de evolución}
-Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
+Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{Issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
 Todas estas herramientas sirven para llevar un control sobre la evolución de un proyecto software ya que facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de proceso que ayuden a mejorar la evolución del proyecto comparándolas con otras mediciones de otros proyectos.
 
 \subsection{Métricas de evolución o de proceso}
@@ -129,7 +129,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 %\todo Un ejemplo de especificación  Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC
 %\todo aplicando los entornos matemáticos $\frac{\sum_{i=1,j=0}^{NTC} TC_i - TC_j}{NTC}$
  
-\textbf{\underline{I1 - Número total de issues(incidencias)}}
+\textbf{\underline{I1 - Número total de issues (incidencias)}}
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
@@ -141,7 +141,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: \textit{NTI = Contador}
 \end{itemize}
-\textbf{\underline{I2 - Commits(cambios) por issue}}
+\textbf{\underline{I2 - Commits (cambios) por issue}}
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
@@ -183,7 +183,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Categoría}: Constantes de tiempo
 	\item \textbf{Descripción}: Media de días que pasan entre dos commits consecutivos
 	\item \textbf{Propósito}: ¿Cuántos días suelen pasar desde un commit hasta el siguiente?
-	\item \textbf{Fórmula}: $MDC = \frac{\sum_{i=1}^{NTC} TC_i - TC_{i-1}}{NTC}$. $TC_i - TC_{i-1}$ en días; \textit{MDC = Media de días entre cambios, NTC = Número total de commits, TC = Tiempo de Commit}
+	\item \textbf{Fórmula}: $MDC = \frac{\sum_{i=1}^{NTC} TC_i - TC_{i-1}}{NTC}$. $TC_i - TC_{i-1}$ en días; \textit{MDC = Media de días entre cambios, NTC = Número total de commits, TC = Tiempo de commit}
 	%$MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit$ 
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
 	\item \textbf{Interpretación}: $MDEC \geq 0$. Cuanto más pequeño mejor. Se recomienda no superar los 5 días.
@@ -233,7 +233,7 @@ Para la implementación de las métricas se ha seguido la solución basada en fr
 	\tightlist
 	\item Facilitar el desarrollo de nuevas métricas
 	\item Personalizar de los valores límite inferior y superior ya que estos pueden variar dependiendo del contexto en el que se calculen las métricas.
-	\item Crear un grupo de configuraciones de métricas, de forma que se podrian calcular todas las métricas de ese grupo y almacenar los resultados en un colector de tipo \textit{MetricResult}
+	\item Crear un grupo de configuraciones de métricas, de forma que se podrían calcular todas las métricas de ese grupo y almacenar los resultados en un colector de tipo \textit{MetricResult}
 \end{itemize}
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
 \imagen{MCTMotorMetricas}{Diagrama del framework para el cálculo de métricas con perfiles que almacena valores umbrales.}
@@ -290,15 +290,24 @@ Este TFG ha adaptado este framework en el paquete ``motor de métricas'', y se h
 
 %\todo Este párrafo está repetido en la introducción. Pero tiene que ser reducido en este apartado se puede detallar más extensamente con alguna captura de pantalla  que ayude a describir las equivalentes en múltiples repositorios.
 %\todo revisar
- 
 
-En la última década han surgido forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open source (SourceForge \footnote{\url{https://sourceforge.net/}}, Github \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}).  Estas forjas suelen integrar múltiples sistemas para dar soporte a los flujos de trabajo y registrar las interacciones entre los miembros del equipo. Además dan la posibilidad de extensión funcional con sistemas de terceros para gestionar otras actividades no soportadas directamente, por ejemplo Travis CI
-\footnote{\url{https://travis-ci.org/}} para gestionar la integración contínua o Codacy \footnote{\url{https://www.codacy.com/}} para gestionar las revisiones automáticas de calidad. Actualmente estas forjas han tenido una gran aceptación entre la comunidad de desarrolladores y existen muchos desarrollos de software de tendencia que las utilizan. La forjas de proyectos software proporcionan interfaces de programación que permiten acceder a toda la información registrada. 
+En la última década han surgido forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open source (SourceForge \footnote{\url{https://sourceforge.net/}}, GitHub \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}).  Estas forjas suelen integrar múltiples sistemas para dar soporte a los flujos de trabajo y registrar las interacciones entre los miembros del equipo. Además dan la posibilidad de extensión funcional con sistemas de terceros para gestionar otras actividades no soportadas directamente, por ejemplo Travis CI
+\footnote{\url{https://travis-ci.org/}} para gestionar la integración continua o Codacy \footnote{\url{https://www.codacy.com/}} para gestionar las revisiones automáticas de calidad. Actualmente estas forjas han tenido una gran aceptación entre la comunidad de desarrolladores y existen muchos desarrollos de software de tendencia que las utilizan. La forjas de proyectos software proporcionan interfaces de programación específicas que permiten acceder a toda la información registrada. 
 
-Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos. Se registran grandes conjuntos de datos difíciles de procesar. El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{guemes-pena_emerging_2018}:
+Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos. Se registran grandes conjuntos de datos difíciles de procesar. El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{Guemes-Pena2018}:
 
+En la Fig. \ref{fig:Mintro-trendforja} se aprecia como cambia la tendencia de utilización de dichas forjas en el tiempo. Actualmente la forja predominante es claramente GitHub pero se ve un incremento en el uso de GitLab.
 
-\subsection{Github vs. GitLab}
+\imagen{Mintro-trendforja}{Comparativa de tendencia de búsqueda de Google desde 2004 con los términos de distintas forjas de proyectos software.}
+
+\subsection{GitHub vs. GitLab}
+\ref{fig:Mintro-trendforja}
 \todo introducir la sección
 \todo Usa la información de esta página \url{https://about.gitlab.com/devops-tools/github-vs-gitlab.html} para recoger las características de los repositorios 
-y su comparación. 
+y su comparación.
+
+\begin{itemize}
+	\item Niveles de autenticación: GitLab tiene mejor sistema de administración de servicios
+	\item Built-in CI/CD
+	\item 
+\end{itemize}

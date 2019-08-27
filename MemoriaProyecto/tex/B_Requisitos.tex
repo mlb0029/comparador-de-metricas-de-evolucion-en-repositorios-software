@@ -1,15 +1,93 @@
-\apendice{Especificación de Requisitos}
+\apendice{Especificación de Requisitos}\label{anex:B}
 
 \section{Introducción}
-Este apartado define los requisitos funcionales que han de cumplirse.
+
+Este anexo tiene como objetivo analizar y documentar las necesidades funcionales y no funcionales que deberán ser soportadas por el software que se va a construir.
+
+Para representar estas necesidades se utilizaran historias de usuario, que describen lo que el usuario debería poder hacer, en lugar de los tradicionales requisitos funcionales, que describen características más específicas del desarrollo del sistema de un modo más técnico \cite{sanchez_requisitos_2016}. 
+
+También se recurrirá a diagramas de casos de uso y a diagramas de secuencia. Los casos de uso describen todas las interacciones que tendrán los usuarios con el software; mientras que los diagramas de secuencia muestran la interacción de un conjunto de entidades del sistema software a través del tiempo y se modelan, normalmente, para cada caso de uso, por tanto incluirán detalles de la implementación como operaciones, clases, mensajes, etc.
+
 \section{Objetivos generales}
+El objetivo general de este TFG es diseñar una aplicación web en Java que permita obtener un conjunto de métricas de evolución del proceso software \cite{ratzinger_space:_2007} a partir de repositorios de GitLab, esto permitirá comparar los distintos procesos de desarrollo software entre varios repositorios.
+
+La aplicación será probada con datos reales de repositorios de Trabajos Fin de Grado del Grado de Ingeniería Informática presentados en GitLab.
+
+A continuación se desglosa el objetivo general  en objetivos más detallados.
 \begin{itemize}
-	\item Se debe calcular las métricas de proceso de un proyecto software alojado en GitLab
-	\item Se debe poder comparar las métricas de proceso de varios proyectos software.
+	\tightlist
+	\item Se obtendrán medidas de métricas de evolución de uno o varios proyectos alojados en repositorios de GitLab.
+	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y 
+	adaptadas a los repositorios software:
+	\begin{itemize}
+		\tightlist
+		\item Número total de incidencias (\textit{issues})
+		\item Cambios(\textit{commits}) por incidencia
+		\item Porcentaje de incidencias cerrados
+		\item Media de días en cerrar una incidencia
+		\item Media de días entre cambios
+		\item Días entre primer y último cambio
+		\item Rango de actividad de cambios por mes
+		\item Porcentaje de pico de cambios
+	\end{itemize}
+	\item El objetivo de obtener las métricas es poder evaluar el estado de un proyecto comparándolo con otros proyectos de la misma naturaleza. Para ello se deberán establecer unos valores umbrales por cada métrica basados en el cálculo de los cuartiles Q1 y Q3. Además, estos valores se calcularán dinámicamente y se almacenarán en perfiles de configuración de métricas.
+	\item Se dará la posibilidad de almacenar de manera persistente estos perfiles de métricas para permitir comparaciones futuras. Un ejemplo de utilidad es guardar los valores umbrales de repositorios por lenguaje de programación, o en el caso de repositorios de TFG de la UBU por curso académico.
+	\item También se permitirá almacenar de forma persistente las métricas obtenidas de los repositorios para su posterior consulta o tratamiento. Esto permitiría comparar nuevos proyectos con proyectos de los que ya se han calculado sus métricas.
 \end{itemize}
+\subsection{Objetivos técnicos}
+Este apartado recoge los requisitos más técnicos del proyecto.
+\begin{itemize}
+	\tightlist
+	\item Diseñar la aplicación de manera que se puedan extender con nuevas métricas con el menor coste de mantenimiento posible. Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
+	\item El diseño de la aplicación debe facilitar la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket. Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
+	\item Aplicar el \textit{frameworks} modelo vista controlador para separar la lógica de la aplicación para el calculo de métricas y la interfaz de usuario.
+	Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
+	\item Crear una batería de pruebas automáticas con cobertura del por encima del 90\% en los subsistemas de lógica de la aplicación .
+	\item Utilizar una plataforma de desarrollo colaborativo que incluya un sistema de control de versiones, un sistema de seguimiento de incidencias y que permita una comunicación fluida entre el tutor y el alumno.
+	\item Utilizar un sistema de integración y despliegue continuo.
+	\item Diseñar una correcta gestión de errores definiendo excepciones de biblioteca y registrando eventos de error e información en ficheros de \textit{log}. 
+	\item Aplicar nuevas estructuras  del lenguaje Java para el desarrollo, como son expresiones lambda. 
+	\item Utilizar sistemas que aseguren la calidad continua del código que permitan evaluar la deuda técnica del proyecto.
+	\item Probar la aplicación con ejemplos reales y utilizando técnicas avanzadas, como entrada de datos de test en ficheros con formato tabulado tipo CSV (\textit{comma separated values}). 	
+\end{itemize}
+
+\section{Actores}
+Se consideran dos actores: El usuario de la aplicación y el desarrollador. Además de poder ser utilizado por un usuario, la aplicación deberá estar preparada para que en un futuro se pueda ampliar 	
 \section{Catalogo de requisitos}
+Este apartado enumera los diferentes requisitos que el sistema software deberá satisfacer. Se divide en dos apartados. El primero detalla los servicios que prestará el sistema al usuario final o a otros sistemas; el segundo detalla funciones más técnicas de cómo se desarrollará el proceso software y otras propiedades del sistema como eficiencia o mantenibilidad.
 
+\subsection{Requisitos funcionales}
+\subsubsection{Conexión}
+\begin{description}
+	\item[RF 1. Establecer conexión con GitLab.] El usuario podrá establecer una conexión con GitLab de varias formas para poder acceder a los repositorios almacenados en el host \url{https://gitlab.com}. De esta forma puede añadir nuevos repositorios y volver a obtener métricas de repositorios ya existentes.
+	\begin{description}
+		\item[RF 1.1. Establecer conexión iniciando sesión.] El usuario podrá iniciar sesión  en GitLab de distintas formas para poder acceder a sus repositorios privados.
+		\begin{description}
+			\item[RF 1.1.1 Iniciar sesión mediante usuario y contraseña]
+			\item[RF 1.1.2 Iniciar sesión mediante personal access token]
+		\end{description}
+
+		\item[RF 1.3. Establecer conexión pública sin inicio de sesión.] De esta forma, el usuario solo puede acceder a los repositorios con visibilidad pública.
+	\end{description}
+	\item[RF 2. Utilizar la aplicación sin conexión.] El usuario podrá utilizar la aplicación sin establecer una conexión a GitLab. De esta forma podrá consultar los datos que haya obtenido previamente, pero no añadir nuevos repositorios ni volver a obtener datos de los repositorios ya existentes.
+\end{description}
+\subsubsection{Gestión de repositorios}
+\begin{description}
+	\item[RF 3. Añadir un repositorio publico.] El usuario podrá añadir un repositorio público de GitLab siempre que haya establecido una conexión pública o con sesión  GitLab.
+	\item[RF 4. Añadir un repositorio privado.] El usuario podrá añadir un repositorio privado de GitLab siempre que haya establecido una conexión con una sesión a GitLab iniciada y que el repositorio sea accesible desde el usuario que haya iniciado sesión.
+	\item[RF 5. Distintas formas de añadir un repositorio tanto público como privado.] El usuario tendrá distintas formas de acceder a un repositorio.
+	\begin{description}
+		\item[RF 5.1. Seleccionar desde los repositorios de un usuario] El usuario podrá añadir un repositorio seleccionándolo de un listado de repositorios de un usuario de GitLab que el usuario indique mediante el nombre o el ID de usuario. Para ello se requiere una conexión a GitLab. Para listar los repositorios privados, además de los públicos, de ese usuario la conexión deberá tener una sesión iniciada con acceso a los repositorios privados de ese usuario.
+		\item[RF 5.2. Seleccionar desde los repositorios de un grupo] El usuario podrá añadir un repositorio seleccionándolo de un listado de repositorios de un grupo de GitLab, que el usuario indique mediante el nombre o el ID de grupo. Para ello se requiere que el grupo tenga visibilidad pública o sea privada y la conexión tenga una sesión abierta a un usuario de GitLab que tenga acceso a ese grupo.
+		\item[RF 5.3. Añadir repositorio mediante su URL web.] El usuario podrá añadir un repositorio mediante su URL web (la que se muestra en el navegador).
+	\end{description}
+	\item[RF 6. Evitar repositorios duplicados.] El usuario no podrá añadir el mismo repositorio más de una vez.
+	\item[.] Cada vez que se añada un repositorio, se calcularán las métricas y se evaluará con el perfil activo en ese momento.
+	\item[RF . ] El usuario podrá volver a obtener la información de cualquier repositorio siempre que la conexión activa en ese momento tenga acceso a ese repositorio.
+	\item[RF 7. Eliminar un repositorio.] El usuario podrá eliminar cualquier repositorio de los que haya añadido previamente.
+	\item[RF 7. Mostrar los repositorios que el usuario ha añadido.] El usuario podrá ver todos.
+\end{description}
+\subsection{Requisitos no funcionales}
 \section{Especificación de requisitos}
-
 
 %https://github.com/rlp0019/Activiti-Api/blob/master/memo/GII_Luquero_Pe%C3%B1acoba_Roberto_JUNIO_ORDINARIA_2019_memoria.pdf

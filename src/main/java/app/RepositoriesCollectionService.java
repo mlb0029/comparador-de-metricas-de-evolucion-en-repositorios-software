@@ -212,7 +212,7 @@ public class RepositoriesCollectionService implements Serializable {
 	public enum ImportMode {OVERWRITE, APPEND}
 	
 	/**
-	 * Import repositories from file.
+	 * Import repositories from file and evaluate them.
 	 * 
 	 * @author Miguel Ángel León Bardavío - mlb0029
 	 * @param inputStream input stream
@@ -228,6 +228,7 @@ public class RepositoriesCollectionService implements Serializable {
 			HashSet<Repository> repositories = (HashSet<Repository>) objectIn.readObject();
 			if(importMode == ImportMode.OVERWRITE) repositoriesCollection.collection.clear();
 			repositoriesCollection.collection.addAll(repositories);
+			MetricsService.getMetricsService().evaluateRepositoryCollection();
 			notifyRepositoriesCollectionUpdatedListeners();
 		} catch (StreamCorruptedException e) {
 			throw new RepositoriesCollectionServiceException(RepositoriesCollectionServiceException.CORRUPTED, e);

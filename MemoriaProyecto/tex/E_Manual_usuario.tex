@@ -1,4 +1,4 @@
-\apendice{Documentación de usuario}
+\apendice{Documentación de usuario}\label{anex:D}
 
 \section{Introducción}
 Este documento detalla cómo un usuario, puede utilizar la aplicación una vez desplegada en un servidor.
@@ -143,35 +143,35 @@ Las métricas que se calculan de los proyectos son un conjunto de métricas que 
 \subsection{Establecer una conexión a GitLab}
 Una vez arrancada la aplicación se mostrará un diálogo que le pedirá elegir un tipo de conexión, tal y como se muestra en la figura \ref{fig:AnexE-MN-Fig1}.
 \imagen{AnexE-MN-Fig1}{Diálogo de conexión}
-\begin{figure}[!h]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-1}
-		\caption{Conexión mediante usuario y contraseña}
-		\label{fig:dialogo-conexion_contraseña}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-2}
-		\caption{Conexión mediante \textit{Personal Access Token}}
-		\label{fig:dialogo-conexion_token}
-	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-3}
-		\caption{Conexión publica}
-		\label{fig:dialogo-conexion_publica}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-4}
-		\caption{Sin conexión}
-		\label{fig:dialogo-conexion_sin-conexion}
-	\end{subfigure}
-	\caption{Distintas formas de establecer una conexión}
-	\label{fig:AnexE-MN-Fig1-}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-1}
+%		\caption{Conexión mediante usuario y contraseña}
+%		\label{fig:dialogo-conexion_contraseña}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-2}
+%		\caption{Conexión mediante \textit{Personal Access Token}}
+%		\label{fig:dialogo-conexion_token}
+%	\end{subfigure}
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-3}
+%		\caption{Conexión publica}
+%		\label{fig:dialogo-conexion_publica}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig1-4}
+%		\caption{Sin conexión}
+%		\label{fig:dialogo-conexion_sin-conexion}
+%	\end{subfigure}
+%	\caption{Distintas formas de establecer una conexión}
+%	\label{fig:AnexE-MN-Fig1-}
+%\end{figure}
 Hay 4 posibilidades, que permiten establecer una conexión con la sesión iniciada (mediante usuario y contraseña o mediante \textit{PA Token}), una conexión pública o utilizar la aplicación sin conexión:
 \begin{description}
 	\tightlist
@@ -196,23 +196,23 @@ En la parte superior se puede observar el botón de conexión, que indica el tip
 	\item Y si no se ha establecido ninguna conexión, el texto mostrado será: ``No connection to GitLab''.
 \end{itemize}
 Para cambiar el tipo de conexión es obligatorio cerrar, si existe, la conexión actual. Por ello, al pulsar sobre el botón de conexión, se muestra el diálogo de la figura \ref{fig:AnexE-MN-Fig4-1} si existe una conexión y el diálogo de la figura \ref{fig:AnexE-MN-Fig4-2} si no existe conexión. Al pulsar sobre ``\textit{Connect}'' o sobre ``\textit{Close connection}'' se abrirá el diálogo de conexión de las figuras \ref{fig:AnexE-MN-Fig1} y \ref{fig:AnexE-MN-Fig1-}.
-\begin{figure}[!h]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig4-1}
-		\caption{Cerrar conexión}
-		\label{fig:AnexE-MN-Fig4-1}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig4-2}
-		\caption{Establecer conexión}
-		\label{fig:AnexE-MN-Fig4-2}
-	\end{subfigure}
-	\caption{Modificar tipo de conexión}
-	\label{fig:AnexE-MN-Fig4}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig4-1}
+%		\caption{Cerrar conexión}
+%		\label{fig:AnexE-MN-Fig4-1}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig4-2}
+%		\caption{Establecer conexión}
+%		\label{fig:AnexE-MN-Fig4-2}
+%	\end{subfigure}
+%	\caption{Modificar tipo de conexión}
+%	\label{fig:AnexE-MN-Fig4}
+%\end{figure}
 \subsubsection{Botón de ayuda}
 A la derecha del botón de conexión se encuentra un botón que da acceso a este manual en la Wiki del proyecto.
 \subsubsection{Listado de proyectos}
@@ -234,23 +234,23 @@ En el menú de ``\textit{Evaluate projects}'' existen estas opciones, como se mu
 	\item \textbf{\textit{Evaluate with imported profile}.} Permite evaluar los proyectos a partir de un perfil de métricas previamente exportado.
 	\item \textbf{\textit{Export actual profile}.} Permite exportar el perfil de métricas actual para su posterior importación. Se almacena en un fichero con foromato ``.emmp''.
 \end{itemize}
-\begin{figure}[!h]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig5-1}
-		\caption{Menú: ``\textit{Project management}''}
-		\label{fig:AnexE-MN-Fig5-1}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig5-2}
-		\caption{Menú: ``\textit{Evaluate projects}''}
-		\label{fig:AnexE-MN-Fig5-2}
-	\end{subfigure}
-	\caption{Menús del listado de repositorios}
-	\label{fig:AnexE-MN-Fig5}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig5-1}
+%		\caption{Menú: ``\textit{Project management}''}
+%		\label{fig:AnexE-MN-Fig5-1}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig5-2}
+%		\caption{Menú: ``\textit{Evaluate projects}''}
+%		\label{fig:AnexE-MN-Fig5-2}
+%	\end{subfigure}
+%	\caption{Menús del listado de repositorios}
+%	\label{fig:AnexE-MN-Fig5}
+%\end{figure}
 
 La tabla muestra los valores medidos de las métricas para cada proyecto, ver figura \ref{fig:AnexE-MN-Fig8}.
 \imagen{AnexE-MN-Fig8}{Tabla que muestra los valores medidos en los proyectos para las métricas}
@@ -270,29 +270,29 @@ La tabla presenta las siguientes columnas:
 
 \subsubsection{Añadir un proyecto}
 Para añadir un nuevo proyecto, el tipo de conexión deberá ser distinto de ``Sin conexión'' (\textit{No connection to GitLab}), es decir que debe haber una conexión. Seleccionar la opción ``\textit{Add new}'' del menú ``\textit{Project management}'', ver figura \ref{fig:AnexE-MN-Fig5-1}. Se abrirá un diálogo como el de la figura \ref{fig:AnexE-MN-Fig6}. Para \underline{cancelar} se puede pulsar \textit{Esc} o hacer click fuera del diálogo.
-\begin{figure}[!h]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-1}
-		\caption{Menú: ``\textit{Añadir por pertenencia a usuario}''}
-		\label{fig:AnexE-MN-Fig6-1}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-2}
-		\caption{Menú: ``\textit{Añadir por pertenencia a grupo}''}
-		\label{fig:AnexE-MN-Fig6-2}
-	\end{subfigure}
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-3}
-		\caption{Menú: ``\textit{Añadir proyecto por su URL Web}''}
-		\label{fig:AnexE-MN-Fig6-3}
-	\end{subfigure}
-	\caption{Menús del listado de repositorios}
-	\label{fig:AnexE-MN-Fig6}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-1}
+%		\caption{Menú: ``\textit{Añadir por pertenencia a usuario}''}
+%		\label{fig:AnexE-MN-Fig6-1}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-2}
+%		\caption{Menú: ``\textit{Añadir por pertenencia a grupo}''}
+%		\label{fig:AnexE-MN-Fig6-2}
+%	\end{subfigure}
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig6-3}
+%		\caption{Menú: ``\textit{Añadir proyecto por su URL Web}''}
+%		\label{fig:AnexE-MN-Fig6-3}
+%	\end{subfigure}
+%	\caption{Menús del listado de repositorios}
+%	\label{fig:AnexE-MN-Fig6}
+%\end{figure}
 Existen tres posibilidades para añadir un proyecto:
 \begin{description}
 	\item[Añadir por pertenencia a un usuario.] Se solicita en el campo izquierdo del formulario el nombre de usuario o ID del usuario del cual se desean cargar los proyectos en campo desplegable de la derecha. Se mostrará un mensaje en rojo si el usuario no se existe ``\textit{User not found}'' y un mensaje si el usuario existe ``\textit{User found}'', en ese caso se cargarán todos los proyectos del usuario en el desplegable de la derecha. Seleccionar uno de sus proyectos y pulsar sobre el botón ``\textit{Add}''. Se mostrarán solo los repositorios públicos (incluyendo \textit{forks}) del usuario . No se mostrarán proyectos privados a menos que se haya establecido una conexión con sesión y el usuario especificado en el campo de la izquierda coincida con el usuario que haya iniciado sesión.
@@ -302,32 +302,32 @@ Existen tres posibilidades para añadir un proyecto:
 Al añadir un nuevo proyecto, se calcularán por primera vez sus métricas y se evaluarán de acuerdo al perfil de métricas actual. Si no se ha creado o importado ningún perfil, se evaluará según el perfil por defecto.
 \subsubsection{Importar proyectos}
 Los proyectos se pueden importar independientemente del tipo de conexión que exista. Se mostrará un diálogo que permite seleccionar o arrastrar al cuadro un fichero con formato \textit{.emr}, ver figura \ref{fig:AnexE-MN-Fig7}. Se puede seleccionar otro fichero en caso de haber escogido un fichero no deseado. Una vez se cargue el fichero, pulsar sobre ``Import''. Se mostrará un mensaje de error en caso de que el fichero este corrompido (ha sido modificado por una herramienta externa a la aplicación) y no se podrá utilizar ese fichero.
-\begin{figure}[!h]
-	\centering
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig7-1}
-		\caption{Importar repositorios}
-		\label{fig:AnexE-MN-Fig7-1}
-	\end{subfigure}\hfill
-	\begin{subfigure}{.45\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{AnexE-MN-Fig7-2}
-		\caption{Diálogo de importar con fichero cargado}
-		\label{fig:AnexE-MN-Fig7-2}
-	\end{subfigure}
-	\caption{Diálogo para importar repositorios}
-	\label{fig:AnexE-MN-Fig7}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig7-1}
+%		\caption{Importar repositorios}
+%		\label{fig:AnexE-MN-Fig7-1}
+%	\end{subfigure}\hfill
+%	\begin{subfigure}{.45\textwidth}
+%		\centering
+%		\includegraphics[width=\linewidth]{AnexE-MN-Fig7-2}
+%		\caption{Diálogo de importar con fichero cargado}
+%		\label{fig:AnexE-MN-Fig7-2}
+%	\end{subfigure}
+%	\caption{Diálogo para importar repositorios}
+%	\label{fig:AnexE-MN-Fig7}
+%\end{figure}
 \subsubsection{Exportar proyectos}
 Para exportar proyectos debe haber al menos un proyecto en la tabla.
 Se puede exportar a un fichero \textit{.emr} para su posterior importación o en un fichero \textit{.csv}. Para exportar hay que seleccionar la opción correspondiente en el menú ``\textit{Project management}'', ver figura \ref{fig:AnexE-MN-Fig5-1}. El dialogo para la exportación se muestra en la figura \ref{fig:AnexE-MN-Fig9}. Basta con pulsar sobre ``\textit{Download}'' para poder descargar el fichero.
-\begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.7]{AnexE-MN-Fig9}
-	\caption{Diálogo de exportación}\label{fig:AnexE-MN-Fig9}
-\end{figure}
-\FloatBarrier
+%\begin{figure}[!h]
+%	\centering
+%	\includegraphics[scale=0.7]{AnexE-MN-Fig9}
+%	\caption{Diálogo de exportación}\label{fig:AnexE-MN-Fig9}
+%\end{figure}
+%\FloatBarrier
 \subsubsection{Evaluar los proyectos}
 Evaluar un proyecto es evaluar y todas las medidas de las métricas que se realizaron sobre el proyecto en relación a un perfil de métricas en el que se definen los valores mínimos y máximos.\\
 El resultado de la evaluación puede ser bueno (la medida se pinta en verde en la tabla), malo (la medida se pinta en rojo) o ``advertencia'' (la medida equivale al valor mínimo o al valor máximo).
