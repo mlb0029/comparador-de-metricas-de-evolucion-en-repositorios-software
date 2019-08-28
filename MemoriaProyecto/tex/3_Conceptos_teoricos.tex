@@ -1,6 +1,8 @@
 \capitulo{3}{Conceptos teóricos}
 
 %En aquellos proyectos que necesiten para su comprensión y desarrollo de unos conceptos teóricos de una determinada materia o de un determinado dominio de conocimiento, debe existir un apartado que sintetice dichos conceptos.
+
+\begin{comment}
 %
 %Algunos conceptos teóricos de \LaTeX \footnote{Créditos a los proyectos de Álvaro López Cantero: Configurador de Presupuestos y Roberto Izquierdo Amo: PLQuiz}.
 %
@@ -35,20 +37,20 @@
 %Existen tres posibilidades:
 %
 %\begin{itemize}
-%	\item primer item.
-%	\item segundo item.
+%\item primer item.
+%\item segundo item.
 %\end{itemize}
 %
 %\begin{enumerate}
-%	\item primer item.
-%	\item segundo item.
+%\item primer item.
+%\item segundo item.
 %\end{enumerate}
 %
 %\begin{description}
-%	\item[Primer item] más información sobre el primer item.
-%	\item[Segundo item] más información sobre el segundo item.
+%\item[Primer item] más información sobre el primer item.
+%\item[Segundo item] más información sobre el segundo item.
 %\end{description}
-%	
+%
 %\begin{itemize}
 %\item 
 %\end{itemize}
@@ -81,8 +83,42 @@
 %Balsamiq Mockups & X & & &\\
 %VersionOne & X & X & X & X\\
 %}
+\end{comment}
+
 En este capítulo se explican conceptos relevantes para la comprensión de este proyecto y su contexto.
-\section{Calidad de proceso y producto software}
+
+\section{Evolución de software: Proceso o ciclo de vida de un proyecto software}
+
+
+
+\section{Forjas de proyectos software}
+
+%\todo Este párrafo está repetido en la introducción. Pero tiene que ser reducido, en este apartado se puede detallar más extensamente con alguna captura de pantalla  que ayude a describir las equivalentes en múltiples repositorios.
+%\todo revisar
+En la última década han surgido forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open source (SourceForge \footnote{\url{https://sourceforge.net/}}, GitHub \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}).  Estas forjas suelen integrar múltiples sistemas para dar soporte a los flujos de trabajo y registrar las interacciones entre los miembros del equipo. Además dan la posibilidad de extensión funcional con sistemas de terceros para gestionar otras actividades no soportadas directamente, por ejemplo Travis CI\footnote{\url{https://travis-ci.org/}} para gestionar la integración continua o Codacy \footnote{\url{https://www.codacy.com/}} para gestionar las revisiones automáticas de calidad.
+
+Actualmente estas forjas han tenido una gran aceptación entre la comunidad de desarrolladores y existen muchos desarrollos de software de tendencia que las utilizan. En la Fig. \ref{fig:M1-TrendForja} se aprecia como cambia la tendencia de utilización de dichas forjas en el tiempo. Actualmente la forja predominante es claramente GitHub pero se ve un incremento en el uso de GitLab.
+
+\imagen{M1-TrendForja}{Comparativa de tendencia de búsqueda de Google desde 2004 con los términos de distintas forjas de proyectos software}
+
+La forjas de proyectos software proporcionan interfaces de programación específicas que permiten acceder a toda la información registrada. Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos. Se registran grandes conjuntos de datos difíciles de procesar.
+
+El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{Guemes-Pena2018}.
+
+\subsection{GitHub vs. GitLab}
+
+\todo introducir la sección
+\todo Usa la información de esta página \url{https://about.gitlab.com/devops-tools/github-vs-gitlab.html} para recoger las características de los repositorios 
+y su comparación.
+
+\begin{itemize}
+	\item Niveles de autenticación: GitLab tiene mejor sistema de administración de servicios
+	\item Built-in CI/CD
+	\item 
+\end{itemize}
+
+\section{Calidad de proceso y calidad de producto software}
+
 Todo proyecto de software tienen como objetivo desarrollar software de alta calidad, que cumpla con los requisitos acordados. Sin embargo, la calidad de un producto de software no tiene que ver solo con que se cumplan todos los requisitos funcionales, sino también otros requerimientos no funcionales que no se incluyen en la especificación como los de mantenimiento.
 
 %Comentar fig 25.3 - Ppales factores de la calidad de protducto software p561
@@ -97,7 +133,7 @@ Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenieri
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.7]{M1-FactoresCalidad}
-	\caption{Principales factores de calidad del producto de software\cite{sommerville_ingenierisoftware_2002}}\label{fig:M3-FactoresCalidad}
+	\caption{Principales factores de calidad del producto de software\cite{sommerville_ingenierisoftware_2002}}\label{fig:M1-FactoresCalidad}
 \end{figure}
 \FloatBarrier
 
@@ -114,13 +150,11 @@ La medición del software es un proceso en el cual se asignan valores numéricos
 	\caption{Métricas de control y métricas de predicción\cite{sommerville_ingenierisoftware_2002}}\label{fig:M3-MetricasProcesoYProducto}
 \end{figure}
 %Comentar fg 24.1 p537 admin de calida en el proceso y desarrollo de software
-\section{Evolución de software}
-Este proyecto se centra en las métricas de control, es decir las que están asociadas al proceso de desarrollo o de evolución del software.
-\subsection{Conceptos de evolución}
-Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{Issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
-Todas estas herramientas sirven para llevar un control sobre la evolución de un proyecto software ya que facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de proceso que ayuden a mejorar la evolución del proyecto comparándolas con otras mediciones de otros proyectos.
+
+\section{Control de calidad: medición}
 
 \subsection{Métricas de evolución o de proceso}
+
 Como se ha explicado peviamente, este proyecto calcula  métricas de proceso. Las métricas que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}. 
 A continuación se describen las métricas que se implementan en este proyecto usando la plantilla de definición de la norma ISO 9126 \cite{ISO9126}.\\
 
@@ -130,6 +164,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 %\todo aplicando los entornos matemáticos $\frac{\sum_{i=1,j=0}^{NTC} TC_i - TC_j}{NTC}$
  
 \textbf{\underline{I1 - Número total de issues (incidencias)}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
@@ -141,7 +176,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: \textit{NTI = Contador}
 \end{itemize}
+
 \textbf{\underline{I2 - Commits (cambios) por issue}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
@@ -153,7 +190,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Ratio 
 	\item \textbf{Tipo de medida}: \textit{NTC, NTI = Contador}
 \end{itemize}
+
 \textbf{\underline{I3 - Porcentaje de issues cerradas}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Proceso de Orientación
@@ -165,7 +204,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
+
 \textbf{\underline{TI1 - Media de días en cerrar una issue}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
@@ -177,7 +218,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
+
 \textbf{\underline{TC1 - Media de días entre commits}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
@@ -190,7 +233,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTC = Contador; TC = Tiempo}
 \end{itemize}
+
 \textbf{\underline{TC2 - Días entre primer y último commit}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
@@ -202,7 +247,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Absoluta
 	\item \textbf{Tipo de medida}: \textit{TC = Tiempo}
 \end{itemize}
+
 \textbf{\underline{TC3 - Ratio de actividad de commits por mes}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
@@ -214,7 +261,9 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTC = Contador}
 \end{itemize}
+
 \textbf{\underline{C1 - Cambios pico}}
+
 \begin{itemize}
 	\tightlist
 	\item \textbf{Categoría}: Constantes de tiempo
@@ -227,20 +276,29 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de medida}: \textit{NCMP, NTC = Contador}
 \end{itemize}
 
-\section{Framework de medición} 
+Este proyecto se centra en las métricas de control, es decir las que están asociadas al proceso de desarrollo o de evolución del software.
+
+Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{Issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
+Todas estas herramientas sirven para llevar un control sobre la evolución de un proyecto software ya que facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de proceso que ayuden a mejorar la evolución del proyecto comparándolas con otras mediciones de otros proyectos.
+
+\section{Framework de medición}
+
 Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. Este diseño, mostrado en la Fig. \ref{fig:MCTMotorMetricas}, permite:
+
 \begin{itemize}
 	\tightlist
 	\item Facilitar el desarrollo de nuevas métricas
 	\item Personalizar de los valores límite inferior y superior ya que estos pueden variar dependiendo del contexto en el que se calculen las métricas.
 	\item Crear un grupo de configuraciones de métricas, de forma que se podrían calcular todas las métricas de ese grupo y almacenar los resultados en un colector de tipo \textit{MetricResult}
 \end{itemize}
+
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
 \imagen{MCTMotorMetricas}{Diagrama del framework para el cálculo de métricas con perfiles que almacena valores umbrales.}
 
 En el diagrama UML de la Fig. \ref{fig:MCTMotorMetricas} se muestran las entidades principales del framework de medición y la relación entre ellas, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha oscura especifican los patrones de diseño\citep{gamma_patrones_2002} aplicados en el framework.
 
 Para crear una nueva métrica, esta deberá extender de la clase abstracta \textit{Metric} e implementar los métodos \textit{check()} y \textit{run()}. El método \textit{calculate()} de la clase \textit{Metric} utiliza el patrón de diseño \textbf{método plantilla}\footnote{\url{https://refactoring.guru/design-patterns/template-method}} que utiliza estos dos métodos, que deberán ser implementados por las clases concretas que hereden de \textit{Metric}. Un ejemplo de este método sería:
+
 \begin{lstlisting}
 ...
 Value calculate(Entity entity, 
@@ -266,6 +324,7 @@ Este método delega en las subclases el comportamiento de los métodos \textit{c
 Un perfil de métricas agrupa un conjunto de configuraciones de métricas para un contexto dado, por ejemplo, para un conjunto de proyectos realizados por alumnos de la universidad en su realización del TFG. Se podría instanciar un \textit{MetricResult} para almacenar los resultados de toda esta colección de configuraciones de métricas y bastaría solo con recorrer el perfil usando el método \textit{calculate()} de cada configuración.
 
 Este TFG ha adaptado este framework en el paquete ``motor de métricas'', y se han realizado unas pocas modificaciones. Las modificaciones más destacadas son:
+
 \begin{itemize}
 	\tightlist
 	\item Se ha aplicado a las métricas concretas el patrón \textit{\textbf{Singleton}}\footnote{\url{https://refactoring.guru/design-patterns/singleton}}, que obliga a que solo haya una única instancia de cada métrica; y se ha aplicado el patrón \textit{\textbf{Método fábrica}}\footnote{\url{https://refactoring.guru/design-patterns/factory-method}} tal y como se muestra en la Fig. \ref{fig:M3_CambiosFrameworkMedicion1}, de forma que \textit{MetricConfiguration} no este asociada con la métrica en si, sino con una forma de obtenerla.\\
@@ -285,29 +344,3 @@ Este TFG ha adaptado este framework en el paquete ``motor de métricas'', y se h
 \imagen{M3_CambiosFrameworkMedicion1}{Patrones ``singleton'' y ``método fábrica'' sobre el framework de medición}
 
 \imagen{M3_CambiosFrameworkMedicion2}{Añadido al framework de medición la evaluación de métricas}
-
-\section{Forjas de proyectos software}
-
-%\todo Este párrafo está repetido en la introducción. Pero tiene que ser reducido en este apartado se puede detallar más extensamente con alguna captura de pantalla  que ayude a describir las equivalentes en múltiples repositorios.
-%\todo revisar
-
-En la última década han surgido forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open source (SourceForge \footnote{\url{https://sourceforge.net/}}, GitHub \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}).  Estas forjas suelen integrar múltiples sistemas para dar soporte a los flujos de trabajo y registrar las interacciones entre los miembros del equipo. Además dan la posibilidad de extensión funcional con sistemas de terceros para gestionar otras actividades no soportadas directamente, por ejemplo Travis CI
-\footnote{\url{https://travis-ci.org/}} para gestionar la integración continua o Codacy \footnote{\url{https://www.codacy.com/}} para gestionar las revisiones automáticas de calidad. Actualmente estas forjas han tenido una gran aceptación entre la comunidad de desarrolladores y existen muchos desarrollos de software de tendencia que las utilizan. La forjas de proyectos software proporcionan interfaces de programación específicas que permiten acceder a toda la información registrada. 
-
-Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos. Se registran grandes conjuntos de datos difíciles de procesar. El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{Guemes-Pena2018}:
-
-En la Fig. \ref{fig:Mintro-trendforja} se aprecia como cambia la tendencia de utilización de dichas forjas en el tiempo. Actualmente la forja predominante es claramente GitHub pero se ve un incremento en el uso de GitLab.
-
-\imagen{Mintro-trendforja}{Comparativa de tendencia de búsqueda de Google desde 2004 con los términos de distintas forjas de proyectos software.}
-
-\subsection{GitHub vs. GitLab}
-\ref{fig:Mintro-trendforja}
-\todo introducir la sección
-\todo Usa la información de esta página \url{https://about.gitlab.com/devops-tools/github-vs-gitlab.html} para recoger las características de los repositorios 
-y su comparación.
-
-\begin{itemize}
-	\item Niveles de autenticación: GitLab tiene mejor sistema de administración de servicios
-	\item Built-in CI/CD
-	\item 
-\end{itemize}
