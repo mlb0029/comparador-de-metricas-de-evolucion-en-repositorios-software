@@ -183,11 +183,11 @@ En ambas forjas es posible disponer de una wiki para el proyecto.
 \begin{itemize}
 	\item GitHub permite repositorios 100\% binarios
 	\item GitLab permite tener una instancia propia de GitLab en un servidor particular, lo que permite que se pueda gestionar software adicional dentro del servidor como sistemas de detección de intrusos o un monitor de rendimiento.
-	\item GitLab permite elegir miembros del equipo como revisores de ``merge requests".
+	\item GitLab permite elegir miembros del equipo como revisores de ``\textit{merge requests}''.
 	\item El código de Gitlab EE puede ser modificado para ajustarlo a las necesidades de seguridad y desarrollo.
 	\item Ambos incluyen APIs que permiten realizar aplicaciones que se integren con GitLab o GitHub. Esto ha sido clave para la realización de este proyecto, como se ha mencionado anteriormente.
 	\item GitLab nos proporciona un  IDE\footnote{Integrated Development Environment - Entorno de Desarrollo Integrado } web para realizar modificaciones sobre el código desde el mismo GitLab, también incluye un terminal web para el IDE que permite, por ejemplo, compilar el código.
-	\item Ambos permiten la integración con repositorios Maven
+	\item Ambos permiten la integración con repositorios Maven\footnote{Software de gestión de proyectos software: \url{https://maven.apache.org/}}
 \end{itemize}
 
 \section{Calidad de un producto software}
@@ -238,7 +238,7 @@ La medición del software es un proceso en el cual se asignan valores numéricos
 
 Este proyecto se centra solo en la obtención de métricas de evolución que permitirán controlar y evaluar el proceso del desarrollo de un producto software. Por tanto se dejarán las métricas de predicción para otros trabajos y se detallará más sobre las de control en el siguiente apartado.
 
-\subsection{Métricas de control: medición de la evolución o proceso de software}
+\subsection{Métricas de control: medición de la evolución o proceso de software}\label{sect:3_3_2_MetricasControl}
 
 En la Fig. \ref{fig:M3-FactoresCalidad} se muestra la calidad de proceso como factor que afecta directamente a la calidad de producto. Parece lógico considerar como hipótesis que la calidad de un artefacto software tenga alguna relación con la manera en la que el equipo de desarrollo aplica las actividades del ciclo de vida del software dentro del repositorio. La validación empírica de estas  hipótesis ha abierto una nueva línea de aplicación con los conjuntos de datos que se pueden extraer de los repositorios gracias a interfaces de programación específicas que proporcionan estas forjas de repositorios y que permiten acceder a toda la información registrada.
 
@@ -358,7 +358,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Tipo de medida}: \textit{NCMP, NTC = Contador}
 \end{itemize}
 
-\subsection{Framework de medición}
+\subsection{Framework de medición}\label{sect:3_3_3_FrameworkMedicion}
 
 Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. Este diseño, mostrado en la Fig. \ref{fig:MCTMotorMetricas}, permite:
 
