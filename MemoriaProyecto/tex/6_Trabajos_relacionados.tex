@@ -5,62 +5,65 @@
 
 \epigraph{Aplicación que permite realizar un estudio del estado de un proyecto en GitHub mediante distintas métricas de evolución. Permitiendo tener una visión del ritmo de trabajo del proyecto, duración, numero de participantes y actividad.}{dba0010/Activiti-Api}
 
-\begin{figure}[!h]
+En un proyecto bastante parecido implementado como aplicación de escritorio escrita en lenguaje Java. En algunos aspectos ha sido modelo para el desarrollo de este proyecto software. Esta alojado en GitHub\footnote{\url{https://github.com/dba0010/Activiti-Api}} y se puede obtener y ejecutar. Se muestra la ventana principal en la Fig. \ref{fig:M6_ActivitiApi_Ppal}.
+
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.65\textwidth]{M6_ActivitiApi_Ppal}
 	\caption{Ventana principal de Activiti-Api}\label{fig:M6_ActivitiApi_Ppal}
 \end{figure}
 
-En un proyecto bastante parecido implementado como aplicación de escritorio escrita en lenguaje Java. En algunos aspectos ha sido modelo para el desarrollo de este proyecto software. Esta alojado en GitHub\footnote{\url{https://github.com/dba0010/Activiti-Api}} y se puede obtener y ejecutar. Se muestra la ventana principal en la Fig. \ref{fig:M6_ActivitiApi_Ppal}.
+El aspecto que más llamó la atención para este proyecto es la forma de buscar repositorios. Permite establecer una conexión a GitHub iniciando sesión mediante usuario y contraseña o entrar en ``Modo desconectado'', como se muestra en la Fig. \ref{fig:M6_ActivitiApi_Con}.
 
-El aspecto que más llamó la atención para este proyecto es la forma de buscar repositorios. Permite establecer una conexión a GitHub iniciando sesión mediante usuario y contraseña o entrar en ``Modo desconectado'', como se muestra en la Fig. \ref{fig:M6_ActivitiApi_Con}. Una vez establecida la conexión permite mostrar las métricas de evolución de un proyecto, para ello hay que indicar un usuario del cual se quiere obtener un proyecto y seleccionar el proyecto de un desplegable con los proyectos de ese usuario, ver Fig. \ref{fig:M6_ActivitiApi_Proyectos}.
+%\begin{figure}[!h]
+%	\centering
+%	\includegraphics[width=0.65\textwidth]{M6_ActivitiApi_Con}
+%	\caption{Conexión a GitHub mediante Activiti-Api}\label{fig:M6_ActivitiApi_Con}
+%\end{figure}
 
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.65\textwidth]{M6_ActivitiApi_Con}
-	\caption{Conexión a GitHub mediante Activiti-Api}\label{fig:M6_ActivitiApi_Con}
-\end{figure}
+Una vez establecida la conexión permite mostrar las métricas de evolución de un proyecto, para ello hay que indicar un usuario del cual se quiere obtener un proyecto y seleccionar el proyecto de un desplegable con los proyectos de ese usuario, ver Fig. \ref{fig:M6_ActivitiApi_Proyectos}.
 
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.65\textwidth]{M6_ActivitiApi_Proyectos}
-	\caption{Selección de un proyecto para obtener las métericas en Activiti-Api}\label{fig:M6_ActivitiApi_Proyectos}
-\end{figure}
+%\begin{figure}[!h]
+%	\centering
+%	\includegraphics[width=0.65\textwidth]{M6_ActivitiApi_Proyectos}
+%	\caption{Selección de un proyecto para obtener las métericas en Activiti-Api}\label{fig:M6_ActivitiApi_Proyectos}
+%\end{figure}
 
-\subsection{Comparando Activiti-Api con este proyecto}
+También se han cogido ideas de como calcular las métricas e implementar el framework de medición del que se habla en la sección \ref{sect:3_3_3_FrameworkMedicion} en el apartado ``Framework de medición''.
 
-A continuación se muestran las diferencias del producto software de ``Activiti-Api'' con el producto generado en ``Comparador de métricas de evolución en repositorios software''.
+\subsection{Comparando este proyecto con Activiti-Api}
+
+A continuación se muestran las diferencias del producto software de este proyecto: `Comparador de métricas de evolución en repositorios software' con el producto generado en el proyecto `Activiti-Api'.
 
 \subsubsection{Interfaz}
 
-Es una aplicación de escritorio, mientras que en este proyecto se ha optado por implementar una aplicación web.
+En este proyecto se ha optado por implementar una aplicación web en lugar de una aplicación de escritorio.
 
 \subsubsection{Conexión}
 
-Para obtener información de los proyectos, Activiti-Api permite establecer una conexión a GitHub mientras que este proyecto permite establecer conexión a GitLab. Aunque este proyecto permite extender la funcionalidad a otras forjas de repositorios como GitHub.
+Para obtener información de los proyectos, \textit{Activiti-Api} permite establecer una conexión a GitHub mientras que este proyecto permite establecer conexión a GitLab. Aunque este proyecto permite extender la funcionalidad a otras forjas de repositorios como GitHub.
 
-Activiti-Api permite dos tipos de conexión: iniciar sesión a GitHub mediante usuario y contraseña o ``Modo desconectado'' (establece una conexión pública). 
+\textit{Activiti-Api} permite dos tipos de conexión: iniciar sesión a GitHub mediante usuario y contraseña o ``Modo desconectado'' (establece una conexión pública). 
 
-Este proyecto permite iniciar sesión a GitLab mediante usuario y contraseña o por uso de un token de acceso personal. Además también permite establecer una conexión pública o directamente trabajar sin conexión sobre la aplicación. Dependiendo de la conexión escogida se limitará la funcionalidad de la aplicación. Por ejemplo, sin conexión no es posible añadir repositorios. Además se muestra al usuario de la aplicación el tipo de conexión escogida en todo momento y la información de sesión iniciada en caso de que se haya iniciado sesión en GitLab.
+Este proyecto permite iniciar sesión a GitLab mediante usuario y contraseña o por uso de un token de acceso personal. Además también permite establecer una conexión pública o directamente trabajar sin conexión sobre la aplicación. Dependiendo de la conexión escogida se limitará la funcionalidad de la aplicación. Por ejemplo, sin conexión no es posible añadir repositorios. Además, se muestra al usuario de la aplicación el tipo de conexión escogida en todo momento y la información de sesión iniciada en caso de que se haya iniciado sesión en GitLab, esto en \textit{Activiti-Api} no es posible.
 
 \subsubsection{Gestión de proyectos y evaluación de métricas}
 
-Activiti-Api solo permite trabajar con un proyecto al mismo tiempo o comparar dos proyectos. La comparación se ha definido de forma estática durante el desarrollo del proyecto, permaneciendo invariable en tiempo de ejecución.
+\textit{Activiti-Api} solo permite trabajar con un proyecto al mismo tiempo o comparar dos proyectos. La comparación se ha definido de forma estática durante el desarrollo del proyecto, permaneciendo invariable en tiempo de ejecución.
 
 Este proyecto permite añadir múltiples proyectos, evaluarlos y compararlos mediante el cálculo estadístico de cuartiles para hallar los valores umbrales de cada métrica. Por tanto la comparación puede ser dinámica a partir de los proyectos que se escojan para la comparativa, aunque también se han definido unos valores umbrales predefinidos a partir de unas estadísticas obtenidas de un conjunto de datos obtenidos a partir de TFGs y publicado en GitHub \footnote{\url{https://github.com/clopezno/clopezno.github.io/blob/master/agile_practices_experiment/DataSet_EvolutionSoftwareMetrics_FYP.csv}}. Este proyecto permite gestionar perfiles de métricas con diferentes umbrales para distintos contextos de aplicación.
 
-Activiti-Api genera un informe con los resultados de las métricas de un proyecto, varios gráficos y permite generar un informe de comparativa entre dos proyectos. Mientras que este proyecto muestra los resultados de varios proyectos en forma de tabla.
+\textit{Activiti-Api} genera un informe con los resultados de las métricas de un proyecto, varios gráficos y permite generar un informe de comparativa entre dos proyectos. Mientras que este proyecto muestra los resultados de varios proyectos en forma de tabla.
 
 \subsubsection{Mantenibilidad y extensibilidad}
 
-Este proyecto ha preparado un  framework para poder extender la fuente de datos, es decir las forjas. Ha sido implementado para obtener datos desde GitLab, pero es fácilmente extensible a otras forjas como GitHub. Activiti-Api no permite esta extensibilidad e incluye demasiadas dependencias con GitHub API.
+Este proyecto ha preparado un  framework para poder extender la fuente de datos, es decir las forjas. Ha sido implementado para obtener datos desde GitLab, pero es fácilmente extensible a otras forjas como GitHub. \textit{Activiti-Api} no permite esta extensibilidad e incluye demasiadas dependencias con GitHub API.
 
-Ambos proyectos siguen la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. De hecho, Activiti-Api ha servido de ejemplo para la implementación del motor de métricas de este trabajo.
+Ambos proyectos siguen la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. De hecho, \textit{Activiti-Api} ha servido de ejemplo para la implementación del motor de métricas de este trabajo.
 
-\section{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}
+\section{Otros trabajos relacionados}
+\begin{description}
+	\item[Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones] De este trabajo se ha basado la construcción del subsistema ``motor de métricas'', como se puede ver en la sección \ref{sect:3_3_3_FrameworkMedicion} en el apartado `Framework de medición'.
+	\item[Software Project Assessment in the Course of Evolution -  Jacek Ratzinger] Es de este trabajo de donde se han obtenido las métricas de control con las que se trabaja en este proyecto. Hay una explicación detallada en el apartado \ref{sect:3_3_2_MetricasControl} en el apartado `Métricas de control: medición de la evolución o proceso de software'.
+\end{description}
 
-De este trabajo se ha basado la construcción del subsistema ``motor de métricas'', como se puede ver en la sección \ref{sect:3_3_3_FrameworkMedicion}.
-
-\section{Software Project Assessment in the Course of Evolution -  Jacek Ratzinger}
-
-Es de este trabajo de donde se han obtenido las métricas de control con las que se trabaja en este proyecto. Hay una explicación detallada en el apartado \ref{sect:3_3_2_MetricasControl}.
