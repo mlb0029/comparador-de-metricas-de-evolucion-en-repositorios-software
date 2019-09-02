@@ -13,7 +13,7 @@ En un proyecto bastante parecido implementado como aplicación de escritorio esc
 	\caption{Ventana principal de Activiti-Api}\label{fig:M6_ActivitiApi_Ppal}
 \end{figure}
 
-El aspecto que más llamó la atención para este proyecto es la forma de buscar repositorios. Permite establecer una conexión a GitHub iniciando sesión mediante usuario y contraseña o entrar en ``Modo desconectado'', como se muestra en la Fig. \ref{fig:M6_ActivitiApi_Con}.
+El aspecto que más llamó la atención para este proyecto es la forma de buscar repositorios. Permite establecer una conexión a GitHub iniciando sesión mediante usuario y contraseña o entrar en ``Modo desconectado'', como se muestra en la Fig. \ref{fig:M6_ActivitiApi_Con}. En este proyecto se ha ampliado esta funcionalidad añadiendo más formas de conexión. Además, se ha diseñado un framework que facilita la extensibilidad hacia otras forjas de repositorios como GitHub o Bitbucket.
 
 %\begin{figure}[!h]
 %	\centering
@@ -43,9 +43,23 @@ En este proyecto se ha optado por implementar una aplicación web en lugar de un
 
 Para obtener información de los proyectos, \textit{Activiti-Api} permite establecer una conexión a GitHub mientras que este proyecto permite establecer conexión a GitLab. Aunque este proyecto permite extender la funcionalidad a otras forjas de repositorios como GitHub.
 
-\textit{Activiti-Api} permite dos tipos de conexión: iniciar sesión a GitHub mediante usuario y contraseña o ``Modo desconectado'' (establece una conexión pública). 
+\textit{Activiti-Api} permite dos tipos de conexión: iniciar sesión a GitHub mediante usuario y contraseña o ``Modo desconectado'' (establece una conexión pública). Este proyecto permite iniciar sesión a GitLab mediante usuario y contraseña o por uso de un token de acceso personal. Además también permite establecer una conexión pública o directamente trabajar sin conexión sobre la aplicación. Dependiendo de la conexión escogida se limitará la funcionalidad de la aplicación. Por ejemplo, sin conexión no es posible añadir repositorios. Esta comparativa de las interfaces se puede ver en la Fig. \ref{fig:M6_Comp_Conn}.
 
-Este proyecto permite iniciar sesión a GitLab mediante usuario y contraseña o por uso de un token de acceso personal. Además también permite establecer una conexión pública o directamente trabajar sin conexión sobre la aplicación. Dependiendo de la conexión escogida se limitará la funcionalidad de la aplicación. Por ejemplo, sin conexión no es posible añadir repositorios. Además, se muestra al usuario de la aplicación el tipo de conexión escogida en todo momento y la información de sesión iniciada en caso de que se haya iniciado sesión en GitLab, esto en \textit{Activiti-Api} no es posible.
+Además, en este proyecto se muestra al usuario de la aplicación el tipo de conexión escogida en todo momento (Ver Fig. \ref{fig:M6_Open_Conn_Info}) y la información de sesión iniciada en caso de que se haya iniciado sesión en GitLab, esto en \textit{Activiti-Api} no es posible.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{M6_Comp_Conn}
+	\caption{Comparación de las interfaces de conexión. Arriba `Activiti-Api', debajo `Comparador de métricas de evolución en repositorios software'}\label{fig:M6_Comp_Conn}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{M6_Open_Conn_Info}
+	\caption{Visualización del tipo de conexión establecida}\label{fig:M6_Open_Conn_Info}
+\end{figure}
+\FloatBarrier
 
 \subsubsection{Gestión de proyectos y evaluación de métricas}
 
@@ -53,7 +67,23 @@ Este proyecto permite iniciar sesión a GitLab mediante usuario y contraseña o 
 
 Este proyecto permite añadir múltiples proyectos, evaluarlos y compararlos mediante el cálculo estadístico de cuartiles para hallar los valores umbrales de cada métrica. Por tanto la comparación puede ser dinámica a partir de los proyectos que se escojan para la comparativa, aunque también se han definido unos valores umbrales predefinidos a partir de unas estadísticas obtenidas de un conjunto de datos obtenidos a partir de TFGs y publicado en GitHub \footnote{\url{https://github.com/clopezno/clopezno.github.io/blob/master/agile_practices_experiment/DataSet_EvolutionSoftwareMetrics_FYP.csv}}. Este proyecto permite gestionar perfiles de métricas con diferentes umbrales para distintos contextos de aplicación.
 
-\textit{Activiti-Api} genera un informe con los resultados de las métricas de un proyecto, varios gráficos y permite generar un informe de comparativa entre dos proyectos. Mientras que este proyecto muestra los resultados de varios proyectos en forma de tabla.
+\textit{Activiti-Api} genera un informe con los resultados de las métricas de un proyecto, varios gráficos y permite generar un informe de comparativa entre dos proyectos (Ver Fig. \ref{fig:M6_AA_Comparativa}). Mientras que este proyecto muestra los resultados de varios proyectos en forma de tabla (Ver Fig. \ref{fig:M6_EMC_Comparativa}).
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{M6_AA_Comparativa}
+	\caption{Comparación de dos proyectos utilizando Activiti-Api}\label{fig:M6_AA_Comparativa}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{M6_EMC_Comparativa}
+	\caption{Comparación de varios proyectos utilizando Evolution metrics comparison}\label{fig:M6_EMC_Comparativa}
+\end{figure}
+\FloatBarrier
+
+\todo Nombre corto de la app: Evolution metrics o Evolution Metrics Comparison
 
 \subsubsection{Mantenibilidad y extensibilidad}
 
