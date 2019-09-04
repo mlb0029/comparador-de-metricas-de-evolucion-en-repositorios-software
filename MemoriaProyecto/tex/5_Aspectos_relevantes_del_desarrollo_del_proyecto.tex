@@ -53,7 +53,8 @@ El proyecto se iba a desarrollar en Java desde el principio, era un requisito no
 
 En el proyecto se ha utilizado alguna de las nuevas versiones de Java no vista durante los curso. En el siguiente fragmento de código se describe 
 un ejemplo de código que obtiene una colección de repositorios del usuario actual.
-\tiny{
+
+{\tiny 
 \begin{lstlisting}
 ...
 if (connectionType != EnumConnectionType.NOT_CONNECTED) {
@@ -69,20 +70,20 @@ if (connectionType != EnumConnectionType.NOT_CONNECTED) {
 }
 
 \section{Automatización de tareas de desarrollo}
-\todo Describir el uso de Maven Ventajas e incovenientes
+%\todo Describir el uso de Maven Ventajas e incovenientes
+\subsection{Maven}
 \subsection{Pruebas}
 Para las pruebas se disponían de datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la 
 Universidad de Burgos. Esto ha facilitado en gran medida el trabajo de pruebas. 
 Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en Gitlab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFG con la UBU organiza su propuestas de TFG en GitLab en grupos para organizarlos por cursos académicos.
 
-
-
 Otro aspecto destacable es la uso con funciones avanzadas en la implementación de test unitarios. 
 Como ejemplo en el siguiente fragmento de código se recoge como parametrizar un test para especificar un ficheros que recojan los múltiples casos de prueba.
 De esta forma se simplifica mucho las prueba.
 
-\todo se puede formatear mejor el código 
-\tiny{
+%\todo se puede formatear mejor el código 
+
+{\tiny 
 \begin{lstlisting}
 
 @ParameterizedTest(name = "Run with User = \"{0}\" and 
@@ -100,11 +101,8 @@ public void testConnectUserPasswordWrong(String user, String password){
 		getErrorMsg("testConnectUserPasswordWrong", 
 		"Connection type must be 'NOT_CONNECTED'"));
 }
-\end{lstlisting}		
-
+\end{lstlisting}
 }
-
- 
 
 \subsection{Calidad continua}
 En los últimos sprints, correspondientes a la entrega de prototipos funcionales al tutor,
@@ -112,10 +110,10 @@ se definía una tarea para analizar la deuda técnica que indicaba la Codacy.
 Se analizaban las tareas de mejoras propuesta por Codacy según su orden de prioridad y se intentaban eliminar.
 De esta forma además de aprender de las revisiones automáticas de Codacy se controlaba la deuda técnica, en el prototipo evolutivo.
 La valoración final del proyecto ha sido la máxima (A) sin ninguna revivión de calidad de alta prioridad.
-\todo Añadir url de codacy de tu proyecto y una captura de pantalla donde aparezca la A.
+%\todo Añadir url de codacy de tu proyecto y una captura de pantalla donde aparezca la A.
 
 \subsection{Integración y despliegue continuo CI/CD}
 Se han utilizado los sistemas de integración continua y despliegue continuo de GitLab para controlar el correcto funcionamiento de la aplicación después de un cambio y para mejorar la calidad de las revisiones.
 La integración continua se ha configurado para que cada vez que se realiza un coomit en la rama principal del repositorio se compruebe que compila correctamente, que se ejecutan los test configurados en maven y se empaquete la aplicación Web en fichero war y se despligue en Heroku. Si alguna tarea falla se indica en el repositorio con un icono redondo rojo con aspa blanca.
-\todo añadir una captura de pantalla con el badge Heroku del  Readme de Gitlab y explicar como se actualiza cada vez que se realiza un commit. 
-\todo añadir una captura de pantalla con los check verdes en la lista de commit del repositorio de GitLab
+%\todo añadir una captura de pantalla con el badge Heroku del  Readme de Gitlab y explicar como se actualiza cada vez que se realiza un commit. 
+%\todo añadir una captura de pantalla con los check verdes en la lista de commit del repositorio de GitLab
