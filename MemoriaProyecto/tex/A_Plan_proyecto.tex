@@ -27,10 +27,59 @@ No se ha realizado una planificación temporal del proyecto. Se han seguido los 
 \end{itemize}
 \subsection{Sprints}
 A continuación se definen los sprints y sus respectivas pilas de tareas que se llevaron a cabo durante la realización del proyecto. 
-Se pueden visualizar las issues en orden ascendente de creación a partir de esta URL:
 
-\subsubsection{Inicio del proyecto}
-El proyecto comenzó el 1 de octubre de 2018. Las primeras tareas que se definieron fueron de investigación y configuración del entorno de trabajo, no se definían de forma muy clara ya que aun no se sabía que caminos escoger para la realización del proyecto.
+Los dos primeros sprints estuvieron dedicados a la investigación y configuración del entorno de desarrollo, se puede observar en la Fig. \ref{fig:M5_Sprints_1_EstudioYConfig}. Por cada sprint se observa su descripción, la fecha de apertura y cierre, y el número de issues asociadas. Y en la Fig. \ref{fig:M5_PrimerasIssues} se muestran las descripciones de las primeras tareas que se definieron, la mayoría etiquetadas como `\textit{Research}' (Estudio o investigación) y `\textit{Project Configuration}' (Configuración del proyecto).
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{M5_Sprints_1_EstudioYConfig}
+	\caption{Milestone iniciales del proyecto en GitLab.}
+	\label{fig:M5_Sprints_1_EstudioYConfig}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{M5_PrimerasIssues}
+	\caption{Primeras issues del proyecto, la mayoría etiquetadas como `Research' o `Project Configuration'}
+	\label{fig:M5_PrimerasIssues}
+\end{figure}
+
+Esta etapa de investigación y configuración duró un mes (dos sprints) y sus decisiones afectaron a todo el proyecto. Se recopiló información sobre trabajos relacionados como \textit{Activiti-Api} \cite{rlp0019_software_2019}, \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}  \cite{marticorena_soporte_2005} y \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y se estudió los entornos y herramientas que se utilizarían para el desarrollo del proyecto.
+
+Después de esta etapa de investigación, comenzó una etapa de diseño. En esta etapa, las tareas que se definen se relacionan con el diseño de la parte lógica del sistema software a construir, se comienza con la implementación y se empiezan a utilizar las herramientas investigadas anteriormente para construir el sistema. 
+
+Dentro de la fase de diseño se decidió dedicar un tiempo a un tipo de configuración del proyecto que facilitaría el flujo de trabajo y las reuniones de revisión/planificación del sprint. Las principales para mejorar el flujo de trabajo fueron:
+\begin{itemize}
+	\item Configurar la gestión del proyecto con Maven
+	\item Configurar los procesos de integración y despliegue continuo con GitLab (CI/CD)
+	\item Realizar pruebas unitarias con JUnit y se automatiza su ejecución gracias a Maven y los \textit{pipelines} de GitLab (CI/CD).
+	\item Configurar revisiones automáticas de calidad y de cobertura de las pruebas gracias a Codacy, Jacoco y GitLab.
+	\item Configurar un entorno en Heroku donde poder desplegar la aplicación y así poder ser revisada por el tutor fácilmente.
+	\item Configurar badges\footnote{} para representar los logros en calidad de código, cobertura, despliegue y los trabajos de CI/CD.
+\end{itemize}
+
+Esta etapa de diseño tuvo duración de 3 sprints y uno extra para la configuración del flujo de trabajo, como se puede apreciar en la Fig. \ref{} que muestra los sprints relacionados a esta etapa y en las Figa. \ref{} y \ref{} que muestran las issues relacionadas con la etapa de diseño y la de mejora del flujo de trabajo, respectivamente. Esto se aprecia a que las issues cuentan, en su mayoría con etiquetas `\textit{Design}', excepto las que se refieren al flujo de trabajo que tienen etiquetas como `\textit{Test}', `\textit{Project Configuration}' o `\textit{Question}'.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{M5_Sprints_1_EstudioYConfig}
+	\caption{Milestone iniciales del proyecto en GitLab.}
+	\label{fig:M5_Sprints_1_EstudioYConfig}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{M5_PrimerasIssues}
+	\caption{Primeras issues del proyecto, la mayoría etiquetadas como `Research' o `Project Configuration'}
+	\label{fig:M5_PrimerasIssues}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{M5_PrimerasIssues}
+	\caption{Primeras issues del proyecto, la mayoría etiquetadas como `Research' o `Project Configuration'}
+	\label{fig:M5_PrimerasIssues}
+\end{figure}
 
 \section{Estudio de viabilidad}
 \subsection{Viabilidad económica}

@@ -12,67 +12,220 @@
 %No responsive
 
 %Comparacion de tfgs en la ubu, captura dde pantalla con comparativa tfg
-Este capítulo recoge los aspectos destacables durante el desarrollo del proyecto.
-\section{Motivación de la elección}
-La elección de este trabajo fue motivada por su relación con las asignaturas de la mención de ingeniería del software, detacando las asignaturas:\textit{Gestión de Proyectos}, \textit{Diseño y Mantenimiento del Software}, \textit{Desarrollo Avanzado de Sistemas Software}, en las que se enseña como desarrollar software de calidad usando repositorio Software.
-\section{Evolución del proyecto}
-Tras la elección del proyecto se acordó definir una evolución que siga las bases del modelo Scrum. Tomando un proceso de desarrollo incrementa con revisión de las iteraciones cada dos semanas.
-Se han definido sprints de dos semanas. Estas reuniones constaban de dos partes:
+Este capítulo recoge los aspectos más relevantes del ciclo de vida del proyecto y justifica los caminos que se han tomado durante el desarrollo. Se menciona el motivo de elección del proyecto, el modelo de ciclo de vida utilizado, una breve explicación de los aspectos de configuración del proyecto y el flujo de trabajo.
+
+\section{Motivación de la elección y relación con asignaturas}
+
+La elección de este trabajo fue motivada por su relación con la asignatura de \textit{Desarrollo Avanzado de Sistemas Software}. En esta se enseña como desarrollar software de calidad mediante el proceso de \textit{Administración de la calidad}, en la cual una de las actividades es el control de calidad. Este control se puede llevar a cabo mediante un proceso de medición. En este proyecto se han elegido métricas ya definidas para llevar un control sobre el ciclo de vida de un proyecto. Esto permite comprender el proceso, evaluarlo respecto a lo que se había planeado, predecir si los planes van por buen camino e identificar los defectos y mejorar la calidad del proceso. Además esto ha podido ser comprobado, ya que las mediciones realizadas por el software creado en este proyecto han servido para evaluar y mejorar el proceso del software de este.
+
+\section{Modelo de ciclo de vida}
+
+Tras la elección del proyecto se acordó definir una evolución que siga las bases del modelo Scrum. Tomando un proceso de desarrollo incremental con revisión de las iteraciones cada dos semanas, la duración de un sprint. Estas revisiones se realizaban por medio de reuniones que constaban de dos partes:
 \begin{itemize}
-	\item Revisión del sprint: En las que se revisaba el incremento generado, los problemas que hubo durante su desarrollo, las soluciones que se han implementado o que se plantean para el siguiente sprint.
-	\item Planificación del siguiente sprint: Se definían las nuevas tareas.
+	\item Revisión del sprint: Se revisa el incremento generado, se describen los problemas que hubo durante su desarrollo y se plantean mejoras sobre el incremento y soluciones a estos problemas.
+	\item Planificación del siguiente sprint: Se definen las tareas que se deben ejecutar durante el siguiente sprint.
 \end{itemize}
-Las primeras fases del desarrollo fueron de investigación y configuración. Luego se planteó un diseño inicial, que fue la base para la implementación de nuevas funcionalidades aunque, con el tiempo, se fue modificando el diseño inicial para adaptarlo a las nuevas funcionalidades o para resolver ciertos problemas que aparecían. En las siguiente secciones se detalla más a fondo cada una de estas etapas de desarrollo.
 
-En la Fig. \ref{fig:Mgitlabmilestone} se muestran los primeros \textit{sprints} del proyecto. Por cada sprint se observa su descripción la fecha de apertura y cierre y el número de issues asociadas. 
-
-\begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.45]{Mgitlabmilestone.png}
-	\caption{Milestone iniciales del proyecto en GitLab.}
-	\label{fig:Mgitlabmilestone}
-\end{figure}
-
-\section{Documentación}
-La fase de documentación duró un mes y fue a la par con la etapa de configuración. 
-
-Se recopiló información sobre trabajos relacionados como \textit{Activiti-Api}\cite{rlp0019_software_2019}, \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005} y \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y se estudió en qué entornos y qué herramientas se utilizarían para el desarrollo del proyecto.
-
-Uno de los estudios más relevantes fue la elección de un API Java que permitiese la conexión a GitLab. Había tres opciones:
+En el proceso del desarrollo se pueden diferenciar varias etapas:
 \begin{itemize}
-	\item Crear un framework propio de conexión a GitLab a partir de GitLab API. Añadía cierta complejidad al proyecto al tener que desarrollar otro módulo más, pero permitía poder definir las funciones que se necesitaban.
-	\item Usar timols/java-gitlab-api\footnote{\url{https://github.com/timols/java-gitlab-api}}\cite{olshansky_wrapper_2019}. Al principio fue la solución que se escogió, pero posteriormente se descubrió otro API bastante mejor. La documentación es bastante pobre y la evolución del proyecto software estaba parada o no evolucionaba bien, tenían demasiadas incidencias abiertas y no ofrecía gran parte de la funcionalidad que aportaba GitLab API.
-	\item  Usar \footnote{\url{https://github.com/gitlab4j/gitlab4j-api}}\cite{noauthor_gitlab4j_2019}. Es un proyecto bastante decente y, a día de hoy, sigue creciendo. Tiene un alto porcentaje de incidencias cerradas, un gran número de releases, y evolución constante. Este es el API con el que se ha desarrollado este proyecto.
+	\item  Una primera etapa de \textbf{investigación} de las herramientas que se utilizarán durante el proceso y de \textbf{configuración} del entorno de desarrollo.
+	\item En la segunda etapa se aprecian tareas de \textbf{diseño} de la parte lógica de la aplicación. Se diseña el framework de conexión a forjas de repositorios, se implementa el framework descrito en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}  \cite{marticorena_soporte_2005} para el cálculo de métricas y se diseñan los modelos de datos que serán utilizados por la aplicación.
+	\item Durante la segunda etapa se apreció que se debía facilitar el \textbf{flujo de trabajo}, la comunicación entre tutor y alumno y facilitar las reuniones de revisión y planificación del sprint. Esto duro un sprint y se realizaron tareas como:
+		\begin{itemize}
+			\item Configurar la gestión del proyecto con Maven
+			\item Configurar los procesos de integración y despliegue continuo con GitLab (CI/CD)
+			\item Realizar pruebas unitarias con JUnit y automatizar su ejecución gracias a Maven y los \textit{pipelines} (CI/CD) de GitLab .
+			\item Configurar revisiones automáticas de calidad y de cobertura de las pruebas gracias a Codacy, Jacoco y GitLab.
+			\item Configurar un entorno en Heroku donde poder desplegar la aplicación y así poder ser revisada por el tutor fácilmente.
+			\item Configurar badges \footnote{Son marcas que aportan información rápida sobre el estado del proyecto en ciertos aspectos como la cobertura, la calidad de código o el estado del proceso de CI/CD} para representar los logros en calidad de código, cobertura, despliegue y los trabajos de CI/CD.
+		\end{itemize}
+	\item Etapa  de diseño e implementación de la \textbf{interfaz gráfica} y \textbf{mejora de características} que precisaban de cambios en la parte lógica de la aplicación que se diseñó en la segunda etapa.
+	\item Etapa de \textbf{documentación} en la que se escribe la memoria y los anexos. También se preparan videotutoriales y manuales de usuario.
+	
+	Para más detalles se puede consultar el \textit{Anexo A - Plan de Proyecto Software}. En este se muestra más información sobre estos sprints y el ciclo de vida del proyecto.
 \end{itemize}
-Otro de las decisiones más difíciles fue la versión de Java. Recientemente se lanzó la versión de Java 11 y es la que inicialmente se utilizó en el proyecto. Ha habido bastantes problemas de compatibilidad, pero se han ido solucionando a lo largo del tiempo.
-\section{Configuración del flujo de trabajo del desarrollo software}
-\subsection{Compilación y empaquetado}
 
-El proyecto se iba a desarrollar en Java desde el principio, era un requisito no funcional. La versión más moderna que había cuando se comenzó el proyecto era Java 11. La decisión de utilizar esta versión de Java generó muchos problemas de compatibilidad de versiones con  otras bibliotecas en el desarrollo. 
-\todo Enumerar cuales tenián problemas ¿ Vaadin?
+\section{Gestión del proyecto}
+En esta sección se exponen y se justifican las principales decisiones que se han tomado en cuanto a la configuración del proyecto.
+\subsection{Aplicación web}
+Para alcanzar los objetivos del proyecto se ha decidido implementar una aplicación web. La principal diferencia es que no se instala en un equipo local sino que se accede a la aplicación desde un navegador web, después de que esta haya sido desplegada en un servidor. Esto tiene varias ventajas: 
+\begin{itemize}
+	\item El usuario no necesita instalar la aplicación y puede acceder a ella directamente desde el navegador, esto evita costes de tiempo y de recursos del computador.
+	\item  Portabilidad. Una aplicación de escritorio puede que no pueda ser instalado en ciertos computadores debido a los recursos de los que disponen, el sistema operativo, etc. Una aplicación web solo depende del navegador que tenga instalado el computador y, normalmente, puede tener varios instalados. Además, se ha comprobado la portabilidad del navegador y la aplicación funciona en los principales navegadores: Mozilla Firefox, Microsoft Edge, Internet Explorer, Google Chrome.
+	\item Actualizaciones. Para actualizar una aplicación web, el usuario final no tiene que instalar la actualización. Sino que habrá un periodo de mantenimiento de aplicación, normalmente muy corto y fuera de horario de uso, en el que ningún usuario podrá acceder a la aplicación. Después de este periodo, todos los usuarios dispondrán de la actualización.
+\end{itemize}
+\subsection{Java 11}
+El proyecto se iba a desarrollar en Java desde el principio, era uno de los requisitos no funcionales iniciales. La elección de la versión fue uno de los temas que se discutieron al inicio del proyecto. Java 8 era la versión más conocida, pero recientemente había surgido la versión 11 de Java. 
 
-En el proyecto se ha utilizado alguna de las nuevas versiones de Java no vista durante los curso. En el siguiente fragmento de código se describe 
-un ejemplo de código que obtiene una colección de repositorios del usuario actual.
+Se escogió la versión 11, por ser la más reciente \footnote{Actualmente, la versión Java SE 12.0.2 es la más reciente}. Inicialmente hubo algunos problemas ya que muchas herramientas que soportaban Java 8, no estaban preparadas para la nueva versión. Es arregló pronto, ya que todas se actualizaron rápidamente para soportar la nueva versión y ahora todas las herramientas utilizadas por este proyecto soportan Java 11, lo único que hay que hacer es mantenerlas actualizadas. Por ejemplo, una de las cosas a realizar era configurar el fichero pom.xml del proyecto para decirle a Maven que compile en la versión 11:
 
-{\tiny 
+{\tiny
 \begin{lstlisting}
 ...
-if (connectionType != EnumConnectionType.NOT_CONNECTED) {
-   return gitLabApi.getProjectApi().getUserProjectsStream(
-   			currentUser.getId(),
-   			new ProjectFilter())
-		.map(p -> 
-			new Repository(p.getWebUrl(), p.getName(), p.getId()))
-		.collect(Collectors.toList());
-			}
+<properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	<java.version>11</java.version>
+</properties>
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>${java.version}</source>
+				<target>${java.version}</target>
+			</configuration>
+			<version>3.8.0</version>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>3.2.2</version>
+		</plugin>
+	</plugins>
+</build>
 ...
 \end{lstlisting}
 }
 
-\section{Automatización de tareas de desarrollo}
-%\todo Describir el uso de Maven Ventajas e incovenientes
+Y en Eclipse IDE habría que añadir manualmente el JRE desde la ventana Window/Preferences, como se muestra en la Fig. \ref{fig:M5_Eclipse_Java11}.
+\imagen{M5_Eclipse_Java11}{Añadir Java 11 a Eclipse}
+
+Sin embargo, tampoco se trabajó demasiado con las nuevas funcionalidades que trae Java 11, ya que ha sido posible compilar el artefacto final con Java 8 y solo han hecho falta dos pequeños cambios:
+\begin{itemize}
+	\item De la versión 11 se ha utilizado el método \textit{isBlank()} de la clase \textit{String}. Se diferencia de \textit{isEmpty()} en que no comprueba la longitud de la cadena y devuelve \textit{true} si es 0. Sino que devuelve \textit{true} si la longitud es 0, o si no es 0 pero todos los caracteres de la cadena son espacios en blanco.
+	\item De la clase \textit{java.util.Optional} \footnote{\url{https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html}}, soportada desde la versión 1.8, se utiliza la función \textit{orElseThrow()}, que se soporta desde la versión 10, por tanto habría que buscar una alternativa para pasar a la versión 1.8. La versión 11 trae a esta clase la función \textit{isEmpty()}.
+\end{itemize}
+
+Para saber más sobre las novedades de Java 11 es recomendable leer un artículo llamado `\textit{De Java 8 a Java 11, ¿aún no te has migrado?}' \footnote{\url{https://www.adictosaltrabajo.com/2019/02/26/de-java-8-a-java-11-aun-no-te-has-migrado/}} \cite{hoyo_java_2019}.
+
+\subsubsection{Trabajo con streams de Java}
+Desde Java 1.8 se puede trabajar con Streams. En este proyecto se ha dado gran uso de ellos ya que facilitan enormemente procesar grandes colecciones de datos. Estos permiten \textbf{filtrar} datos de una colección mediante un predicado, \textbf{ordenar} los datos mediante un comparador, \textbf{mapear} o \textbf{reducir} los datos mediante alguna función y \textbf{almacenarlos} en algún tipo de colección mediante un colector. El mapeo asocia cada dato del stream con un nuevo elemento, por ejemplo, de cada número de una colección numérica obtenemos su potencia de dos. Y la reducción es obtener un único resultado a partir del conjunto de datos, por ejemplo, obtener el máximo o la suma de todos los datos de un conjunto numérico.
+
+A continuación se muestra una fracción de código de la aplicación en la que se usan los streams:
+
+{\tiny 
+\begin{lstlisting}
+...
+return gitLabApi.getIssuesApi()
+  .getIssuesStream(projectId, new IssueFilter().withState(IssueState.CLOSED))
+  .filter(issue -> issue.getCreatedAt() != null && issue.getClosedAt() != null)
+  .map(issue -> 
+	(int) ((issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) 
+	  / (1000 * 60 * 60 * 24 )))
+  .collect(Collectors.toList());
+...
+\end{lstlisting}
+}
+
+En el ejemplo se obtiene de GitLab un stream con las issues cerradas de un proyecto. De ese stream se filtran y se obtienen las que tengan fecha de creación y fecha de cierre (\textit{.filter}), se calcula de cada issue la diferencia en días entre el día de creación y el día de cierre (\textit{.map}), y se recogen los resultados en una lista (\textit{.collect}).
+
+\subsubsection{Interfaces funcionales y funciones lambda de Java}
+Otros de los aspectos de Java que se han estudiado y utilizado en este proyecto son las interfaces funcionales y funciones lambda. En la sección anterior ya vemos el uso de dos funciones lambda en el código mostrado:
+\begin{itemize}
+	\tiny
+	\item \textit{issue -> issue.getCreatedAt() != null \&\& issue.getClosedAt() != null}
+	\item \textit{issue -> ()int) ((issue.getClosedAt().getTime() - issue.getCreatedAt().getTime()) / (1000 * 60 * 60 * 24 )))}
+\end{itemize}
+
+El paquete \textit{java.util.function} \footnote{\url{https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html}} es soportado por Java desde la versión 1.8. Este paquete permite almacenar funciones en variables. Las funciones lambda son funciones anónimas con sintaxis ``\textit{(parámetros) -> \{cuerpo función lambda\}}'', es decir que no están declaradas en una clase y pueden ser utilizadas en cualquier parte, pasarse como parámetro a una función y ser almacenadas en variables. Las interfaces funcionales \footnote{\url{https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html}} son interfaces con un único método, que es abstracto, llamado método funcional de la interfaz funcional. Este método permite restringir los tipos de los parámetros y de los valores de retorno de una función lambda.
+
+Estas han sido utilizadas en numerosas ocasiones tanto para los streams, como se observa en el código anterior, como en elementos de la interfaz gráfica y otros elementos sensibles a eventos:
+
+{\tiny 
+\begin{lstlisting}
+...
+closeConnectionButton.addClickListener(event ->  
+{
+  if(rds.getConnectionType() != EnumConnectionType.NOT_CONNECTED) {
+	try {
+	  rds.disconnect();
+	} catch (RepositoryDataSourceException e) {
+		LOGGER.error("" + e.getMessage());
+		ConfirmDialog.createError()
+		.withCaption("Error")
+		.withMessage("An error has occurred. Please, contact the application administrator.")
+		.withOkButton()
+		.open();
+	}
+  }
+  close();
+  connectionFormDialog.open();
+});
+...
+\end{lstlisting}
+}
+
+También han sido utilizadas para almacenar funciones en variables, definiendo una interfaz funcional para restringir los tipos parámetros y de los resultados de la función. Un aspecto importante es que las variables que almacenen funciones NO se pueden serializar, por eso la variable \textit{EVAL\_FUNC\_GREATER\_THAN\_Q1} del código siguiente se ha marcado como \textit{transient} dentro de una clase que implementa \textit{Serializable}.
+
+{\tiny 
+\begin{lstlisting}
+...
+public interface Metric extends Serializable {
+ @FunctionalInterface
+ public interface EvaluationFunction {
+   EvaluationResult evaluate(IValue value, IValue minValue, IValue maxValue);
+ }
+
+ //...
+ 
+ EvaluationResult evaluate(IValue measuredValue);
+
+ EvaluationFunction getEvaluationFunction();
+}
+
+public abstract class NumericValueMetricTemplate implements Metric {
+  //...
+  protected transient static final EvaluationFunction EVAL_FUNC_GREATER_THAN_Q1 = 
+    (measuredValue, minValue, maxValue) -> {
+      try {
+        Double value, min;
+	    value = //...
+	    min = //...
+	    if (value > min) return EvaluationResult.GOOD;
+	    else if (value.equals(min)) return EvaluationResult.WARNING;
+	    else return EvaluationResult.BAD;
+	  } catch (Exception e){
+	    return EvaluationResult.BAD;
+	  }
+  };
+  //...
+}
+...
+\end{lstlisting}
+}
+
+En el ejemplo anterior se almacena la forma en la que las métricas podrían valorarse. En este caso la métrica será dada como buena si supera el umbral inferior. Cada métrica podrá usar esta función o implementar una función propia, los requisitos definidos en la interfaz funcional son que esa función deberá tener tres argumentos y devolver un resultado del tipo \textit{EvaluationResult}.
+
 \subsection{Maven}
-\subsection{Pruebas}
+Maven es una herramienta de gestión de proyectos software. Esta herramienta facilita, a partir de un único fichero con extensión \textit{XML} llamado \textit{pom} \footnote{Project Object Model}:
+\begin{itemize}
+	\item La construcción y compilación del proyecto
+	\item La generación de documentación
+	\item La generación de informes: por ejemplo informes de cobertura
+	\item La gestión de las dependencias del proyecto
+	\item La integración con un sistema de control de versiones como Git, y el trabajo con repositorios remotos como GitLab o GitHub e incluso en repositorios \textit{self-hosted} \footnote{Repositorios almacenados en servidores gestionados por la propia empresa o equipo que desarrolla el software}
+	\item La generación y distribución de \textit{releases}
+\end{itemize}
+La herramienta es capaz de crear la estructura de directorios del proyecto, administrar las dependencias y descargar las librerías necesarias. También es posible utilizar arquetipos, que son patrones o plantillas que se aplican en la infraestructura del proyecto. Esto reduce en gran medida los tiempos de configurar e implementar el entorno de desarrollo para poder centrarse en el desarrollo del código de nuestro proyecto. Además es compatible con la mayoría de IDEs \footnote{Integrated Development Environment - Entorno de desarrollo integrado}, por ejemplo, este proyecto se ha trabajado sobre Eclipse IDE, este IDE tiene muy buena integración con Maven, como se puede observar en la Fig. \ref{fig:M5_Eclipse_Maven}.
+
+\imagen{M5_Eclipse_Maven}{Integración de Maven con Eclipse}
+
+El punto negativo de Maven es el coste de aprendizaje, es complicado definir el fichero pom y para cada herramienta que se utilice, es posible que tenga sus propias instrucciones de como integrarla con Maven. Hay que tener mucha experiencia para manejar Maven con fluidez pero, una vez entendido como funciona, uno se da cuenta del tiempo que gana utilizando esta herramienta.
+
+\section{Configuración del flujo de trabajo y automatización de tareas de desarrollo}
+La configuración del flujo de trabajo y automatización de tareas de desarrollo ha facilitado en gran medida el desarrollo del proyecto utilizando las ``buenas prácticas'', ha mejorado la comunicación entre el tutor y el alumno y las revisiones de sprint debido a que el tutor podía rápidamente seguir la evolución del proyecto. A continuación se explica de que van estas tareas y la implicación que tienen en el proceso de desarrollo.
+
+\subsection{Flujos de trabajo de CI/CD: pipelines}
+Se han utilizado los sistemas de integración continua y despliegue continuo de GitLab para controlar el correcto funcionamiento de la aplicación después de un cambio y para mejorar la calidad de las revisiones.
+La integración continua se ha configurado para que cada vez que se realiza un coomit en la rama principal del repositorio se compruebe que compila correctamente, que se ejecutan los test configurados en maven y se empaquete la aplicación Web en fichero war y se despligue en Heroku. Si alguna tarea falla se indica en el repositorio con un icono redondo rojo con aspa blanca.
+%\todo añadir una captura de pantalla con el badge Heroku del  Readme de Gitlab y explicar como se actualiza cada vez que se realiza un commit. 
+%\todo añadir una captura de pantalla con los check verdes en la lista de commit del repositorio de GitLab
+
+\subsection{Tokens}
+
+\subsection{Pruebas unitarias}
 Para las pruebas se disponían de datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la 
 Universidad de Burgos. Esto ha facilitado en gran medida el trabajo de pruebas. 
 Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en Gitlab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFG con la UBU organiza su propuestas de TFG en GitLab en grupos para organizarlos por cursos académicos.
@@ -80,31 +233,28 @@ Es destacable la funcionalidad de acceso a los repositorios por el concepto de g
 Otro aspecto destacable es la uso con funciones avanzadas en la implementación de test unitarios. 
 Como ejemplo en el siguiente fragmento de código se recoge como parametrizar un test para especificar un ficheros que recojan los múltiples casos de prueba.
 De esta forma se simplifica mucho las prueba.
-
-%\todo se puede formatear mejor el código 
-
 {\tiny 
-\begin{lstlisting}
-
-@ParameterizedTest(name = "Run with User = \"{0}\" and 
+	\begin{lstlisting}
+	
+	@ParameterizedTest(name = "Run with User = \"{0}\" and 
 	Password = \"{1}\" must throw an exception.")
-@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", 
+	@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", 
 	numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
-						
-public void testConnectUserPasswordWrong(String user, String password){
+	
+	public void testConnectUserPasswordWrong(String user, String password){
 	assertThrows(RepositoryDataSourceException.class, () -> {
-		repositoryDataSource.connect(user, password);},
-		getErrorMsg("testConnectUserPasswordWrong", 
-		"Wrong user-password should throw an exception"));
+	repositoryDataSource.connect(user, password);},
+	getErrorMsg("testConnectUserPasswordWrong", 
+	"Wrong user-password should throw an exception"));
 	assertEquals(EnumConnectionType.NOT_CONNECTED, 
-		repositoryDataSource.getConnectionType(),
-		getErrorMsg("testConnectUserPasswordWrong", 
-		"Connection type must be 'NOT_CONNECTED'"));
-}
-\end{lstlisting}
+	repositoryDataSource.getConnectionType(),
+	getErrorMsg("testConnectUserPasswordWrong", 
+	"Connection type must be 'NOT_CONNECTED'"));
+	}
+	\end{lstlisting}
 }
 
-\subsection{Calidad continua}
+\subsection{Administración de calidad}
 En los últimos sprints, correspondientes a la entrega de prototipos funcionales al tutor,
 se definía una tarea para analizar la deuda técnica que indicaba la Codacy.
 Se analizaban las tareas de mejoras propuesta por Codacy según su orden de prioridad y se intentaban eliminar.
@@ -112,8 +262,15 @@ De esta forma además de aprender de las revisiones automáticas de Codacy se co
 La valoración final del proyecto ha sido la máxima (A) sin ninguna revivión de calidad de alta prioridad.
 %\todo Añadir url de codacy de tu proyecto y una captura de pantalla donde aparezca la A.
 
-\subsection{Integración y despliegue continuo CI/CD}
-Se han utilizado los sistemas de integración continua y despliegue continuo de GitLab para controlar el correcto funcionamiento de la aplicación después de un cambio y para mejorar la calidad de las revisiones.
-La integración continua se ha configurado para que cada vez que se realiza un coomit en la rama principal del repositorio se compruebe que compila correctamente, que se ejecutan los test configurados en maven y se empaquete la aplicación Web en fichero war y se despligue en Heroku. Si alguna tarea falla se indica en el repositorio con un icono redondo rojo con aspa blanca.
-%\todo añadir una captura de pantalla con el badge Heroku del  Readme de Gitlab y explicar como se actualiza cada vez que se realiza un commit. 
-%\todo añadir una captura de pantalla con los check verdes en la lista de commit del repositorio de GitLab
+\subsection{Badges}
+
+\section{API de GitLab}
+
+Uno de los estudios más relevantes fue la elección de un API Java que permitiese la conexión a GitLab. Había tres opciones:
+\begin{itemize}
+	\item Crear un framework propio de conexión a GitLab a partir de GitLab API. Añadía cierta complejidad al proyecto al tener que desarrollar otro módulo más, pero permitía poder definir las funciones que se necesitaban.
+	\item Usar timols/java-gitlab-api\footnote{\url{https://github.com/timols/java-gitlab-api}}\cite{olshansky_wrapper_2019}. Al principio fue la solución que se escogió, pero posteriormente se descubrió otro API bastante mejor. La documentación es bastante pobre y la evolución del proyecto software estaba parada o no evolucionaba bien, tenían demasiadas incidencias abiertas y no ofrecía gran parte de la funcionalidad que aportaba GitLab API.
+	\item  Usar \footnote{\url{https://github.com/gitlab4j/gitlab4j-api}}\cite{noauthor_gitlab4j_2019}. Es un proyecto bastante decente y, a día de hoy, sigue creciendo. Tiene un alto porcentaje de incidencias cerradas, un gran número de releases, y evolución constante. Este es el API con el que se ha desarrollado este proyecto.
+\end{itemize}
+
+\section{Interfaz gráfica: Vadin}
