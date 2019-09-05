@@ -31,10 +31,10 @@ stages:
     - test
     - deployment
     
-compile:
+build:
     stage: build
     script:
-        - mvn compile
+        - mvn package
 
 test:
     stage: test
