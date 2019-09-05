@@ -46,7 +46,7 @@ report:
     script:
         - mvn clean jacoco:prepare-agent install jacoco:report
         - mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
-        - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r $CI_PROJECT_DIR/target/reports/jacoco-reports/jacoco.xml
+        - mvn com.gavinmogan:codacy-maven-plugin:coverage -DprojectToken="$CODACY_PROJECT_TOKEN" -DapiToken="$CODACY_API_TOKEN"
            
 deploy:
     stage: deployment
