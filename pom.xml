@@ -15,7 +15,7 @@
 		<connection>git@gitlab.com:mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software.git</connection>
 		<developerConnection>git@gitlab.com:mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software.git</developerConnection>
 	</scm>
-	
+
 	<name>comparador-de-metricas-de-evolucion-en-repositorios-software</name>
 	<description>Aplicación Java que toma como entrada un conjunto de direcciones de repositorios públicos o privados y calcula medidas de la evolución que permiten comparar los repositorios.</description>
 	<url>https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software</url>
@@ -64,7 +64,7 @@
 		<vaadin.version>13.0.0</vaadin.version>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
-	
+
 	<repositories>
 		<!-- Repository used by many Vaadin add-ons -->
 		<repository>
@@ -162,9 +162,9 @@
 		<!-- MATH -->
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
 		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-math3</artifactId>
-		    <version>3.6.1</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6.1</version>
 		</dependency>
 		<!-- VAADIN -->
 		<dependency>
@@ -177,9 +177,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-		   <groupId>org.claspina</groupId>
-		   <artifactId>confirm-dialog</artifactId>
-		   <version>1.0.0</version>
+			<groupId>org.claspina</groupId>
+			<artifactId>confirm-dialog</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -206,7 +206,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<reportsDirectory>${project.build.directory}/reports/surefire-reports</reportsDirectory>
+					<reportsDirectory>${project.reporting.outputDirectory}/surefire-reports</reportsDirectory>
 				</configuration>
 				<version>2.22.1</version>
 			</plugin>
@@ -222,44 +222,33 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.3</version>
 				<configuration>
+					<outputDirectory>${project.reporting.outputDirectory}/jacoco-reports</outputDirectory>
 					<output>file</output>
 					<append>true</append>
 					<title>Coverage of project: ${project.name}</title>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.gavinmogan</groupId>
 				<artifactId>codacy-maven-plugin</artifactId>
-				<version>1.1.0</version>
-			</plugin>
-			<!-- SCM -->
-			<plugin>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.11.2</version>
+				<version>1.2.0</version>
 				<configuration>
-					<tag>v${project.version}</tag>
+                   	<coverageReportFile>${project.reporting.outputDirectory}/jacoco-reports/jacoco.xml</coverageReportFile>
 				</configuration>
-				<dependencies>
-		            <dependency>
-		               <groupId>org.codehaus.plexus</groupId>
-		               <artifactId>plexus-utils</artifactId>
-		               <version>2.1</version>
-		            </dependency>
-		            <dependency>
-		               <groupId>org.apache.maven.scm</groupId>
-		               <artifactId>maven-scm-provider-gitexe</artifactId>
-		               <version>1.2</version>
-		           </dependency>
-	         	</dependencies>
-	         	<executions>
-		          <execution>
-		          <id>tag</id>
-		          <phase>deploy</phase>
-		          <goals>
-		            <goal>tag</goal>
-		          </goals>
-		          </execution>
-		        </executions>
 			</plugin>
 			<!-- Deployment -->
 			<plugin>
@@ -276,14 +265,12 @@
 	<profiles>
 		<profile>
 			<id>production-mode</id>
-
 			<dependencies>
 				<dependency>
 					<groupId>com.vaadin</groupId>
 					<artifactId>flow-server-production-mode</artifactId>
 				</dependency>
 			</dependencies>
-
 			<build>
 				<plugins>
 					<plugin>
