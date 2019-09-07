@@ -47,7 +47,23 @@ report:
         - mvn clean jacoco:prepare-agent install jacoco:report
         - mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
         - mvn com.gavinmogan:codacy-maven-plugin:coverage -DprojectToken="$CODACY_PROJECT_TOKEN" -DapiToken="$CODACY_API_TOKEN"
-           
+    artifacts:
+        paths:
+            - $CI_PROJECT_DIR/target/reports/jacoco-reports/
+
+pages:
+    stage: deployment
+    dependencies: 
+        - report
+    script:
+        - mv $CI_PROJECT_DIR/target/reports/jacoco-reports/ public/
+    artifacts:
+        paths:
+            - public
+        expire_in: 30 days    
+    only:
+        - master
+
 deploy:
     stage: deployment
     script:
