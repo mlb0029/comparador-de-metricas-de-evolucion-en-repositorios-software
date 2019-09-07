@@ -56,7 +56,7 @@ pages:
     dependencies: 
         - report
     script:
-        - cat $CI_PROJECT_DIR/target/reports/jacoco-reports/jacoco.xml
+        - cat $CI_PROJECT_DIR/target/reports/jacoco-reports/index.html
         - mv $CI_PROJECT_DIR/target/reports/jacoco-reports/ public/
     artifacts:
         paths:
