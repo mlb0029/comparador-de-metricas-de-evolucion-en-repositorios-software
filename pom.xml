@@ -229,13 +229,14 @@
 				</configuration>
 				<executions>
 					<execution>
+						<id>pre-unit-test</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
+						<id>post-unit-test</id>
+						<phase>test</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
