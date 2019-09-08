@@ -11,3 +11,4 @@ bin/
 \.vaadin-designer2
 
 log/
+/.tern-project

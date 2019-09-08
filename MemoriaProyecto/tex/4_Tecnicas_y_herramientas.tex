@@ -6,7 +6,7 @@ Este capitulo muestra las técnicas y herramientas que se han utilizado para la 
 
 \section{Herramientas utilizadas}
 
-En este apartado se enumerarán las herramientas y una breve descripción del uso de las mismas, junto con alguna captura de pantalla. Sin embargo, hay explicaciones más detalladas sobre el código y otros aspectos relevantes sobre estas herramientas en el `Apéndice D - Documentación técnica de programación'. \todo Referencia a apéndice?
+En este apartado se enumerarán las herramientas y una breve descripción del uso de las mismas, junto con alguna captura de pantalla. Sin embargo, hay explicaciones más detalladas sobre el código y otros aspectos relevantes sobre estas herramientas en el `Apéndice D - Documentación técnica de programación'.
 
 \subsection{Entorno de desarrollo}
 %\todo En todas las herramientas describir brevemente las funcionalidades de que se utilizan concretamente en el proyecto.
@@ -66,7 +66,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 		
 		\url{https://tomcat.apache.org/download-90.cgi}
 		
-		Se ha utilizado para desplegar en el equipo (computador) local de desarrollo y realizar pruebas manuales de despliegue, y de interfaz (Ver Fig. \ref{fig:M4_TomcatAppManager}). Es posible su integración con Eclipse. \todo Nombre app?
+		Se ha utilizado para desplegar en el equipo (computador) local de desarrollo y realizar pruebas manuales de despliegue, y de interfaz (Ver Fig. \ref{fig:M4_TomcatAppManager}). Es posible su integración con Eclipse.
 		
 		\begin{figure}[!h]
 			\centering
@@ -140,19 +140,27 @@ La fase de pruebas permite probar que la implementación que se ha estado llevan
 		
 		Ejemplo de uso:
 		
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 ...
-descriptiveStatisticsForMetric = new DescriptiveStatistics(
-	datasetForMetric
-	.stream()
-	.mapToDouble(x -> x)
-	.toArray());
+ArrayList<Double> datasetForMetric;
+Double q1ForMetric, q3ForMetric;
+DescriptiveStatistics descriptiveStatisticsForMetric;
+
+descriptiveStatisticsForMetric = 
+	new DescriptiveStatistics(
+	  datasetForMetric
+	  .stream()
+	  .mapToDouble(x -> x)
+	  .toArray());
 q1ForMetric = descriptiveStatisticsForMetric
-	.getPercentile(25);
+.getPercentile(25);
 q3ForMetric = descriptiveStatisticsForMetric
-	.getPercentile(75);
+.getPercentile(75);
 ...
 \end{lstlisting}
+\end{minipage}		
+
 \end{description}
 \subsection{Interfaz gráfica}
 \begin{description}
@@ -162,13 +170,16 @@ q3ForMetric = descriptiveStatisticsForMetric
 		\url{https://vaadin.com/}
 		
 		Con este framework no ha sido necesario escribir HTML, solo Java y un poco de CSS. Por ejemplo, para implementar un checkbox se utilizaría el siguiente código:
+		
+\begin{minipage}{\linewidth}
 \begin{lstlisting}
 ...
 Checkbox checkbox = new Checkbox();
 checkbox.setLabel("Default Checkbox");
 ...
 \end{lstlisting}
-		y el resultado sería el se la Fig. \ref{fig:M4_Vaadin_ChkBox}
+\end{minipage}	
+		y el resultado sería el de la Fig. \ref{fig:M4_Vaadin_ChkBox}
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.5]{M4_Vaadin_ChkBox}
@@ -199,15 +210,19 @@ checkbox.setLabel("Default Checkbox");
 		 
 		 Enlace a proyecto en Codacy: 
 		 
-		 \href{https://app.codacy.com/project/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}{https://app.codacy.com/project/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}
+		 \href{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}
 	
-	\item[JaCoCo]. Librería para cobertura de código en Java utilizada para enviar información de cobertura a Codacy.
+	\item[JaCoCo]. Librería para cobertura de código en Java utilizada para generar informes de cobertura. Estos informes se pueden mostrar en GitLab fácilmente publicando los informes con formato HTML. También se han enviado estos informes a Codacy para que controle la cobertura además de la calidad de código.
 	
 		Se ha utilizado la versión v0.8.3.
 		
 		Enlace:
 		
 		\url{https://www.eclemma.org/jacoco/}
+		
+		Enlace a informe de JaCoCo en HTML sobre la cobertura del proyecto:
+		
+		\href{https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software/}{https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software/}
 	
 	\item[Heroku]. Herramienta para despliegue continuo (CD).
 	
