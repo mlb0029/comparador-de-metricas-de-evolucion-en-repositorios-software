@@ -23,7 +23,7 @@
 \RequirePackage{multirow}
 
 % Links
-\usepackage[colorlinks]{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage[colorlinks, breaklinks]{hyperref} %\PassOptionsToPackage{hyphens}{url} para cortar url largas https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
 \hypersetup{
 	allcolors = {red}
 }
