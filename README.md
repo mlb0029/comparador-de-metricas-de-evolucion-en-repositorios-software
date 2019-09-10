@@ -38,6 +38,14 @@ Aplicación Java que toma como entrada un conjunto de direcciones de repositorio
 
 *   [Datos experimentales: Métricas de evolución en TFGs](https://github.com/clopezno/clopezno.github.io/blob/master/agile_practices_experiment/DataSet_EvolutionSoftwareMetrics_FYP.csv)
 
+## Repositorios para pruebas
+
+*   https://gitlab.com/mlb0029/privatetestproject
+
+*   https://gitlab.com/mlb0029/publictestproject
+
+*   https://gitlab.com/mlb0029/ListaCompra
+
 ## APIs Investigadas para consexión con GitLab
 Estas APIs de envoltura nos ahorran trabajo adaptando [GitLab REST API](https://docs.gitlab.com/ee/api/) a Java.
 
