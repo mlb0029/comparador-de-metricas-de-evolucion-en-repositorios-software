@@ -377,22 +377,26 @@ En el diagrama UML de la Fig. \ref{fig:MCTMotorMetricas} se muestran las entidad
 
 Para crear una nueva métrica, esta deberá extender de la clase abstracta \textit{Metric} e implementar los métodos \textit{check()} y \textit{run()}. El método \textit{calculate()} de la clase \textit{Metric} utiliza el patrón de diseño \textbf{método plantilla}\footnote{\url{https://refactoring.guru/design-patterns/template-method}} que utiliza estos dos métodos, que deberán ser implementados por las clases concretas que hereden de \textit{Metric}. Un ejemplo de este método sería:
 
-\begin{lstlisting}
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
 ...
 Value calculate(Entity entity, 
 		MetricConfiguration metricConfig, 
 		MetricsResults metricsResults) 
 {
-	Value value;
-	if(check(entity))
-	{
-		value = run(entity);
-		metricsResults.addMeasure(new Measure(metricConfig, value));
-	}
-	return value;
+  Value value;
+  if(check(entity))
+  {
+    value = run(entity);
+    metricsResults.addMeasure(new Measure(metricConfig, value));
+  }
+  return value;
 }
 ...
 \end{lstlisting}
+}
+\end{minipage}
 
 Siendo \textit{entity} la entidad que se está midiendo, \textit{metricConfig} la configuración de valores limite que se está utilizando, \textit{metricsResults} el lugar donde se almacena el resultado y \textit{value} el valor medido en el método \textit{run()}. La plantilla establece que primero se comprueba que se pueda calcular la métrica y en ese caso se calcula y se añade a la coleción \textit{metricsResults}. 
 Este método delega en las subclases el comportamiento de los métodos \textit{check()} y \textit{run()}. Además, almacena en el objeto colector \textit{metricsResults}, pasado como argumento, el valor medido para la configuración de la métrica para posibilitar el análisis y presentación de los resultados posteriores.

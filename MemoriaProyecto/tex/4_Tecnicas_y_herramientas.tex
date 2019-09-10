@@ -35,7 +35,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 			\item \textbf{Git}. Esta perspectiva permite trabajar con el sistema de control de versiones Git. Mantiene una vista con un listado de repositorios, otra que visualiza el historial de cambios de un archivo seleccionado y, la más importante, una ventana de que permite visualizar los cambios realizados, indexarlos, realizar commits y publicarlos en el repositorio remoto. Eclipse permite la integración con GitLab y cualquier otra forja de repositorios.
 		\end{itemize}
 		
-	\item[Java SE 11 (JDK).] \textit{Java Development Kit}. Conjunto de herramientas software útiles para el desarrollo de aplicaciones en Java entr las que se incluyen \textit{javac.exe}, el compilador de Java; \textit{javadoc.exe}, para generar documentación; y \textit{java.exe}, el interprete de Java.
+	\item[Java SE 11 (JDK).] \textit{Java Development Kit}. Conjunto de herramientas software útiles para el desarrollo de aplicaciones en Java entre las que se incluyen \textit{javac.exe}, el compilador de Java; \textit{javadoc.exe}, para generar documentación; y \textit{java.exe}, el intérprete de Java.
 	
 		Se ha utilizado la versión  v11.0.1. Enlace a página de descarga:
 		
@@ -70,7 +70,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 		
 		\begin{figure}[!h]
 			\centering
-			\includegraphics[scale=0.4]{M4_TomcatAppManager}
+			\includegraphics[scale=0.35]{M4_TomcatAppManager}
 			\caption{Gestor de aplicaciones Tomcat con dos versiones desplegadas de la aplicación de este proyecto}\label{fig:M4_TomcatAppManager}
 		\end{figure}
 		\FloatBarrier
@@ -93,9 +93,9 @@ El proceso de logging permite registrar lo que ocurre dentro de la aplicación p
 	
 		SLF4J (\textit{Simple Logging Facade for Java}) es una capa intermedia entre el framework de logging como \textit{java.util.logging}, \textit{logback}, \textit{log4j}) y la aplicación, esto permite poder cambiar de framework de logging facilmente en tiempo de despliegue.
 		
-		Se utilizó Log4j al tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \cite{noauthor_log4j_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. Para más información consultar el . 
+		Se utilizó Log4j al tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \cite{noauthor_log4j_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. 
 		
-		Ambas herramientas están integradas con Maven, añadiendo en el pom las dependencias correspondientes.
+		Ambas herramientas están integradas con Maven, y solo es necesario añadir en el fichero \textit{pom.xml} las dependencias correspondientes.
 	
 \end{description}
 \subsection{Pruebas}
@@ -138,27 +138,25 @@ La fase de pruebas permite probar que la implementación que se ha estado llevan
 	
 		\url{https://commons.apache.org/proper/commons-math/download_math.cgi}
 		
-		Ejemplo de uso:
+		Ejemplo de uso de la clase \textit{DescriptiveStatistics} de la librería:
 		
 \begin{minipage}{\linewidth}
-\begin{lstlisting}
+{\tiny 
+\begin{lstlisting}[breaklines]
 ...
 ArrayList<Double> datasetForMetric;
 Double q1ForMetric, q3ForMetric;
 DescriptiveStatistics descriptiveStatisticsForMetric;
 
-descriptiveStatisticsForMetric = 
-	new DescriptiveStatistics(
-	  datasetForMetric
+descriptiveStatisticsForMetric = new DescriptiveStatistics(datasetForMetric
 	  .stream()
 	  .mapToDouble(x -> x)
 	  .toArray());
-q1ForMetric = descriptiveStatisticsForMetric
-.getPercentile(25);
-q3ForMetric = descriptiveStatisticsForMetric
-.getPercentile(75);
+q1ForMetric = descriptiveStatisticsForMetric.getPercentile(25);
+q3ForMetric = descriptiveStatisticsForMetric.getPercentile(75);
 ...
 \end{lstlisting}
+}
 \end{minipage}		
 
 \end{description}
@@ -172,12 +170,12 @@ q3ForMetric = descriptiveStatisticsForMetric
 		Con este framework no ha sido necesario escribir HTML, solo Java y un poco de CSS. Por ejemplo, para implementar un checkbox se utilizaría el siguiente código:
 		
 \begin{minipage}{\linewidth}
-\begin{lstlisting}
+{\tiny \begin{lstlisting}
 ...
 Checkbox checkbox = new Checkbox();
 checkbox.setLabel("Default Checkbox");
 ...
-\end{lstlisting}
+\end{lstlisting}}
 \end{minipage}	
 		y el resultado sería el de la Fig. \ref{fig:M4_Vaadin_ChkBox}
 \begin{figure}[!h]
@@ -198,7 +196,7 @@ checkbox.setLabel("Default Checkbox");
 		
 		Enlace al repositorio del proyecto:
 		
-		\href{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}
+		\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}
 		
 		Para más información hay una comparativa entre GitHub y GitLab en la sección \ref{sect:3_2_1_GitHubVSGitLab}.
 		
@@ -210,7 +208,7 @@ checkbox.setLabel("Default Checkbox");
 		 
 		 Enlace a proyecto en Codacy: 
 		 
-		 \href{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}
+		 \url{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}
 	
 	\item[JaCoCo]. Librería para cobertura de código en Java utilizada para generar informes de cobertura. Estos informes se pueden mostrar en GitLab fácilmente publicando los informes con formato HTML. También se han enviado estos informes a Codacy para que controle la cobertura además de la calidad de código.
 	
@@ -222,7 +220,7 @@ checkbox.setLabel("Default Checkbox");
 		
 		Enlace a informe de JaCoCo en HTML sobre la cobertura del proyecto:
 		
-		\href{https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software/}{https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software/}
+		\url{https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software/}
 	
 	\item[Heroku]. Herramienta para despliegue continuo (CD).
 	
