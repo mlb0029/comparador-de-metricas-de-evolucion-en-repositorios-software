@@ -35,7 +35,7 @@ Este proyecto tiene más relación con la asignatura de \textit{Desarrollo Avanz
 
 \section{Modelo de ciclo de vida}
 
-Tras la elección del proyecto se acordó definir una evolución que siga las bases del modelo \textit{\textbf{Scrum}}. Tomando un proceso de desarrollo incremental con revisión de las iteraciones cada dos semanas, la duración de un sprint. Estas revisiones se realizaban por medio de reuniones que constaban de dos partes:
+Tras la elección del proyecto se acordó definir una evolución que siga las bases del modelo \textit{\textbf{Scrum}}. Tomando un proceso de desarrollo incremental con revisión de las iteraciones cada dos semanas, la duración de un sprint. Estas revisiones se realizan por medio de reuniones que constaban de dos partes:
 \begin{description}
 	\item [Revisión del sprint:] Se revisa el incremento generado como resultado del sprint, se describen los problemas que hubo durante su desarrollo y se plantean mejoras sobre el incremento (se puede modificar la pila del producto o \textit{product backlog} \footnote{Lista de requisitos de usuario que, a partir de la visión inicial del producto, crece y evoluciona durante el desarrollo \cite{noauthor_scrum_2019}}) y soluciones a estos problemas.
 	\item [Planificación del siguiente sprint:] Se definen las tareas que se deben ejecutar durante el siguiente sprint. Estas tareas en \textit{Scrum} se recogen en la pila del sprint o \textit{sprint backlog}.
@@ -306,11 +306,11 @@ Estas lineas de código no son realmente del logger Log4J, sino del API SLF4J (\
 
 La configuración del flujo de trabajo y automatización de tareas de desarrollo ha facilitado en gran medida el desarrollo del proyecto utilizando las ``buenas prácticas''. También ha mejorado la comunicación entre el tutor y el alumno y las revisiones de sprint debido a que el tutor podía, rápidamente, seguir la evolución del proyecto. A continuación se explica de que tratan estas tareas y la implicación que tienen en el proceso de desarrollo.
 
-\subsection{CI/CD: pipelines de GitLab}
+\subsection{CI/CD: pipelines de GitLab}\label{sect:5_4_1_CICD}
 
 Se han utilizado los sistemas de integración continua y despliegue continuo (CI/CD) de GitLab en combinación con Maven para controlar el correcto funcionamiento de la aplicación después de realizar un cambio y para mejorar la calidad de las revisiones. Esto consiste en realizar ciertas acciones, cada vez que se haga un cambio o cada cierto tiempo, que aseguren el correcto funcionamiento del software que se esta construyendo. En GitLab estas acciones se llaman trabajos (\textit{jobs}) y están organizados por etapas (\textit{stages}) y es posible configurar todo esto desde un fichero con nombre y extensión \textit{.gitlab-ci.yml}. 
 
-De esta forma, cada vez que se realice un commit en GitLab, un \textit{runner} de GitLab ejecutará un \textit{pipeline} asociado a ese commit. El pipeline, contiene todas etapas y actividades que se han de ejecutar según la definición del fichero \textit{.gitlab-ci.yml} en el instante después de realizar el commit (el fichero puede variar a lo largo del ciclo de vida, con sus etapas y actividades). En el \textit{pipeline} se marca si las etapas y actividades se llevan a cabo correctamente, o si se ha encontrado con fallos durante la ejecución de una actividad.
+De esta forma, cada vez que se realice un commit en GitLab, un \textit{runner} de GitLab ejecutará un \textit{pipeline} asociado a ese commit. El pipeline, contiene el estado de todas etapas y actividades según la definición del fichero \textit{.gitlab-ci.yml} (el fichero puede variar a lo largo del ciclo de vida, con sus etapas y actividades) que se ejecutan en el instante después de realizar el commit. En el \textit{pipeline} se marca si las etapas y actividades se llevan a cabo correctamente, o si se ha encontrado con fallos durante la ejecución de una actividad. Es posible volver a ejecutar un pipeline y tomará el commit al que está asociado como referencia.
 
 En este proyecto se han configurado tres etapas que se ejecutan cada vez que se realiza un commit y se publica en GitLab:
 \begin{itemize}
@@ -367,11 +367,15 @@ En el fragmento de código anterior se puede observar como Maven ha facilitado c
  
  \begin{figure}[!h]
  	\centering
- 	\includegraphics[width=0.9\textwidth]{M3_Pipeline}
+ 	\includegraphics[width=0.9\textwidth]{M5_Pipeline}
  	\caption{Pipeline de GitLab que muestra éxito en todos los trabajos definidos para el proceso de CI/CD}\label{fig:M5_Pipeline}
  \end{figure}
  \FloatBarrier
  
+ 
+ En la Fig. \ref{fig:M5_Pipeline_Error} se muestra un pipeline que dió error en la actividad de \textit{report} y, en consecuencia, se pasó por alto la actividad \textit{deploy}.
+ 
+ \imagen{M5_Pipeline_Error}{Error en un pipeline}
 %\todo añadir una captura de pantalla con el badge Heroku del  Readme de Gitlab y explicar como se actualiza cada vez que se realiza un commit. 
 %\todo añadir una captura de pantalla con los check verdes en la lista de commit del repositorio de GitLab
 
@@ -434,221 +438,353 @@ En el proyecto se han definido cuatro badges:
 
 \subsection{Pruebas unitarias automáticas con JUnit y GitLab}
 
-Para la automatización de la fase de pruebas se han utilizado las herramientas JUnit, Maven y los \textit{pipelines} GitLab. 
+Para la automatización de la fase de pruebas se han utilizado las herramientas JUnit, Maven y los \textit{pipelines} GitLab.
 
-JUnit es un framework que permite desarrollar pruebas unitarias sobre el código desarrollado. Además, dispone de un motor para la ejecución de las pruebas y la visualización de los resultados.
+\subsubsection{Desarrollo de las pruebas con JUnit}
 
-
-
-Otro aspecto destacable es la uso con funciones avanzadas en la implementación de test unitarios. 
-Como ejemplo en el siguiente fragmento de código se recoge como parametrizar un test para especificar un ficheros que recojan los múltiples casos de prueba.
-De esta forma se simplifica mucho las prueba.
-{\tiny 
-	\begin{lstlisting}[breaklines]
+JUnit es un framework que permite desarrollar pruebas unitarias sobre el código desarrollado. Además, dispone de un motor para la ejecución de las pruebas y la visualización de los resultados. En este proyecto se ha utilizado JUnit 5. Esta es la última versión de JUnit y permite, entre otras cosas:
+\begin{itemize}
+	\item Realizar asertos (\textit{asserts}) de tipo \textit{\textbf{assertAll()}} \footnote{\url{https://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html}}. Se realizó en pruebas en versiones previas de la aplicación pero se optó por quitarlos y utilizar asertos simples.
 	
-	@ParameterizedTest(name = "Run with User = \"{0}\" and 
-	Password = \"{1}\" must throw an exception.")
-	@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", 
-	numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
-	
-	public void testConnectUserPasswordWrong(String user, String password){
-	assertThrows(RepositoryDataSourceException.class, () -> {
-	repositoryDataSource.connect(user, password);},
-	getErrorMsg("testConnectUserPasswordWrong", 
-	"Wrong user-password should throw an exception"));
-	assertEquals(EnumConnectionType.NOT_CONNECTED, 
-	repositoryDataSource.getConnectionType(),
-	getErrorMsg("testConnectUserPasswordWrong", 
-	"Connection type must be 'NOT_CONNECTED'"));
-	}
-	\end{lstlisting}
+	\item Realizar \textbf{comprobaciones de lanzamiento de excepciones} en asertos del tipo \textit{assertThrows()}. De esta forma se pueden comprobar todos los casos de pruebas, tanto aquellos en los que se espere un resultado como aquellos en los que se debería lanzar una excepción. Por ejemplo, un test que espera una excepción sería:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+@ParameterizedTest(name = "Run with User = \"{0}\" and Password = \"{1}\" must throw an exception.")
+@CsvFileSource(resources = "/testConnectUserPasswordWrong.csv", numLinesToSkip = 1, delimiter = ';', encoding = "UTF-8")
+public void testConnectUserPasswordWrong(String user, String password) {
+  assertThrows(RepositoryDataSourceException.class, () -> {
+	repositoryDataSource.connect(user, password);
+  }, getErrorMsg("testConnectUserPasswordWrong", "Wrong user-password should throw an exception"));
+  assertEquals(EnumConnectionType.NOT_CONNECTED, repositoryDataSource.getConnectionType(), getErrorMsg("testConnectUserPasswordWrong", "Connection type must be 'NOT_CONNECTED'"));
 }
-
-\begin{minipage}{\linewidth}
-	{\tiny
-		\begin{lstlisting}[breaklines]
-		...
-		report:
-		stage: test
-		script:
-		- mvn clean jacoco:prepare-agent install jacoco:report
-		- mvn jacoco:report 
-		-DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
-		- mvn com.gavinmogan:codacy-maven-plugin:coverage 
-		-DprojectToken="$CODACY_PROJECT_TOKEN" 
-		-DapiToken="$CODACY_API_TOKEN"
-		artifacts:
-		paths:
-		- $CI_PROJECT_DIR/target/reports/jacoco-reports/
-		...		
-		\end{lstlisting}
-	}
+...		
+\end{lstlisting}
+}
 \end{minipage}
-
-En el primer comando se instala y se prepara el generador de informes jacoco.exec, con el segundo se genera un informe de cobertura con JaCoCo. El directorio de destino se ha configurado en Maven:
-
+	
+	Este comprueba que tras ejecutar la función con un conjunto de combinaciones posibles de usuario y contraseña incorrectos como argumentos, se lance una excepción y se mantenga un estado consistente en un objeto de la clase \textit{RepositoryDataSource}.
+	
+	\item Permite crear \textbf{test parametrizados}. Estos son test que prueban funciones que requieren argumentos y cada combinación de argumentos es un caso de prueba. 
+	
+	Crear un test para cada combinación es un caso claro del defecto de código: `código duplicado' y dificultan la mantenibilidad del proyecto. Por ello estos argumentos se pueden generar mediante funciones, enumeraciones, proveedores de argumentos o recolectar desde un CSV y solo ser necesario un test para todas las combinaciones de argumentos posibles. Otra ventaja de poder realizar pruebas parametrizadas es que el mismo \textit{CSV} sirve para diferentes funciones de pruebas.
+	
+	Para poder parametrizar los test es necesario agregar una dependencia adicional al proyecto \textit{junit-jupiter-params} junto con la dependencia del API de JUnit \textit{junit-jupiter-api}.
+	
+	Un ejemplo de estos se encuentra en el código anterior, que tiene la anotación \textit{@ParameterizedTest} y recibe los argumentos de un fichero \textit{CSV} ubicado en \textit{src/test/resources} y llamado \textit{testConnectUserPasswordWrong.csv} que contiene los datos de prueba:\\
 \begin{minipage}{\linewidth}
-	{\tiny
-		\begin{lstlisting}[breaklines]
-		...
-		<build>
-		<plugins>
-		<!-- Coverage -->
-		<plugin>
-		<groupId>org.jacoco</groupId>
-		<artifactId>jacoco-maven-plugin</artifactId>
-		<version>0.8.3</version>
-		<configuration>
-		<outputDirectory>${project.reporting.outputDirec
-		tory}/jacoco-reports</outputDirectory>
-		<output>file</output>
-		<append>true</append>
-		<title>Coverage of project: 
-		${project.name}</title>
-		</configuration>
-		...
-		</plugin>
-		<plugin>
-		<groupId>com.gavinmogan</groupId>
-		<artifactId>codacy-maven-plugin</artifactId>
-		<version>1.2.0</version>
-		<configuration>
-		<coverageReportFile>${project.reporting.outputDirec
-		tory}/jacoco-reports/jacoco.xml</coverageReportFile>
-		</configuration>
-		</plugin>
-		...
-		</plugins>
-		</build>	
-		...
-		<reporting>
-		<outputDirectory>${project.build.directory}/reports</outputDire
-		ctory>
-		</reporting>
-		...		
-		\end{lstlisting}
-	}
+{\tiny
+\begin{lstlisting}[breaklines]
+USER;PASSWORD
+;a
+a;
+;
+"";a
+a;""
+"";""
+mlb0029;a	
+\end{lstlisting}
+}
 \end{minipage}
-, con el tercer comando se envía el informe generado \textit{jacoco.xml} a Codacy mediante un plugin y los tokens de acceso al proyecto en Codacy.
+	
+	Cada columna del CSV es un argumento de la función. La diferencia entre poner comillas dobles y no poner nada es escribir un \textit{String} vacío o \textit{null}, respectivamente. La primera linea es la cabecera para mejorar la comprensión del \textit{CSV}. Para no contar esa linea como argumentos, se debe configurar la anotación \textit{@CsvFileSource} con 
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+numLinesToSkip = 1
+\end{lstlisting}
+}
+\end{minipage} 
+como se puede observar en el código del punto anterior.
+		
+	\item Permite realizar presunciones (\textit{\textbf{assumptions}}) que permiten realizar una comprobación que pasará por alto el test sin marcarla como error (lo marca como \textit{skipped}) si la comprobación falla. 
+	
+	Esto ha sido útil de cara a probar funciones que realicen conexiones a GitLab que requieran credenciales de acceso. No es correcto escribir en el código las credenciales de acceso. Por tanto estos test tienen presunciones que comprueban si se tienen las credenciales de acceso (p.ej en un fichero o en variables auxiliares). Estos test se ejecutan en tiempo de desarrollo con las credenciales que aporta el equipo de desarrollo y no se ejecutan automáticamente en el proceso de integración continua de GitLab. En lugar de lanzar un error por no tener las credenciales, los test se pasan por alto y no se ejecutan.
+\end{itemize}
 
 \subsubsection{Proyectos de pruebas}
 
-\subsection{Pruebas con Tomcat y despliegue automático en Heroku}
+Para realizar pruebas en la obtención de información de repositorios de GitLab se han creado dos proyectos de pruebas (uno privado y otro público) y se ha utilizado otro adicional importado desde GitHub de uno de los trabajos para una asignatura:
+\begin{itemize}
+	\tightlist
+	\item \url{https://gitlab.com/mlb0029/privatetestproject}
+	\item \url{https://gitlab.com/mlb0029/publictestproject}
+	\item \url{https://gitlab.com/mlb0029/ListaCompra}
+\end{itemize}
+Se han realizado commits e issues en los proyectos que se han creado para probar las funciones que obtienen información de GitLab. Estos datos se han almacenado en ficheros \textit{CSV} para poder parametrizar las pruebas (ver Fig. \ref{fig:M5_CSV_ProyectosPruebas}).
 
--Pruebas de interfaz manuales
--Prueba de despliegue automático
+\imagen{M5_CSV_ProyectosPruebas}{Datos de proyectos de pruebas en fichero CSV}
 
-Para las pruebas se disponían de datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la 
-Universidad de Burgos. Esto ha facilitado en gran medida el trabajo de pruebas. 
+\subsubsection{Automatización de las pruebas}
 
-Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en Gitlab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFG con la UBU organiza su propuestas de TFG en GitLab en grupos para organizarlos por cursos académicos.
+Para automatizar el proceso de pruebas se ha utilizado Maven y los \textit{pipelines} de GitLab.
 
-\subsection{Revisión automática de la cobertura}
+Para ello se debe incluir una dependencia al proyecto: \textit{junit-jupiter-engine} que es el motor de ejecución de pruebas de JUnit. Y en el \textit{build} incluir los siguientes plugins:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+  <!-- Unit tests -->
+  <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<configuration>
+	  <reportsDirectory>${project.reporting.outputDirectory}/surefire-reports</reportsDirectory>
+	</configuration>
+	<version>2.22.1</version>
+  </plugin>
+  <!-- Integration tests -->
+  <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-failsafe-plugin</artifactId>
+	<version>2.22.1</version>
+  </plugin>	
+\end{lstlisting}
+}
+\end{minipage}
 
-\subsubsection{Configuración de la Herramienta Codacy}
+Con esto, se puede ejecutar \textit{mvn test} para ejecutar las pruebas. Este comando puede ser agregado en una de las actividades del fichero \textit{.gitlab-ci.yml} para ejecutar las pruebas automáticamente al hacer un commit en GitLab. Por ejemplo, la actividad \textit{test} de la fase \textit{test}:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+test:
+  stage: test
+  script:
+	- mvn test
+...
+\end{lstlisting}
+}
+\end{minipage}
+
+\subsection{Pruebas con Tomcat}
+
+Desde que se empezó ha implementar la interfaz. Se configuró un entorno Tomcat en el que poder desplegar la aplicación y visualizar y probar los elementos de la interfaz gráfica.
+
+Para realizar esto se instaló Tomcat en el equipo local del programador y se configuró la correspondiente variable de entorno del sistema \textit{CATALINA\_HOME} con la ruta a la carpeta de instalación. Conviene, también, tener definida la variable \textit{JAVA\_HOME} apuntando al directorio de instalación del JDK (o JRE) de Java.
+
+Como \textit{Eclipse IDE for Java EE Developers} y Tomcat se integran muy bien, se puede configurar un servidor Tomcat con Eclipse desde la vista \textit{Servers}. Solo hay que elegir la versión de Tomcat (la 9 para Java 11) y especificar: el nombre del servidor, el directorio de instalación de Tomcat y el JRE a utilizar (Java 11). Una vez hecho esto se puede desplegar la aplicación desde eclipse fácilmente (\textit{Run As/Run on Server}), siempre que el puerto 8080 que usa Tomcat esté disponible y el servidor arrancado. Se puede acceder a la aplicación desde el navegador con la url: 
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+http://localhost:8080/[nombre-proyecto]
+\end{lstlisting}
+}
+\end{minipage}
+y probar la aplicación en distintos navegadores.
+
+También se puede hacer sin Eclipse. Para ello, solo basta con tener el puerto 8080 disponible y ejecutar en una consola de comandos el comando \textit{startup}. Se arrancará el servidor Tomcat. Antes conviene configurar un usuario de Tomcat con rol `\textit{manager-gui}' desde el fichero
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+$CATALINA_HOME/conf/tomcat-users.xml
+\end{lstlisting}
+}
+\end{minipage}
+. Por ejemplo:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+<role rolename="manager-gui"/>
+<user username="blah" password="blah" roles="manager-gui"/>
+...
+</tomcat-users>
+\end{lstlisting}
+}
+\end{minipage}
+Una vez arrancado Tomcat, se puede acceder desde el navegador a \textit{http://localhost:8080} (aparecerá una ventana similar a la de la Fig. \ref{fig:M5_Tomcat_Main}) y pulsar sobre \textit{Manager App}. Desde el gestor de aplicaciones se pueden desplegar varias aplicaciones, publicando el fichero \textit{.war} de la aplicación.
+
+\imagen{M5_Tomcat_Main}{Ventana principal de la GUI de Tomcat}
+
+Cada vez que se añadía un elemento a la interfaz se realizaban pruebas y se cuadraba el elemento dentro de la interfaz. Una vez que se creaba una funcionalidad completa, también se realizaban pruebas sobre la interfaz. Por ejemplo, añadir un repositorio o calcular las métricas. Para las pruebas se disponían de datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Esto ha facilitado en gran medida el trabajo de pruebas. Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en Gitlab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFGs con la UBU organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos.
+
+\subsection{Revisión automática de la cobertura con Codacy}
+
+La cobertura es el porcentaje de la aplicación que se ha probado. Esto se puede medir en relación a lineas de código, instrucciones, clases, bifurcaciones (condicionales y bucles) y métodos. Lo normal es mostrar la cobertura de instrucciones.
+
+Para realizar las revisiones automáticas de cobertura, lo primero que hay que hacer es definir las pruebas y ejecutarlas. Como este proceso se ha explicado anteriormente, se procede a describir el proceso de cobertura.
+
+Las revisiones automáticas de cobertura se han realizado utilizando JaCoCo, Codacy y GitLab. Sin embargo, JaCoCo es el que genera los informes que se envían tanto a Codacy como a GitLab.
+
+\subsubsection{Configuración de JaCoCo con Maven}
+
+Antes que nada se ha añadido una sección en el fichero pom.xml:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+<reporting>
+  <outputDirectory>${project.build.directory}/reports</outputDirectory>
+</reporting>
+...
+\end{lstlisting}
+}
+\end{minipage}
+en la que se define el directorio dónde se generarán todos los informes (incluidos los informes de las pruebas). Y en la sección de \textit{build} se añade el siguiente plugin de la siguiente manera:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+<plugin>
+  <groupId>org.jacoco</groupId>
+  <artifactId>jacoco-maven-plugin</artifactId>
+  <version>0.8.3</version>
+  <configuration>
+	<outputDirectory>${project.reporting.outputDirectory}/jacoco-reports</outputDirectory>
+	<output>file</output>
+	<title>Coverage of project: ${project.name}</title>
+  </configuration>
+</plugin>
+...
+\end{lstlisting}
+}
+\end{minipage}
+En la configuración se define el directorio de destino de los informes, que se desea que se generen en forma de fichero y se define el título del fichero. De esta forma, se puede generar los informes con Maven de la siguiente manera:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+$ mvn clean jacoco:prepare-agent install jacoco:report
+$ mvn jacoco:report
+\end{lstlisting}
+}
+\end{minipage}
+
+El primer comando genera el fichero \textit{jacoco.exec} que es necesario para la ejecución del segundo comando.
+
+\subsubsection{Configuración de Codacy}
 
 Codacy permite llevar una revisión de la calidad de código y de la cobertura de las pruebas.
 
-Para utilizar esta herramienta se debe tener una cuenta. Te permite iniciar sesión con GitHub, Bitbucket o Google. Una vez iniciada sesión te permite añadir proyectos al entorno Codacy. Para añadir proyectos se debe pulsar sobre el botón \textit{Add project} como se muestra en la Fig. \ref{fig:M5_Codacy_ProjectsPage} y te permite importar los proyectos desde GitHub o Bitbucket (hay que solicitar permisos a GitHub o Bitbucket). Nada más añadirlos, realiza un análisis inicial y, posteriormente, realizará un análisis cada vez que se realice un \textit{commit} en GitHub o Bitbucket.
+Para utilizar esta herramienta se debe tener una cuenta. Permite iniciar sesión con GitHub, Bitbucket o Google. Una vez iniciada sesión permite añadir proyectos al entorno Codacy. Para añadir proyectos se debe pulsar sobre el botón \textit{Add project} como se muestra en la Fig. \ref{fig:M5_Codacy_ProjectsPage}. Se pueden importar los proyectos desde GitHub o Bitbucket (hay que solicitar permisos a GitHub o Bitbucket). Nada más añadirlos, realiza un análisis inicial de la calidad de código y, posteriormente, realizará este análisis cada vez que se realice un \textit{commit} en GitHub o Bitbucket.
 
 \imagen{M5_Codacy_ProjectsPage}{Página principal de Codacy para la gestión de proyectos}
 
-Para configurar la revisión de cobertura hay que seguir unos pasos más. Desde la página de \textit{Dashboard} del proyecto (ver Fig. \ref{fig:M5_Codacy_Dashboard}) se puede observar el indicador de cobertura con título \textit{Coverage}. En un proyecto nuevo, este indicador no está disponible hasta que se haya configurado la cobertura, en su lugar aparece el siguiente mensaje: ``\textit{Make sure your code is all tested. Set up your coverage here.}'' con un enlace. El enlace lleva a una página con instrucciones para configurar la cobertura. Es diferente para cada lenguaje de programación.
+Para configurar la revisión de cobertura hay que seguir unos pasos más. Desde la página de \textit{Dashboard} del proyecto (ver Fig. \ref{fig:M5_Codacy_Dashboard}) se puede observar el indicador de cobertura con título \textit{Coverage}. En un proyecto nuevo, este indicador no está disponible hasta que se haya configurado la cobertura, en su lugar aparece el siguiente mensaje: ``\textit{Make sure your code is all tested. Set up your coverage here.}'' con un enlace. El enlace lleva a una página que contiene: el token del proyecto e instrucciones a seguir según el lenguaje de programación.
 
 \imagen{M5_Codacy_Dashboard}{Vista Dashboard del proyecto en Codacy}
 
 Para este proyecto, la configuración de cobertura de Codacy se ha realizado de la siguiente manera:
 \begin{enumerate}
-	\item Para que haya cobertura, se debe implementar una cobertura de pruebas y se deben pasar estas pruebas correctamente.
+	\item Es importante copiar el token del proyecto que se muestra en la página de instrucciones mencionada anteriormente. 
 	
-	\item Añadir el proyecto a Codacy, como se ha indicado anteriormente
+	\item Configurar el plugin JaCoCo como se ha indicado anteriormente.
 	
-	\item Seguir en cuenta las instrucciones que se mencionan anteriormente teniendo en cuenta que se utiliza el lenguaje Java y buscando en todo momento la posibilidad de integración con Maven. Los pasos siguen a continuación.
-	
-	\item Configurar el plugin JaCoCo en el proyecto para generar informes de cobertura. Maven puede facilitar este proceso, por lo que incluimos el plugin de JaCoCo en el \textit{pom.xml} de a siguiente manera en la parte de \textit{build}:\\
-	{\tiny
-		\begin{lstlisting}[breaklines]
-		...
-		<build>
-		...
-		<plugins>
-		...
-		<plugin>
-		<groupId>org.jacoco</groupId>
-		<artifactId>jacoco-maven-plugin</artifactId>
-		<version>0.8.3</version>
-		<configuration>
-		<outputDirectory>${project.reporting.outputDirectory}/jacoco-reports</outputDirectory>
-		<output>file</output>
-		<append>true</append>
-		<title>Coverage of project: ${project.name}</title>
-		</configuration>
-		<executions>
-		<execution>
-		<id>pre-unit-test</id>
-		<goals>
-		<goal>prepare-agent</goal>
-		</goals>
-		</execution>
-		<execution>
-		<id>post-unit-test</id>
-		<phase>test</phase>
-		<goals>
-		<goal>report</goal>
-		</goals>
-		</execution>
-		</executions>
-		</plugin>
-		</plugins>
-		...
-		</build>
-		...
-		\end{lstlisting}
-	}
-	
-	De esta forma se configura el directorio de destino:\\ \textit{\${project.reporting.outputDirectory}/jacoco-reports}, \\el título del informe:\\\textit{Coverage of project: \${project.name}}\\ y dos unidades de ejecución: una para preparar el generador, y otra para generar el informe.
-	
-	\item Utilizar \textit{codacy-maven-plugin} para enviar el informe de cobertura generado por JaCoCo a Codacy. También se puede añadir el plugin en la parte de \textit{buid} de Maven:
-	{\tiny
-		\begin{lstlisting}[breaklines]
-		...
-		<build>
-		...
-		<plugins>
-		...
-		<plugin>
-		<groupId>com.gavinmogan</groupId>
-		<artifactId>codacy-maven-plugin</artifactId>
-		<version>1.2.0</version>
-		<configuration>
-		<coverageReportFile>${project.reporting.outputDirectory}/jacoco-reports/jacoco.xml</coverageReportFile>
-		</configuration>
-		</plugin>
-		</plugins>
-		...
-		</build>
-		...
-		\end{lstlisting}
-	}
-	Para este 
+	\item Utilizar \textit{codacy-maven-plugin} para enviar el informe de cobertura generado por JaCoCo a Codacy. También se puede añadir el plugin en la sección de \textit{buid} del \textit{pom.xml}:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+<plugin>
+  <groupId>com.gavinmogan</groupId>
+  <artifactId>codacy-maven-plugin</artifactId>
+  <version>1.2.0</version>
+  <configuration>
+	<coverageReportFile>${project.reporting.outputDirectory}/jacoco-reports/jacoco.xml</coverageReportFile>
+  </configuration>
+</plugin>
+\end{lstlisting}
+}
+\end{minipage}
+	En la configuración se le indica la ubicación del fichero que debe enviar a Codacy.
+
+	\item Para enviar el informe de cobertura se tendrá que generar los informes de JaCoCo con los comandos Maven del apartado anterior y ejecutar el siguiente comando:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+$ mvn com.gavinmogan:codacy-maven-plugin:coverage -DprojectToken="$CODACY_PROJECT_TOKEN" -DapiToken="$CODACY_API_TOKEN"
+\end{lstlisting}
+}
+\end{minipage}
+	Siendo \textit{\$CODACY\_PROJECT\_TOKEN} el token del proyecto del que se habla en el primer punto y \textit{\$CODACY\_API\_TOKEN} el token de usuario poara utilizar el API de Codacy. Este último se obtiene desde la gestión de la cuenta de usuario.
 \end{enumerate}
 
-Al gestionar la revisión de calidad por primera vez en este proyecto, Codacy permitía añadir repositorios a partir de su \textit{Git URL}. Esto permitió añadir nuestro proyecto de GitLab al entorno de Codacy. Sin embargo, esta funcionalidad les daba muchos problemas y la acabaron eliminando. Esto paró las revisiones de calidad automáticas de este proyecto.
--Configuración con Codacy
--Problemas con Codacy: porque se obtiene de dos formas diferentes
--Configuración badge GitLab con regex y publicación de informe de JaCoCo
+\subsubsection{Configuración de GitLab}
+
+Se ha configurado JaCoCo y el plugin para enviar los informes de JaCoCo a Codacy para realizar estas actividades con comandos Maven. Pero para automatizar este proceso se deben añadir las actividades correspondientes al flujo de trabajo de CI/CD de GitLab, es decir: el fichero \textit{.gitlab-ci.yml}.
+
+Para ello se ha definido la actividad \textit{report} en la etapa de \textit{test}, ejecutando los comandos Maven  con unas pequeñas modificaciones:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+report:
+  stage: test
+  script:
+	- mvn clean jacoco:prepare-agent install jacoco:report
+	- mvn jacoco:report -DdataFile=$CI_PROJECT_DIR/target/jacoco.exec
+	- mvn com.gavinmogan:codacy-maven-plugin:coverage -DprojectToken="$CODACY_PROJECT_TOKEN" -DapiToken="$CODACY_API_TOKEN"
+  artifacts:
+	paths:
+	  - $CI_PROJECT_DIR/target/reports/jacoco-reports/
+\end{lstlisting}
+}
+\end{minipage}
+\begin{itemize}
+	\item En el segundo comando se añade la opción \textit{-DdataFile} que indica la ubicación del fichero \textit{jacoco.exec} que se genera en el entorno de GitLab.
+	\item Para utilizar \textit{\$CODACY\_PROJECT\_TOKEN} y \textit{\$CODACY\_API\_TOKEN} se deben configurar las variables de entorno de GitLab como se indica en la sección `Tokens y variables de entorno'.
+	\item Se ha añadido \textit{artifacts} con la ruta que apunta al directorio que contiene los informes de JaCoCo definido en Maven (ver `Configuración de JaCoCo con Maven'). Con esto se agrega este directorio a los artefactos de la actividad.
+\end{itemize}
+
+La parte de \textit{artifacts} no tiene que ver con JaCoCo ni con Codacy. Entonces, ¿por qué añadirlo? 
+
+Codacy tenía demasiados problemas al soportar GitLab y otras forjas de repositorios (añadir proyecto a Codacy con \textit{Git URL}) y decidieron eliminar esta funcionalidad. Por tanto, cesaron las revisiones automáticas de calidad y cobertura. Para solucionar esto se puede exportar a GitHub el proyecto y añadir el proyecto a Codacy impostándolo desde GitHub. Sin embargo, se deseaba seguir trabajando con GitLab. Una solución es hacer un \textit{Git push} tanto para GitLab como para GitHub cada vez que se realice un commit y en GitLab añadir los badges y las variables de entorno que enlazan al proyecto en Codacy, pero que realmente es importado desde GitHub.
+
+Adicionalmente, se estudio la forma de agregar la cobertura directamente desde GitLab. Puesto que se podía hacer, pero al disponer de Codacy, se opto por utilizar Codacy. Entonces se puede publicar directamente el informe de JaCoCO en formato \textit{HTML} en GitLab y añadir un badge de Cobertura. Para ello, se debe generar el informe con formato HTML en una de las actividades y almacenarlo en los artefactos de la actividad. Esta es la explicación de \textit{artifacts}. Posteriormente se publican estos artefactos en las páginas del proyecto en GitLab (\textit{Settings - Pages}). Lo mejor sería añadir el enlace al informe en el README del proyecto y qué mejor forma que añadirlo en forma de badge. 
+
+Para agregar el badge, se necesita mostrar en un log de las actividades un informe de cobertura donde venga el porcentaje total: el fichero \textit{index.html} generado por JaCoCO tiene este dato. Lo que falta es añadir la expresión regular que lo identifica en el fichero en la configuración del proyecto (Settings - CI/CD -  General pipelines) en la parte de `Test coverage parsing'. La expresión regular es la siguiente para ese fichero:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+/<td>Total<\/td><td class="bar">\d{1,3}(,\d{1,3})? of \d{1,3}(,\d{1,3})?<\/td><td class="ctr2">(\d{1,3})%<\/td>/
+\end{lstlisting}
+}
+\end{minipage}
+Si se muestra el informe en el log de las actividades de un \textit{pipeline}, y se ha definido bien la expresión regular, desde \textit{Settings - CI/CD -  General pipelines} se muestran tanto el badge del estado del \textit{pipeline} como el de cobertura (ver Fig. \ref{fig:M5_GitLab_Badges_CoverageAndPipeline}). Solo queda añadirlos al fichero README y/o a los badges del proyecto como se indica en la sección `Badges'. Se recomienda cambiar el enlace del badge del informe de cobertura por el enlace al informe de cobertura de JaCoCO publicado en las \textit{Pages} del proyecto.
+
+\imagen{M5_GitLab_Badges_CoverageAndPipeline}{Configuración de CI/CD de GitLab: Pipeline status and Coverage report}
+
+La publicación del informe y mostrar en el log el fichero \textit{index.html} se realiza en la actividad \textit{pages} de la fase \textit{deployment} de la siguiente manera:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+pages:
+  stage: deployment
+  dependencies: 
+	- report
+  script:
+	- cat $CI_PROJECT_DIR/target/reports/jacoco-reports/index.html
+	- mv $CI_PROJECT_DIR/target/reports/jacoco-reports/ public/
+  artifacts:
+	paths:
+	  - public
+	expire_in: 30 days    
+  only:
+	- master
+...
+\end{lstlisting}
+}
+\end{minipage}
+
+Con el comando cat se visualiza en el log el fichero \textit{index.html} y con el comando mv de publican los documentos HTML del informe de cobertura. También se almacenan los artefactos del directorio \textit{public} en el \textit{pipeline} durante 30 días. Y se ha configurado para que la actividad solo se haga al realizar cambios en la rama \textit{master} si la actividad \textit{report} se ha ejecutado sin problemas.
 
 \subsection{Administración de calidad automática con Codacy}
-En los últimos sprints, correspondientes a la entrega de prototipos funcionales al tutor,
-se definía una tarea para analizar la deuda técnica que indicaba la Codacy.
-Se analizaban las tareas de mejoras propuesta por Codacy según su orden de prioridad y se intentaban eliminar.
-De esta forma además de aprender de las revisiones automáticas de Codacy se controlaba la deuda técnica, en el prototipo evolutivo.
-La valoración final del proyecto ha sido la máxima (A) sin ninguna revivión de calidad de alta prioridad.
-%\todo Añadir url de codacy de tu proyecto y una captura de pantalla donde aparezca la A.
 
--Marca actual
--Ejemplos de correcciones + captura
--Problemas con codacy + soluncion: exportar proyecto a GitHub
+Ya se ha mencionado en la sección `Configuración de Codacy' que este realiza revisiones automáticas de calidad y como se configura para ello, siendo un proceso bastante sencillo. Esto permite analizar la deuda técnica y, en caso de ser necesario, definir tareas para disminuir esta deuda. 
+
+La valoración final del proyecto ha sido la máxima (A). Esta se muestra en el badge de `Code Quality', como se puede ver en la Fig. \ref{fig:M5_GitLab_Badges_Readme}. Al pulsar sobre el badge, se abre una pestaña en el navegador al proyecto en Codacy (\url{https://app.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/dashboard}), como se muestra en la Fig. \ref{fig:M5_Codacy_Dashboard_Complete}.
+
+\imagen{M5_Codacy_Dashboard_Complete}{Dashboard del proyecto en Codacy}
+
+Este muestra la evolución en el tiempo de y una vista del estado actual de: el porcentaje de problemas de calidad (4\%), la complejidad de los ficheros (0\%), el código duplicado (0\%) y la cobertura (si se ha configurado) (18\%). Este gráfico ha ayudado a lo largo del desarrollo de la aplicación a valorar la evolución de la deuda técnica. En momentos de crecimiento, se puede ir a la ventana `Issues'  y ver los defectos de diseño que causan el aumento de la deuda (ver Fig. \ref{fig:M5_Codacy_Issues}). Se muestran los problemas por fichero y se muestra la linea de código que se debe corregir para disminuir la deuda técnica.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1.0\textwidth]{M5_Codacy_Issues}
+	\caption{Ventana Issues de Codacy con defectos que causan aumento de la deuda técnica}\label{fig:M5_Codacy_Issues}
+\end{figure}
+\FloatBarrier
+
+Al gestionar la revisión de calidad por primera vez en este proyecto, Codacy permitía añadir repositorios a partir de su \textit{Git URL}. Esto permitió añadir nuestro proyecto de GitLab al entorno de Codacy. Sin embargo, esta funcionalidad les daba muchos problemas y la acabaron eliminando. Esto paró las revisiones de calidad automáticas de este proyecto. Para solucionar este problema se ha exportado el proyecto a GitHub y se ha añadido a Codacy desde GitHub para realizar una revisión final, con el código ya creado. Es por esta razón que no se aprecia la evolución en la Fig. \ref{fig:M5_Codacy_Dashboard_Complete}. 
 
 \subsection{Despliegue automático con Heroku}
 
@@ -658,40 +794,36 @@ Heroku es una plataforma que permite desplegar una aplicación web en sus servid
 
 En este proyecto se ha utilizado Heroku CLI y un plugin para integrarlo con Maven:\\
 \begin{minipage}{\linewidth}
-	{\tiny
-		\begin{lstlisting}[breaklines]
-		...
-		<build>
-		<plugins>
-		...
-		<!-- Deployment -->
-		<plugin>
-		<groupId>com.heroku.sdk</groupId>
-		<artifactId>heroku-maven-plugin</artifactId>
-		<version>2.0.9</version>
-		<configuration>
-		<appName>evolution-metrics</appName>
-		</configuration>
-		</plugin>
-		</plugins>
-		</build>
-		...
-		\end{lstlisting}
-	}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+<plugin>
+  <groupId>com.heroku.sdk</groupId>
+  <artifactId>heroku-maven-plugin</artifactId>
+  <version>2.0.9</version>
+  <configuration>
+	<appName>evolution-metrics</appName>
+  </configuration>
+</plugin>
+...
+\end{lstlisting}
+}
 \end{minipage}
 
-En el código anterior se configura el plugin para desplegar en la aplicación con nombre \textit{evolution-metrics}. El comando para  desplegar la aplicación sería \textit{\$ mvn clean heroku:deploy-war}. Sin embargo, para que funcione correctamente se debe iniciar sesión con \textit{\$ heroku login}, que abre el navegador en la página de inicio de sesión de Heroku. De esta forma es imposible desplegar la aplicación automáticamente, para que se pueda desplegar de una forma completamente automática se debe configurar la variable de entorno \textit{HEROKU\_API\_KEY} con el token de acceso \textit{API Key} que se obtiene desde la configuración de la cuenta de usuario. Esta variable se ha definido dentro de las variables de entorno de GitLab de las que se hablaba anteriormente, y el comando de despliegue se ejecuta desde los \textit{pipelines} gracias a la actividad \textit{deploy} de la etapa \textit{deployment} definidas en el fichero \textit{.gitlab-ci.yml}
+En el código anterior se configura el plugin para desplegar en la aplicación con nombre \textit{evolution-metrics}. El comando para  desplegar la aplicación sería \textit{\$ mvn clean heroku:deploy-war}. Sin embargo, para que funcione correctamente se debe iniciar sesión con \textit{\$ heroku login}, que abre el navegador en la página de inicio de sesión de Heroku. De esta forma es imposible desplegar la aplicación automáticamente, para hacerlo de una forma completamente automática se debe configurar la variable de entorno \textit{HEROKU\_API\_KEY} con el token de acceso \textit{API Key} que se obtiene desde la configuración de la cuenta de usuario de Heroku. Esta variable se ha definido dentro de las variables de entorno de GitLab de las que se hablaba anteriormente, y el comando de despliegue se ejecuta desde los \textit{pipelines} gracias a la actividad \textit{deploy} de la etapa \textit{deployment} definidas en el fichero \textit{.gitlab-ci.yml}.
+
 \section{API de GitLab}
 
-GitLab ofrece un API \footnote{\url{https://docs.gitlab.com/ee/api/}} para poder desarrollar aplicaciones que integren funcionalidades de GitLab. En este proyecto se ha utilizado este API para establecer una conexión a GitLab y poder calcular métricas de los repositorios que aloje.
-
-En lugar de trabajar directamente con GitLab API, se decidió usar un \textit{framework} en Java. Se tenían dos opciones:
+GitLab ofrece un API \footnote{\url{https://docs.gitlab.com/ee/api/}} REST \footnote{Representational state transfer} para poder desarrollar aplicaciones que integren funcionalidades de GitLab. En este proyecto se ha utilizado este API para establecer una conexión a GitLab y poder calcular métricas de los repositorios que aloje. Sin embargo, en lugar de trabajar directamente con GitLab REST API, se decidió usar un API en Java que permita operar con las características de GitLab REST API desde Java. Se encontraron dos proyectos en GitHub que implementan este tipo de APIs:
 \begin{itemize}
-	\item \textit{timols/java-gitlab-api} \footnote{\url{https://github.com/timols/java-gitlab-api}}. La documentación es bastante pobre y la evolución del proyecto software estaba parada o no evolucionaba bien, tenían demasiadas incidencias abiertas y no ofrecía gran parte de la funcionalidad que aportaba GitLab API.
-	\item  \textit{gitlab4j/gitlab4j-api} \footnote{\url{https://github.com/gitlab4j/gitlab4j-api}}. Es un proyecto bastante decente y, a día de hoy, sigue creciendo. Tiene buena documentación,  un alto porcentaje de incidencias cerradas, un gran número de releases, y evolución constante. 
+	\tightlist
+	\item \textit{timols/java-gitlab-api} \footnote{\url{https://github.com/timols/java-gitlab-api}}. 
+	\item  \textit{gitlab4j/gitlab4j-api} \footnote{\url{https://github.com/gitlab4j/gitlab4j-api}}.
 \end{itemize}
 
-La decisión era clara y \textit{gitlab4j/gitlab4j-api} es con el que se ha desarrollado este proyecto y ha permitido obtener todos los datos de los repositorios de GitLab para calcular todas las métricas. Para utilizar este API solo ha sido necesario incluirlo entre las dependencias del proyecto en el fichero \textit{pom.xml}. 
+La primera impresión al entrar en \textit{timols/java-gitlab-api} es que el fichero \textit{README} está bastante vacío, tan solo contiene una descripción de lo que es y un enlace a la documentación. Al entrar en la documentación se puede observar que el código no está muy bien documentado, faltan muchas descripciones de funciones. Por estas razones, el coste de aprendizaje del API es muy alto y casi incomprensible. Además, tiene bastantes \textit{issues} abiertas y la última \textit{release} es de octubre de 2018, por lo que parece que la evolución del proyecto es lenta o a cesado.
+
+Por el lado contrario, \textit{gitlab4j/gitlab4j-api} tiene un fichero \textit{README} explicativo, con índice de contenidos y muchos ejemplos. La documentación también tiene muchos elementos sin comentar, pero si que se ha documentado gran parte del sistema. El proyecto tiene muy pocas issues abiertas y está en constante evolución, sacando tres o cuatro \textit{releases} al mes y evolucionando a la vez que GitLab REST API. Es por estos factores por los que se decidió usar este API como intermediario entre nuestra aplicación en Java y GitLab REST API. Para utilizar este API solo ha sido necesario incluirlo entre las dependencias del proyecto en el fichero \textit{pom.xml}. 
 
 \section{Diseño extensible}
 

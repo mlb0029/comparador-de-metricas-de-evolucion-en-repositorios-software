@@ -224,24 +224,8 @@
 				<configuration>
 					<outputDirectory>${project.reporting.outputDirectory}/jacoco-reports</outputDirectory>
 					<output>file</output>
-					<append>true</append>
 					<title>Coverage of project: ${project.name}</title>
 				</configuration>
-				<executions>
-					<execution>
-						<id>pre-unit-test</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>post-unit-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.gavinmogan</groupId>
