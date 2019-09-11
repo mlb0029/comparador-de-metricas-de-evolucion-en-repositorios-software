@@ -516,6 +516,8 @@ Se han realizado commits e issues en los proyectos que se han creado para probar
 
 \imagen{M5_CSV_ProyectosPruebas}{Datos de proyectos de pruebas en fichero CSV}
 
+Aunque no para las pruebas automáticas, también ha sido posible probar la aplicación con datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en GitLab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFGs con la UBU organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos.
+
 \subsubsection{Automatización de las pruebas}
 
 Para automatizar el proceso de pruebas se ha utilizado Maven y los \textit{pipelines} de GitLab.
@@ -597,7 +599,7 @@ Una vez arrancado Tomcat, se puede acceder desde el navegador a \textit{http://l
 
 \imagen{M5_Tomcat_Main}{Ventana principal de la GUI de Tomcat}
 
-Cada vez que se añadía un elemento a la interfaz se realizaban pruebas y se cuadraba el elemento dentro de la interfaz. Una vez que se creaba una funcionalidad completa, también se realizaban pruebas sobre la interfaz. Por ejemplo, añadir un repositorio o calcular las métricas. Para las pruebas se disponían de datos de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Esto ha facilitado en gran medida el trabajo de pruebas. Es destacable la funcionalidad de acceso a los repositorios por el concepto de grupo definido en Gitlab. Esto fue posible gracias a que la empresa Hewlett Packard SCDS en su colabaración con TFGs con la UBU organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos.
+Cada vez que se añadía un elemento a la interfaz se realizaban pruebas y se cuadraba el elemento dentro de la interfaz. Una vez que se creaba una funcionalidad completa, también se realizaban pruebas sobre la interfaz. Por ejemplo, añadir un repositorio o calcular las métricas.
 
 \subsection{Revisión automática de la cobertura con Codacy}
 
@@ -827,12 +829,136 @@ Por el lado contrario, \textit{gitlab4j/gitlab4j-api} tiene un fichero \textit{R
 
 \section{Diseño extensible}
 
+En la sección \ref{sect:3_3_3_FrameworkMedicion} - `Framework de medición' se detalla como se implementa un framework de medición que permite la reutilización en el cálculo de métricas. Esto permite implementar nuevas métricas sin complejidad alguna.
+
+Además, el paquete \textit{repositorydatasource}, que realiza la conexión con GitLab, se ha creado de forma que se facilite la extensión a otras forjas de repositorios como GitHub o Bitbucket. De esta forma solo hace falta implementar las dos interfaces que se definen en el paquete: \textit{RepositoryDataSource} y \textit{RepositoryDataSourceFactory} (aplicación del patrón de diseño: método fábrica). Esto ha sido probado por el tutor del TFG y ha conseguido terminar la funcionalidad en una semana. La implementación se encuentra en una nueva rama del proyecto \footnote{\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/tree/github}}. La complejidad reside en encontrar un API de conexión a GitHub y utilizarlo para obtener las métricas. Una linea de trabajo futura sería unir las dos ramas y hacer cambios en la interfaz gráfica para que soporte tanto GitLab como GitHub.
+
+También se han añadido pequeños puntos de extensión en la interfaz gráfica para implementar nuevas formas de conexión y de añadir repositorios. 
+
+Para implementar nuevas formas de añadir repositorios solo bastaría con implementar la clase abstracta \textit{AddRepositoryFormTemplate} y agregar una nueva linea en la función:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+private void createConnectionForms() {
+  addRepositoryForms.add(new AddRepositoryFormByUsername());
+  addRepositoryForms.add(new AddRepositoryFormByGroup());
+  addRepositoryForms.add(new AddRepositoryFormByURL());
+}
+...
+\end{lstlisting}
+}
+\end{minipage}
+ de la clase \textit{AddRepositoryDialog} que llame al constructor de la clase implementada.
+ 
+ Para implementar nuevas formas de conexión (serviría para agregar una funcionalidad que cambie el \textit{RepositoryDataSource} de GitLab a GitHub) bastaría con implementar la clase abstracta \textit{ConnectionFormTemplate} o directamente la interfaz \textit{ConnectionForm} y agregar una nueva linea en la función:\\
+\begin{minipage}{\linewidth}
+{\tiny
+\begin{lstlisting}[breaklines]
+...
+private void createConnectionForms() {
+
+  ConnectionForm userPasswordConnForm = 
+   new ConnectionFormUsingUserPassword();
+  connectionForms.add(userPasswordConnForm);
+
+  ConnectionForm paTokenConnForm = 
+   new ConnectionFormUsingPAToken();
+  connectionForms.add(paTokenConnForm);
+
+  ConnectionForm publicConnForm = 
+   new ConnectionFormUsingPublicConn();
+  connectionForms.add(publicConnForm);
+
+  ConnectionForm noConnForm = 
+   new ConnectionFormWithoutConn();
+  connectionForms.add(noConnForm);
+}
+...
+\end{lstlisting}
+}
+\end{minipage}
+ de la clase \textit{ConnectionDialog} que llame al constructor de la clase implementada.
+ 
 \section{Interfaz gráfica: Vadin}
--Ventajas e inconvenientes
--Ejemplo de uso
--Framework de pestañas de conexión y gestión de repos
--Configuración en maven adicional para poder ser utilizado en internet explorer
--Díalogo: problemas y solución
--Designer
--Despliegue en tomcat, falta de xml, porque no jetty
--No Adaptativo
+
+Para la implementar la interfaz gráfica de la aplicación web se ha utilizado el framework Vaadin. Con este framework no ha sido necesario escribir HTML, tan solo Java y un poco de CSS. Por ejemplo, para implementar un \textit{checkbox} se utilizaría el siguiente código:
+
+\begin{minipage}{\linewidth}
+	{\tiny \begin{lstlisting}
+		...
+		Checkbox checkbox = new Checkbox();
+		checkbox.setLabel("Default Checkbox");
+		...
+		\end{lstlisting}}
+\end{minipage}	
+y el resultado sería el de la Fig. \ref{fig:M5_Vaadin_ChkBox}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.5]{M4_Vaadin_ChkBox}
+	\caption{Checkbox generado por Vaadin}\label{fig:M5_Vaadin_ChkBox}
+\end{figure}
+\FloatBarrier
+
+\subsection{Ventajas e inconvenientes}
+Entre las ventajas en el uso de esta herramienta se encuentran:
+\begin{itemize}
+	\item Supone no cambiar de lenguaje de programación
+	\item Permite crear interfaces utilizando Java, HTML o una combinación de ambos. También permite estilizar la aplicación con CSS
+	\item Presenta una amplia librería de componentes \footnote{\url{https://vaadin.com/components}} de interfaz gráfica gratuitos que se adaptan a la gran mayoría de necesidades
+	\item Permite personalizar los componentes e incluso publicarlos en el directorio Vaadin \footnote{\url{https://vaadin.com/directory/search}} para compartirlos con el resto de la comunidad.
+	\item Es fácil de aprender a utilizar esta herramienta y tiene documentación de gran calidad y un buen soporte técnico
+	\item Se integra con Maven y Eclipse
+\end{itemize}
+
+Uno de los inconvenientes es que para usar componentes avanzados, se debe adquirir una licencia. Uno de estos componentes que hubiera ayudado en el desarrollo del programa es \textit{Vaadin Designer}, que se puede instalar como plugin en Eclipse y permite desarrollar la interfaz gráfica de una forma más visual. Otro inconveniente es que, al poder implementar la interfaz con el mismo lenguaje que se crea la parte lógica de la aplicación, se puede complicar el mantener un modelo que separe la interfaz de la parte lógica.
+
+\subsection{Configuración adicional para poder utilizar la aplicación en Internet Explorer}
+
+Para poder ejecutar la aplicación en Internet Explorer 11 ha sido necesario añadir un perfil de producción en el fichero \textit{pom.xml}:\\
+\begin{minipage}{\linewidth}
+{\tiny \begin{lstlisting}
+<profiles>
+  <profile>
+    <id>production</id>
+    <properties>
+      <vaadin.productionMode>true</vaadin.productionMode>
+    </properties>
+    <dependencies>
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>flow-server-production-mode</artifactId>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>com.vaadin</groupId>
+          <artifactId>vaadin-maven-plugin</artifactId>
+          <version>${vaadin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>copy-production-files</goal>
+                <goal>package-for-production</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+\end{lstlisting}}
+\end{minipage}
+y es necesario compilar con la opción \textit{-Pproduction-mode}.
+
+\subsection{Elementos de terceros}
+
+Para la interfaz se ha utilizado un componente del \textit{Vaadin Directory} creado por terceros. Se trata de un diálogo de confirmación y se puede encontrar en el siguiente enlace: \url{https://vaadin.com/directory/component/confirm-dialog}. Este diálogo se ha personalizado para determinadas funcionalidades de la aplicación y facilitar el uso del mismo. Por ejemplo se ha definido una clase de envoltura: \textit{ConfirmDialogWrapper} y también de han definido algunos diálogos a partir de la clase de envoltura como se muestra en la Fig. \ref{fig:M5_Vaadin_DialogoConfirm}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.45\textwidth]{M5_Vaadin_DialogoConfirm}
+	\caption{Dialogo de confirmación personalizado a las necesidades de la funcionalidad}\label{fig:M5_Vaadin_DialogoConfirm}
+\end{figure}
