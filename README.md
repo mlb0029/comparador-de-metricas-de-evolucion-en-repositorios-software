@@ -1,8 +1,8 @@
-[![pipeline status](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/badges/master/pipeline.svg)](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/commits/master)
+[![Pipeline Status](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/badges/master/pipeline.svg)](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/commits/master)
 [![Heroku](http://heroku-badge.herokuapp.com/?app=evolution-metrics&style=flat&svg=1)](https://evolution-metrics.herokuapp.com/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/722385ccd932455080b30d928e451c53)](https://www.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/722385ccd932455080b30d928e451c53)](https://www.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software&amp;utm_campaign=Badge_Coverage)
-[![coverage report](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/badges/master/coverage.svg)](https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/745c3cea58574491b488ebf7ee2e5aa2)](https://www.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/745c3cea58574491b488ebf7ee2e5aa2)](https://www.codacy.com/manual/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software&amp;utm_campaign=Badge_Coverage)
+[![Coverage Report](https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/badges/master/coverage.svg)](https://mlb0029.gitlab.io/comparador-de-metricas-de-evolucion-en-repositorios-software)
 
 # Evaluación de la actividad de un proyecto software
 
