@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside]{memoir}
+\documentclass[a4paper,11pt,oneside]{memoir}
 
 \usepackage{verbatim} % mlb0029 Para \begin{comment}
 \setlength\epigraphwidth{.8\textwidth}
@@ -15,7 +15,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
-\usepackage{natbib}
+\usepackage[numbers,sort]{natbib}
 
 \RequirePackage{booktabs}
 \RequirePackage[table]{xcolor}
@@ -25,6 +25,7 @@
 % Links
 \PassOptionsToPackage{hyphens}{url}\usepackage[colorlinks, breaklinks]{hyperref} %\PassOptionsToPackage{hyphens}{url} para cortar url largas https://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
 \hypersetup{
+	colorlinks,
 	allcolors = {red}
 }
 
@@ -492,7 +493,7 @@ Evolution metrics, source code repositories, software development process, softw
 \include{./tex/7_Conclusiones_Lineas_de_trabajo_futuras}
 
 
-\bibliographystyle{plain}
 \bibliography{bibliografia}
+\bibliographystyle{plainnat}
 
 \end{document}
