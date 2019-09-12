@@ -99,12 +99,12 @@ Un proceso del software es un conjunto de actividades cuya meta es el desarrollo
 	\item[-- Evolución:] Fase asociada a la \textbf{corrección} de defectos o fallos; \textbf{adaptación} del software a cambios en el entorno en el que se utiliza; \textbf{mejora} y ampliación; y \textbf{prevención} mediante técnicas de ingeniería inversa y reingeniería como la refactorización.
 \end{description}
 
-Existen modelos de proceso generales como el tradicional modelo en cascada de los 80 (Ver Fig. \ref{fig:M3_Modelo_Cascada}) o el modelo incremental recogido en métodos y buenas prácticas del desarrollo ágil \cite{noauthor_scrum_2019}: Scrum, eXtreme Programming, Lean... (Ver Fig. \ref{fig:M3_Scrum}). En el caso de  \textit{Unified Process} (UP) \cite{jacobson_proceso_2000} se identifican las siguientes actividades o flujos de trabajo: recolección de requisitos, diseño e implementación, pruebas y despliegue. Además en UP se añaden tres flujos de trabajo de soporte: configuración de cambios, gestión de proyecto y gestión de entorno. Estos flujos de trabajo se aplican iterativamente durante varias fases del desarrollo en cada una de las cuales se incrementa el producto software con algún artefacto resultado de la actividad.
+Existen modelos de proceso generales como el tradicional modelo en cascada de los 80 (Ver Fig. \ref{fig:M3_Modelo_Cascada}) o el modelo incremental recogido en métodos y buenas prácticas del desarrollo ágil \citep{noauthor_scrum_2019}: Scrum, eXtreme Programming, Lean... (Ver Fig. \ref{fig:M3_Scrum}). En el caso de  \textit{Unified Process} (UP) \citep{jacobson_proceso_2000} se identifican las siguientes actividades o flujos de trabajo: recolección de requisitos, diseño e implementación, pruebas y despliegue. Además en UP se añaden tres flujos de trabajo de soporte: configuración de cambios, gestión de proyecto y gestión de entorno. Estos flujos de trabajo se aplican iterativamente durante varias fases del desarrollo en cada una de las cuales se incrementa el producto software con algún artefacto resultado de la actividad.
 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.45]{M3_Modelo_Cascada}
-	\caption{Modelo de proceso en cascada \cite{noauthor_archivo:modelo_nodate}}
+	\caption{Modelo de proceso en cascada \citep{noauthor_archivo:modelo_nodate}}
 	\label{fig:M3_Modelo_Cascada}
 \end{figure}
 \FloatBarrier
@@ -112,7 +112,7 @@ Existen modelos de proceso generales como el tradicional modelo en cascada de lo
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.51]{M3_Scrum}
-	\caption{Modelo de proceso incremental: Scrum \cite{noauthor_scrum_2019}}
+	\caption{Modelo de proceso incremental: Scrum \citep{noauthor_scrum_2019}}
 	\label{fig:M3_Scrum}
 \end{figure}
 \FloatBarrier
@@ -128,7 +128,7 @@ En el apartado anterior se habla sobre la complejidad de un proceso software y q
 
 Los repositorios de código son espacios virtuales donde los equipos de desarrollo generan los artefactos colaborativos procedentes de las actividades de un proceso de desarrollo. Estas herramientas permiten a un equipo de desarrollo trabajar en paralelo, lo que en ingeniería del software es complicado ya que , por lo general, miembros del mismo equipo necesitan trabajar sobre el mismo fichero y esto genera conflictos. Normalmente estos espacios se encuentran en servidores por motivos de seguridad y facilitar a los miembros del equipo puedan acceder al repositorio.
 
-Un buen repositorio no solo permite almacenar los artefactos generados por cada una de las actividades del ciclo de vida del software. Sino que, también, permite llevar un historial de cambios e incluso ayudará a entender el contexto de la aplicación: quién ha realizado los cambios y porqué, es decir que permite almacenar las interacciones entre los miembros del equipo. Para ello se utilizan distintos sistemas, dependiendo del artefacto generado: foros de comunicación, sistemas de control de versiones como \textit{Git}, sistemas de gestión de incidencias, sistemas de gestión de pruebas, sistemas de revisiones de calidad, sistemas de integración y despliegue continuo, etc. \cite{guemes-pena_emerging_2018}.
+Un buen repositorio no solo permite almacenar los artefactos generados por cada una de las actividades del ciclo de vida del software. Sino que, también, permite llevar un historial de cambios e incluso ayudará a entender el contexto de la aplicación: quién ha realizado los cambios y porqué, es decir que permite almacenar las interacciones entre los miembros del equipo. Para ello se utilizan distintos sistemas, dependiendo del artefacto generado: foros de comunicación, sistemas de control de versiones como \textit{Git}, sistemas de gestión de incidencias, sistemas de gestión de pruebas, sistemas de revisiones de calidad, sistemas de integración y despliegue continuo, etc. \citep{guemes-pena_emerging_2018}.
 
 Además de estos repositorios han surgido en la última década forjas de proyectos software de fácil acceso tanto para proyectos empresariales como para proyectos open-source (SourceForge \footnote{\url{https://sourceforge.net/}}, GitHub \footnote{\url{https://github.com/}}, GitLab \footnote{\url{https://about.gitlab.com/}}, Bitbucket  \footnote{\url{https://bitbucket.org/}}). Este mismo proyecto está almacenado en un repositorio en GitLab\footnote{Enlace al repositorio del proyecto en GitLab: \url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}}, ver Fig. \ref{fig:M3_ProyectoGitLab}.
 
@@ -144,7 +144,7 @@ Actualmente estas forjas han tenido una gran aceptación entre la comunidad de d
 
  Estas forjas de proyectos software están en constante evolución, tanto en sus estructuras estáticas como en sus interacciones dinámicas en los proyectos y se registran grandes conjuntos de datos difíciles de procesar. Sin embargo, las forjas de proyectos software proporcionan interfaces de programación específicas que permiten acceder a toda la información registrada.
 
-El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \cite{guemes-pena_emerging_2018}. Estos datos que registran las forjas de repositorios pueden ser utilizados para mejorar estos sistemas de decisión en función de la evolución del proyecto.
+El  desafío a la comunidad científica y empresarial  es constante mostrando un incremento en el interés en las aplicaciones de minería que mejoren sus sistemas de decisión \citep{guemes-pena_emerging_2018}. Estos datos que registran las forjas de repositorios pueden ser utilizados para mejorar estos sistemas de decisión en función de la evolución del proyecto.
 
 \subsection{GitHub vs. GitLab}\label{sect:3_2_1_GitHubVSGitLab}
 
@@ -157,7 +157,7 @@ Se ha hablado anteriormente de las forjas de repositorios como GitHub o GitLab y
 \subsubsection{CI/CD - Continuous Integration/Continuous Delivery}
 La integración y despliegue continuo son prácticas sirve para para construir, probar y, en caso de tratarse de una página web o una aplicación web, desplegar la aplicación una vez se combinen los cambios en el repositorio central, como se puede observar en Fig. \ref{fig:M3_CI-CD}. Ambos ofrecen la posibilidad de realizar este proceso mediante software de terceros como \textit{Travis CI}. Sin embargo, GitLab ofrece ejecutores o \textit{runners} propios para llevar este proceso desde GitLab. De hecho, en este trabajo con repositorio en GitLab se ha realizado este proceso definiendo un flujo de trabajo de integración continua y despliegue continuo. Se detalla este flujo en en capítulo \ref{sect:5_4_1_CICD}.
 
-\imagen{M3_CI-CD}{CI/CD con GitLab \cite{noauthor_gitlab_nodate}}
+\imagen{M3_CI-CD}{CI/CD con GitLab \citep{noauthor_gitlab_nodate}}
 
 \subsubsection{Estadísticas e informes}
 Ambos ofrecen estadísticas e informes sobre los datos que registran de los repositorios y pueden ser accedidos visualmente desde la web del repositorio o desde APIs de programación. Por ejemplo, las métricas que trabaja este proyecto se calculan a partir de datos proporcionados por estas APIs.
@@ -168,7 +168,7 @@ Algo que ofrece GitLab y no GitHub es la monitorización del rendimiento de las 
 A diferencia de GitHub, GitLab ofrece la posibilidad de importar proyectos desde otras fuentes como GitHub, Bitbucket, Google Code, etc. También es posible exportar proyectos de GitLab a otros sistemas.
 
 \subsubsection{Sistema de seguimiento de incidencias (issues)}
-Ambos cuentan con un sistema de seguimiento de incidencias (\textit{issue tracking system} o \textit{issue tracker}), permiten crear plantillas para las incidencias, adornarlas con Markdown\footnote{Markdown es un lenguaje de marcado que facilita la aplicación de formato a un texto empleando una serie de caracteres de una forma especial\cite{lasso_que_2013}}, usar etiquetas o \textit{labels} para categorizarlas, asignarlas a uno o varios miembros del equipo y bloquearlas para que solo puedan comentarlas los miembros del equipo.
+Ambos cuentan con un sistema de seguimiento de incidencias (\textit{issue tracking system} o \textit{issue tracker}), permiten crear plantillas para las incidencias, adornarlas con Markdown\footnote{Markdown es un lenguaje de marcado que facilita la aplicación de formato a un texto empleando una serie de caracteres de una forma especial \citep{lasso_que_2013}}, usar etiquetas o \textit{labels} para categorizarlas, asignarlas a uno o varios miembros del equipo y bloquearlas para que solo puedan comentarlas los miembros del equipo.
 
 Sin embargo GitLab da un paso más y permite asignar peso a las tareas, crear \textit{milestones}, asignar fechas de vencimiento, marcar la incidencia como confidencial, relacionar incidencias, mover o copiar incidencias a otros proyectos, marcar incidencias duplicadas, exportarlas a CSV, entre otras cosas. Otros aspectos destacables de GitLab en cuanto a este tema son los gráficos Burndown de los milestones (ver Fig. \ref{fig:M3_BurndownChart}), acciones rápidas y la gestión de una lista de quehaceres (\textit{todos}) de un usuario cuándo a este se le asignan incidencias.
 
@@ -197,7 +197,7 @@ El software debe tener la funcionalidad y el rendimiento requeridos por el usuar
 La calidad de un producto de software no tiene que ver solo con que se cumplan todos los requisitos funcionales, sino también otros requerimientos no funcionales que no se incluyen en la especificación como los de mantenimiento, eficiencia y usabilidad.
 
 %Comentar fig 25.3 - Ppales factores de la calidad de protducto software p561
-Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenierisoftware_2002} los principales factores que afectan a la calidad del producto, como se puede observar en la Fig. \ref{fig:M3-FactoresCalidad}:
+Sommerville enumera en \textit{Software Engineering} \citep{sommerville_ingenierisoftware_2002} los principales factores que afectan a la calidad del producto, como se puede observar en la Fig. \ref{fig:M3-FactoresCalidad}:
 \begin{itemize}
 	\tightlist
 	\item Calidad del proceso
@@ -208,7 +208,7 @@ Sommerville enumera en \textit{Software Engineering} \cite{sommerville_ingenieri
 \begin{figure}[!h]
 	\centering
 	\includegraphics[scale=0.7]{M3-FactoresCalidad}
-	\caption{Principales factores de calidad del producto de software\cite{sommerville_ingenierisoftware_2002}}\label{fig:M3-FactoresCalidad}
+	\caption{Principales factores de calidad del producto de software \citep{sommerville_ingenierisoftware_2002}}\label{fig:M3-FactoresCalidad}
 \end{figure}
 \FloatBarrier
 
@@ -228,13 +228,13 @@ Para llegar a tener un software de calidad hay que tener en cuenta todos los fac
 
 La fase de control de calidad es en la que se vigila que se sigan los procedimientos y estándares definidos en el plan de calidad. Pero estos podrían no ser adecuados o siempre pueden mejorar, por lo que en esta fase se puede valorar el mejorarlos como se puede observar en la Fig. \ref{fig:M3_CalidadProcesos}.
 
-\imagen{M3_CalidadProcesos}{Calidad basada en procesos \cite{sommerville_ingenierisoftware_2002}}
+\imagen{M3_CalidadProcesos}{Calidad basada en procesos \citep{sommerville_ingenierisoftware_2002}}
 
 Este proceso puede ser llevado a cabo mediante revisiones llevadas a cabo por un grupo de personas o por medio de programas que automaticen este proceso. El  desafío a la comunidad científica y empresarial es constante mostrando un incremento en el interés de aplicaciones que permiten  mejorar sus sistemas de decisión. Estas aplicaciones deberán llevar un control sobre el proceso y/o sobre el producto software y ese control se podrá realizar mediante un proceso de medición, esto ofrece una medida cuantitativa de los atributos del producto y del proceso software. 
 
 La medición del software es un proceso en el cual se asignan valores numéricos o simbólicos a atributos de un producto o proceso software. Una métrica de software es una medida cuantitativa del grado en que un sistema, componente o proceso software posee un atributo dado. Las métricas son de control o de predicción. Las \textbf{métricas de control} se asocian al proceso de desarrollo del software, por ejemplo, la media de días que se tarda en cerrar una incidencia; y las \textbf{métricas de predicción} se asocian a productos software, por ejemplo, la complejidad ciclomática de una función. Y ambos tipos de métricas influyen en la toma de decisiones administrativas como se observa en la Fig. \ref{fig:M3-MetricasProcesoYProducto}. Los repositorios y las forjas facilitan la obtención de datos para este proceso de medición.
 
-\imagen{M3-MetricasProcesoYProducto}{Métricas de control y métricas de predicción\cite{sommerville_ingenierisoftware_2002}}
+\imagen{M3-MetricasProcesoYProducto}{Métricas de control y métricas de predicción \citep{sommerville_ingenierisoftware_2002}}
 
 Este proyecto se centra solo en la obtención de métricas de evolución que permitirán controlar y evaluar el proceso del desarrollo de un producto software. Por tanto se dejarán las métricas de predicción para otros trabajos y se detallará más sobre las de control en el siguiente apartado.
 
@@ -245,7 +245,7 @@ En la Fig. \ref{fig:M3-FactoresCalidad} se muestra la calidad de proceso como fa
 Una plataforma de desarrollo colaborativo como GitLab puede presentar herramientas para controlar la evolución de un proyecto software. Por ejemplo un sistema de control de versiones (VCS - \textit{Version Control System}) como Git, un sistema de seguimiento de incidencias (\textit{Issue tracking system}), un sistema de integración continua (CI - \textit{Continuous Integration}), un sistema de despliegue continuo (CD - \textit{Continuous deploymen}t), etc.
 Todas estas herramientas facilitan la comunicación entre los miembros de un equipo de desarrollo, ayudan a gestionar los cambios que producen cada uno de los miembros y proporcionan mediciones de proceso. Estas mediciones se pueden utilizar para obtener métricas de control que ayuden evaluar y mejorar la evolución del proyecto.
 
-Las métricas de control que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007}. 
+Las métricas de control que se utilizan en este proyecto provienen una Master Tesis titulada \textit{sPACE: Software Project Assessment in the Course of Evolution} \citep{ratzinger_space:_2007}. 
 A continuación se describen las métricas que se implementan en este proyecto usando la plantilla de definición de la norma ISO 9126.
 
 %\todo Cuando se ponen las fórmulas se puede utilizar el entorno matemático de Latex, mejora mucho la presentación.
@@ -300,7 +300,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
 	\item \textbf{Fórmula}: $MDCI = \frac{\sum_{i=0}^{NTIC}DCI_i}{NTIC}$. \textit{MDCI = Media de días en cerrar una issue, NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue}
 	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
-	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor. Si se siguen metodologías ágiles de desarrollo iterativo e incremental como SCRUM, la métrica debería indicar la duración del \textit{sprint} definido en la fase de planificación del proyecto. En SCRUM se recomiendan duraciones del \textit{sprint} de entre una y seis semanas, siendo recomendable que no exceda de un mes\cite{noauthor_scrum_2019}.
+	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor. Si se siguen metodologías ágiles de desarrollo iterativo e incremental como SCRUM, la métrica debería indicar la duración del \textit{sprint} definido en la fase de planificación del proyecto. En SCRUM se recomiendan duraciones del \textit{sprint} de entre una y seis semanas, siendo recomendable que no exceda de un mes \citep{noauthor_scrum_2019}.
 	\item \textbf{Tipo de escala}: Ratio
 	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
 \end{itemize}
@@ -360,7 +360,7 @@ A continuación se describen las métricas que se implementan en este proyecto u
 
 \subsection{Framework de medición}\label{sect:3_3_3_FrameworkMedicion}
 
-Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. Este diseño, mostrado en la Fig. \ref{fig:MCTMotorMetricas}, permite:
+Para la implementación de las métricas se ha seguido la solución basada en frameworks propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \citep{marticorena_soporte_2005}. El objetivo del \textit{framework} es la reutilización en la implementación del cálculo de métricas. Este diseño, mostrado en la Fig. \ref{fig:MCTMotorMetricas}, permite:
 
 \begin{itemize}
 	\item Facilitar el desarrollo de nuevas métricas
@@ -371,7 +371,7 @@ Para la implementación de las métricas se ha seguido la solución basada en fr
 %Describir el diseño del motor de métricas, nombrar puntos de extensión
 \imagen{MCTMotorMetricas}{Diagrama del framework para el cálculo de métricas con perfiles que almacena valores umbrales.}
 
-En el diagrama UML de la Fig. \ref{fig:MCTMotorMetricas} se muestran las entidades principales del framework de medición y la relación entre ellas, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha oscura especifican los patrones de diseño\citep{gamma_patrones_2002} aplicados en el framework.
+En el diagrama UML de la Fig. \ref{fig:MCTMotorMetricas} se muestran las entidades principales del framework de medición y la relación entre ellas, especificando la navegabilidad y la multiplicidad. Las anotaciones en forma de flecha oscura especifican los patrones de diseño \citep{gamma_patrones_2002} aplicados en el framework.
 
 Para crear una nueva métrica, esta deberá extender de la clase abstracta \textit{Metric} e implementar los métodos \textit{check()} y \textit{run()}. El método \textit{calculate()} de la clase \textit{Metric} utiliza el patrón de diseño \textbf{método plantilla}\footnote{\url{https://refactoring.guru/design-patterns/template-method}} que utiliza estos dos métodos, que deberán ser implementados por las clases concretas que hereden de \textit{Metric}. Un ejemplo de este método sería:
 
@@ -417,7 +417,7 @@ Este TFG ha adaptado este framework en el paquete ``motor de métricas'', y se h
 			\item \url{https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html}
 			\item \url{https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html}
 		\end{itemize}} 
-	de tipo \textit{función}, recibe uno o más parámetros y devuelve un resultado. Este tipo de interfaces son posibles a partir de la versión 1.8 de Java \cite{noauthor_functionalinterface_nodate}.\\
+	de tipo \textit{función}, recibe uno o más parámetros y devuelve un resultado. Este tipo de interfaces son posibles a partir de la versión 1.8 de Java \citep{noauthor_functionalinterface_nodate}.\\
 	Esto permite definir los tipos de los parámetros y de retorno de una función que se puede almacenar en una variable. De esta forma se puede almacenar en una variable la forma en la que se puede evaluar la métrica.
 \end{itemize}
 

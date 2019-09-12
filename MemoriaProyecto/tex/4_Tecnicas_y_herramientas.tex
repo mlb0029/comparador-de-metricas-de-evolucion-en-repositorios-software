@@ -93,7 +93,7 @@ El proceso de logging permite registrar lo que ocurre dentro de la aplicación p
 	
 		SLF4J (\textit{Simple Logging Facade for Java}) es una capa intermedia entre el framework de logging como \textit{java.util.logging}, \textit{logback}, \textit{log4j}) y la aplicación, esto permite poder cambiar de framework de logging facilmente en tiempo de despliegue.
 		
-		Se utilizó Log4j al tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \cite{noauthor_log4j_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. 
+		Se utilizó Log4j al tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \citep{noauthor_log4j_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. 
 		
 		Ambas herramientas están integradas con Maven, y solo es necesario añadir en el fichero \textit{pom.xml} las dependencias correspondientes.
 	
@@ -255,11 +255,11 @@ checkbox.setLabel("Default Checkbox");
 \end{description}
 \subsection{Técnicas}
 \begin{itemize}
-	\item A lo largo del proyecto se han utilizado numerosos patrones de diseño \cite{gamma_patrones_2002} como Singleton, Factory Method, Wrapper, Builder, Listener, etc. Se detallará más sobre esto en los apéndices.
+	\item A lo largo del proyecto se han utilizado numerosos patrones de diseño \citep{gamma_patrones_2002} como Singleton, Factory Method, Wrapper, Builder, Listener, etc. Se detallará más sobre esto en los apéndices.
 	
-	\item Para el motor de métricas se ha utilizado como base el framework propuesto en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_soporte_2005}. Ver Fig. \ref{fig:MCTMotorMetricas} en la sección \ref{sect:3_3_3_FrameworkMedicion}.
+	\item Para el motor de métricas se ha utilizado como base el framework propuesto en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \citep{marticorena_soporte_2005}. Ver Fig. \ref{fig:MCTMotorMetricas} en la sección \ref{sect:3_3_3_FrameworkMedicion}.
 	
-	\item El ciclo de vida del software de este proyecto ha seguido un modelo de proceso iterativo e incremental: Scrum \cite{noauthor_scrum_2019}. Este proceso de detalla en el siguiente capítulo.
+	\item El ciclo de vida del software de este proyecto ha seguido un modelo de proceso iterativo e incremental: Scrum \citep{noauthor_scrum_2019}. Este proceso de detalla en el siguiente capítulo.
 \end{itemize}
 
 %herramientas codacy maven, gitlab, capturas, etc, cobertura, heroku, ci, pipeline, token...
