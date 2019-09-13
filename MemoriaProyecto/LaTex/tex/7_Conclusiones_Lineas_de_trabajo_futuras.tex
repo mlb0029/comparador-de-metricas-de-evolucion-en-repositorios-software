@@ -6,27 +6,22 @@ En este capítulo se exponen las conclusiones a las que se llegan después de re
 
 \section{Conclusiones}
 
-Las conclusiones que se extraen del trabajo son:
-
 \begin{itemize}
 	\item Se ha completado el objetivo general del proyecto: diseñar una aplicación Web en Java que permita obtener un conjunto de métricas de evolución del proceso software \citep{ratzinger_space:_2007} a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio. 
 	
-	Además se ha probado con datos reales a partir de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Esto fue posible gracias a que la empresa \textit{Hewlett Packard SCDS} en su colaboración con TFGs con la \textit{Universidad de Burgos} organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos. También hay que destacar la funcionalidad de añadir repositorios por grupo, lo que ha facilitado estas pruebas.
+	También se ha podido probar con datos reales a partir de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Esto fue posible gracias a que la empresa \textit{Hewlett Packard SCDS} en su colaboración con TFGs con la \textit{Universidad de Burgos} organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos. También hay que destacar la funcionalidad de añadir repositorios por grupo, lo que ha facilitado estas pruebas.
 	
-	\item Las métricas de evolución son tan importantes como las métricas de producto. Un software de calidad requiere de un proceso de calidad.
+	\item Se confirma que las métricas de evolución son tan importantes como las métricas de producto. Un software de calidad requiere de un proceso de calidad.
 	\item Los repositorios y las forjas de repositorios facilitan el proceso de desarrollo del software y también son útiles para monitorizar este proceso, evaluarlo y mejorarlo, si es necesario.
 	\item La automatización de las actividades de proceso, la integración continua y el despliegue continuo facilitan en gran medida la comunicación entre los miembros del equipo y el seguimiento de la evolución de la aplicación. También permiten detectar fallos tras realizarse un cambio. En este aspecto, GitLab facilita mucho estos procesos, más que otras forjas de repositorios conocidas.
-	\item Se han utilizado gran parte de los conocimientos adquiridos durante el grado de Ingeniería Informática, e incluso se han afianzado y ampliado estos conocimientos.
 	\item La revisión automática de calidad de código permite detectar rápidamente los defectos de diseño y corregirlos para mejorar la mantenibilidad de la aplicación y reducir la deuda técnica.
 	\item La extensibilidad es un factor muy importante a tener en cuenta en el desarrollo de software, ya que siempre hay modificaciones sobre los requisitos funcionales de este y no hay un artefacto final, sino una evolución del artefacto anterior.
-	\item Se ha conocido la utilidad de los badges para representar información rápida sobre el estado del proyecto.
-	\item Se ha aprendido mucho sobre el uso de funciones avanzadas de Java y JUnit como las interfaces funcionales, los \textit{streams} y los test parametrizados.
-	\item Se ha aprendido a valorar la funcionalidad de Maven como gestor de proyectos software, ya que ha reducido en gran medida las labores de configuración del proyecto. Aunque es cierto que esto ha tenido un alto coste de aprendizaje.
+	\item Se reconoce la utilidad de los badges para representar información rápida sobre el estado del proyecto.
+	\item Maven, como gestor de proyectos software, es muy útil, ya que ha reducido en gran medida las labores de configuración del proyecto. Aunque es cierto que esto ha tenido un alto coste de aprendizaje.
 \end{itemize}
 
 \section{Lineas de trabajo futuras}
 
-Se definen en lista ideas que podrían realizarse en el futuro:
 \begin{itemize}
 	\item Extender la funcionalidad a nuevas métricas de evolución
 	\item Extender las plataformas de desarrollo colaborativo a otras como GitHub, Bitbucket. Para GitHub, esta realizado en la rama github \footnote{\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/tree/github}}. Habría que combinar las ramas y adaptar la interfaz gráfica.
@@ -35,6 +30,6 @@ Se definen en lista ideas que podrían realizarse en el futuro:
 	\item Hacer que la aplicación Web sea adaptativa (\textit{responsive})
 	\item Internacionalizar la aplicación
 	\item Los proyectos y perfiles de métricas importados y exportados se almacenan en un buffer en memoria. Mientras el proyecto sea pequeño no hay problema, pero conforme vaya creciendo habría que implementar otros sistemas de persistencia como bases de datos o ficheros.
-	\item Se podría permitir seleccionar varios proyectos de la tabla de la página principal para poder gestionar varios proyectos a la vez. Por ejemplo: crear un perfil de métricas sólo con los proyectos seleccionados, evaluar solo los proyectos seleccionados, eliminar varios proyectos a la vez, volver a obtener métricas de varios proyectos al mismo tiempo.
+	\item Se podría permitir la selección múltiple para poder gestionar varios proyectos a la vez. Por ejemplo: crear un perfil de métricas sólo con los proyectos seleccionados, evaluar solo los proyectos seleccionados, eliminar varios proyectos a la vez, volver a obtener métricas de varios proyectos al mismo tiempo...
 	\item La aplicación Web solo soporta una sesión, se podría preparar para poder explotarlo en un entorno multisesión.
 \end{itemize}

@@ -2,13 +2,13 @@
 
 %Esta parte de la memoria tiene como objetivo presentar las técnicas metodológicas y las herramientas de desarrollo que se han utilizado para llevar a cabo el proyecto. Si se han estudiado diferentes alternativas de metodologías, herramientas, bibliotecas se puede hacer un resumen de los aspectos más destacados de cada alternativa, incluyendo comparativas entre las distintas opciones y una justificación de las elecciones realizadas. 
 %No se pretende que este apartado se convierta en un capítulo de un libro dedicado a cada una de las alternativas, sino comentar los aspectos más destacados de cada opción, con un repaso somero a los fundamentos esenciales y referencias bibliográficas para que el lector pueda ampliar su conocimiento sobre el tema.
-Este capitulo muestra las técnicas y herramientas que se han utilizado para la alcanzar los objetivos del proyecto. 
+Este capítulo muestra las técnicas y herramientas que se han utilizado para la alcanzar los objetivos del proyecto. 
 
 \section{Herramientas utilizadas}
 
 En este apartado se enumerarán las herramientas y una breve descripción del uso de las mismas, junto con alguna captura de pantalla. Sin embargo, hay explicaciones más detalladas sobre el código y otros aspectos relevantes sobre estas herramientas en el `Apéndice D - Documentación técnica de programación'.
 
-\subsection{Entorno de desarrollo}
+\subsection{Entorno de desarrollo}\label{sect:4_1_1_HerramientasDesarrollo}
 %\todo En todas las herramientas describir brevemente las funcionalidades de que se utilizan concretamente en el proyecto.
 %\todo Se pueden acompañar con alguna captura de pantalla, porción de código y a una referencia al manual del progromador para obtener más detalle.
 %\todo Por ejemplo Java SE v11.0.1 Expresiones Lambda en el uso de stream. 
@@ -26,13 +26,13 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 		
 		\textit{Eclipse IDE for Java EE Developers} provee de un amplio conjunto de herramientas para facilitar el desarrollo de proyectos software Java y aplicaciones Web. Es una versión más completa que \textit{Eclipse IDE for Java Developers}. Incluye un Java IDE (Java Integrated Development Environment - Entorno de Desarrollo Integrado), y herramientas para trabajar con Maven, Git y otras tecnologías. 
 		
-		Además es posible instalar plugins para ampliar las herramientas de desarrollo. Se han instalado varios de estos plugins como \textit{YEdit} para facilitar el trabajo con ficheros con un formato especial. Por ejemplo, \textit{YEdit} sirve como editor de ficheros con extensión \textit{.yml}, y ha sido utilizado para generar el fichero que configura la integración y despliegue continuo en GitLab. No tienen especial trascendencia y han sido descargados mediante sugerencias de Eclipse al abrir el fichero por primera vez. El plugin más importante que se ha instalado es \textit{Vaadin Plugin for Eclipse 4.0.2} que facilita el uso de la herramienta Vaadin en el entorno de Eclipse.
+		Además, es posible instalar plugins para ampliar las herramientas de desarrollo. Se han instalado varios de estos plugins como \textit{YEdit} para facilitar el trabajo con ficheros con un formato especial. Por ejemplo, \textit{YEdit} sirve como editor de ficheros con extensión \textit{.yml}, y ha sido utilizado para generar el fichero que configura la integración y despliegue continuo en GitLab. No tienen especial trascendencia y han sido descargados mediante sugerencias de Eclipse al abrir el fichero por primera vez. El plugin más importante que se ha instalado es \textit{Vaadin Plugin for Eclipse 4.0.2}, que facilita el uso de la herramienta Vaadin en el entorno de Eclipse.
 		
 		Eclipse dispone de varias perspectivas dependiendo del trabajo que se quiera realizar en el proyecto, las que más se han utilizado son:
 		\begin{itemize}
-			\item \textbf{Java EE}. Es la perspectiva por defecto de este paquete de Eclipse, facilita el trabajo de aplicaciones Web. Es la perspectiva que se ha utilizado para escribir código. Ofrece, entre otras cosas, un explorador de paquetes y vistas para trabajar con Java.
+			\item \textbf{Java EE}. Es la perspectiva por defecto de este paquete de Eclipse. Facilita el trabajo de aplicaciones Web. Es la perspectiva que se ha utilizado para escribir código. Ofrece, entre otras cosas, un explorador de paquetes y vistas para trabajar con Java.
 			\item \textbf{Debug}. La perspectiva que se utiliza para depurar el programa. Sirve para ejecutar la aplicación instrucción a instrucción y detectar así un problema o \textit{bug}.
-			\item \textbf{Git}. Esta perspectiva permite trabajar con el sistema de control de versiones Git. Mantiene una vista con un listado de repositorios, otra que visualiza el historial de cambios de un archivo seleccionado y, la más importante, una ventana de que permite visualizar los cambios realizados, indexarlos, realizar commits y publicarlos en el repositorio remoto. Eclipse permite la integración con GitLab y cualquier otra forja de repositorios.
+			\item \textbf{Git}. Esta perspectiva permite trabajar con el sistema de control de versiones Git. Mantiene una vista con un listado de repositorios, otra que visualiza el historial de cambios de un archivo seleccionado y, la más importante, una ventana que permite visualizar los cambios realizados, indexarlos, realizar commits y publicarlos en el repositorio remoto. Eclipse permite la integración con GitLab y cualquier otra forja de repositorios.
 		\end{itemize}
 		
 	\item[Java SE 11 (JDK).] \textit{Java Development Kit}. Conjunto de herramientas software útiles para el desarrollo de aplicaciones en Java entre las que se incluyen \textit{javac.exe}, el compilador de Java; \textit{javadoc.exe}, para generar documentación; y \textit{java.exe}, el intérprete de Java.
@@ -41,7 +41,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 		
 		\url{https://www.oracle.com/technetwork/java/javase/downloads/index.html}
 	
-		Se ha utilizado la última versión de Java al comenzar el desarrollo, actualmente ha sido lanzada la versión \textit{Java SE 12.0.2} y se esperan actualizaciones cada 6 meses. Sin embargo, ha sido posible compilar y ejecutar tanto las pruebas como la aplicación Web con Java 8 realizando dos pequeñas modificaciones:
+		Se ha utilizado la última versión \footnote{Actualmente ha sido lanzada la versión \textit{Java SE 12.0.2} y se esperan actualizaciones cada 6 meses.} de Java. Sin embargo, ha sido posible compilar y ejecutar tanto las pruebas como la aplicación Web con Java 8 realizando dos pequeñas modificaciones:
 		\begin{itemize}
 			\item De la versión 11 se ha utilizado el método \textit{isBlank()} de la clase \textit{String}. Se diferencia de \textit{isEmpty()} en que no comprueba la longitud de la cadena y devuelve \textit{true} si es 0, sino que devuelve \textit{true} si la longitud es 0 o si no es 0 pero todos los caracteres de la cadena son espacios en blanco.
 			\item De la clase \textit{java.util.Optional} \footnote{\url{https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html}}, soportada desde la versión 1.8, se utiliza la función \textit{orElseThrow()}, que se soporta desde la versión 10, por tanto habría que buscar una alternativa para pasar a la versión 1.8. La versión 11 trae a esta clase la función \textit{isEmpty()}.
@@ -89,13 +89,13 @@ El proceso de logging permite registrar lo que ocurre dentro de la aplicación p
 	
 	 	Enlace a página de descarga:
 	
-	 	\url{https://logging.apache.org/log4j/2.x/download.html}
+	 	\url{https://logging.apache.org/log4j/2.x/download.html}\\
 	
-		SLF4J (\textit{Simple Logging Facade for Java}) es una capa intermedia entre el framework de logging como \textit{java.util.logging}, \textit{logback}, \textit{log4j}) y la aplicación, esto permite poder cambiar de framework de logging facilmente en tiempo de despliegue.
+		SLF4J (\textit{Simple Logging Facade for Java}) es una capa intermedia entre el logger (\textit{java.util.logging}, \textit{logback}, \textit{log4j}, etc) y la aplicación, esto permite poder cambiar de logger fácilmente en tiempo de despliegue sin tener que realizar grandes cambios en el código de la aplicación.
 		
-		Se utilizó Log4j al tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \citep{noauthor_log4j_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. 
+		Se utilizó Log4j por tener experiencia previa con esta herramienta. Esta herramienta permite configurar este proceso por medio de un fichero log4j2 con extensión XML, JSON, YAML o Properties\footnote{Manual de configuración de Log4j 2: \url{https://logging.apache.org/log4j/2.x/manual/configuration.html}} \citep{apache_apache_nodate}. En este proyecto se configuró mediante un fichero con extensión \textit{.properties}. 
 		
-		Ambas herramientas están integradas con Maven, y solo es necesario añadir en el fichero \textit{pom.xml} las dependencias correspondientes.
+		Ambas herramientas están integradas con Maven, y solo es necesario añadir en el fichero \ruta{pom.xml} las dependencias correspondientes.
 	
 \end{description}
 \subsection{Pruebas}
@@ -112,13 +112,13 @@ La fase de pruebas permite probar que la implementación que se ha estado llevan
 		\begin{itemize}
 			\item JUnit 5 soporta \textbf{Java 11}.
 			
-			\item Permite realizar asertos (\textit{asserts}) de tipo \textit{\textbf{assertAll()}} \footnote{\url{https://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html}}. Se realizó en pruebas en versiones previas pero luego se optó por quitarlos y utilizar asertos simples.
+			\item Permite realizar asertos (\textit{asserts}) de tipo \textit{\textbf{assertAll()}} \footnote{\url{https://junit.org/junit5/docs/current/api/org/junit/jupiter/api/Assertions.html}}. Este tipo de asertos permite tratar varios asertos como una unidad. Se utilizaron en versiones anteriores de la aplicación, pero realmente no eran necesarios y se optó por quitarlos.
 			
 			\item Permite realizar \textbf{comprobaciones de lanzamiento de excepciones} en asertos del tipo \textit{assertThrows()}.
 			
 			\item Permite realizar presunciones (\textit{\textbf{assumptions}}) que permiten realizar una comprobación que pasará por alto el test (lo marca como \textit{skipped}) si la comprobación falla. Es decir que no lo marcará como error, simplemente no realizará el test. \\Esto ha sido útil de cara a probar funciones que realicen conexiones a GitLab que requieran credenciales de acceso. No es correcto publicar en los test las credenciales de acceso del programador a GitLab. Por tanto estos test tienen presunciones que comprueban que se tiene las credenciales de acceso y no se realizan los test si no se dispone de estas credenciales, en lugar de lanzar un error por no poder realizar la conexión. Por tanto estos test se ejecutan manualmente por el programador en su equipo local y no se ejecutan automáticamente en el proceso de integración continua de GitLab.
 			
-			\item Permite crear \textbf{test parametrizados}. Estos son test que prueban funciones que requieren argumentos. Cada combinación de argumentos es un caso de prueba y crear un test para cada combinación es un caso claro del defecto de código: `código duplicado'. Por ello estos argumentos se pueden generar mediante funciones, enumeraciones, proveedores de argumentos o recolectar desde un CSV y solo ser necesario un test para todas las combinaciones de argumentos posibles.
+			\item Permite crear \textbf{test parametrizados}. Estos son test que prueban funciones que requieren argumentos. Cada combinación de argumentos es un caso de prueba, y crear un test para cada combinación es un caso claro del defecto de código: `código duplicado'. Por ello estos argumentos se pueden generar mediante funciones, enumeraciones, proveedores de argumentos o recolectar desde un CSV y solo ser necesario un test para todas las combinaciones de argumentos posibles.
 		\end{itemize}
 \end{description}
 \subsection{Frameworks y librerías específicas para el proyecto}
@@ -130,9 +130,9 @@ La fase de pruebas permite probar que la implementación que se ha estado llevan
 		
 		\url{https://github.com/gitlab4j/gitlab4j-api}
 		
-		Se ha preferido frente a \textit{timols/java-gitlab-api} \footnote{\url{https://github.com/timols/java-gitlab-api}} tras realizar un estudio sobre sus métricas de evolución y una comparativa sobre la documentación. Concluyendo en que \textbf{gitlab4j-api} contiene mejor documentación, mejor evolución y, a día de hoy, sigue evolucionando.
+		Se ha preferido frente a \textit{timols/java-gitlab-api} \footnote{\url{https://github.com/timols/java-gitlab-api}} tras realizar un estudio sobre sus métricas de evolución y una comparativa sobre la documentación. Concluyendo en que el proyecto \textbf{gitlab4j-api} está mejor documentado y está en constante evolución, a diferencia del proyecto \textit{timols/java-gitlab-api}.
 		
-	\item[Apache Commons Math]. Librería que se utiliza para matemáticas descriptivas utilizada para el cálculo de cuartiles para obtener los valores umbrales de las métricas según las estadísticas. 
+	\item[Apache Commons Math]. Librería que se utiliza para matemáticas descriptivas y que ha servido para el cálculo de cuartiles, necesarios para obtener los valores umbrales de las métricas según las estadísticas. 
 	
 		Se ha utilizado la versión  v3.6.1. Enlace a página de descarga:
 	
@@ -257,9 +257,9 @@ checkbox.setLabel("Default Checkbox");
 \begin{itemize}
 	\item A lo largo del proyecto se han utilizado numerosos patrones de diseño \citep{gamma_patrones_2002} como Singleton, Factory Method, Wrapper, Builder, Listener, etc. Se detallará más sobre esto en los apéndices.
 	
-	\item Para el motor de métricas se ha utilizado como base el framework propuesto en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \citep{marticorena_soporte_2005}. Ver Fig. \ref{fig:MCTMotorMetricas} en la sección \ref{sect:3_3_3_FrameworkMedicion}.
+	\item Para el motor de métricas se ha utilizado como base el framework propuesto en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \citep{marticorena_sanchez_soporte_2005}. Ver Fig. \ref{fig:MCTMotorMetricas} en la sección \ref{sect:3_3_3_FrameworkMedicion}.
 	
-	\item El ciclo de vida del software de este proyecto ha seguido un modelo de proceso iterativo e incremental: Scrum \citep{noauthor_scrum_2019}. Este proceso de detalla en el siguiente capítulo.
+	\item El ciclo de vida del software de este proyecto ha seguido un modelo de proceso iterativo e incremental: Scrum \citep{scrum_master_scrum_2019}. Este proceso de detalla en el siguiente capítulo.
 \end{itemize}
 
 %herramientas codacy maven, gitlab, capturas, etc, cobertura, heroku, ci, pipeline, token...

@@ -4,14 +4,14 @@
 En este capítulo se detallarán los objetivos generales que se desean alcanzar en este proyecto, así como los objetivos más técnicos.
 
 \section{Objetivos generales}
-El objetivo general de este TFG es diseñar una aplicación Web en Java que permita obtener un conjunto de métricas de evolución del proceso software \citep{ratzinger_space:_2007} a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio.
+El objetivo general de este TFG es diseñar una aplicación Web en Java que permita obtener un conjunto de métricas de evolución del proceso software a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio.
 La aplicación se probará con datos reales para comparar los repositorios de Trabajos Fin de Grado del Grado de Ingeniería Informática presentados en GitLab.
    
 A continuación se desglosa el objetivo general  en objetivos más detallados.
 \begin{itemize}
 	\tightlist
 	\item Se obtendrán medidas de métricas de evolución de uno o varios proyectos alojados en repositorios de GitLab.
-	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en \textit{sPACE: Software Project Assessment in the Course of Evolution} \citep{ratzinger_space:_2007} y 
+	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en la tesis titulada ``\textit{sPACE: Software Project Assessment in the Course of Evolution}'' \citep{ratzinger_space:_2007} y 
 	adaptadas a los repositorios software:
 	\begin{itemize}
 		\tightlist
@@ -32,11 +32,10 @@ A continuación se desglosa el objetivo general  en objetivos más detallados.
 Este apartado recoge los requisitos más técnicos del proyecto.
 \begin{itemize}
 	\tightlist
-	\item Diseñar la aplicación de manera que se puedan extender con nuevas métricas con el menor coste de mantenimiento posible. Se aplicará un diseño basado en frameworks y en patrones de diseño \citep{gamma_patrones_2002}.
-	\item El diseño de la aplicación debe facilitar la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket. Se aplicará un diseño basado en frameworks y en patrones de diseño \citep{gamma_patrones_2002}.
-	\item Aplicar el \textit{frameworks} modelo vista controlador para separar la lógica de la aplicación para el calculo de métricas y la interfaz de usuario.
-	Se aplicará un diseño basado en frameworks y en patrones de diseño \citep{gamma_patrones_2002}.
-	\item Crear una batería de pruebas automáticas con cobertura del por encima del 90\% en los subsistemas de lógica de la aplicación .
+	\item Diseñar la aplicación de manera que se puedan extender con nuevas métricas con el menor coste de mantenimiento posible. Para ello, se aplicará un diseño basado en frameworks y en patrones de diseño \citep{gamma_patrones_2002}.
+	\item El diseño de la aplicación debe facilitar la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket.
+	\item Aplicar el \textit{frameworks `modelo-vista-controlador'} para separar la lógica de la aplicación y la interfaz de usuario.
+	\item Crear una batería de pruebas automáticas con cobertura por encima del 90\% en los subsistemas de lógica de la aplicación.
 	\item Utilizar una plataforma de desarrollo colaborativo que incluya un sistema de control de versiones, un sistema de seguimiento de incidencias y que permita una comunicación fluida entre el tutor y el alumno.
 	\item Utilizar un sistema de integración y despliegue continuo.
 	\item Diseñar una correcta gestión de errores definiendo excepciones de biblioteca y registrando eventos de error e información en ficheros de \textit{log}. 
