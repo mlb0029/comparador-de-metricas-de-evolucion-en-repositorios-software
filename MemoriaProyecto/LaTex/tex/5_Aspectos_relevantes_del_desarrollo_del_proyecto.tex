@@ -29,7 +29,7 @@ Este proyecto tiene más relación con la asignatura de \textit{Desarrollo Avanz
 	\item De \textit{Gestión de Proyectos} mayoritariamente el modelo de ciclo de vida del software: Scrum.
 	\item De \textit{Diseño y Mantenimiento del Software} el uso de patrones de diseño para mejorar la calidad de código y mantener los principios SOLID  \footnote{Single responsability, Open/Closed, Liskov substitution, Interface segregation, Dependency inversion} y de \textit{Desarrollo Avanzado de Sistemas Software} la naturaleza del trabajo, las revisiones automáticas de calidad de código por medio de métricas y la importancia de la refactorización al detectar defectos de diseño.
 	\item \textit{Validación y Pruebas} en la construcción de la batería de pruebas.
-	\item \textit{Sistemas Distribuidos} ha ayudado en el uso de Maven y en la construcción de una aplicación web.
+	\item \textit{Sistemas Distribuidos} ha ayudado en el uso de Maven y en la construcción de una aplicación Web.
 	\item \textit{Metodología de la Programación} y \textit{Estructuras de Datos} han contribuido en cuanto a la construcción de una aplicación en un lenguaje Orientado a Objetos.
 \end{itemize}
 
@@ -48,11 +48,11 @@ Según la naturaleza de los sprints, en el proceso del desarrollo se pueden dife
 	\item Durante la segunda etapa se apreció que se debía facilitar el \textbf{flujo de trabajo}, la comunicación entre tutor y alumno y facilitar las reuniones de revisión y planificación del sprint. Esto duro un sprint y se realizaron tareas como:
 		\begin{itemize}
 			\item Configurar la gestión del proyecto con Maven \footnote{Gestor de proyectos software que ayuda en la construcción del proyecto, la generación de documentación, la generación de informes, la gestión de dependencias, la integración con un sistema de control de versiones, etc.}
-			\item Configurar los procesos de integración y despliegue continuo (CI/CD) con GitLab. En estos procesos se realizan actividades automáticamente cada cierto tiempo o cada vez que se realice algún cambio. Ejemplos de estas actividades serían: construir software (\textit{build}), realizar pruebas y revisar su cobertura, desplegar la aplicación en caso de que se trate de una aplicación web, revisar la calidad, etc.
+			\item Configurar los procesos de integración y despliegue continuo (CI/CD) con GitLab. En estos procesos se realizan actividades automáticamente cada cierto tiempo o cada vez que se realice algún cambio. Ejemplos de estas actividades serían: construir software (\textit{build}), realizar pruebas y revisar su cobertura, despliegue en caso de que se trate de una aplicación Web, revisar la calidad, etc.
 			\item Realizar pruebas unitarias con JUnit y automatizar su ejecución gracias a Maven y los \textit{pipelines} \footnote{Definen las actividades de los procesos de CI/CD y las fases y el entorno en las que se ejecutarán} de GitLab.
 			\item Configurar revisiones automáticas de calidad y de cobertura de las pruebas gracias a Maven, Codacy, JaCoCo y GitLab.
 			\item Configurar un entorno en Heroku donde poder desplegar la aplicación entre las actividades de CI/CD y así poder ser revisada por el tutor fácilmente.
-			\item Configurar badges \footnote{Son placas que aportan información rápida sobre el estado del proyecto en ciertos aspectos como la cobertura, la calidad de código o el estado del proceso de CI/CD} para representar el estado del proyecto en cuanto a calidad de código, cobertura, despliegue y los trabajos de CI/CD.
+			\item Configurar badges \footnote{Distintivos que aportan información rápida sobre el estado del proyecto en ciertos aspectos como la cobertura, la calidad de código o el proceso de CI/CD y enlazan con la fuente de información} para representar el estado del proyecto en cuanto a calidad de código, cobertura, despliegue y los trabajos de CI/CD.
 		\end{itemize}
 	\item Etapa  de diseño e implementación de la \textbf{interfaz gráfica} y \textbf{mejora de funcionalidades}. A menudo, estas mejoras precisaban de modificaciones en la parte lógica de la aplicación.
 	\item Etapa de \textbf{documentación} en la que se escribe la memoria y los anexos. También se preparan videotutoriales y manuales de usuario.
@@ -64,14 +64,14 @@ Para más detalles se puede consultar el \textit{Anexo A - Plan de Proyecto Soft
 
 En esta sección se exponen y se justifican las principales decisiones que se han tomado en cuanto a la configuración del proyecto.
 
-\subsection{Aplicación web}
+\subsection{Aplicación Web}
 
-Para alcanzar los objetivos del proyecto se ha decidido implementar una aplicación web. La principal diferencia es que no se instala en un equipo local sino que se accede a la aplicación desde un navegador web, después de que esta haya sido desplegada en un servidor. Esto tiene varias ventajas: 
+Para alcanzar los objetivos del proyecto se ha decidido implementar una aplicación Web. La principal diferencia es que no se instala en un equipo local sino que se accede a la aplicación desde un navegador Web, después de que esta haya sido desplegada en un servidor. Esto tiene varias ventajas: 
 \begin{itemize}
 	\tightlist
 	\item El usuario no necesita instalar la aplicación y puede acceder a ella directamente desde el navegador, esto evita costes de tiempo y de recursos del computador.
-	\item  Portabilidad. Es posible que una aplicación de escritorio no pueda ser instalada en ciertos computadores debido a los recursos de los que disponen, el sistema operativo u otros factores. Una aplicación web solo depende del navegador que tenga instalado el computador y, normalmente, puede tener varios instalados. Además, se ha comprobado la portabilidad de navegador y la aplicación funciona en los principales navegadores: Mozilla Firefox, Microsoft Edge, Internet Explorer, Google Chrome y Opera.
-	\item Actualizaciones. Para actualizar una aplicación web, el usuario final no tiene que instalar la actualización. Sino que habrá un periodo de mantenimiento de aplicación, normalmente muy corto y fuera de horario de uso, en el que ningún usuario podrá acceder a la aplicación. Después de este periodo, todos los usuarios dispondrán de la actualización.
+	\item  Portabilidad. Es posible que una aplicación de escritorio no pueda ser instalada en ciertos computadores debido a los recursos de los que disponen, el sistema operativo u otros factores. Una aplicación Web solo depende del navegador que tenga instalado el computador y, normalmente, puede tener varios instalados. Además, se ha comprobado la portabilidad de navegador y la aplicación funciona en los principales navegadores: \textit{Mozilla Firefox}, \textit{Microsoft Edge}, \textit{Internet Explorer}, \textit{Google Chrome} y \textit{Opera}.
+	\item Actualizaciones. Para actualizar una aplicación Web, el usuario final no tiene que instalar la actualización. Sino que habrá un periodo de mantenimiento de aplicación, normalmente muy corto y fuera de horario de uso, en el que ningún usuario podrá acceder a la aplicación. Después de este periodo, todos los usuarios dispondrán de la actualización.
 \end{itemize}
 
 \subsection{Java 11}
@@ -316,7 +316,7 @@ En este proyecto se han configurado tres etapas que se ejecutan cada vez que se 
 \begin{itemize}
 	\item \textbf{Construcción} (\textit{build}). En esta se comprueba que Maven es capaz de construir el proyecto sin problemas de compilación.
 	\item \textbf{Pruebas} (\textit{test}). En esta etapa se definen dos trabajos: uno de en el que se ejecutan las pruebas unitarias que se hayan definido en el proyecto y otro en el que se envía a Codacy un informe de la cobertura de las pruebas.
-	\item \textbf{Despliegue} (\textit{deployment}). Se despliega la aplicación web a un servidor en un entorno de pruebas, para que el tutor pueda visualizar la interfaz y probarla. Adicionalmente, se ha definido una actividad en la que se despliega un informe \textit{HTML} con la información de cobertura obtenida por JaCoCo.
+	\item \textbf{Despliegue} (\textit{deployment}). Se despliega la aplicación Web a un servidor en un entorno de pruebas, para que el tutor pueda visualizar la interfaz y probarla. Adicionalmente, se ha definido una actividad en la que se despliega un informe \textit{HTML} con la información de cobertura obtenida por JaCoCo.
 \end{itemize}
 
 Así es como se han definido las etapas y del entorno de ejecución en el fichero \textit{.gitlab-ci.yml}:\\
@@ -792,7 +792,7 @@ Al gestionar la revisión de calidad por primera vez en este proyecto, Codacy pe
 
 \subsubsection{Configuración de la Herramienta Heroku}
 
-Heroku es una plataforma que permite desplegar una aplicación web en sus servidores. Para ello debes tener una cuenta, crear un pipeline y una aplicación y asociar la aplicación al pipeline. Para desplegarla se ofrecen tres opciones: \textit{Heroku Git}, \textit{GitHub} y \textit{Heroku CLI}.
+Heroku es una plataforma que permite desplegar una aplicación Web en sus servidores. Para ello debes tener una cuenta, crear un pipeline y una aplicación y asociar la aplicación al pipeline. Para desplegarla se ofrecen tres opciones: \textit{Heroku Git}, \textit{GitHub} y \textit{Heroku CLI}.
 
 En este proyecto se ha utilizado Heroku CLI y un plugin para integrarlo con Maven:\\
 \begin{minipage}{\linewidth}
@@ -882,7 +882,7 @@ private void createConnectionForms() {
  
 \section{Interfaz gráfica: Vadin}
 
-Para la implementar la interfaz gráfica de la aplicación web se ha utilizado el framework Vaadin. Con este framework no ha sido necesario escribir HTML, tan solo Java y un poco de CSS. Por ejemplo, para implementar un \textit{checkbox} se utilizaría el siguiente código:
+Para la implementar la interfaz gráfica de la aplicación Web se ha utilizado el framework Vaadin. Con este framework no ha sido necesario escribir HTML, tan solo Java y un poco de CSS. Por ejemplo, para implementar un \textit{checkbox} se utilizaría el siguiente código:
 
 \begin{minipage}{\linewidth}
 	{\tiny \begin{lstlisting}

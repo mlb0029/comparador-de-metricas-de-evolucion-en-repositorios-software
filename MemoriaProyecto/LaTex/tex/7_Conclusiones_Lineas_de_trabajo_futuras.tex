@@ -9,7 +9,7 @@ En este capítulo se exponen las conclusiones a las que se llegan después de re
 Las conclusiones que se extraen del trabajo son:
 
 \begin{itemize}
-	\item Se ha completado el objetivo general del proyecto: diseñar una aplicación web en Java que permita obtener un conjunto de métricas de evolución del proceso software \citep{ratzinger_space:_2007} a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio. 
+	\item Se ha completado el objetivo general del proyecto: diseñar una aplicación Web en Java que permita obtener un conjunto de métricas de evolución del proceso software \citep{ratzinger_space:_2007} a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio. 
 	
 	Además se ha probado con datos reales a partir de otros repositorios de GitLab que se han presentado como TFG en el Grado de Ingeniería Informática en la Universidad de Burgos. Esto fue posible gracias a que la empresa \textit{Hewlett Packard SCDS} en su colaboración con TFGs con la \textit{Universidad de Burgos} organiza sus propuestas de TFGs en GitLab en grupos para organizarlos por cursos académicos. También hay que destacar la funcionalidad de añadir repositorios por grupo, lo que ha facilitado estas pruebas.
 	
@@ -32,9 +32,9 @@ Se definen en lista ideas que podrían realizarse en el futuro:
 	\item Extender las plataformas de desarrollo colaborativo a otras como GitHub, Bitbucket. Para GitHub, esta realizado en la rama github \footnote{\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software/tree/github}}. Habría que combinar las ramas y adaptar la interfaz gráfica.
 	\item GitLab ofrece la posibilidad a los usuarios de tener su propia instancia de GitLab en un servidor propio. Por ahora solo se puede conectar al host ``https://gitlab.com/'', se podría ampliar esta funcionalidad permitiendo realizar una conexión a servidores propios
 	\item Realizar un histórico de mediciones y almacenarlo en una base de datos
-	\item Hacer que la aplicación web sea adaptativa (\textit{responsive})
+	\item Hacer que la aplicación Web sea adaptativa (\textit{responsive})
 	\item Internacionalizar la aplicación
 	\item Los proyectos y perfiles de métricas importados y exportados se almacenan en un buffer en memoria. Mientras el proyecto sea pequeño no hay problema, pero conforme vaya creciendo habría que implementar otros sistemas de persistencia como bases de datos o ficheros.
 	\item Se podría permitir seleccionar varios proyectos de la tabla de la página principal para poder gestionar varios proyectos a la vez. Por ejemplo: crear un perfil de métricas sólo con los proyectos seleccionados, evaluar solo los proyectos seleccionados, eliminar varios proyectos a la vez, volver a obtener métricas de varios proyectos al mismo tiempo.
-	\item La aplicación web solo soporta una sesión, se podría preparar para poder explotarlo en un entorno multisesión.
+	\item La aplicación Web solo soporta una sesión, se podría preparar para poder explotarlo en un entorno multisesión.
 \end{itemize}

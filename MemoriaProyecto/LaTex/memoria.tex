@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,oneside]{memoir}
+\documentclass[a4paper,12pt,twoside]{memoir}
 
 \usepackage{verbatim} % mlb0029 Para \begin{comment}
 \setlength\epigraphwidth{.8\textwidth}
@@ -283,7 +283,7 @@
 }
 
 % TODO
-\def\todo{{\color{red}Comentario de revisión...}}
+%\def\todo{{\color{red}Comentario de revisión...}}
 
 \graphicspath{ {./img/} }
 
@@ -353,10 +353,10 @@
 \newcommand{\nombre}{Miguel Ángel León Bardavío} %%% cambio de comando
 
 % Datos de portada
-\title{Comparador de métricas de evolución en repositorios software}
+\title{{\Huge Evolution Metrics Gauge}\\[0.5cm]Comparador de métricas de evolución en repositorios software}
 \author{\nombre}
 \tutor{Carlos López Nozal}
-\date{\today}
+\date{16 de septiembre de 2019}
 
 \begin{document}
 
@@ -436,13 +436,16 @@ Los repositorios de código, además de almacenar el código fuente de un proyec
 %A software process is a set of related acti\-vi\-ties that culminates in the production of a software package: specification, design, implementation, testing, evolution into new versions, and maintenance. There are also other supporting activities such as configuration and change management, quality assurance, project management, evaluation of user experience, etc. Software repositories are infrastructures to support all these activities. They can be composed with several systems that include code change management, bug tracking, code review, build system, release binaries, wikis, forums, etc. 
 Las métricas de evolución ayudan a cuantificar características de los procesos software. Un ejemplo de este tipo de medidas es el \textit{número de días de cierre}, en la que se mide el numero de días que pasan desde que se abre una incidencia hasta su cierre. Estas métricas se pueden obtener gracias a los datos estadísticos que proporcionan los repositorios. 
 
-En este TFG se diseña un software para calcular métricas de evolución sobre distintos repositorios. En el diseño se ha optado por implementar una aplicación web en Java que toma como entrada un conjunto de repositorios públicos o privados de GitLab y calcula métricas de evolución que permiten comparar los proyectos. Además, se ha procurado un diseño extensible a otras forjas de repositorios y a nuevas métricas. La aplicación ha sido probada con Trabajos Fin de Grado presentados en la Universidad de Burgos y que han sido almacenados en repositorios públicos de GitLab.
+En este TFG se diseña \textit{\textbf{Evolution Metrics Gauge}}, un software para calcular métricas de evolución sobre distintos repositorios. En el diseño se ha optado por implementar una aplicación Web en Java que toma como entrada un conjunto de repositorios públicos o privados de GitLab y calcula métricas de evolución que permiten comparar los proyectos. Además, se ha procurado un diseño extensible a otras forjas de repositorios y a nuevas métricas. La aplicación ha sido probada con Trabajos Fin de Grado presentados en la Universidad de Burgos y que han sido almacenados en repositorios públicos de GitLab.
+
+Enlace al repositorio del proyecto:
+\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}
 
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-Métricas de evolución, repositorios de código, proceso de desarrollo de software, ciclo de vida de desarrollo de software, gestión de calidad, forjas de repositorios, comparación de proyectos software, aplicación web.
+Métricas de evolución, repositorios de código, proceso de desarrollo de software, ciclo de vida de desarrollo de software, gestión de calidad, forjas de repositorios, comparación de proyectos software, aplicación Web.
 \end{abstract}
 
 \clearpage
@@ -459,13 +462,16 @@ The source code repositories, in addition to storing the source code of a softwa
 
 Evolution metrics helps to quantify features of a software development process. An example of this type of measure is the \textit {days to close an issue}, in which the number of days that pass from when an incident is opened until its closure is measured. These metrics can be obtained from the statistics provided by the source code repositories.
 
-In this project, a software is designed to calculate evolution metrics on different source code repositories. The design has chosen to implement a web application in Java language that takes as input a set of GitLab public or private repositories and calculates evolution metrics that allow the repositories to be compared. In addition, an extensible design to other repositories forges and new metrics has been sought. The application has been tested with Final Degree Projects presented at the University of Burgos and that have been stored in public repositories of GitLab.
+In this project, \textit{\textbf{Evolution Metrics Gauge}} Web application is designed to calculate evolution metrics on different source code repositories. The design has chosen to implement a Web application in Java language that takes as input a set of GitLab public or private repositories and calculates evolution metrics that allow the repositories to be compared. In addition, an extensible design to other repositories forges and new metrics has been sought. The application has been tested with Final Degree Projects presented at the University of Burgos and that have been stored in public repositories of GitLab.
+
+Link to the project repository:
+\url{https://gitlab.com/mlb0029/comparador-de-metricas-de-evolucion-en-repositorios-software}
 
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-Evolution metrics, source code repositories, software development process, software development life cycle, quality management, forge of repositories, comparison of software projects, web application.
+Evolution metrics, source code repositories, software development process, software development life cycle, quality management, forge of repositories, comparison of software projects, Web application.
 \end{abstract}
 
 \clearpage

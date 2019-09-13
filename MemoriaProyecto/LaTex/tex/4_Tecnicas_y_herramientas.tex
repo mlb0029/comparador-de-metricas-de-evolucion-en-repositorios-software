@@ -16,7 +16,7 @@ En este apartado se enumerarán las herramientas y una breve descripción del us
 El entorno de desarrollo es el conjunto de herramientas que se utilizan para facilitar el desarrollo del software.
 
 \begin{description}
-	\item[Eclipse IDE for Java EE Developers.] Entorno de programación Java para aplicaciones web. 
+	\item[Eclipse IDE for Java EE Developers.] Entorno de programación Java para aplicaciones Web. 
 	
 		Se ha utilizado la versión: 2018-09 (4.9.0). Enlace a página de descarga:
 		
@@ -24,13 +24,13 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 	
 		Eclipse es de los entornos de programación más conocidos del mundo Java, aunque también hay paquetes de eclipse que dan soporte a otros lenguajes y sistemas. 
 		
-		\textit{Eclipse IDE for Java EE Developers} provee de un amplio conjunto de herramientas para facilitar el desarrollo de proyectos software Java y aplicaciones web. Es una versión más completa que \textit{Eclipse IDE for Java Developers}. Incluye un Java IDE (Java Integrated Development Environment - Entorno de Desarrollo Integrado), y herramientas para trabajar con Maven, Git y otras tecnologías. 
+		\textit{Eclipse IDE for Java EE Developers} provee de un amplio conjunto de herramientas para facilitar el desarrollo de proyectos software Java y aplicaciones Web. Es una versión más completa que \textit{Eclipse IDE for Java Developers}. Incluye un Java IDE (Java Integrated Development Environment - Entorno de Desarrollo Integrado), y herramientas para trabajar con Maven, Git y otras tecnologías. 
 		
 		Además es posible instalar plugins para ampliar las herramientas de desarrollo. Se han instalado varios de estos plugins como \textit{YEdit} para facilitar el trabajo con ficheros con un formato especial. Por ejemplo, \textit{YEdit} sirve como editor de ficheros con extensión \textit{.yml}, y ha sido utilizado para generar el fichero que configura la integración y despliegue continuo en GitLab. No tienen especial trascendencia y han sido descargados mediante sugerencias de Eclipse al abrir el fichero por primera vez. El plugin más importante que se ha instalado es \textit{Vaadin Plugin for Eclipse 4.0.2} que facilita el uso de la herramienta Vaadin en el entorno de Eclipse.
 		
 		Eclipse dispone de varias perspectivas dependiendo del trabajo que se quiera realizar en el proyecto, las que más se han utilizado son:
 		\begin{itemize}
-			\item \textbf{Java EE}. Es la perspectiva por defecto de este paquete de Eclipse, facilita el trabajo de aplicaciones web. Es la perspectiva que se ha utilizado para escribir código. Ofrece, entre otras cosas, un explorador de paquetes y vistas para trabajar con Java.
+			\item \textbf{Java EE}. Es la perspectiva por defecto de este paquete de Eclipse, facilita el trabajo de aplicaciones Web. Es la perspectiva que se ha utilizado para escribir código. Ofrece, entre otras cosas, un explorador de paquetes y vistas para trabajar con Java.
 			\item \textbf{Debug}. La perspectiva que se utiliza para depurar el programa. Sirve para ejecutar la aplicación instrucción a instrucción y detectar así un problema o \textit{bug}.
 			\item \textbf{Git}. Esta perspectiva permite trabajar con el sistema de control de versiones Git. Mantiene una vista con un listado de repositorios, otra que visualiza el historial de cambios de un archivo seleccionado y, la más importante, una ventana de que permite visualizar los cambios realizados, indexarlos, realizar commits y publicarlos en el repositorio remoto. Eclipse permite la integración con GitLab y cualquier otra forja de repositorios.
 		\end{itemize}
@@ -41,7 +41,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 		
 		\url{https://www.oracle.com/technetwork/java/javase/downloads/index.html}
 	
-		Se ha utilizado la última versión de Java al comenzar el desarrollo, actualmente ha sido lanzada la versión \textit{Java SE 12.0.2} y se esperan actualizaciones cada 6 meses. Sin embargo, ha sido posible compilar y ejecutar tanto las pruebas como la aplicación web con Java 8 realizando dos pequeñas modificaciones:
+		Se ha utilizado la última versión de Java al comenzar el desarrollo, actualmente ha sido lanzada la versión \textit{Java SE 12.0.2} y se esperan actualizaciones cada 6 meses. Sin embargo, ha sido posible compilar y ejecutar tanto las pruebas como la aplicación Web con Java 8 realizando dos pequeñas modificaciones:
 		\begin{itemize}
 			\item De la versión 11 se ha utilizado el método \textit{isBlank()} de la clase \textit{String}. Se diferencia de \textit{isEmpty()} en que no comprueba la longitud de la cadena y devuelve \textit{true} si es 0, sino que devuelve \textit{true} si la longitud es 0 o si no es 0 pero todos los caracteres de la cadena son espacios en blanco.
 			\item De la clase \textit{java.util.Optional} \footnote{\url{https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Optional.html}}, soportada desde la versión 1.8, se utiliza la función \textit{orElseThrow()}, que se soporta desde la versión 10, por tanto habría que buscar una alternativa para pasar a la versión 1.8. La versión 11 trae a esta clase la función \textit{isEmpty()}.
@@ -60,7 +60,7 @@ El entorno de desarrollo es el conjunto de herramientas que se utilizan para fac
 			\item Despliegue en servidor de Heroku.
 		\end{itemize}
 	
-	\item[Apache Tomcat.] Contenedor de aplicaciones web con soporte de servlets Java. Sirve para desplegar la aplicación.
+	\item[Apache Tomcat.] Contenedor de aplicaciones Web con soporte de servlets Java. Sirve para desplegar la aplicación.
 	
 		Se ha utilizado la versión  v9.0.13. Enlace a página de descarga:
 		
