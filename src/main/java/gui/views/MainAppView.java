@@ -38,7 +38,7 @@ public class MainAppView extends VerticalLayout {
 	
 	private Image brandingImage = new Image("images/logoUBU.jpg", "Logo UBU");
 	
-	private Label appNameLabel = new Label("Evolution metrics");
+	private Label appNameLabel = new Label("Evolution Metrics Gauge");
 	
 	private Button connectionButton = new Button();
 	
@@ -81,8 +81,7 @@ public class MainAppView extends VerticalLayout {
 		header.setHeight("15%");
 		header.setWidthFull();
 		
-		brandingImage.setHeight("6em");
-		brandingImage.setWidth("15%");
+		brandingImage.setHeight("106px");
 		
 		appNameLabel.addClassName("appName");
 		appNameLabel.setWidth("45%");
