@@ -38,6 +38,8 @@ public class MainAppView extends VerticalLayout {
 	
 	private Image brandingImage = new Image("images/logoUBU.jpg", "Logo UBU");
 	
+	private Image logoImage = new Image("images/LOGOAPP.png", "Logo Evolution Metrics Gauge");
+	
 	private Label appNameLabel = new Label("Evolution Metrics Gauge");
 	
 	private Button connectionButton = new Button();
@@ -78,13 +80,14 @@ public class MainAppView extends VerticalLayout {
 	}
 	
 	private void setUpHeader() {
-		header.setHeight("15%");
+		header.setHeight("200px");
 		header.setWidthFull();
 		
 		brandingImage.setHeight("106px");
+		logoImage.setHeight("106px");
 		
 		appNameLabel.addClassName("appName");
-		appNameLabel.setWidth("45%");
+		appNameLabel.setWidth("540px");
 		
 		connectionButton.setIcon(connectionInfoComponent);
 		connectionButton.setMinHeight("60px");
@@ -103,7 +106,7 @@ public class MainAppView extends VerticalLayout {
 		VerticalLayout connectionButtonLayout = new VerticalLayout(new HorizontalLayout(connectionButton, helpLink));
 		connectionButtonLayout.setAlignItems(Alignment.END);
 		connectionButtonLayout.setWidth("40%");
-		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, connectionButtonLayout);
+		HorizontalLayout headerHLayout = new HorizontalLayout(brandingImage, appNameLabel, logoImage, connectionButtonLayout);
 		header.getElement().appendChild(headerHLayout.getElement());
 	}
 
