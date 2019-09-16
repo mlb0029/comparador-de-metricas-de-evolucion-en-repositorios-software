@@ -2,47 +2,54 @@
 
 \section{Introducción}
 Este documento detalla asuntos técnicos de programación.
+
 \section{Estructura de directorios}
 El código fuente presenta la siguiente estructura:
-\begin{description}
+\begin{itemize}
 	\tightlist
-	\item[\textit{/.gitignore}] Contiene los ficheros y directorios que el repositorio git no tendrá en cuenta
-	\item[\textit{/.gitlab-ci.yml}] Contiene las etapas y trabajos que se han definido para que se ejecuten en una máquina virtual proporcionada por GitLab (\textit{runner}) tras hacer un commit. Permite la integración y el despliegue continuo.
-	\item[\textit{/README.md}] Fichero con información relevante sobre el proyecto.
-	\item[\textit{/codacy-coverage-reporter-4.0.5-assembly.jar}] Ejecutable Java que necesario para una de las tareas de la integración continua: El informe de cobertura de las pruebas. Se ejecutará en una de las tareas definidas en el fichero /.gitlab-ci.yml.
-	\item[\textit{/pom.xml}] Fichero de configuración del proyecto maven.
-	\item[\textit{/system.properties}] Fichero con propiedades del proyecto. Ha sido necesario su uso para el despliegue en Heroku.
-	\item[\textit{/MemoriaProyecto}] Memoria del proyecto según la plantilla definida en \url{https://github.com/ubutfgm/plantillaLatex}.
-	\item[\textit{/src/test/resources}] Datos almacenados en ficheros CSV para proporcionar datos a test parametrizados.
-	\item[\textit{/src/test/java}] Casos de prueba JUnit para la realización de pruebas. Se organiza de la misma forma que /src/main/java
-	\item[\textit{/src/main/webapp/VAADIN/themes/MyTheme}] Tema principal utilizado por la aplicación. Generado por Vaadin.
-	\item[\textit{/src/main/webapp/frontend}] Ficheros \textit{.css} utilizados por la interfaz gráfica.
-	\item[\textit{/src/main/webapp/images}] Imágenes que se muestran en la interfaz gráfica.
-	\item[\textit{/src/main/resources}] Ficheros de configuración de la aplicación. En este caso el fichero log4j2.properties para configurar el log.
-	\item[\textit{/src/main/java}] Contiene todo el código fuente
-	\item[\textit{/src/main/java/app/}] Contiene fachadas que conectan la interfaz de usuario con el resto de componentes que componen la lógica de la aplicación.
-	\item[\textit{/src/main/java/app/listeners}] Contiene observadores y eventos utilizados por la aplicación
-	\item[\textit{/src/main/java/datamodel}] Contiene el modelo de datos de la aplicación.
-	\item[\textit{/src/main/java/exceptions}] Contiene excepciones definidas en la aplicación.
-	\item[\textit{/src/main/java/gui}] Contiene la interfaz de usuario.
-	\item[\textit{/src/main/java/gui/views}] Contiene páginas y componentes de Vaadin que componen la interfaz gráfica de la aplicación.
-	\item[/src/main/java/metricsengine] Define el motor de métricas.
-	\item[\textit{/src/main/java/metricsengine/numeric\_value\_metrics}] Métricas definidas por el programador y sus respectivas fábricas (Patrón de diseño método fábrica\footnote{https://refactoring.guru/design-patterns/factory-method}). Todas las métricas tienen resultados numéricos.
-	\item[\textit{/src/main/java/metricsengine/values}] Valores que devuelven las métricas.
-	\item[\textit{/src/main/java/repositorydatasource}] Framework de conexión a una forja de repositorios como GitLab.
-\end{description}
+	\item \ruta{/.gitignore}. Contiene los ficheros y directorios que el repositorio git no tendrá en cuenta
+	\item \ruta{/.gitlab-ci.yml}. Contiene las etapas y trabajos que se han definido para que se ejecuten en una máquina virtual proporcionada por GitLab (\textit{runner}) tras hacer un commit. Permite la integración y el despliegue continuo.
+	\item \ruta{/README.md}. Fichero con información relevante sobre el proyecto.
+	\item \ruta{/pom.xml}. Fichero de configuración del proyecto Maven.
+	\item \ruta{/system.properties}. Fichero con propiedades del proyecto. Ha sido necesario su uso para el despliegue en Heroku.
+	\item \ruta{/MemoriaProyecto}. Memoria del proyecto según la plantilla definida en \url{https://github.com/ubutfgm/plantillaLatex}.
+	\item \ruta{/releases}. Carpeta para publicar los ficheros WAR. Las releases enlazarán a estos ficheros.
+	\item \ruta{/src/test/resources}. Datos almacenados en ficheros CSV para proporcionar datos a test parametrizados.
+	\item \ruta{/src/test/java}. Casos de prueba JUnit para la realización de pruebas. Se organiza de la misma forma que \ruta{/src/main/java}
+	\item \ruta{/src/main/webapp/VAADIN/themes/MyTheme}. Tema principal utilizado por la aplicación. Generado por Vaadin.
+	\item \ruta{/src/main/webapp/frontend}. Ficheros \textit{.css} utilizados por la interfaz gráfica.
+	\item \ruta{/src/main/webapp/images}. Imágenes que se muestran en la interfaz gráfica.
+	\item \ruta{/src/main/resources}. Ficheros de configuración de la aplicación. En este caso el fichero log4j2.properties para configurar el log.
+	\item \ruta{/src/main/java}. Contiene todo el código fuente
+	\item \ruta{/src/main/java/app/}. Contiene fachadas que conectan la interfaz de usuario con el resto de componentes que componen la lógica de la aplicación.
+	\item \ruta{/src/main/java/app/listeners}. Contiene observadores y eventos utilizados por la aplicación
+	\item \ruta{/src/main/java/datamodel}. Contiene el modelo de datos de la aplicación.
+	\item \ruta{/src/main/java/exceptions}. Contiene excepciones definidas en la aplicación.
+	\item \ruta{/src/main/java/gui}. Contiene la interfaz de usuario.
+	\item \ruta{/src/main/java/gui/views}. Contiene páginas y componentes de Vaadin que componen la interfaz gráfica de la aplicación.
+	\item \ruta{/src/main/java/metricsengine}. Define el motor de métricas.
+	\item \ruta{/src/main/java/metricsengine/numeric\_value\_metrics}. Métricas definidas por el programador y sus respectivas fábricas (Patrón de diseño método fábrica\footnote{https://refactoring.guru/design-patterns/factory-method}). Todas las métricas tienen resultados numéricos.
+	\item \ruta{/src/main/java/metricsengine/values}. Valores que devuelven las métricas.
+	\item \ruta{/src/main/java/repositorydatasource}. Framework de conexión a una forja de repositorios como GitLab.
+\end{itemize}
+
 \section{Manual del programador}
 Se explica en este apartado algunas bases para entender como continuar la programación de la aplicación y los puntos de extensión que se han definido.
 Cada apartado de esta sección se centra en cada uno de los módulos que contiene la aplicación.
+
 \subsection{Framework de conexión}
 El framework de conexión a una plataforma de desarrollo colaborativo está definido en el paquete \textit{repositorydatasource}. Consta de dos interfaces, la más importante es la interfaz \textit{RepositoryDataSource}.
+
+En el Anexo C, se muestra un diagrama de clases en la Fig. \ref{fig:AnexC_RepositoryDataSource}. El paquete \textit{repositorydatasource} consta de dos interfaces que se han de implementar para conectar el API de la forja de repositorios con el resto de la aplicación. Una solo es una fábrica que pretende instanciar un \textit{RepositoryDataSource}. Esta última es la que contiene las funciones para establecer una conexión y obtener los datos de los repositorios. El único cambio que habría que hacer despues de implementar estas dos interfaces es cambiar la llamada a la fábrica.
+
 \subsection{Motor de métricas}
-El motor de métricas se ha desarrollado con una base inicial a una solución propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones}\cite{marticorena_soporte_2005}. El diseño se puede observar en la figura \ref{fig:MCTMotorMetricas}.
+El motor de métricas se ha desarrollado con una base inicial a una solución propuesta en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \cite{marticorena_sanchez_soporte_2005}. El diseño se puede observar en las figuras Fig. \ref{fig:M3_CambiosFrameworkMedicion1} y Fig. \ref{fig:M3_CambiosFrameworkMedicion2}.
 \imagen{MCTMotorMetricas}{Diagrama del Framework para el cálculo de métricas con perfiles.}
 
-\subsection{Interfaz gráfica}
-
 \section{Compilación, instalación y ejecución del proyecto}
+Para compilar el proyecto es necesario tener Java 11 y Maven 3.6.0 o superior instalados en el equipo. Para ambas herramientas, el proceso de instalación es el mismo: descomprimir un archivo en la carpeta que se desee, configurar las variables de entorno del sistema JAVA\_JOME y CATALINA\_HOME apuntando a los directorios de instalación que contienen la carpeta \ruta{bin}, y añadir al PATH del sistema la ruta hacia los directorios \ruta{bin}.
+
+Una vez instalados Java y Maven, para compilar se utilizaría el comando \ruta{mvn install} desde el directorio raíz del proyecto descargado desde GitLab.
 
 \section{Pruebas del sistema}
-Se ha generado una batería de pruebas en \textit{src/test/java}. Algunos de estos test son parametrizados y los valores se encuentran en ficheros \textit{.csv} en la carpeta \textit{src/test/resources}.
+Se ha generado una batería de pruebas en \ruta{src/test/java}. Algunos de estos test son parametrizados y los valores se encuentran en ficheros \textit{.csv} en la carpeta \ruta{src/test/resources}.

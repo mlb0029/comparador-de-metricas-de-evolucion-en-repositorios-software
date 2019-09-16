@@ -2,27 +2,21 @@
 
 \section{Introducción}
 
-Este anexo tiene como objetivo analizar y documentar las necesidades funcionales y no funcionales que deberán ser soportadas por el software que se va a construir.
+Este anexo tiene como objetivo analizar y documentar las necesidades funcionales y no funcionales que deberán ser soportadas por el software desarrollado.
 
-Para representar estas necesidades se utilizaran historias de usuario, que describen lo que el usuario debería poder hacer, en lugar de los tradicionales requisitos funcionales, que describen características más específicas del desarrollo del sistema de un modo más técnico \cite{sanchez_requisitos_2016}. 
-
-También se recurrirá a diagramas de casos de uso y a diagramas de secuencia. Los casos de uso describen todas las interacciones que tendrán los usuarios con el software; mientras que los diagramas de secuencia muestran la interacción de un conjunto de entidades del sistema software a través del tiempo y se modelan, normalmente, para cada caso de uso, por tanto incluirán detalles de la implementación como operaciones, clases, mensajes, etc.
+%Para representar estas necesidades se utilizaran historias de usuario, que describen lo que el usuario debería poder hacer, en lugar de los tradicionales requisitos funcionales, que describen características más específicas del desarrollo del sistema de un modo más técnico. A menudo se recurrirá a diagramas de casos de uso, que describen todas las interacciones que tendrán los usuarios con el software.
 
 \section{Objetivos generales}
-El objetivo general de este TFG es diseñar una aplicación web en Java que permita obtener un conjunto de métricas de evolución del proceso software \cite{ratzinger_space:_2007} a partir de repositorios de GitLab, esto permitirá comparar los distintos procesos de desarrollo software entre varios repositorios.
-
-La aplicación será probada con datos reales de repositorios de Trabajos Fin de Grado del Grado de Ingeniería Informática presentados en GitLab.
-
-A continuación se desglosa el objetivo general  en objetivos más detallados.
+El objetivo general de este TFG es diseñar una aplicación Web en Java que permita obtener un conjunto de métricas de evolución del proceso software a partir de repositorios de GitLab, para permitir comparar los distintos procesos de desarrollo software de cada repositorio. La aplicación se probará con datos reales para comparar los repositorios de Trabajos Fin de Grado del Grado de Ingeniería Informática presentados en GitLab. Con más detalle:
 \begin{itemize}
 	\tightlist
 	\item Se obtendrán medidas de métricas de evolución de uno o varios proyectos alojados en repositorios de GitLab.
-	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en \textit{sPACE: Software Project Assessment in the Course of Evolution} \cite{ratzinger_space:_2007} y 
+	\item Las métricas que se desean calcular de un repositorio  son algunas de las especificadas en la tesis titulada ``\textit{sPACE: Software Project Assessment in the Course of Evolution}'' \citep{ratzinger_space:_2007} y 
 	adaptadas a los repositorios software:
 	\begin{itemize}
 		\tightlist
 		\item Número total de incidencias (\textit{issues})
-		\item Cambios(\textit{commits}) por incidencia
+		\item Cambios (\textit{commits}) por incidencia
 		\item Porcentaje de incidencias cerrados
 		\item Media de días en cerrar una incidencia
 		\item Media de días entre cambios
@@ -34,60 +28,211 @@ A continuación se desglosa el objetivo general  en objetivos más detallados.
 	\item Se dará la posibilidad de almacenar de manera persistente estos perfiles de métricas para permitir comparaciones futuras. Un ejemplo de utilidad es guardar los valores umbrales de repositorios por lenguaje de programación, o en el caso de repositorios de TFG de la UBU por curso académico.
 	\item También se permitirá almacenar de forma persistente las métricas obtenidas de los repositorios para su posterior consulta o tratamiento. Esto permitiría comparar nuevos proyectos con proyectos de los que ya se han calculado sus métricas.
 \end{itemize}
-\subsection{Objetivos técnicos}
-Este apartado recoge los requisitos más técnicos del proyecto.
+
+\section{Objetivos técnicos}
+Este apartado resume requisitos del proyecto más técnicos y centrados en el proceso y otras características no funcionales.
 \begin{itemize}
 	\tightlist
-	\item Diseñar la aplicación de manera que se puedan extender con nuevas métricas con el menor coste de mantenimiento posible. Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
-	\item El diseño de la aplicación debe facilitar la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket. Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
-	\item Aplicar el \textit{frameworks} modelo vista controlador para separar la lógica de la aplicación para el calculo de métricas y la interfaz de usuario.
-	Se aplicará un diseño basado en frameworks y en patrones de diseño \cite{gamma_patrones_2002}.
-	\item Crear una batería de pruebas automáticas con cobertura del por encima del 90\% en los subsistemas de lógica de la aplicación .
+	\item Diseñar la aplicación de manera que se puedan extender con nuevas métricas con el menor coste de mantenimiento posible. Para ello, se aplicará un diseño basado en frameworks y en patrones de diseño \citep{gamma_patrones_2002}.
+	\item El diseño de la aplicación debe facilitar la extensión a otras plataformas de desarrollo colaborativo como GitHub o Bitbucket.
+	\item Aplicar el \textit{frameworks `modelo-vista-controlador'} para separar la lógica de la aplicación y la interfaz de usuario.
+	\item Crear una batería de pruebas automáticas con cobertura por encima del 90\% en los subsistemas de lógica de la aplicación.
 	\item Utilizar una plataforma de desarrollo colaborativo que incluya un sistema de control de versiones, un sistema de seguimiento de incidencias y que permita una comunicación fluida entre el tutor y el alumno.
 	\item Utilizar un sistema de integración y despliegue continuo.
 	\item Diseñar una correcta gestión de errores definiendo excepciones de biblioteca y registrando eventos de error e información en ficheros de \textit{log}. 
 	\item Aplicar nuevas estructuras  del lenguaje Java para el desarrollo, como son expresiones lambda. 
 	\item Utilizar sistemas que aseguren la calidad continua del código que permitan evaluar la deuda técnica del proyecto.
-	\item Probar la aplicación con ejemplos reales y utilizando técnicas avanzadas, como entrada de datos de test en ficheros con formato tabulado tipo CSV (\textit{comma separated values}). 	
+	\item Probar la aplicación con ejemplos reales y utilizando técnicas avanzadas, como entrada de datos de test en ficheros con formato tabulado tipo CSV (\textit{Comma Separated Values}). 	
 \end{itemize}
 
 \section{Actores}
-Se consideran dos actores: El usuario de la aplicación y el desarrollador. Además de poder ser utilizado por un usuario, la aplicación deberá estar preparada para que en un futuro se pueda ampliar 	
+Se consideran dos actores: El usuario de la aplicación y el desarrollador. Además de poder ser utilizado por un usuario, la aplicación deberá estar preparada para que en un futuro se pueda extender en cuanto a número de métricas y forjas de repositorios.
+
 \section{Catalogo de requisitos}
 Este apartado enumera los diferentes requisitos que el sistema software deberá satisfacer. Se divide en dos apartados. El primero detalla los servicios que prestará el sistema al usuario final o a otros sistemas; el segundo detalla funciones más técnicas de cómo se desarrollará el proceso software y otras propiedades del sistema como eficiencia o mantenibilidad.
 
 \subsection{Requisitos funcionales}
-\subsubsection{Conexión}
-\begin{description}
-	\item[RF 1. Establecer conexión con GitLab.] El usuario podrá establecer una conexión con GitLab de varias formas para poder acceder a los repositorios almacenados en el host \url{https://gitlab.com}. De esta forma puede añadir nuevos repositorios y volver a obtener métricas de repositorios ya existentes.
-	\begin{description}
-		\item[RF 1.1. Establecer conexión iniciando sesión.] El usuario podrá iniciar sesión  en GitLab de distintas formas para poder acceder a sus repositorios privados.
-		\begin{description}
-			\item[RF 1.1.1 Iniciar sesión mediante usuario y contraseña]
-			\item[RF 1.1.2 Iniciar sesión mediante personal access token]
-		\end{description}
 
-		\item[RF 1.3. Establecer conexión pública sin inicio de sesión.] De esta forma, el usuario solo puede acceder a los repositorios con visibilidad pública.
-	\end{description}
-	\item[RF 2. Utilizar la aplicación sin conexión.] El usuario podrá utilizar la aplicación sin establecer una conexión a GitLab. De esta forma podrá consultar los datos que haya obtenido previamente, pero no añadir nuevos repositorios ni volver a obtener datos de los repositorios ya existentes.
-\end{description}
-\subsubsection{Gestión de repositorios}
-\begin{description}
-	\item[RF 3. Añadir un repositorio publico.] El usuario podrá añadir un repositorio público de GitLab siempre que haya establecido una conexión pública o con sesión  GitLab.
-	\item[RF 4. Añadir un repositorio privado.] El usuario podrá añadir un repositorio privado de GitLab siempre que haya establecido una conexión con una sesión a GitLab iniciada y que el repositorio sea accesible desde el usuario que haya iniciado sesión.
-	\item[RF 5. Distintas formas de añadir un repositorio tanto público como privado.] El usuario tendrá distintas formas de acceder a un repositorio.
-	\begin{description}
-		\item[RF 5.1. Seleccionar desde los repositorios de un usuario] El usuario podrá añadir un repositorio seleccionándolo de un listado de repositorios de un usuario de GitLab que el usuario indique mediante el nombre o el ID de usuario. Para ello se requiere una conexión a GitLab. Para listar los repositorios privados, además de los públicos, de ese usuario la conexión deberá tener una sesión iniciada con acceso a los repositorios privados de ese usuario.
-		\item[RF 5.2. Seleccionar desde los repositorios de un grupo] El usuario podrá añadir un repositorio seleccionándolo de un listado de repositorios de un grupo de GitLab, que el usuario indique mediante el nombre o el ID de grupo. Para ello se requiere que el grupo tenga visibilidad pública o sea privada y la conexión tenga una sesión abierta a un usuario de GitLab que tenga acceso a ese grupo.
-		\item[RF 5.3. Añadir repositorio mediante su URL web.] El usuario podrá añadir un repositorio mediante su URL web (la que se muestra en el navegador).
-	\end{description}
-	\item[RF 6. Evitar repositorios duplicados.] El usuario no podrá añadir el mismo repositorio más de una vez.
-	\item[.] Cada vez que se añada un repositorio, se calcularán las métricas y se evaluará con el perfil activo en ese momento.
-	\item[RF . ] El usuario podrá volver a obtener la información de cualquier repositorio siempre que la conexión activa en ese momento tenga acceso a ese repositorio.
-	\item[RF 7. Eliminar un repositorio.] El usuario podrá eliminar cualquier repositorio de los que haya añadido previamente.
-	\item[RF 7. Mostrar los repositorios que el usuario ha añadido.] El usuario podrá ver todos.
-\end{description}
+\begin{itemize}
+	\item \textbf{RF-1} Establecer conexión con GitLab: El usuario debe poder establecer distintos tipos de conexión a GitLab.
+	\begin{itemize}
+		\item \textbf{RF-1.1} El usuario podrá iniciar sesión desde la aplicación mediante usuario y contraseña a su usuario en GitLab para poder obtener los repositorios públicos y privados a los que tenga acceso.
+		\item \textbf{RF-1.2} El usuario podrá iniciar sesión desde la aplicación mediante un token de acceso personal a su usuario en GitLab para poder obtener los repositorios públicos y privados a los que tenga acceso.
+		\item \textbf{RF-1.3} El usuario podrá establecer una conexión pública a GitLab para poder obtener los repositorios públicos.
+		\item \textbf{RF-1.4} El usuario podrá utilizar la aplicación sin establecer una conexión. Aunque no tenga acceso a los repositorios de GitLab.
+		\item \textbf{RF-1.5} El usuario deberá elegir un tipo de conexión al entrar por primera vez a la aplicación.
+		\item \textbf{RF-1.6} La aplicación mostrará al usuario en todo momento la conexión que está utilizando
+		\item \textbf{RF-1.7} El usuario podrá cambiar de conexión teniendo en cuenta que solo puede haber un tipo de conexión activo en un instante dado
+	\end{itemize}
+	\item \textbf{RF-2} Gestión de proyectos. El usuario podrá calcular las métricas de proyectos de GitLab definidas en la sección \ref{sect:B_5_1_1}: `\textit{Definición de las métricas}' y se mostrarán los resultados en forma de tabla en la que las filas se correspondan con los proyectos y las columnas con las métricas.
+	\begin{itemize}
+		\item \textbf{RF-2.1} El usuario podrá añadir un proyecto siempre que tenga una conexión a GitLab (con sesión o pública)
+		\begin{itemize}
+			\item \textbf{RF-2.1.1} El usuario podrá añadir un proyecto a partir del nombre de usuario o ID del propietario y el nombre del proyecto, siempre que tenga acceso desde la conexión establecida
+			\item \textbf{RF-2.1.2} El usuario podrá añadir un proyecto a partir del nombre o del ID del grupo al que pertenece el proyecto y su nombre, siempre que tenga acceso desde la conexión establecida
+			\item \textbf{RF-2.1.3} El usuario podrá añadir un proyecto a partir de su URL, siempre que tenga acceso desde la conexión establecida
+		\end{itemize}
+		\item \textbf{RF-2.2} El usuario no podrá añadir un proyecto que ya esté en la tabla
+		\item \textbf{RF-2.3} Al añadir un proyecto a la tabla se calcularán las métricas definidas en la sección \ref{sect:B_5_1_1}: `\textit{Definición de las métricas}' y se mostrarán en forma de tabla.
+		\item \textbf{RF-2.4} El usuario podrá eliminar un proyecto de la tabla
+		\item \textbf{RF-2.5} El usuario podrá volver a obtener las métricas de un repositorio que ya haya añadido, siempre que tenga acceso desde la conexión establecida
+		\item \textbf{RF-2.6} El usuario podrá exportar los proyectos y sus métricas a un fichero con formato `\ruta{.emr}'
+		\item \textbf{RF-2.7} El usuario podrá exportar los resultados de las métricas de todos los proyectos en un fichero con formato CSV
+		\item \textbf{RF-2.8} El usuario podrá importar y añadir repositorios a la tabla  desde un fichero con formato `\ruta{.emr}', respetando el requisito RF2.2 de no añadir un repositorio ya existente
+		\item \textbf{RF-2.9} El usuario podrá importar repositorios a la tabla, sobrescribiendo los de la tabla.
+		\item \textbf{RF-2.10} Se podrán filtrar los proyectos por su nombre
+		\item \textbf{RF-2.11} Se puede ordenar los repositorios por nombre, fecha de medición y por cualquiera de las métricas
+		\item \textbf{RF-2.12} Al ordenar por métricas habrá que tener en cuenta que habrá medidas que no se habrán calculado por falta de datos de GitLab
+	\end{itemize}
+	\item RF-3 Evaluación de métricas. Las métricas, una vez calculadas, serán evaluadas mediante un código de color (verde - bueno, naranja - peligro, rojo - malo) a partir de un perfil de métricas, que será un conjunto de valores mínimo y máximo de cada una de las métricas, a partir de la definición de la evaluación en la sección \ref{sect:B_5_1_2}: `\textit{Evaluación de métricas}'
+	\begin{itemize}
+		\item \textbf{RF-3.1} Se podrá cargar un perfil de métricas que contenga valores umbrales mínimo y máximo y se utilizarán para evaluarlas
+		\item \textbf{RF-3.1} El usuario podrá cargar un perfil por defecto creado a partir de un conjunto de datos \footnote{\url{https://github.com/clopezno/clopezno.github.io/blob/master/agile_practices_experiment/DataSet_EvolutionSoftwareMetrics_FYP.csv}} de un estudio empírico de las métricas de evolución del software en trabajos finales de grado\cite{lopez_nozal_measuring_2019}
+		\item \textbf{RF-3.2} El usuario podrá cargar un perfil creado a partir de los repositorios que existan en la tabla
+		\item \textbf{RF-3.3} El usuario podrá exportar el perfil de métricas que tenga cargado a un fichero con formato \ruta{emmp}
+		\item \textbf{RF-3.4} El usuario podrá importar un perfil de métricas que haya guardado anteriormente para evaluar los repositorios que tenga en la tabla
+		\item \textbf{RF-3.5} En un instante, solo puede haber un perfil de métricas cargado
+		\item \textbf{RF-3.6} Por defecto se cargará el perfil por defecto
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Definición de las métricas}\label{sect:B_5_1_1}
+
+En el requisito RF-2 se entiende que se debe calcular las siguientes métricas de un proyecto:
+
+\textbf{\underline{I1 - Número total de issues (incidencias)}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Proceso de Orientación
+	\item \textbf{Descripción}: Número total de issues creadas en el repositorio
+	\item \textbf{Propósito}: ¿Cuántas issues se han definido en el repositorio?
+	\item \textbf{Fórmula}: $NTI$. \textit{NTI = número total de issues}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $NTI \geq 0$. Valores bajos indican que no se utiliza un sistema de seguimiento de incidencias, podría ser porque el proyecto acaba de comenzar
+	\item \textbf{Tipo de escala}: Absoluta
+	\item \textbf{Tipo de medida}: \textit{NTI = Contador}
+\end{itemize}
+
+\textbf{\underline{I2 - Commits (cambios) por issue}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Proceso de Orientación
+	\item \textbf{Descripción}: Número de commits por issue
+	\item \textbf{Propósito}: ¿Cuál es el volumen medio de trabajo de las issues?
+	\item \textbf{Fórmula}: $CI = \frac{NTC}{NTI}$. \textit{CI = Cambios por issue, NTC = Número total de commits, NTI = Numero total de issues}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $CI \geq 1$, Lo normal son valores altos. Si el valor es menor que uno significa que hay desarrollo sin documentar.
+	\item \textbf{Tipo de escala}: Ratio 
+	\item \textbf{Tipo de medida}: \textit{NTC, NTI = Contador}
+\end{itemize}
+
+\textbf{\underline{I3 - Porcentaje de issues cerradas}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Proceso de Orientación
+	\item \textbf{Descripción}: Porcentaje de issues cerradas
+	\item \textbf{Propósito}: ¿Qué porcentaje de issues definidas en el repositorio se han cerrado?
+	\item \textbf{Fórmula}: $PIC = \frac{NTIC}{NTI}*100$. \textit{PIC = Porcentaje de issues cerradas, NTIC = Número total de issues cerradas, NTI = Numero total de issues}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $0 \leq PIC \leq 100$. Cuanto más alto mejor
+	\item \textbf{Tipo de escala}: Ratio
+	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
+\end{itemize}
+
+\textbf{\underline{TI1 - Media de días en cerrar una issue}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}:  Media de días en cerrar una issue
+	\item \textbf{Propósito}: ¿Cuánto se suele tardar en cerrar una issue? 
+	\item \textbf{Fórmula}: $MDCI = \frac{\sum_{i=0}^{NTIC}DCI_i}{NTIC}$. \textit{MDCI = Media de días en cerrar una issue, NTIC = Número total de issues cerradas, DCI = Días en cerrar la issue}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $MDCI \geq 0$. Cuanto más pequeño mejor. Si se siguen metodologías ágiles de desarrollo iterativo e incremental como SCRUM, la métrica debería indicar la duración del \textit{sprint} definido en la fase de planificación del proyecto. En SCRUM se recomiendan duraciones del \textit{sprint} de entre una y seis semanas, siendo recomendable que no exceda de un mes \citep{scrum_master_scrum_2019}.
+	\item \textbf{Tipo de escala}: Ratio
+	\item \textbf{Tipo de medida}: \textit{NTI, NTIC = Contador}
+\end{itemize}
+
+\textbf{\underline{TC1 - Media de días entre commits}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}: Media de días que pasan entre dos commits consecutivos
+	\item \textbf{Propósito}: ¿Cuántos días suelen pasar desde un commit hasta el siguiente?
+	\item \textbf{Fórmula}: $MDC = \frac{\sum_{i=1}^{NTC} TC_i - TC_{i-1}}{NTC}$. $TC_i - TC_{i-1}$ en días; \textit{MDC = Media de días entre cambios, NTC = Número total de commits, TC = Tiempo de commit}
+	%$MDEC = [Sumatorio de (TCi-TCj) desde i=1, j=0 hasta i=NTC] / NTC. NTC = Número total de commits, TC = Tiempo de Commit$ 
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $MDEC \geq 0$. Cuanto más pequeño mejor. Se recomienda no superar los 5 días.
+	\item \textbf{Tipo de escala}: Ratio
+	\item \textbf{Tipo de medida}: \textit{NTC = Contador; TC = Tiempo}
+\end{itemize}
+
+\textbf{\underline{TC2 - Días entre primer y último commit}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}: Días transcurridos entre el primer y el ultimo commit 
+	\item \textbf{Propósito}: ¿Cuantos días han pasado entre el primer y el último commit?
+	\item \textbf{Fórmula}: $DEPUC = TC2- TC1$. $TC2- TC1$ en días;  \textit{DEPUC = Días entre primer y último commit, TC2 = Tiempo de último commit, TC1 = Tiempo de primer commit}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $DEPUC \geq 0$. Cuanto más alto, más tiempo lleva en desarrollo el proyecto. En procesos software empresariales se debería comparar con la estimación temporal de la fase de planificación. 
+	\item \textbf{Tipo de escala}: Absoluta
+	\item \textbf{Tipo de medida}: \textit{TC = Tiempo}
+\end{itemize}
+
+\textbf{\underline{TC3 - Ratio de actividad de commits por mes}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}: Muestra el número de commits relativos al número de meses
+	\item \textbf{Propósito}:¿Cuál es el número medio de cambios por mes?
+	\item \textbf{Fórmula}: $RCM = \frac{NTC}{NM}$. \textit{RCM = Ratio de cambios por mes, NTC = Número total de commits, NM = Número de meses que han pasado durante el desarrollo de la aplicación}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $RCM > 0$. Cuanto más alto mejor
+	\item \textbf{Tipo de escala}: Ratio
+	\item \textbf{Tipo de medida}: \textit{NTC = Contador}
+\end{itemize}
+
+\textbf{\underline{C1 - Cambios pico}}
+
+\begin{itemize}
+	\item \textbf{Categoría}: Constantes de tiempo
+	\item \textbf{Descripción}: Número de commits en el mes que más commits se han realizado en relación con el número total de commits
+	\item \textbf{Propósito}: ¿Cuál es la proporción de trabajo realizado en el mes con mayor número de cambios?
+	\item \textbf{Fórmula}: $CP = \frac{NCMP}{NTC}$. \textit{CP = Cambios pico, NCMP = Número de commits en el mes pico, NTC = Número total de commits}
+	\item \textbf{Fuente de medición}: Proyecto en una plataforma de desarrollo colaborativo.
+	\item \textbf{Interpretación}: $0 \leq CCP \leq 1$. Mejor valores intermedios. Se recomienda no superar el 40\% del trabajo en un mes.
+	\item \textbf{Tipo de escala}: Ratio
+	\item \textbf{Tipo de medida}: \textit{NCMP, NTC = Contador}
+\end{itemize}
+
+\subsubsection{Evaluación de métricas}\label{sect:B_5_1_2}
+Las métricas se evaluarán como buenas si:
+\begin{itemize}
+	\item I1: El valor medido supera el umbral mínimo (Q1)
+	\item I2: El valor medido se encuentra entre el umbral mínimo y el máximo (Q3)
+	\item I3: El valor medido supera el umbral mínimo
+	\item TI1: El valor medido se encuentra entre el umbral mínimo y el máximo
+	\item TC1: El valor medido se encuentra entre el umbral mínimo y el máximo
+	\item TC2: El valor medido se encuentra entre el umbral mínimo y el máximo
+	\item TC3: El valor medido se encuentra entre el umbral mínimo y el máximo
+	\item C1: El valor medido se encuentra entre el umbral mínimo y el máximo
+\end{itemize}
+
 \subsection{Requisitos no funcionales}
-\section{Especificación de requisitos}
+
+\begin{itemize}
+	\item \textbf{RNF-1} Se debe proporcionar un diseño extensible a otras forjas de repositorios como GitHub o Bitbucket
+	\item \textbf{RNF-2} Se debe proporcionar un diseño extensible y reutilizable a nuevas métricas, siguiendo el framework descrito en \textit{Soporte de Métricas con Independencia del Lenguaje para la Inferencia de Refactorizaciones} \citep{marticorena_sanchez_soporte_2005}
+	\item \textbf{RNF-3} El diseño de la interfaz ha de ser intuitivo y fácil de utilizar.
+	\item \textbf{RNF-4} Durante el proyecto se debe gestionar un flujo de trabajo guiado por la integración continua y el despliegue continuo
+	\item \textbf{RNF-5} Se debe aplicar el \textit{frameworks `modelo-vista-controlador'} para separar la lógica de la aplicación y la interfaz de usuario
+	\item \textbf{RNF-6} Se debe crear una batería de pruebas automáticas con cobertura por encima del 90\% en los subsistemas de lógica de la aplicación.
+	\item \textbf{RNF-7} El proyecto debe estar ubicado en una forja de repositorios que incluya un sistema de control de versiones, un sistema de seguimiento de incidencias y que permita una comunicación fluida entre el tutor y el alumno.
+	\item \textbf{RNF-8} Se debe diseñar una correcta gestión de errores definiendo excepciones de biblioteca y registrando eventos de error e información en ficheros de \textit{log}. 
+	\item \textbf{RNF-9} Se deben utilizar sistemas que aseguren la calidad continua del código que permitan evaluar la deuda técnica del proyecto.
+	\item \textbf{RNF-9} Se ha de probar la aplicación con ejemplos reales
+\end{itemize}
+
+%\section{Especificación de requisitos}
 
 %https://github.com/rlp0019/Activiti-Api/blob/master/memo/GII_Luquero_Pe%C3%B1acoba_Roberto_JUNIO_ORDINARIA_2019_memoria.pdf
